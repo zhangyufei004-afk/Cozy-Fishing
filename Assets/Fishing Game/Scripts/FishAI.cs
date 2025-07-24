@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace PrototypeFishingMechanics
-{
+{   // Test Git bot on discord
     public class FishAI : MonoBehaviour
     {
         #region Constants
