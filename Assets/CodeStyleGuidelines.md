@@ -10,13 +10,13 @@
 ### Variables Names
 Variable names should be informative, specific and descriptive. Single letter variable names are not permitted unless they are used in the context of array iteration. <br>
 #### Variable Name Examples:
-| Good Variable Names | Bad Variable Names                     | Notes                                                                           |
-|---------------------|----------------------------------------|---------------------------------------------------------------------------------|
-| `int healthPoints`  | `int hp`                               | Variables names reveal intent. <br>Make names Searchable and <br>Pronounceable. |
-| `bool dead`         | `bool isPlayerDead` <br> `bool isDead` | Booleans ask a question that<br>can be answered true or false.                  |
-| `int days`          | `int elapsedTimeInDays`                | Be specific about the <br>measurement unit.                                     |
-| `int mvmtSpeed`     | `int movementSpeed`                    | Use Nouns.                                                                      |
-| `string tName`      | `string teamName`                      |                                                                                 |
+| Good Variable Names                    | Bad Variable Names | Notes                                                                           |
+|----------------------------------------|--------------------|---------------------------------------------------------------------------------|
+| `int healthPoints`                     | `int hp`           | Variables names reveal intent. <br>Make names Searchable and <br>Pronounceable. |
+| `bool isPlayerDead` <br> `bool isDead` | `bool dead`        | Booleans ask a question that<br>can be answered true or false.                  |
+| `int elapsedTimeInDays`                | `int days`         | Be specific about the <br>measurement unit.                                     |
+| `int movementSpeed`                    | `int mvmtSpeed`    | Use Nouns.                                                                      |
+| `string teamName`                      | `string tName`     |                                                                                 |
 
 ### Name Style Rules
 
@@ -91,6 +91,12 @@ your code to be more obvious. Then you won't need the comment.
 - **Insert one space between the comment delimiter `//` and the comment text.**
 - **Remove commented out code:** Though commenting out statements may be normal during testing and development, don't leave commented code lying around. Rely on your source control for previous versions of the code. Then have the courage to delete those lines of code. 
 - **Keep your TODO comments up-to-date**: As you complete tasks, make sure you scrub the TODO comments you've left as a reminder. Outdated comments are distractions. Adding a date to the TODO will help keep track of when the TODO was added, and if it is still relevant.
-- 
+- **Avoid journals**: The comments are not a place for your dev diary. There’s no need to log
+  everything you’re doing in a comment when you start a new class. Proper use of source
+  control makes this redundant.
+
+### XML Documentation
+
+
 ## Name Spaces
 
