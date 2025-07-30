@@ -1,10 +1,15 @@
 # Fishing Game - Code Style Guidelines
+#### Copyright Madison Reilly 2025
 ## Table of Contents
 1. [Naming Conventions](#naming-conventions)
    1. [Variable Names](#variables-names)
    2. [Name Style Rules](#name-style-rules)
 2. [Documentation](#documentation)
+   1. [Comments](#comments)
+   2. [XML Documentation](#xml-documentation)
 3. [Name Spaces](#name-spaces)
+4. [Class Formatting](#class-formatting)
+5. [Further Guidance](#further-guidance)
 
 ## Naming Conventions
 ### Variables Names
@@ -71,7 +76,6 @@ namespace ExampleNameSpace
 ### Comments
 Most of your code won’t need comments if you follow KISS principles and break your code into
 easy-to-digest logical parts. Well-named variables and functions will explain themselves.
-
 <br>Where comments make sense, you should explain the why, not the what. Did you
 make specific decisions that are not immediately obvious? Is there a tricky bit of logic that
 needs clarification? Useful comments reveal information not gleaned from the code itself.
@@ -96,7 +100,68 @@ your code to be more obvious. Then you won't need the comment.
   control makes this redundant.
 
 ### XML Documentation
-
+All classes and <u>non unity</u> methods should include XML Documentation. This documentation serves as a summary of your classes
+and methods to other developers. An example has been provided:
+```csharp
+namespace XMLExample
+{
+    /// <summary>
+    /// This is an example class. This summary serves to summarise the purpose of the class, and the methods contained in it. 
+    /// </summary>
+    class XMLExampleClass
+    {
+        int exampleVariable;
+        
+        /// <summary>
+        /// This is a summary of the Method. It is a high level indicator of what the method does. 
+        /// </summary>
+        /// <param name="Parameter">This parameter is a string argument. In proper documentation I would describe what the variable is. </param>
+        /// <returns>Describe what the function returns specifically here. Does it return a formatted string? Maybe it returns the string mutated? </returns>
+        public string ExampleMethod(string Parameter)
+        {
+            // Do Something
+        }
+        
+        void Start()
+        {
+            // This is a unity method, so we dont need XML Documentation  
+        }
+    }
+}
+```
+For more information on XML Documentation and the tags for it, check out the [Microsoft Documentation](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/recommended-tags).
 
 ## Name Spaces
+All classes, structs and enums need to be surrounded in a namespace. This namespace should branch off the root namespace and reflect the subfolder location. 
+### For Example:
+Let's say you are writing a class named PlayerMovement. This is in the `Assets\Scripts\Player` folder, and your root namespace is `FishingGame`. You would then declare your class as follows: 
 
+```csharp
+// NOTE: The .Player is important here, it reflects the subfolder to 'scripts'
+namespace FishingGame.Player
+{
+    /// <summary>
+    /// Responsible for PlayerMovement in the Fishing Game. 
+    /// Moves the player foward, back, left, and right. Also allows for sprinting, and walking. 
+    /// </summary>
+    class PlayerMovement : MonoBehaviour
+    {
+        // The class is implemented here
+    }
+}
+```
+
+The root namespace for each project is declared in the Unity Project Settings.  
+
+## Class Formatting
+All Classes and Structs should follow an identical structure. This ensures other developers know the location of your fields, properties, public and private methods.
+<br>Classes/Structs should be ordered from top to bottom as follows:
+1. Properties
+2. Fields
+3. Events/Delegates
+4. Monobehaviour Methods (Unity Methods)
+5. Public Methods
+6. Private/Internal Methods
+
+## Further Guidance
+For any further questions in regard to this document, please contact [Madison Reilly](mailto:jre129@uclive.ac.nz).
