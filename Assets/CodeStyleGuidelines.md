@@ -31,8 +31,8 @@ Variable names should be informative, specific and descriptive. Single letter va
 | UpperCamelCase  | - Structs, Classes and Namespaces <br> - Methods <br> - Properties <br> - Events <br> - Instance Fields (Not Private) <br> - Static Fields (Not Private) <br> - Enum Members <br> - Local Functions |
 | IUpperCamelCase | - Interfaces (append with an I to start)                                                                                                                                                            |
 | TUpperCamelCase | - Type Parameters                                                                                                                                                                                   |
-| LowerCamelCase  | - Local Variables <br> - Local Constants <br> - Parameters<br/> - Unity Serialized Fields                                                                                                           |
-| _LowerCamelCase | - Instance Fields (Private) <br/> - Static Fields (Private)                                                                                                                                         |
+| lowerCamelCase  | - Local Variables <br> - Local Constants <br> - Parameters<br/> - Unity Serialized Fields                                                                                                           |
+| _lowerCamelCase | - Instance Fields (Private) <br/> - Static Fields (Private)                                                                                                                                         |
 | ALL_CAPS        | - Constants (Class Level)                                                                                                                                                                           |
 
 #### Name Style Example:
