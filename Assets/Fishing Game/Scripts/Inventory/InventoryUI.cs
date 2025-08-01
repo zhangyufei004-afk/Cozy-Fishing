@@ -10,8 +10,8 @@ namespace FishingGame.UI.Inventory
     /// </summary>
     public class InventoryUI : MonoBehaviour
     {
-        [SerializeField] private Transform _fishListContainer;
-        [SerializeField] private GameObject _fishCardPrefab;
+        [SerializeField] private Transform fishListContainer;
+        [SerializeField] private GameObject fishCardPrefab;
 
         private readonly List<GameObject> _currentFishCards = new List<GameObject>();
 
@@ -45,7 +45,7 @@ namespace FishingGame.UI.Inventory
         /// <param name="fish">Fish object to be displayed.</param>
         public void AddFishToUI(Fish fish)
         {
-            GameObject card = Instantiate(_fishCardPrefab, _fishListContainer);
+            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
             _currentFishCards.Add(card);
 
             Image image = card.transform.Find("FishImage").GetComponent<Image>();

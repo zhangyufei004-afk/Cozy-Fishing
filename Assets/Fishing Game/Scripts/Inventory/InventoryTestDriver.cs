@@ -9,23 +9,23 @@ namespace FishingGame.Inventory
     /// </summary>
     public class InventoryTestDriver : MonoBehaviour
     {
-        [SerializeField] private InventorySystem _inventorySystem;
-        [SerializeField] private InventoryUI _inventoryUI;
-        [SerializeField] private FishScritableObject[] _testFishSOs;
+        [SerializeField] private InventorySystem inventorySystem;
+        [SerializeField] private InventoryUI inventoryUI;
+        [SerializeField] private FishScritableObject[] testFishScriptableObjects;
 
-        private int _testIndex = 0;
+        private int testIndex = 0;
 
         private void Update()
         {
             // Press T to test
             if (Input.GetKeyDown(KeyCode.T))
             {
-                Fish newFish = new Fish(_testFishSOs[_testIndex]);
-                _inventorySystem.AddFish(newFish);
+                Fish newFish = new Fish(testFishScriptableObjects[testIndex]);
+                inventorySystem.AddFish(newFish);
 
-                _inventoryUI.RefreshInventoryUI(_inventorySystem.GetFishInventory());
+                inventoryUI.RefreshInventoryUI(inventorySystem.GetFishInventory());
 
-                _testIndex = (_testIndex + 1) % _testFishSOs.Length;
+                testIndex = (testIndex + 1) % testFishScriptableObjects.Length;
             }
         }
     }

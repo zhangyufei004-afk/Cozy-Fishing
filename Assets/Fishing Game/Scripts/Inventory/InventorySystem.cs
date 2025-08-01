@@ -1,35 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Inventory System - Stores caught fish.
-/// </summary>
-public class InventorySystem : MonoBehaviour
+namespace FishingGame.Inventory
 {
-    private List<Fish> _fishInventory = new List<Fish>();
-
     /// <summary>
-    /// Adds a new fish to the inventory.
+    /// Inventory System - Stores caught fish.
     /// </summary>
-    /// <param name="newFish">Fish instance</param>
-    public void AddFish(Fish newFish)
+    public class InventorySystem : MonoBehaviour
     {
-        _fishInventory.Add(newFish);
-    }
+        private List<Fish> fishInventory = new List<Fish>();
 
-    /// <summary>
-    /// Returns the full list of caught fish.
-    /// </summary>
-    public List<Fish> GetFishInventory()
-    {
-        return _fishInventory;
-    }
+        /// <summary>
+        /// Adds a new fish to the inventory.
+        /// </summary>
+        /// <param name="newFish">Fish instance</param>
+        public void AddFish(Fish newFish)
+        {
+            fishInventory.Add(newFish);
+        }
 
-    /// <summary>
-    /// Clears all caught fish.
-    /// </summary>
-    public void ClearInventory()
-    {
-        _fishInventory.Clear();
+        /// <summary>
+        /// Returns the full list of caught fish.
+        /// </summary>
+        public List<Fish> GetFishInventory()
+        {
+            return fishInventory;
+        }
+
+        /// <summary>
+        /// Clears all caught fish.
+        /// </summary>
+        public void ClearInventory()
+        {
+            fishInventory.Clear();
+        }
     }
 }
