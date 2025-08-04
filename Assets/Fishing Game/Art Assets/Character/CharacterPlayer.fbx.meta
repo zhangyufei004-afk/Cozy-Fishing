@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5ecb1a773e0f2134794e6d0182b27b6f
+guid: d20416c5f9930af4c808a906da71f4bc
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Character_Player3
-    second: {fileID: 2100000, guid: 638552a774dc96c42ad168a832254fd4, type: 2}
+    second: {fileID: 2100000, guid: de497eec382a52844bf2d6b3ea8b0f49, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: standardSurface1
-    second: {fileID: 2100000, guid: f7f6112548ea2394fb158f56232d3c35, type: 2}
+    second: {fileID: 2100000, guid: d989351c30c99c94da18d899d3ddb246, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: standardSurface4
-    second: {fileID: 2100000, guid: 0a7b135eb75fc91499c252d26440b2bf, type: 2}
+    second: {fileID: 2100000, guid: ff08804bcf2363442b907a049ece0e86, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
