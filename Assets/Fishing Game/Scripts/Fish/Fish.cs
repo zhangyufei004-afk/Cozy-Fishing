@@ -5,7 +5,7 @@ using UnityEngine;
 /// Fish Runtime Object.
 /// </para>
 /// <para>
-/// Stores Details including: Fish SO Base, Length.
+/// Stores Details including: Fish SO Base, Length, Fish Difficulty.
 /// </para>
 /// </summary>
 public class Fish
@@ -13,6 +13,8 @@ public class Fish
     private FishScritableObject _fishBase;
 
     private float _length;
+
+    public int _FishCatchDifficulty;
 
     /// <summary>
     /// Constructor.
@@ -22,6 +24,7 @@ public class Fish
     {
         this._fishBase = newFishBase;
         this._length = Random.Range(this._fishBase.MinMaxLength.x, this._fishBase.MinMaxLength.y);
+        this._FishCatchDifficulty = this._fishBase.FishCatchDifficulty;
     }
 
     /// <summary>
