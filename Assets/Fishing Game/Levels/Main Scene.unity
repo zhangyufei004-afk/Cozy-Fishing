@@ -712,8 +712,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa46f1b263585e947bd48fb26814ab95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishListContainer: {fileID: 0}
-  fishCardPrefab: {fileID: 0}
+  fishListContainer: {fileID: 483991025}
+  fishCardPrefab: {fileID: 5527036005734980451, guid: 8f91063fc3e59d04c837034f6d82fd60, type: 3}
 --- !u!1 &874968348
 GameObject:
   m_ObjectHideFlags: 0
