@@ -12,7 +12,7 @@ namespace FishingGame.UI.Inventory
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
             {
                 bool isActive = inventoryPanel.activeSelf;
                 inventoryPanel.SetActive(!isActive);

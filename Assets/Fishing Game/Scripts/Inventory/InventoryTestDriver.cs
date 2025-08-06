@@ -18,7 +18,7 @@ namespace FishingGame.Inventory
         private void Update()
         {
             // Press T to test
-            if (Input.GetKeyDown(KeyCode.T))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.T))
             {
                 Fish newFish = new Fish(testFishScriptableObjects[testIndex]);
                 inventorySystem.AddFish(newFish);
