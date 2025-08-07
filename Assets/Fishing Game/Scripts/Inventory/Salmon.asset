@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
   m_Name: Salmon
   m_EditorClassIdentifier: 
-  Texture: {fileID: 21300000, guid: 6898dad25dcde1f4c9239ade2cf066be, type: 3}
+  Texture: {fileID: 21300000, guid: 1d1255cc6e82d374d83dbf8c5ce56ebc, type: 3}
+  Id: Salmon_01
   MinMaxLength: {x: 10, y: 70}
   SpeciesName: Salmon

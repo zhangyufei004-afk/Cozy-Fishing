@@ -9,9 +9,10 @@ using UnityEngine;
 /// </para>
 /// </summary>
 [CreateAssetMenu(fileName = "NewFish", menuName = "Fishing Game/Fish Data")]
-public class FishScritableObject : ScriptableObject
+public class FishScriptableObject : ScriptableObject
 {
     public Sprite Texture;
+    public string Id;
     public Vector2 MinMaxLength;
     public string SpeciesName;
 }
