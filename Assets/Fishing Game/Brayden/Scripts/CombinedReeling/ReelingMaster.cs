@@ -4,12 +4,7 @@ using UnityEngine;
 
 namespace PrototypeFishingMechanics
 {
-    public interface IReelingMinigame
-    {
-        public void InitializeMiniGame() { }
-
-        public void EndMiniGame() { }
-    }
+    
 
     public class ReelingMaster : MonoBehaviour
     {
@@ -17,11 +12,12 @@ namespace PrototypeFishingMechanics
         #region Variables that change every catch
 
         // The current minigame being played
-        private IReelingMinigame _currentMinigame;
+        private GameObject _currentMinigame;
 
-        [Tooltip("A list of all potential minigames.")]
+        // Unity does not support interfaces being serialized fields so this is public
         [SerializeField]
-        private List<IReelingMinigame> MinigameTypes;
+        [Tooltip("A list of all potential minigames.")]
+        private List<GameObject> _miniGameTypes;
 
         // The current fish being caught
         private Fish _currentlyReelingFish;
@@ -31,6 +27,10 @@ namespace PrototypeFishingMechanics
 
         #endregion 
 
+        public void Start()
+        {
+            SetNextMiniGame();
+        }
 
 
         /*
@@ -49,6 +49,7 @@ namespace PrototypeFishingMechanics
             if (CheckIsFishDifficult() == true)
             {
                 SetNextMiniGame();
+                _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
             }
             else
             {
@@ -58,9 +59,9 @@ namespace PrototypeFishingMechanics
 
         private void SetNextMiniGame()
         {
-            int index = Random.Range(0, MinigameTypes.Count);
+            int index = Random.Range(0, _miniGameTypes.Count);
 
-            IReelingMinigame testNextMiniGame = MinigameTypes[index];
+            GameObject testNextMiniGame = _miniGameTypes[index];
 
             // Check if next minigame is not the current minigame
             // Note: Going to try find a more efficient way to do this if I have time
@@ -68,8 +69,8 @@ namespace PrototypeFishingMechanics
             // 5/08/2025 - Brayden
             if (testNextMiniGame != _currentMinigame)
             {
-                testNextMiniGame = _currentMinigame;
-                _currentMinigame.InitializeMiniGame();
+                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame();
+                _currentMinigame = testNextMiniGame;
             }
             else
             {

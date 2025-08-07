@@ -1,0 +1,196 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace PrototypeFishingMechanics
+{
+    public class ArrowMiniGame : MonoBehaviour, IReelingMinigame
+    {
+        public void InitializeMiniGame()
+        {
+            FishingCanvas.SetActive(true);
+            ResultText.text = "";
+            FishingResultText.text = "";
+            FishingProgressBar.minValue = 0f;
+            FishingProgressBar.maxValue = 1f;
+            FishingProgressBar.value = 0.5f;
+        }
+
+        public void BeginMiniGame()
+        {
+            StartQTE();
+        }
+
+        public void EndMiniGame()
+        {
+            FishingCanvas.SetActive(false);
+            EndQTE();
+        }
+
+        //UI
+        public Image[] ArrowSlots;
+        public TextMeshProUGUI ResultText;
+        public TextMeshProUGUI FishingResultText;
+        public GameObject FishingCanvas;
+
+
+        //Arrow Sprite
+        public Sprite UpSprite;
+        public Sprite DownSprite;
+        public Sprite LeftSprite;
+        public Sprite RightSprite;
+
+        //FishingBar
+        public Slider FishingProgressBar;
+        public float ProgressIncrement = 0.1f;
+        public float InputTimeLimit = 3f;
+
+        //QTE
+        private List<KeyCode> inputSequence = new List<KeyCode>();
+        private int inputIndex = 0;
+        private float inputTimer = 0f;
+        private bool isQTEActive = false;
+        private bool isFishingFinished = false;
+
+        void Start()
+        {
+            
+        }
+
+        void Update()
+        {
+            if (!isQTEActive || isFishingFinished) return;
+
+            inputTimer -= Time.deltaTime;
+
+            if (inputTimer <= 0f)
+            {
+                Fail("overtime");
+                return;
+            }
+
+            if (Input.anyKeyDown)
+            {
+                if (CheckKeyPressed(out KeyCode pressedKey))
+                {
+                    if (pressedKey == inputSequence[inputIndex])
+                    {
+                        ArrowSlots[inputIndex].color = Color.green;
+                        inputIndex++;
+
+                        if (inputIndex >= inputSequence.Count)
+                        {
+                            ResultText.text = "success";
+                            IncreaseProgress();
+                            EndQTE();
+                            if (!isFishingFinished) Invoke(nameof(StartQTE), 1.5f);
+                        }
+                    }
+                    else
+                    {
+                        ArrowSlots[inputIndex].color = Color.red;
+                        Fail("fail");
+                    }
+                }
+            }
+        }
+        //QTE logic
+        public void StartQTE()
+        {
+            if (isFishingFinished) return;
+
+            ResultText.text = "";
+            isQTEActive = true;
+            inputSequence.Clear();
+            inputIndex = 0;
+            inputTimer = InputTimeLimit;
+
+            for (int i = 0; i < ArrowSlots.Length; i++)
+            {
+                ArrowSlots[i].color = Color.white;
+
+                int rand = Random.Range(0, 4);
+                KeyCode dirKey;
+
+                switch (rand)
+                {
+                    case 0:
+                        dirKey = KeyCode.UpArrow;
+                        ArrowSlots[i].sprite = UpSprite;
+                        break;
+                    case 1:
+                        dirKey = KeyCode.DownArrow;
+                        ArrowSlots[i].sprite = UpSprite;
+                        break;
+                    case 2:
+                        dirKey = KeyCode.LeftArrow;
+                        ArrowSlots[i].sprite = UpSprite;
+                        break;
+                    default:
+                        dirKey = KeyCode.RightArrow;
+                        ArrowSlots[i].sprite = UpSprite;
+                        break;
+                }
+
+                inputSequence.Add(dirKey);
+                ArrowSlots[i].enabled = true;
+            }
+        }
+
+        void EndQTE()
+        {
+            isQTEActive = false;
+            foreach (var img in ArrowSlots)
+            {
+                img.enabled = false;
+            }
+        }
+
+        void Fail(string reason)
+        {
+            ResultText.text = reason;
+            DecreaseProgress();
+            EndQTE();
+            if (!isFishingFinished) Invoke(nameof(StartQTE), 1.5f);
+        }
+        //ProgressBar
+        void IncreaseProgress()
+        {
+            FishingProgressBar.value += ProgressIncrement;
+            CheckProgress();
+        }
+
+        void DecreaseProgress()
+        {
+            FishingProgressBar.value -= ProgressIncrement;
+            CheckProgress();
+        }
+
+        void CheckProgress()
+        {
+            if (FishingProgressBar.value >= FishingProgressBar.maxValue)
+            {
+                isFishingFinished = true;
+                FishingResultText.text = "Successful fishing!";
+                ResultText.text = "";
+            }
+            else if (FishingProgressBar.value <= FishingProgressBar.minValue)
+            {
+                isFishingFinished = true;
+                FishingResultText.text = "Fishing failed!";
+                ResultText.text = "";
+            }
+        }
+
+        bool CheckKeyPressed(out KeyCode key)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow)) { key = KeyCode.UpArrow; return true; }
+            if (Input.GetKeyDown(KeyCode.DownArrow)) { key = KeyCode.DownArrow; return true; }
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) { key = KeyCode.LeftArrow; return true; }
+            if (Input.GetKeyDown(KeyCode.RightArrow)) { key = KeyCode.RightArrow; return true; }
+            key = KeyCode.None;
+            return false;
+        }
+    }
+}
