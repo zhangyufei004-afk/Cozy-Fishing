@@ -4,10 +4,12 @@ namespace PrototypeFishingMechanics
 {
     public interface IReelingMinigame
     {
-        public void InitializeMiniGame() { }
+        public void InitializeMiniGame();
 
-        public void BeginMiniGame() { }
+        public void BeginMiniGame();
 
-        public void EndMiniGame() { }
+        public void WinMiniGame();
+
+        public void LoseMiniGame();
     }
 }

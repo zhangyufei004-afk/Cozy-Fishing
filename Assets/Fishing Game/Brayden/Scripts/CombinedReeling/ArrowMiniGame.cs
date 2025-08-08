@@ -22,11 +22,9 @@ namespace PrototypeFishingMechanics
             StartQTE();
         }
 
-        public void EndMiniGame()
-        {
-            FishingCanvas.SetActive(false);
-            EndQTE();
-        }
+        [SerializeField]
+        [Tooltip("Reference to the ReelingMaster script.")]
+        private ReelingMaster ReelingMaster;
 
         //UI
         public Image[] ArrowSlots;
@@ -53,11 +51,6 @@ namespace PrototypeFishingMechanics
         private bool isQTEActive = false;
         private bool isFishingFinished = false;
 
-        void Start()
-        {
-            
-        }
-
         void Update()
         {
             if (!isQTEActive || isFishingFinished) return;
@@ -82,9 +75,8 @@ namespace PrototypeFishingMechanics
                         if (inputIndex >= inputSequence.Count)
                         {
                             ResultText.text = "success";
-                            IncreaseProgress();
-                            EndQTE();
-                            if (!isFishingFinished) Invoke(nameof(StartQTE), 1.5f);
+
+                            WinMiniGame();
                         }
                     }
                     else
@@ -121,15 +113,15 @@ namespace PrototypeFishingMechanics
                         break;
                     case 1:
                         dirKey = KeyCode.DownArrow;
-                        ArrowSlots[i].sprite = UpSprite;
+                        ArrowSlots[i].sprite = DownSprite;
                         break;
                     case 2:
                         dirKey = KeyCode.LeftArrow;
-                        ArrowSlots[i].sprite = UpSprite;
+                        ArrowSlots[i].sprite = LeftSprite;
                         break;
                     default:
                         dirKey = KeyCode.RightArrow;
-                        ArrowSlots[i].sprite = UpSprite;
+                        ArrowSlots[i].sprite = RightSprite;
                         break;
                 }
 
@@ -150,21 +142,8 @@ namespace PrototypeFishingMechanics
         void Fail(string reason)
         {
             ResultText.text = reason;
-            DecreaseProgress();
             EndQTE();
-            if (!isFishingFinished) Invoke(nameof(StartQTE), 1.5f);
-        }
-        //ProgressBar
-        void IncreaseProgress()
-        {
-            FishingProgressBar.value += ProgressIncrement;
-            CheckProgress();
-        }
-
-        void DecreaseProgress()
-        {
-            FishingProgressBar.value -= ProgressIncrement;
-            CheckProgress();
+            LoseMiniGame();
         }
 
         void CheckProgress()
@@ -191,6 +170,20 @@ namespace PrototypeFishingMechanics
             if (Input.GetKeyDown(KeyCode.RightArrow)) { key = KeyCode.RightArrow; return true; }
             key = KeyCode.None;
             return false;
+        }
+
+        public void WinMiniGame()
+        {
+            FishingCanvas.SetActive(false);
+            EndQTE();
+            ReelingMaster.EndCurrentMiniGame(true);
+        }
+
+        public void LoseMiniGame()
+        {
+            FishingCanvas.SetActive(false);
+            EndQTE();
+            ReelingMaster.EndCurrentMiniGame(false);
         }
     }
 }

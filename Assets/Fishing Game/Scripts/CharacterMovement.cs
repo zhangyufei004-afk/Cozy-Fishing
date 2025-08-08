@@ -17,6 +17,11 @@ namespace PrototypeFishingMechanics
         private Vector3 _moveSpeed;
 
         #endregion
+
+        #region Public Variables
+        public bool AllowMovement = true;
+        #endregion 
+
         /// <summary>
         /// Start is called once before the first execution of Update after the MonoBehaviour is created
         /// </summary>
@@ -30,9 +35,13 @@ namespace PrototypeFishingMechanics
         /// </summary>
         void Update()
         {
-            // Moves the character forward and back based off the direction they are facing
-            _moveSpeed = transform.right * Input.GetAxis("Horizontal") + transform.forward *  Input.GetAxis("Vertical");
-            _characterController.SimpleMove(_moveSpeed * /*(Time.deltaTime */ SPEED)/*)*/;
+            if (AllowMovement)
+            {
+                // Moves the character forward and back based off the direction they are facing
+                _moveSpeed = transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
+                _characterController.SimpleMove(_moveSpeed * /*(Time.deltaTime */ SPEED)/*)*/;
+            }
+            
         }
     }
 

@@ -18,9 +18,14 @@ namespace PrototypeFishingMechanics
 
         }
 
-        public void EndMiniGame()
+        public void WinMiniGame()
         {
+            throw new System.NotImplementedException();
+        }
 
+        public void LoseMiniGame()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
