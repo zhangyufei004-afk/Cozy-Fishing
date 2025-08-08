@@ -106,7 +106,6 @@ namespace PrototypeFishingMechanics
             }
 
             _currentMiniGameWins += 1;
-
             _hasWon = CheckIfWonEnough();
 
             if (_hasWon)
