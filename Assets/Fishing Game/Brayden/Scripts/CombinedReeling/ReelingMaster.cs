@@ -29,7 +29,7 @@ namespace PrototypeFishingMechanics
         private List<GameObject> miniGameTypes;
 
         // The current fish being caught
-        private Fish _currentlyReelingFish;
+        private FishScritableObject _currentlyReelingFish;
 
         // FishDifficulty will be taken from the fish being captured
         private int _fishDifficulty;
@@ -49,13 +49,13 @@ namespace PrototypeFishingMechanics
         /// it initializes the catch process
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
-        public void BeginCatch(Fish fishCaught)
+        public void BeginCatch(FishScritableObject fishCaught)
         {
             characterController.GetComponent<CharacterMovement>().AllowMovement = false;
 
             _currentlyReelingFish = fishCaught;
 
-            _fishDifficulty = _currentlyReelingFish._FishCatchDifficulty;
+            _fishDifficulty = _currentlyReelingFish.FishCatchDifficulty;
 
             _currentMinigame = null;
 
@@ -65,8 +65,7 @@ namespace PrototypeFishingMechanics
             if (CheckIsFishDifficult() == true)
             {
                 _miniGameWinsRequired = SetMiniGamesRequired(_fishDifficulty);
-                SetNextMiniGame();
-                
+                SetNextMiniGame(); 
             }
             else
             {
@@ -160,7 +159,5 @@ namespace PrototypeFishingMechanics
             _currentMiniGameWins = 0;
            characterController.GetComponent<CharacterMovement>().AllowMovement = true;
         }
-
-
     }
 }
