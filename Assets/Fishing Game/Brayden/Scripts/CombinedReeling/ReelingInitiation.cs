@@ -1,3 +1,4 @@
+using ReelingMasterScript;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -35,6 +36,9 @@ namespace PrototypeFishingMechanics
         [SerializeField]
         private GameObject RodBobber;
 
+        [SerializeField]
+        private FishingBobber RodBobberScript;
+
 
         #endregion
 
@@ -63,8 +67,12 @@ namespace PrototypeFishingMechanics
             {
                 _isCharging = false;
                 _playerTrajectoryLine.enabled = false;
+                RodBobberScript.CanCatchFish = true;
+
+                ThrowLine(_chargePower);
 
                 ReelingMasterScript.TEMPSTART();
+                
             }
             else
             {
@@ -107,11 +115,17 @@ namespace PrototypeFishingMechanics
             {
                 float time = i * 0.1f;
                 points[i] = origin + speed * time + 0.5f * Physics.gravity * time * time;
+
+                // This here is currently how I cut down how far the rod goes
+                // And try to somewhat accuratley place the bobber
+                // TODO: Figure out how to replace this with something better
+                if (points[i].y < this.transform.position.y - 2)
+                {
+                    points[i] = points[i-1];
+                }
             }
 
             RodBobber.transform.position = points[points.Length - 1];
-
-            Vector3 rodBobberModifyY = new Vector3(RodBobber.transform.position.x, 0, RodBobber.transform.position.z);
 
             _playerTrajectoryLine.SetPositions(points);
         }

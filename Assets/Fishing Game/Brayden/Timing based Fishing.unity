@@ -317,6 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 197294433}
   - component: {fileID: 197294434}
+  - component: {fileID: 197294435}
   m_Layer: 0
   m_Name: Bobber
   m_TagString: Untagged
@@ -394,6 +395,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &197294435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197294432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf11266ef6194a4499d8cfbfd61bfcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanCatchFish: 0
+  ReelingMaster: {fileID: 139337787}
 --- !u!1 &203917533
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,7 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c729455e9990ccf41a8ab2fd9a5667a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllowMovement: 0
+  AllowMovement: 1
 --- !u!114 &203917541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +570,7 @@ MonoBehaviour:
   ChargeScalar: 2
   RodEndPoint: {fileID: 1459595591}
   RodBobber: {fileID: 197294432}
+  RodBobberScript: {fileID: 0}
 --- !u!120 &203917543
 LineRenderer:
   serializedVersion: 2
