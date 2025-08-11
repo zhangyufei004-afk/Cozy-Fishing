@@ -24,7 +24,7 @@ namespace FishingGame.UI.Inventory
         private void Awake()
         {
             _isInventoryOpen = false;
-            _triggerInventoryAction = InputSystem.actions.FindAction("Player/Inventory");
+            _triggerInventoryAction = _inputActions.FindAction("Player/Inventory");
         }
 
         private void Update()
