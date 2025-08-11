@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace FishingGame.UI.Inventory
 {
@@ -9,13 +10,29 @@ namespace FishingGame.UI.Inventory
     public class InventoryController : MonoBehaviour
     {
         [SerializeField] private GameObject inventoryPanel;
+        private InputActionAsset _inputActions;
+        private bool _isInventoryOpen;
+        private InputAction _triggerInventoryAction;
+
+        private void OnEnable()
+        {
+            _inputActions = InputSystem.actions;
+            _inputActions.FindActionMap("Player").Enable();
+            _inputActions.FindActionMap("UI").Enable();
+        }
+
+        private void Awake()
+        {
+            _isInventoryOpen = false;
+            _triggerInventoryAction = InputSystem.actions.FindAction("Player/Inventory");
+        }
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
+            if (_triggerInventoryAction.WasPressedThisFrame())
             {
-                bool isActive = inventoryPanel.activeSelf;
-                inventoryPanel.SetActive(!isActive);
+                _isInventoryOpen = !_isInventoryOpen;
+                inventoryPanel.SetActive(_isInventoryOpen);
             }
         }
     }
