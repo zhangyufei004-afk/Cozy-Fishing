@@ -1,6 +1,9 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Android;
 
 namespace PrototypeFishingMechanics
 {
@@ -31,16 +34,50 @@ namespace PrototypeFishingMechanics
         // The current fish being caught
         private FishScritableObject _currentlyReelingFish;
 
+        // TODO: This variable is currently inplace for _currentlyReelingFish
+        // It will eventually be removed once FishScritableObjects can easily be implemented
+        // It represents the image shown in the ui of the fish being dragged up
+        public GameObject TestFish;
+
         // FishDifficulty will be taken from the fish being captured
         private int _fishDifficulty;
+
+        public GameObject WinText;
+
+        public GameObject LoseText;
 
         #endregion 
 
         public void Start()
         {
-            SetNextMiniGame();
+           // SetNextMiniGame();
             // Bellow two are temp lines for testing, delete when no longer needed
+          //  characterController.GetComponent<CharacterMovement>().AllowMovement = false;
+        }
+
+        public void TEMPSTART()
+        {
             characterController.GetComponent<CharacterMovement>().AllowMovement = false;
+
+            _fishDifficulty = 4;
+
+            _currentMinigame = null;
+
+            _currentMiniGameWins = 0;
+
+            LoseText.SetActive(false);
+            WinText.SetActive(false);
+
+            // Check if the fish is strong enough for minigames to be ran
+            if (CheckIsFishDifficult() == true)
+            {
+                _miniGameWinsRequired = SetMiniGamesRequired(_fishDifficulty);
+                SetNextMiniGame();
+            }
+            else
+            {
+                EndCatch(true);
+            }
         }
 
 
@@ -61,6 +98,9 @@ namespace PrototypeFishingMechanics
 
             _currentMiniGameWins = 0;
 
+            LoseText.SetActive(false);
+            WinText.SetActive(false);
+
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
@@ -69,7 +109,7 @@ namespace PrototypeFishingMechanics
             }
             else
             {
-                EndCatch();
+                EndCatch(true);
             }
         }
 
@@ -99,17 +139,22 @@ namespace PrototypeFishingMechanics
         {
             if (didWin == false)
             {
-                // TODO: Progress on catch goes down for losing
-                SetNextMiniGame();
+                EndCatch(false);
                 return;
             }
 
             _currentMiniGameWins += 1;
+
+            Vector3 fishPosition = TestFish.transform.position;
+            TestFish.transform.position = new Vector3(fishPosition.x, fishPosition.y += 30, fishPosition.z);
+
+
+
             _hasWon = CheckIfWonEnough();
 
             if (_hasWon)
             {
-                EndCatch();
+                EndCatch(true);
                 return;
             }
             else
@@ -152,12 +197,42 @@ namespace PrototypeFishingMechanics
          * Ran once fishing ends
          * Will deinitialize the catch process
          */
-        private void EndCatch()
+        private void EndCatch(bool didWin)
         {
             _currentlyReelingFish = null;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
            characterController.GetComponent<CharacterMovement>().AllowMovement = true;
+
+            TestFish.SetActive(false);
+
+
+            // TODO: Implement more logic on if reeling was a win or not
+            if (didWin == false)
+            {
+                LoseText.SetActive(true);
+                StartCoroutine(HideUIAfterCatch());
+            }
+
+            else
+            {
+                WinText.SetActive(true);
+                StartCoroutine(HideUIAfterCatch());
+            }
+        }
+
+        private void HideUI()
+        {
+            WinText.SetActive(false);
+            LoseText.SetActive(false);
+        }
+
+
+
+        private IEnumerator HideUIAfterCatch()
+        {
+            yield return new WaitForSeconds(2);
+            HideUI();
         }
     }
 }

@@ -10,11 +10,6 @@ namespace PrototypeFishingMechanics
         public void InitializeMiniGame()
         {
             FishingCanvas.SetActive(true);
-            ResultText.text = "";
-            FishingResultText.text = "";
-            FishingProgressBar.minValue = 0f;
-            FishingProgressBar.maxValue = 1f;
-            FishingProgressBar.value = 0.5f;
         }
 
         public void BeginMiniGame()
@@ -28,8 +23,6 @@ namespace PrototypeFishingMechanics
 
         //UI
         public Image[] ArrowSlots;
-        public TextMeshProUGUI ResultText;
-        public TextMeshProUGUI FishingResultText;
         public GameObject FishingCanvas;
 
 
@@ -40,8 +33,6 @@ namespace PrototypeFishingMechanics
         public Sprite RightSprite;
 
         //FishingBar
-        public Slider FishingProgressBar;
-        public float ProgressIncrement = 0.1f;
         public float InputTimeLimit = 3f;
 
         //QTE
@@ -74,7 +65,6 @@ namespace PrototypeFishingMechanics
 
                         if (inputIndex >= inputSequence.Count)
                         {
-                            ResultText.text = "success";
 
                             WinMiniGame();
                         }
@@ -92,7 +82,6 @@ namespace PrototypeFishingMechanics
         {
             if (isFishingFinished) return;
 
-            ResultText.text = "";
             isQTEActive = true;
             inputSequence.Clear();
             inputIndex = 0;
@@ -141,25 +130,8 @@ namespace PrototypeFishingMechanics
 
         void Fail(string reason)
         {
-            ResultText.text = reason;
             EndQTE();
             LoseMiniGame();
-        }
-
-        void CheckProgress()
-        {
-            if (FishingProgressBar.value >= FishingProgressBar.maxValue)
-            {
-                isFishingFinished = true;
-                FishingResultText.text = "Successful fishing!";
-                ResultText.text = "";
-            }
-            else if (FishingProgressBar.value <= FishingProgressBar.minValue)
-            {
-                isFishingFinished = true;
-                FishingResultText.text = "Fishing failed!";
-                ResultText.text = "";
-            }
         }
 
         bool CheckKeyPressed(out KeyCode key)
