@@ -8,9 +8,9 @@ namespace PrototypeFishingMechanics
 
 
 
-        public void InitializeMiniGame()
+        public void InitializeMiniGame(int fishCatchDifficulty)
         {
-
+            throw new System.NotImplementedException();
         }
 
         public void BeginMiniGame()
@@ -27,5 +27,7 @@ namespace PrototypeFishingMechanics
         {
             throw new System.NotImplementedException();
         }
+
+        
     }
 }

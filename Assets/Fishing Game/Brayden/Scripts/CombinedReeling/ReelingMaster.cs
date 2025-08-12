@@ -11,42 +11,45 @@ namespace PrototypeFishingMechanics
 
     public class ReelingMaster : MonoBehaviour
     {
-
-        #region Variables that change every catch
-
-        // The current minigame being played
-        private GameObject _currentMinigame;
-
-        private int _miniGameWinsRequired = 4;
-
-        private int _currentMiniGameWins;
-
-        [SerializeField]
-        private GameObject characterController;
-
-        private bool _hasWon = false;
-
-        // Unity does not support interfaces being serialized fields so this is public
-        [SerializeField]
-        [Tooltip("A list of all potential minigames.")]
-        private List<GameObject> miniGameTypes;
-
-        // The current fish being caught
-        private FishScritableObject _currentlyReelingFish;
+        #region Public Variables
 
         // TODO: This variable is currently inplace for _currentlyReelingFish
         // It will eventually be removed once FishScritableObjects can easily be implemented
         // It represents the image shown in the ui of the fish being dragged up
         public GameObject TestFish;
 
-        // FishDifficulty will be taken from the fish being captured
+        #endregion
+
+
+        #region Private Fields
+
+        // Minigame stats and fields \\
+        private GameObject _currentMinigame;
+        private int _miniGameWinsRequired = 4;
+        private int _currentMiniGameWins;
+        private bool _hasWon = false;
         private int _fishDifficulty;
+        private FishScritableObject _currentlyReelingFish;
 
-        public GameObject WinText;
+        [SerializeField]
+        private ReelingInitiation InitiationScript;
 
-        public GameObject LoseText;
+        // Unity dosen't support making interface types a list so this is a gameobject list
+        [SerializeField]
+        [Tooltip("A list of all potential minigames.")]
+        private List<GameObject> MiniGameTypes;
 
-        #endregion 
+        //***************************\\
+
+        [SerializeField]
+        private GameObject CharacterController;
+
+        [SerializeField]
+        private GameObject WinText;
+
+        [SerializeField]
+        private GameObject LoseText;
+        #endregion
 
         public void Start()
         {
@@ -57,13 +60,15 @@ namespace PrototypeFishingMechanics
 
         public void TEMPSTART()
         {
-            characterController.GetComponent<CharacterMovement>().AllowMovement = false;
+            CharacterController.GetComponent<CharacterMovement>().AllowMovement = false;
 
             _fishDifficulty = 4;
 
             _currentMinigame = null;
 
             _currentMiniGameWins = 0;
+
+            InitiationScript.AllowControls = false;
 
             LoseText.SetActive(false);
             WinText.SetActive(false);
@@ -88,7 +93,7 @@ namespace PrototypeFishingMechanics
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
         public void BeginCatch(FishScritableObject fishCaught)
         {
-            characterController.GetComponent<CharacterMovement>().AllowMovement = false;
+            CharacterController.GetComponent<CharacterMovement>().AllowMovement = false;
 
             _currentlyReelingFish = fishCaught;
 
@@ -97,6 +102,8 @@ namespace PrototypeFishingMechanics
             _currentMinigame = null;
 
             _currentMiniGameWins = 0;
+
+            InitiationScript.AllowControls = false;
 
             LoseText.SetActive(false);
             WinText.SetActive(false);
@@ -115,9 +122,9 @@ namespace PrototypeFishingMechanics
 
         private void SetNextMiniGame()
         {
-            int index = Random.Range(0, miniGameTypes.Count);
+            int index = Random.Range(0, MiniGameTypes.Count);
 
-            GameObject testNextMiniGame = miniGameTypes[index];
+            GameObject testNextMiniGame = MiniGameTypes[index];
 
             // TODO: Check if next minigame is not the current minigame
             // Going to try find a more efficient way to do this if I have time
@@ -125,7 +132,7 @@ namespace PrototypeFishingMechanics
             // 5/08/2025 - Brayden
             if (testNextMiniGame != _currentMinigame)
             {
-                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame();
+                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_fishDifficulty);
                 _currentMinigame = testNextMiniGame;
                 _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
             }
@@ -202,7 +209,8 @@ namespace PrototypeFishingMechanics
             _currentlyReelingFish = null;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-           characterController.GetComponent<CharacterMovement>().AllowMovement = true;
+            CharacterController.GetComponent<CharacterMovement>().AllowMovement = true;
+            InitiationScript.AllowControls = true;
 
             TestFish.SetActive(false);
 

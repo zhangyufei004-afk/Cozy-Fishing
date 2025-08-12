@@ -5,7 +5,11 @@ using UnityEngine;
 
 namespace ReelingMasterScript
 {
-    public class FishingBobber : MonoBehaviour
+    /// <summary>
+    /// This class uses an OnCollisionEnter function to check determine when the players
+    /// fishing line has hit a fish
+    /// </summary>
+    public class FishingHook : MonoBehaviour
     {
         #region Public Variables
 

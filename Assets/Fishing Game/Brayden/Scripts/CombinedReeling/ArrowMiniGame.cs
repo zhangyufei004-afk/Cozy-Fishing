@@ -7,7 +7,7 @@ namespace PrototypeFishingMechanics
 {
     public class ArrowMiniGame : MonoBehaviour, IReelingMinigame
     {
-        public void InitializeMiniGame()
+        public void InitializeMiniGame(int fishCatchDifficulty)
         {
             FishingCanvas.SetActive(true);
         }

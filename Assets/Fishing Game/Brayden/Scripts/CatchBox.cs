@@ -1,30 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Brayden
 {
     public class CatchBox : MonoBehaviour
     {
-        // A list of all gameobjects touching this, used to check for the fish ui icon
-        public List<GameObject> currentlyTouchingList;
-
-        // Reference to the fish ui icon
-        public GameObject fishIcon;
-
-        public void OnCollisionEnter(Collision collision)
+        public bool CheckUIOverlap(RectTransform rectTrans1, RectTransform rectTrans2)
         {
-            if (collision.gameObject == fishIcon)
-            {
-                currentlyTouchingList.Add(collision.gameObject);
-            }
-        }
-
-        public void OnCollisionExit(Collision collision)
-        {
-            if (collision.gameObject == fishIcon)
-            {
-                currentlyTouchingList.Remove(collision.gameObject);
-            }
+            Rect rect1 = new Rect(rectTrans1.localPosition.x, rectTrans1.localPosition.y, rectTrans1.rect.width, rectTrans1.rect.height);
+            Rect rect2 = new Rect(rectTrans2.localPosition.x, rectTrans2.localPosition.y, rectTrans2.rect.width, rectTrans2.rect.height);
+            return rect1.Overlaps(rect2);
         }
     }
 }

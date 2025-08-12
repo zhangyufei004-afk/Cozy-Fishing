@@ -22,6 +22,15 @@ namespace Brayden
         // The progress bar for catching
         public Slider catchProgress;
 
+        [SerializeField]
+        private CatchBox UiCatchBoxScript;
+
+        [SerializeField]
+        private RectTransform CatchBox;
+
+        [SerializeField]
+        private RectTransform FishImage;
+
         // Max and minimum value to move fish along ui
         public int fishMoveMax;
         public int fishMoveMin;
@@ -120,14 +129,11 @@ namespace Brayden
         // Checks if fish is currently within the catching box
         public bool CheckFishInBox()
         {
-            if (catchIndicator.GetComponent<CatchBox>().currentlyTouchingList.Contains(fishIcon))
+            if (UiCatchBoxScript.CheckUIOverlap(CatchBox, FishImage) == true)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            else { return false; }
         }
 
         // Change the progress bar based on if fish is in box
