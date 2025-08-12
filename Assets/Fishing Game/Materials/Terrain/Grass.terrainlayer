@@ -6,18 +6,18 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Beach
-  m_DiffuseTexture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: Grass
+  m_DiffuseTexture: {fileID: 2800000, guid: 80d9a4608a1e71d4e9c36b3a7bb1b4ac, type: 3}
   m_NormalMapTexture: {fileID: 0}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 2, y: 2}
   m_TileOffset: {x: 0, y: 0}
-  m_Specular: {r: 1, g: 0.9728182, b: 0.5237968, a: 0}
+  m_Specular: {r: 0.46038398, g: 1, b: 0.39182383, a: 0}
   m_Metallic: 0
   m_Smoothness: 0
   m_NormalScale: 1
   m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
-  m_DiffuseRemapMax: {x: 0.9761707, y: 1, z: 0.5126055, w: 1}
+  m_DiffuseRemapMax: {x: 0.04738124, y: 0.36447203, z: 0.029516988, w: 1}
   m_MaskMapRemapMin: {x: 0, y: 0, z: 0, w: 0}
   m_MaskMapRemapMax: {x: 1, y: 1, z: 1, w: 1}
   m_SmoothnessSource: 1
