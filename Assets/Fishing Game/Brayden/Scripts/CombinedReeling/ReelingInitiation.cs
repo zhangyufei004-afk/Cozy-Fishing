@@ -187,6 +187,7 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void BeginCharge()
         {
+            ChargeSlider.enabled = true;
             ChargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
@@ -199,6 +200,7 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void ResetCharge()
         {
+            ChargeSlider.enabled = false;
             _isCharging = false;
             _playerTrajectoryLine.enabled = false;
             ChargeSlider.value = 0;
