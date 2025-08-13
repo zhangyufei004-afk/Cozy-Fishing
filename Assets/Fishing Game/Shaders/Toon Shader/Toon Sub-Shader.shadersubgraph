@@ -529,8 +529,8 @@
     "m_ObjectId": "07891e9d74324c4a9cf7844aa194ff59",
     "m_Title": "Toon Shadow Mapping",
     "m_Position": {
-        "x": -666.0,
-        "y": -398.0
+        "x": -666.0000610351563,
+        "y": -398.0000305175781
     }
 }
 
@@ -770,8 +770,8 @@
     "m_ObjectId": "21ba10ce0cfc4539a10813b85af2fcf0",
     "m_Title": "Outline Effect",
     "m_Position": {
-        "x": 176.0,
-        "y": -450.0
+        "x": 175.99998474121095,
+        "y": -450.0000305175781
     }
 }
 
@@ -2022,8 +2022,8 @@
     "m_ObjectId": "9f67358925c0468d842e50555ef105ed",
     "m_Title": "Texture & Diffuse",
     "m_Position": {
-        "x": -771.0,
-        "y": 172.0
+        "x": -771.0000610351563,
+        "y": 171.99996948242188
     }
 }
 
@@ -2033,8 +2033,8 @@
     "m_ObjectId": "9fabb7763951475897a8866fcee8eed3",
     "m_Title": "Normal Shadows",
     "m_Position": {
-        "x": -2046.0001220703125,
-        "y": -448.0
+        "x": -2046.000244140625,
+        "y": -448.00006103515627
     }
 }
 
@@ -2412,7 +2412,7 @@
     "m_ObjectId": "b6fb8f8a2c4f4382bceb798a1eed2adf",
     "m_Title": "Joining & Mapping to Emission",
     "m_Position": {
-        "x": 945.0,
+        "x": 945.0000610351563,
         "y": 108.0
     }
 }
