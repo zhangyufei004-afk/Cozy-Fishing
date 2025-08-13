@@ -35,7 +35,7 @@ namespace FishingGame.UI.Inventory
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
             {
                 ToggleInventoryVisibility();
             }
@@ -43,7 +43,7 @@ namespace FishingGame.UI.Inventory
 
         private void ToggleInventoryVisibility()
         {
-            if (_inventoryPanel != null)
+            if (_inventoryPanel)
             {
                 _inventoryPanel.SetActive(!_inventoryPanel.activeSelf);
             }
@@ -78,6 +78,7 @@ namespace FishingGame.UI.Inventory
         /// Adds a fish to the inventory UI as a new card.
         /// </summary>
         /// <param name="fish">Fish object to be displayed.</param>
+        // TODO: REFACTOR FOR EFFICIENCY
         public void AddFishToUI(Fish fish)
         {
             GameObject card = Instantiate(fishCardPrefab, fishListContainer);

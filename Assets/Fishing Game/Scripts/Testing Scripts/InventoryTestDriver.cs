@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using FishingGame.Inventory;
 using FishingGame.UI.Inventory;
@@ -9,6 +10,7 @@ namespace FishingGame.Inventory
     /// <summary>
     /// Test script to simulate adding fish and showing inventory UI.
     /// </summary>
+    [Obsolete("This class is just for testing the UI, and will be removed in future versions.")]
     public class InventoryTestDriver : MonoBehaviour
     {
         [SerializeField] private InventorySystem _inventorySystem;
@@ -20,7 +22,7 @@ namespace FishingGame.Inventory
         private void Update()
         {
             // Press T to test
-            if (Input.GetKeyDown(KeyCode.T))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.T))
             {
                 Fish newFish = new Fish(
                     _testFishScriptableObjects[_testIndex], 

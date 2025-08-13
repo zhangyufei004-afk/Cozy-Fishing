@@ -10,9 +10,8 @@ namespace FishingGame.Inventory
     /// </summary>
     public class InventorySystem : MonoBehaviour
     {
-        [SerializeField] private FishLogSystem _fishLogSystem;
-
-        private List<Fish> fishInventory = new();
+        [SerializeField] private FishLogSystem fishLogSystem;
+        private List<Fish> _fishInventory = new List<Fish>();
 
         /// <summary>
         /// Adds a new fish to the inventory and marks it as caught in FishLogSystem.
@@ -20,11 +19,11 @@ namespace FishingGame.Inventory
         /// <param name="newFish">Fish instance</param>
         public void AddFish(Fish newFish)
         {
-            fishInventory.Add(newFish);
+            _fishInventory.Add(newFish);
 
-            if (_fishLogSystem != null)
+            if (fishLogSystem != null)
             {
-                _fishLogSystem.RegisterFishCaught(newFish.GetFishBase());
+                fishLogSystem.RegisterFishCaught(newFish.GetFishBase());
             }
         }
 
@@ -33,7 +32,7 @@ namespace FishingGame.Inventory
         /// </summary>
         public List<Fish> GetFishInventory()
         {
-            return fishInventory;
+            return _fishInventory;
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace FishingGame.Inventory
         /// </summary>
         public void ClearInventory()
         {
-            fishInventory.Clear();
+            _fishInventory.Clear();
         }
     }
 }
