@@ -1,4 +1,3 @@
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,13 +18,20 @@ namespace FishingGame.Player
         private float rotationSpeed;
         private Vector2 _moveInput;
 
+        private void OnEnable()
+        {
+            InputActionAsset inputActions = InputSystem.actions;
+            InputActionMap playerActionMap = inputActions.FindActionMap("Player");
+            playerActionMap.Enable();
+            playerActionMap.FindAction("Move").performed += Move;
+            playerActionMap.FindAction("Move").canceled += CancelMove;
+        }
+
         void Update()
         {
             Vector3 directionNormalized = new Vector3(_moveInput.y, 0, -_moveInput.x).normalized;
-
-            float movementWeight = Mathf.Abs(_moveInput.y) > Mathf.Abs(_moveInput.x) ? _moveInput.y : _moveInput.x;
-
-            characterController.SimpleMove(directionNormalized * (movementSpeed * Mathf.Abs(movementWeight)));
+            
+            characterController.SimpleMove(directionNormalized * movementSpeed);
 
             if (_moveInput != Vector2.zero)
             {
@@ -33,14 +39,15 @@ namespace FishingGame.Player
                 playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
         }
-
-        /// <summary>
-        /// Reads movement input
-        /// </summary>
-        /// <param name="context"></param>
-        public void Move(InputAction.CallbackContext context)
+        
+        private void Move(InputAction.CallbackContext context)
         {
             _moveInput = context.ReadValue<Vector2>();
+        }
+
+        private void CancelMove(InputAction.CallbackContext context)
+        {
+            _moveInput = Vector2.zero;
         }
 
     }
