@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 namespace FishingGame.Player
 {
     /// <summary>
-    /// player controller
+    /// Player Movement Controller. Moves the character using a Character Controller. 
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
