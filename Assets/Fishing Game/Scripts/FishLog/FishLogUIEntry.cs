@@ -8,13 +8,13 @@ namespace FishingGame.FishLog
     /// </summary>
     public class FishLogUIEntry : MonoBehaviour
     {
-        [SerializeField] private Image _fishImage;
-        [SerializeField] private FishScriptableObject _fishData;
+        [SerializeField] private Image fishImage;
+        [SerializeField] private FishScriptableObject fishData;
 
         /// <summary>
         /// Fish data corresponding to the entry
         /// </summary>
-        public FishScriptableObject GetFishData() => _fishData;
+        public FishScriptableObject GetFishData() => fishData;
 
         /// <summary>
         /// Set icon color based on whether it has been captured or not
@@ -22,7 +22,7 @@ namespace FishingGame.FishLog
         /// <param name="caught">has been captured or not</param>
         public void MarkAsCaught(bool caught)
         {
-            _fishImage.color = caught ? Color.white : Color.black;
+            fishImage.color = caught ? Color.white : Color.black;
         }
     }
 }

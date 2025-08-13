@@ -8,10 +8,10 @@ namespace FishingGame.FishLog
     /// </summary>
     public class FishLogUI : MonoBehaviour
     {
-        [SerializeField] private FishLogSystem _fishLogSystem;
+        [SerializeField] private FishLogSystem fishLogSystem;
 
         [Tooltip("All fish log entries already placed in the scene.")]
-        [SerializeField] private FishLogUIEntry[] _allEntries;
+        [SerializeField] private FishLogUIEntry[] allEntries;
 
         private Dictionary<FishScriptableObject, FishLogUIEntry> _entryDict;
 
@@ -19,30 +19,30 @@ namespace FishingGame.FishLog
         {
             _entryDict = new Dictionary<FishScriptableObject, FishLogUIEntry>();
 
-            foreach (var entry in _allEntries)
+            foreach (FishLogUIEntry entry in allEntries)
             {
                 if (entry.GetFishData() != null)
                 {
                     _entryDict[entry.GetFishData()] = entry;
-                    entry.MarkAsCaught(_fishLogSystem.HasCaughtFish(entry.GetFishData()));
+                    entry.MarkAsCaught(fishLogSystem.HasCaughtFish(entry.GetFishData()));
                 }
             }
         }
 
         private void OnEnable()
         {
-            _fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
+            fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
             RefreshAllEntries(); // Fix: refresh when UI becomes visible
         }
 
         private void OnDisable()
         {
-            _fishLogSystem.FishCaughtForFirstTime -= OnFishCaught;
+            fishLogSystem.FishCaughtForFirstTime -= OnFishCaught;
         }
 
         private void OnFishCaught(FishScriptableObject fish)
         {
-            if (_entryDict.TryGetValue(fish, out var entry))
+            if (_entryDict.TryGetValue(fish, out FishLogUIEntry entry))
             {
                 entry.MarkAsCaught(true);
             }
@@ -53,11 +53,11 @@ namespace FishingGame.FishLog
         /// </summary>
         private void RefreshAllEntries()
         {
-            foreach (var pair in _entryDict)
+            foreach (KeyValuePair<FishScriptableObject, FishLogUIEntry> pair in _entryDict)
             {
-                var fishData = pair.Key;
-                var entry = pair.Value;
-                bool isCaught = _fishLogSystem.HasCaughtFish(fishData);
+                FishScriptableObject fishData = pair.Key;
+                FishLogUIEntry entry = pair.Value;
+                bool isCaught = fishLogSystem.HasCaughtFish(fishData);
                 entry.MarkAsCaught(isCaught);
             }
         }
