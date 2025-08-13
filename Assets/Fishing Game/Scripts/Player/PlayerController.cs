@@ -4,29 +4,33 @@ using UnityEngine.InputSystem;
 
 namespace FishingGame.Player
 {
+    /// <summary>
+    /// player controller
+    /// </summary>
     public class PlayerController : MonoBehaviour
     {
-        public GameObject PlayerBody;
-        public CharacterController CharacterController;
-        public float MovementSpeed;
-        public float RotationSpeed;
-        Vector2 moveInput;
+        [SerializeField]
+        private GameObject playerBody;
+        [SerializeField]
+        private CharacterController characterController;
+        [SerializeField]
+        private float movementSpeed;
+        [SerializeField]
+        private float rotationSpeed;
+        private Vector2 _moveInput;
 
         void Update()
         {
-            Vector3 direction = new Vector3(moveInput.y, 0, -moveInput.x).normalized;
+            Vector3 directionNormalized = new Vector3(_moveInput.y, 0, -_moveInput.x).normalized;
 
-            //see wether the weight of x or z movement is higher and store it
-            float movementWeight = Mathf.Abs(moveInput.y) > Mathf.Abs(moveInput.x) ? moveInput.y : moveInput.x;
+            float movementWeight = Mathf.Abs(_moveInput.y) > Mathf.Abs(_moveInput.x) ? _moveInput.y : _moveInput.x;
 
-            //movement speed is scaled by the weight of input
-            CharacterController.SimpleMove(direction * (MovementSpeed * Mathf.Abs(movementWeight)));
+            characterController.SimpleMove(directionNormalized * (movementSpeed * Mathf.Abs(movementWeight)));
 
-            if (moveInput != Vector2.zero)
+            if (_moveInput != Vector2.zero)
             {
-                //PlayerBody.transform.rotation = Quaternion.LookRotation(direction, Vector3.up) * Quaternion.Euler(0, -90f, 0);
-                Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up) * Quaternion.Euler(0, -90f, 0);
-                PlayerBody.transform.rotation = Quaternion.Slerp(PlayerBody.transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+                Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up) * Quaternion.Euler(0, -90f, 0);
+                playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
         }
 
@@ -36,7 +40,7 @@ namespace FishingGame.Player
         /// <param name="context"></param>
         public void Move(InputAction.CallbackContext context)
         {
-            moveInput = context.ReadValue<Vector2>();
+            _moveInput = context.ReadValue<Vector2>();
         }
 
     }
