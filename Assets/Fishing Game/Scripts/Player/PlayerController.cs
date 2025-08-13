@@ -13,9 +13,9 @@ namespace FishingGame.Player
         [SerializeField]
         private CharacterController characterController;
         [SerializeField]
-        private float movementSpeed;
+        private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
         [SerializeField]
-        private float rotationSpeed;
+        private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
         private Vector2 _moveInput;
 
         private void OnEnable()
