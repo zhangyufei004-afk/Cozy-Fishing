@@ -39,6 +39,7 @@ namespace PrototypeFishingMechanics
         [SerializeField]
         private CinemachineCamera mainCamera;
 
+        // TODO: I have currently disabled this visually but still use it to calculate the final location of the hook
         [SerializeField]
         private LineRenderer _playerTrajectoryLine;
 
@@ -56,8 +57,6 @@ namespace PrototypeFishingMechanics
 
         [SerializeField]
         private FishingHook fishingHook;
-
-        private Vector3 _fishingHookInitialLocalPosition;
 
         [SerializeField]
         private GameObject testFishObject;
@@ -163,7 +162,6 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void ThrowLine()
         {
-            _fishingHookInitialLocalPosition = fishingHook.gameObject.transform.localPosition;
             fishingHook.CanCatchFish = true;
 
             Vector3 targetLocation = rodBobber.transform.position;
@@ -181,16 +179,6 @@ namespace PrototypeFishingMechanics
             // StartCoroutine(TempTimeForHook());
         }
 
-        private void ReturnHook()
-        {
-            fishingHook.CanCatchFish = false;
-
-            // TODO: This is a temporary soloution to make the fishinghook appear back where it is needed
-            // Eventually this will be turned into a proper return animation with the hook flying
-            // to the target spot
-            fishingHook.gameObject.transform.localPosition = _fishingHookInitialLocalPosition;
-        }
-
         /// <summary>
         /// Setsup the variable for a cast being started
         /// </summary>
@@ -200,7 +188,6 @@ namespace PrototypeFishingMechanics
             chargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
-            _playerTrajectoryLine.enabled = true;
             rodBobber.SetActive(true);
         }
 
@@ -211,7 +198,6 @@ namespace PrototypeFishingMechanics
         {
             chargeSlider.gameObject.SetActive(false);
             _isCharging = false;
-            _playerTrajectoryLine.enabled = false;
             chargeSlider.value = 0;
             _chargePower = 0;
             rodBobber.SetActive(false);
