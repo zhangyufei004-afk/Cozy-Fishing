@@ -2,21 +2,19 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Android;
 
 namespace PrototypeFishingMechanics
 {
-    
+
 
     public class ReelingMaster : MonoBehaviour
     {
         #region Public Variables
 
-        // TODO: This variable is currently inplace for _currentlyReelingFish
-        // It will eventually be removed once FishScritableObjects can easily be implemented
-        // It represents the image shown in the ui of the fish being dragged up
-        public GameObject TestFish;
+        
 
         #endregion
 
@@ -30,6 +28,8 @@ namespace PrototypeFishingMechanics
         private bool _hasWon = false;
         private int _fishDifficulty;
         private FishScritableObject _currentlyReelingFish;
+        //TODO: Can combine this likely with the other fish variable once I have scriptable objects working
+        private GameObject _currentFishTemp;
 
         [SerializeField]
         private ReelingInitiation InitiationScript;
@@ -58,9 +58,12 @@ namespace PrototypeFishingMechanics
           //  characterController.GetComponent<CharacterMovement>().AllowMovement = false;
         }
 
-        public void TEMPSTART()
+        public void TEMPSTART(GameObject tempFish)
         {
             CharacterController.GetComponent<CharacterMovement>().AllowMovement = false;
+            CharacterController.GetComponent<CameraRotation>().AllowRotation = false;
+
+            _currentFishTemp = tempFish;
 
             _fishDifficulty = 4;
 
@@ -94,6 +97,9 @@ namespace PrototypeFishingMechanics
         public void BeginCatch(FishScritableObject fishCaught)
         {
             CharacterController.GetComponent<CharacterMovement>().AllowMovement = false;
+            CharacterController.GetComponent<CameraRotation>().AllowRotation = false;
+
+
 
             _currentlyReelingFish = fishCaught;
 
@@ -152,8 +158,8 @@ namespace PrototypeFishingMechanics
 
             _currentMiniGameWins += 1;
 
-            Vector3 fishPosition = TestFish.transform.position;
-            TestFish.transform.position = new Vector3(fishPosition.x, fishPosition.y += 30, fishPosition.z);
+            Vector3 fishPosition = _currentFishTemp.transform.position;
+            _currentFishTemp.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
 
 
 
@@ -210,10 +216,11 @@ namespace PrototypeFishingMechanics
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             CharacterController.GetComponent<CharacterMovement>().AllowMovement = true;
+            CharacterController.GetComponent<CameraRotation>().AllowRotation = true;
             InitiationScript.AllowControls = true;
-            InitiationScript.ShouldEnableCamera(false);
+            InitiationScript.ShouldEnableFishPerspective(false);
 
-            TestFish.SetActive(false);
+            _currentFishTemp.SetActive(false);
 
 
             // TODO: Implement more logic on if reeling was a win or not

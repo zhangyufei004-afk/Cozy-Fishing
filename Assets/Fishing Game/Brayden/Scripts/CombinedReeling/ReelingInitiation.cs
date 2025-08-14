@@ -20,6 +20,7 @@ namespace PrototypeFishingMechanics
         public ReelingMaster ReelingMasterScript;
         public bool AllowControls = true;
         public CinemachineCamera FishCamera;
+        public CinemachineCamera MainCamera;
 
         #endregion
 
@@ -62,6 +63,7 @@ namespace PrototypeFishingMechanics
         public void Start()
         {
             ChargeSlider.maxValue = _maxCharge;
+            FishCamera.gameObject.SetActive(false);
         }
 
 
@@ -121,8 +123,6 @@ namespace PrototypeFishingMechanics
             {
                 ThrowLine();
                 ResetCharge();
-
-                ReelingMasterScript.TEMPSTART();
             }  
         }
 
@@ -168,8 +168,9 @@ namespace PrototypeFishingMechanics
             // The target spot
             FishingHook.gameObject.transform.position = targetLocation;
 
-            Instantiate(TestFishObject, FishingHook.gameObject.transform);
-            ShouldEnableCamera(true);
+            GameObject testFish = Instantiate(TestFishObject, FishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+            ShouldEnableFishPerspective(true);
+            ReelingMasterScript.TEMPSTART(testFish);
 
 
             // StartCoroutine(TempTimeForHook());
@@ -217,10 +218,23 @@ namespace PrototypeFishingMechanics
             RodBobber.SetActive(false);
         }
 
-        public void ShouldEnableCamera(bool enable)
+        /// <summary>
+        /// This is a public function that enables the camera that tracks the fish during reeling
+        /// This camera follows a hook gameobject that will always be ontop of the fish
+        /// </summary>
+        /// <param name="enable">True if you want to enable fish perspective camera, otherwise false</param>
+        public void ShouldEnableFishPerspective(bool enable)
         {
-            if (enable) {FishCamera.gameObject.SetActive(true);}
-            else { FishCamera.gameObject.SetActive(false);}
+            if (enable) 
+            {
+                FishCamera.gameObject.SetActive(true);
+              //  MainCamera.gameObject.SetActive(false);
+            }
+            else 
+            { 
+                FishCamera.gameObject.SetActive(false);
+              //  MainCamera.gameObject.SetActive(true);
+            }
         }
 
 
