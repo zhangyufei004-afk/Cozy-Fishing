@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using FishingGame.Inventory;
 using FishingGame.UI.Inventory;
+using FishingGame.FishSystem;
+using FishingGame.GameTime;
 
 namespace FishingGame.Inventory
 {
@@ -11,9 +13,9 @@ namespace FishingGame.Inventory
     [Obsolete("This class is just for testing the UI, and will be removed in future versions.")]
     public class InventoryTestDriver : MonoBehaviour
     {
-        [SerializeField] private InventorySystem inventorySystem;
-        [SerializeField] private InventoryUI inventoryUI;
-        [SerializeField] private FishScritableObject[] testFishScriptableObjects;
+        [SerializeField] private InventorySystem _inventorySystem;
+        [SerializeField] private InventoryUI _inventoryUI;
+        [SerializeField] private FishScriptableObject[] _testFishScriptableObjects;
 
         private int _testIndex = 0;
 
@@ -22,12 +24,16 @@ namespace FishingGame.Inventory
             // Press T to test
             if (UnityEngine.Input.GetKeyDown(KeyCode.T))
             {
-                Fish newFish = new Fish(testFishScriptableObjects[_testIndex]);
-                inventorySystem.AddFish(newFish);
+                Fish newFish = new Fish(
+                    _testFishScriptableObjects[_testIndex], 
+                    TimeOfDay.Morning, 
+                    "Lake"
+                );
+                _inventorySystem.AddFish(newFish);
 
-                inventoryUI.RefreshInventoryUI(inventorySystem.GetFishInventory());
+                _inventoryUI.RefreshInventoryUI(_inventorySystem.GetFishInventory());
 
-                _testIndex = (_testIndex + 1) % testFishScriptableObjects.Length;
+                _testIndex = (_testIndex + 1) % _testFishScriptableObjects.Length;
             }
         }
     }
