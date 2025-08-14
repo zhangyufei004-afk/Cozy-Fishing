@@ -211,6 +211,7 @@ namespace PrototypeFishingMechanics
             _currentMiniGameWins = 0;
             CharacterController.GetComponent<CharacterMovement>().AllowMovement = true;
             InitiationScript.AllowControls = true;
+            InitiationScript.ShouldEnableCamera(false);
 
             TestFish.SetActive(false);
 

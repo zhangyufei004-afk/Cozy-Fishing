@@ -1,5 +1,6 @@
 using ReelingMasterScript;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ namespace PrototypeFishingMechanics
 
         public ReelingMaster ReelingMasterScript;
         public bool AllowControls = true;
+        public CinemachineCamera FishCamera;
 
         #endregion
 
@@ -50,6 +52,9 @@ namespace PrototypeFishingMechanics
         private FishingHook FishingHook;
 
         private Vector3 _fishingHookInitialLocalPosition;
+
+        [SerializeField]
+        private GameObject TestFishObject;
 
 
         #endregion
@@ -163,7 +168,11 @@ namespace PrototypeFishingMechanics
             // The target spot
             FishingHook.gameObject.transform.position = targetLocation;
 
-            StartCoroutine(TempTimeForHook());
+            Instantiate(TestFishObject, FishingHook.gameObject.transform);
+            ShouldEnableCamera(true);
+
+
+            // StartCoroutine(TempTimeForHook());
         }
 
         private void ReturnHook()
@@ -187,7 +196,7 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void BeginCharge()
         {
-            ChargeSlider.enabled = true;
+            ChargeSlider.gameObject.SetActive(true);
             ChargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
@@ -200,12 +209,18 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void ResetCharge()
         {
-            ChargeSlider.enabled = false;
+            ChargeSlider.gameObject.SetActive(false);
             _isCharging = false;
             _playerTrajectoryLine.enabled = false;
             ChargeSlider.value = 0;
             _chargePower = 0;
             RodBobber.SetActive(false);
+        }
+
+        public void ShouldEnableCamera(bool enable)
+        {
+            if (enable) {FishCamera.gameObject.SetActive(true);}
+            else { FishCamera.gameObject.SetActive(false);}
         }
 
 
