@@ -19,10 +19,6 @@ namespace FishingGame.UI.Inventory
             _inputActions = InputSystem.actions;
             _inputActions.FindActionMap("Player").Enable();
             _inputActions.FindActionMap("UI").Enable();
-        }
-
-        private void Awake()
-        {
             _isInventoryOpen = false;
             _triggerInventoryAction = _inputActions.FindAction("Player/Inventory");
         }
