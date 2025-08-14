@@ -9,7 +9,11 @@ using UnityEngine.Android;
 namespace PrototypeFishingMechanics
 {
 
-
+    /// <summary>
+    /// This class manages what minigames are currently active during the reeling process.
+    /// It contains a list of all available minigame types, controls what one is currently playing
+    /// and contains the logic to switch from one minigame to another.
+    /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
         #region Public Variables
@@ -32,36 +36,33 @@ namespace PrototypeFishingMechanics
         private GameObject _currentFishTemp;
 
         [SerializeField]
-        private ReelingInitiation InitiationScript;
+        private ReelingInitiation initiationScript;
 
         // Unity dosen't support making interface types a list so this is a gameobject list
         [SerializeField]
         [Tooltip("A list of all potential minigames.")]
-        private List<GameObject> MiniGameTypes;
+        private List<GameObject> miniGameTypes;
 
         //***************************\\
 
         [SerializeField]
-        private GameObject CharacterController;
+        private GameObject characterController;
 
         [SerializeField]
-        private GameObject WinText;
+        private GameObject winText;
 
         [SerializeField]
-        private GameObject LoseText;
+        private GameObject loseText;
         #endregion
 
-        public void Start()
-        {
-           // SetNextMiniGame();
-            // Bellow two are temp lines for testing, delete when no longer needed
-          //  characterController.GetComponent<CharacterMovement>().AllowMovement = false;
-        }
-
+        /// <summary>
+        /// This is a temporary function to be used until scriptable objects are fully setup
+        /// </summary>
+        /// <param name="tempFish">This is specifically a gameobject and not a fish scriptable object</param>
         public void TEMPSTART(GameObject tempFish)
         {
-            CharacterController.GetComponent<CharacterMovement>().AllowMovement = false;
-            CharacterController.GetComponent<CameraRotation>().AllowRotation = false;
+            characterController.GetComponent<CharacterMovement>().AllowMovement = false;
+            characterController.GetComponent<CameraRotation>().AllowRotation = false;
 
             _currentFishTemp = tempFish;
 
@@ -71,15 +72,15 @@ namespace PrototypeFishingMechanics
 
             _currentMiniGameWins = 0;
 
-            InitiationScript.AllowControls = false;
+            initiationScript.AllowControls = false;
 
-            LoseText.SetActive(false);
-            WinText.SetActive(false);
+            loseText.SetActive(false);
+            winText.SetActive(false);
 
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
-                _miniGameWinsRequired = SetMiniGamesRequired(_fishDifficulty);
+                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
                 SetNextMiniGame();
             }
             else
@@ -90,34 +91,29 @@ namespace PrototypeFishingMechanics
 
 
         /// <summary>
-        /// * Begin Catch is run immeaditly once a fish collides with the players fishing rod
+        /// Begin Catch is run immeaditly once a fish collides with the players fishing rod
         /// it initializes the catch process
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
         public void BeginCatch(FishScritableObject fishCaught)
         {
-            CharacterController.GetComponent<CharacterMovement>().AllowMovement = false;
-            CharacterController.GetComponent<CameraRotation>().AllowRotation = false;
+            characterController.GetComponent<CharacterMovement>().AllowMovement = false;
+            characterController.GetComponent<CameraRotation>().AllowRotation = false;
 
-
-
+            //Resset properties for the new catch
             _currentlyReelingFish = fishCaught;
-
             _fishDifficulty = _currentlyReelingFish.FishCatchDifficulty;
-
             _currentMinigame = null;
-
             _currentMiniGameWins = 0;
+            initiationScript.AllowControls = false;
 
-            InitiationScript.AllowControls = false;
-
-            LoseText.SetActive(false);
-            WinText.SetActive(false);
+            loseText.SetActive(false);
+            winText.SetActive(false);
 
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
-                _miniGameWinsRequired = SetMiniGamesRequired(_fishDifficulty);
+                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
                 SetNextMiniGame(); 
             }
             else
@@ -126,11 +122,15 @@ namespace PrototypeFishingMechanics
             }
         }
 
+        /// <summary>
+        /// Randomly selects the next minigame that will be played and then initializes and begins it
+        /// The same minigame can not be player two times in a row
+        /// </summary>
         private void SetNextMiniGame()
         {
-            int index = Random.Range(0, MiniGameTypes.Count);
+            int index = Random.Range(0, miniGameTypes.Count);
 
-            GameObject testNextMiniGame = MiniGameTypes[index];
+            GameObject testNextMiniGame = miniGameTypes[index];
 
             // TODO: Check if next minigame is not the current minigame
             // Going to try find a more efficient way to do this if I have time
@@ -148,6 +148,12 @@ namespace PrototypeFishingMechanics
             }
         }
 
+        /// <summary>
+        /// Ends the current catch and runs logic based on if the player won the minigame or did not
+        /// If player won the minigame this checks if they have won enough to have completed the catch
+        /// If player lost the catch is immeaditly ended with a loss
+        /// </summary>
+        /// <param name="didWin">Represents if the player won the minigame or not</param>
         public void EndCurrentMiniGame(bool didWin)
         {
             if (didWin == false)
@@ -157,12 +163,8 @@ namespace PrototypeFishingMechanics
             }
 
             _currentMiniGameWins += 1;
-
             Vector3 fishPosition = _currentFishTemp.transform.position;
             _currentFishTemp.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
-
-
-
             _hasWon = CheckIfWonEnough();
 
             if (_hasWon)
@@ -176,7 +178,9 @@ namespace PrototypeFishingMechanics
             }   
         }
 
-
+        /// <summary>
+        /// Returns true if the fish difficulty of the current fish is above 0
+        /// </summary>
         private bool CheckIsFishDifficult()
         {
             if (_fishDifficulty > 0)
@@ -186,6 +190,9 @@ namespace PrototypeFishingMechanics
             else { return false; }
         }
 
+        /// <summary>
+        /// Returns true if the player has won the required amount of minigames
+        /// </summary>
         private bool CheckIfWonEnough()
         {
             if (_currentMiniGameWins > _miniGameWinsRequired)
@@ -198,27 +205,31 @@ namespace PrototypeFishingMechanics
             }
         }
 
-        // Might add more complex logic here at a later stage
-        // This is more of a placeholder right now
-        private int SetMiniGamesRequired(int fishDifficulty)
+        /// <summary>
+        /// Returns the amount of minigames required to complete the catch
+        /// This is based of the fishes difficulty
+        /// </summary>
+        /// <param name="fishDifficulty">The difficulty of caught fish</param>
+        private int GetMiniGamesRequired(int fishDifficulty)
         {
             return fishDifficulty += 1;
         }
 
 
-        /*
-         * Ran once fishing ends
-         * Will deinitialize the catch process
-         */
+        /// <summary>
+        /// Ends the catch process, reenabling player controls, reseting perspective and reseting key variables
+        /// Enables victory or loss text based on result
+        /// </summary>
+        /// <param name="didWin">Represents if the minigame was succsesful or not</param>
         private void EndCatch(bool didWin)
         {
             _currentlyReelingFish = null;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            CharacterController.GetComponent<CharacterMovement>().AllowMovement = true;
-            CharacterController.GetComponent<CameraRotation>().AllowRotation = true;
-            InitiationScript.AllowControls = true;
-            InitiationScript.ShouldEnableFishPerspective(false);
+            characterController.GetComponent<CharacterMovement>().AllowMovement = true;
+            characterController.GetComponent<CameraRotation>().AllowRotation = true;
+            initiationScript.AllowControls = true;
+            initiationScript.ShouldEnableFishPerspective(false);
 
             _currentFishTemp.SetActive(false);
 
@@ -226,29 +237,33 @@ namespace PrototypeFishingMechanics
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
-                LoseText.SetActive(true);
+                loseText.SetActive(true);
                 StartCoroutine(HideUIAfterCatch());
             }
-
             else
             {
-                WinText.SetActive(true);
+                winText.SetActive(true);
                 StartCoroutine(HideUIAfterCatch());
             }
         }
 
-        private void HideUI()
+        /// <summary>
+        /// Hides the ui shown after completiting a reel
+        /// </summary>
+        private void HideReelFinishedUI()
         {
-            WinText.SetActive(false);
-            LoseText.SetActive(false);
+            winText.SetActive(false);
+            loseText.SetActive(false);
         }
 
 
-
+        /// <summary>
+        /// Starts a timer that will then run the HideReelFinishedUI() function
+        /// </summary>
         private IEnumerator HideUIAfterCatch()
         {
             yield return new WaitForSeconds(2);
-            HideUI();
+            HideReelFinishedUI();
         }
     }
 }

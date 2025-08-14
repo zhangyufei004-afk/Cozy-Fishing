@@ -7,6 +7,13 @@ using UnityEngine.UI;
 
 namespace PrototypeFishingMechanics
 {
+    /// <summary>
+    /// This class uses the IReelingGame interface
+    /// The slider minigame involves a bar that consists of a fish icon and a catchbox icon
+    /// The player must attempt to keep the catchbox icon over the fish icon
+    /// The fish icon will attempt to randomly move around
+    /// The player has a max amount of time they can spend before it is a fail
+    /// </summary>
     public class SliderMiniGame : MonoBehaviour, IReelingMinigame
     {
         #region Public Variables
@@ -18,62 +25,66 @@ namespace PrototypeFishingMechanics
 
         [SerializeField]
         [Tooltip("Reference to the ReelingMaster script.")]
-        private ReelingMaster ReelingMaster;
+        private ReelingMaster reelingMaster;
 
         [SerializeField]
-        private GameObject SliderCanvas;
+        private GameObject sliderCanvas;
 
         private bool _isMinigameActive = false;
-
         private float _timerValue = 0f;
-
         private float _maxTime = 0f;
-
         private float _catchProgress = 50f;
-
         private int _catchMax = 100;
 
         [SerializeField]
-        private int CatchIncreaseAmount;
+        private int catchIncreaseAmount;
 
         [SerializeField]
-        private int CatchDecreaseAmount;
+        private int catchDecreaseAmount;
 
         [SerializeField]
-        private UnityEngine.UI.Slider ProgressSlider;
+        private UnityEngine.UI.Slider progressSlider;
 
         [SerializeField]
-        private CatchBox UiCatchBoxScript;
+        private CatchBox uiCatchBoxScript;
 
         [SerializeField]
-        private RectTransform CatchBox;
+        private RectTransform catchBox;
 
         [SerializeField]
-        private RectTransform FishImage;
+        private RectTransform fishImage;
 
         [SerializeField]
-        private int FishMoveMin;
+        [Tooltip("Minimum amount of distance fish can move")]
+        private int fishMoveMin;
 
         [SerializeField]
-        private int FishMoveMax;
+        [Tooltip("Maximum amount of distance fish can move")]
+        private int fishMoveMax;
 
         [SerializeField]
-        private int RotationMin;
+        [Tooltip("Min rotation for the fish icon")]
+        private int rotationMin;
 
         [SerializeField]
-        private int RotationMax;
+        [Tooltip("Max rotation for the fish icon")]
+        private int rotationMax;
 
         [SerializeField]
-        private float FishMaxXCord;
+        [Tooltip("The maximum y axis value the fish icon can have")]
+        private float fishMaxYCord;
 
         [SerializeField]
-        private float FishMinXCord;
+        [Tooltip("The minimum y axis value the fish icon can have")]
+        private float fishMinYCord;
 
         [SerializeField]
-        private float CatchBoxMaxXCord;
+        [Tooltip("The maximum y axis value the catchbox can have")]
+        private float catchBoxMaxXCord;
 
         [SerializeField]
-        private float CatchBoxMinXCord;
+        [Tooltip("The minimum y axis value the catchbox can have")]
+        private float catchBoxMinXCord;
 
 
         #endregion
@@ -105,13 +116,13 @@ namespace PrototypeFishingMechanics
 
             MoveFish();
 
-            if (UiCatchBoxScript.CheckUIOverlap(FishImage, CatchBox))
+            if (uiCatchBoxScript.CheckUIOverlap(fishImage, catchBox))
             {
-                ModifyCatchProgress(CatchIncreaseAmount);
+                ModifyCatchProgress(catchIncreaseAmount);
             }
             else
             {
-                ModifyCatchProgress(CatchDecreaseAmount);
+                ModifyCatchProgress(catchDecreaseAmount);
             }
         }
 
@@ -121,7 +132,7 @@ namespace PrototypeFishingMechanics
         /// </summary>
         public void InitializeMiniGame(int fishCatchDifficulty) 
         {
-            SliderCanvas.SetActive(true);
+            sliderCanvas.SetActive(true);
 
             _timerValue = 0f;
             _catchProgress = 50;
@@ -142,33 +153,35 @@ namespace PrototypeFishingMechanics
 
         /// <summary>
         /// Move the catchbox ui element based on player input
+        /// Limits the y position based on the catchbox min and max values
         /// </summary>
         /// <param name="moveValue">The value for how far to move</param>
         public void MoveCatchIndicator(float moveValue)
         {
-            Vector3 currentPosition = CatchBox.transform.localPosition;
+            Vector3 currentPosition = catchBox.transform.localPosition;
             float yPosition = currentPosition.y += moveValue;
-            Mathf.Clamp(yPosition, CatchBoxMinXCord, CatchBoxMaxXCord);
+            Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
 
-            CatchBox.localPosition = newPosition;
+            catchBox.localPosition = newPosition;
         }
 
         /// <summary>
         /// Randomly moves the fish ui element
+        /// Limits the y position based on the Min and Max fishMove values
         /// </summary>
         public void MoveFish()
         {
-            int randomValue = UnityEngine.Random.Range(FishMoveMin, FishMoveMax);
+            int randomValue = UnityEngine.Random.Range(fishMoveMin, fishMoveMax);
 
-            Vector3 currentPosition = FishImage.transform.localPosition;
-            float yPosition = Mathf.Clamp(currentPosition.y += randomValue * Time.deltaTime, FishMoveMin, FishMoveMax);
+            Vector3 currentPosition = fishImage.transform.localPosition;
+            float yPosition = Mathf.Clamp(currentPosition.y += randomValue * Time.deltaTime, fishMoveMin, fishMoveMax);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
 
-            int rotationRandomValue = UnityEngine.Random.Range(RotationMin, RotationMax);
-            FishImage.transform.rotation *= Quaternion.Euler(0, 0, rotationRandomValue * Time.deltaTime);
+            int rotationRandomValue = UnityEngine.Random.Range(rotationMin, rotationMax);
+            fishImage.transform.rotation *= Quaternion.Euler(0, 0, rotationRandomValue * Time.deltaTime);
 
-            FishImage.transform.localPosition = newPosition;
+            fishImage.transform.localPosition = newPosition;
         }
 
         /// <summary>
@@ -179,7 +192,7 @@ namespace PrototypeFishingMechanics
         private void ModifyCatchProgress(float valueToAdd)
         {
             _catchProgress += valueToAdd * Time.deltaTime;
-            ProgressSlider.value = _catchProgress;
+            progressSlider.value = _catchProgress;
 
             if (CheckIfCatchWon())
             {
@@ -196,16 +209,6 @@ namespace PrototypeFishingMechanics
             else { return false; }
         }
 
-
-
-        // TEMP TESTING COROTINE WHILE THE MINIGAME DOSENT WORK ITSELF
-
-        IEnumerator TempTimeForWin()
-        {
-            yield return new WaitForSeconds(4);
-            WinMiniGame();
-        }
-
         /// <summary>
         /// Sets ui elements to not be active
         /// Tells the Reelingmaster minigame has been won
@@ -213,8 +216,8 @@ namespace PrototypeFishingMechanics
         public void WinMiniGame()
         {
             _isMinigameActive = false;
-            SliderCanvas.SetActive(false);
-            ReelingMaster.EndCurrentMiniGame(true);
+            sliderCanvas.SetActive(false);
+            reelingMaster.EndCurrentMiniGame(true);
         }
 
         /// <summary>
@@ -224,8 +227,8 @@ namespace PrototypeFishingMechanics
         public void LoseMiniGame()
         {
             _isMinigameActive = false;
-            SliderCanvas.SetActive(false);
-            ReelingMaster.EndCurrentMiniGame(false);
+            sliderCanvas.SetActive(false);
+            reelingMaster.EndCurrentMiniGame(false);
         }
     }
 }

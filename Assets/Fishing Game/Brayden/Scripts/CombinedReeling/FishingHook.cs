@@ -20,10 +20,10 @@ namespace ReelingMasterScript
         #region Private Fields
 
         [SerializeField]
-        private ReelingMaster ReelingMaster;
+        private ReelingMaster reelingMaster;
 
         [SerializeField]
-        private ReelingInitiation InitiationScript;
+        private ReelingInitiation initiationScript;
         #endregion
 
 
@@ -33,7 +33,7 @@ namespace ReelingMasterScript
             {
                 CanCatchFish = false;
                 
-                ReelingMaster.BeginCatch(collision.gameObject.GetComponent<FishScritableObject>());
+                reelingMaster.BeginCatch(collision.gameObject.GetComponent<FishScritableObject>());
             }
         }
     }

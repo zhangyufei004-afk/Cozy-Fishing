@@ -17,10 +17,7 @@ namespace PrototypeFishingMechanics
     {
         #region Public Variables
 
-        public ReelingMaster ReelingMasterScript;
         public bool AllowControls = true;
-        public CinemachineCamera FishCamera;
-        public CinemachineCamera MainCamera;
 
         #endregion
 
@@ -32,38 +29,46 @@ namespace PrototypeFishingMechanics
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 10;
-        
+
+        [SerializeField]
+        private ReelingMaster reelingMasterScript;
+
+        [SerializeField]
+        private CinemachineCamera fishCamera;
+
+        [SerializeField]
+        private CinemachineCamera mainCamera;
 
         [SerializeField]
         private LineRenderer _playerTrajectoryLine;
 
         [SerializeField]
-        private int ChargeScalar;
+        private int chargeScalar;
 
         [SerializeField]
-        private Slider ChargeSlider;
+        private Slider chargeSlider;
 
         [SerializeField]
-        private GameObject RodEndPoint;
+        private GameObject rodEndPoint;
 
         [SerializeField]
-        private GameObject RodBobber;
+        private GameObject rodBobber;
 
         [SerializeField]
-        private FishingHook FishingHook;
+        private FishingHook fishingHook;
 
         private Vector3 _fishingHookInitialLocalPosition;
 
         [SerializeField]
-        private GameObject TestFishObject;
+        private GameObject testFishObject;
 
 
         #endregion
 
         public void Start()
         {
-            ChargeSlider.maxValue = _maxCharge;
-            FishCamera.gameObject.SetActive(false);
+            chargeSlider.maxValue = _maxCharge;
+            fishCamera.gameObject.SetActive(false);
         }
 
 
@@ -102,11 +107,11 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void ChargeLine()
         {
-            _chargePower += Time.deltaTime * ChargeScalar;
-            ChargeSlider.value = _chargePower;
+            _chargePower += Time.deltaTime * chargeScalar;
+            chargeSlider.value = _chargePower;
 
             
-            _initialPosition = RodEndPoint.transform.position;
+            _initialPosition = rodEndPoint.transform.position;
             _CastDirection = gameObject.transform.forward;
             Vector3 castVelocity = (_CastDirection + _CastDirection).normalized * Mathf.Min(_chargePower, _maxCharge);
             ShowTrajectory(_initialPosition + _CastDirection, castVelocity);
@@ -158,19 +163,19 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void ThrowLine()
         {
-            _fishingHookInitialLocalPosition = FishingHook.gameObject.transform.localPosition;
-            FishingHook.CanCatchFish = true;
+            _fishingHookInitialLocalPosition = fishingHook.gameObject.transform.localPosition;
+            fishingHook.CanCatchFish = true;
 
-            Vector3 targetLocation = RodBobber.transform.position;
+            Vector3 targetLocation = rodBobber.transform.position;
 
             // TODO: This is a temporary soloution to make the fishinghook apear where it is needed
             // Eventually this will be turned into a proper cast animation with the hook flying to
             // The target spot
-            FishingHook.gameObject.transform.position = targetLocation;
+            fishingHook.gameObject.transform.position = targetLocation;
 
-            GameObject testFish = Instantiate(TestFishObject, FishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+            GameObject testFish = Instantiate(testFishObject, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
             ShouldEnableFishPerspective(true);
-            ReelingMasterScript.TEMPSTART(testFish);
+            reelingMasterScript.TEMPSTART(testFish);
 
 
             // StartCoroutine(TempTimeForHook());
@@ -178,18 +183,12 @@ namespace PrototypeFishingMechanics
 
         private void ReturnHook()
         {
-            FishingHook.CanCatchFish = false;
+            fishingHook.CanCatchFish = false;
 
             // TODO: This is a temporary soloution to make the fishinghook appear back where it is needed
             // Eventually this will be turned into a proper return animation with the hook flying
             // to the target spot
-            FishingHook.gameObject.transform.localPosition = _fishingHookInitialLocalPosition;
-        }
-
-        IEnumerator TempTimeForHook()
-        {
-            yield return new WaitForSeconds(2);
-            ReturnHook();
+            fishingHook.gameObject.transform.localPosition = _fishingHookInitialLocalPosition;
         }
 
         /// <summary>
@@ -197,12 +196,12 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void BeginCharge()
         {
-            ChargeSlider.gameObject.SetActive(true);
-            ChargeSlider.value = 0;
+            chargeSlider.gameObject.SetActive(true);
+            chargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
             _playerTrajectoryLine.enabled = true;
-            RodBobber.SetActive(true);
+            rodBobber.SetActive(true);
         }
 
         /// <summary>
@@ -210,12 +209,12 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private void ResetCharge()
         {
-            ChargeSlider.gameObject.SetActive(false);
+            chargeSlider.gameObject.SetActive(false);
             _isCharging = false;
             _playerTrajectoryLine.enabled = false;
-            ChargeSlider.value = 0;
+            chargeSlider.value = 0;
             _chargePower = 0;
-            RodBobber.SetActive(false);
+            rodBobber.SetActive(false);
         }
 
         /// <summary>
@@ -227,17 +226,19 @@ namespace PrototypeFishingMechanics
         {
             if (enable) 
             {
-                FishCamera.gameObject.SetActive(true);
+                fishCamera.gameObject.SetActive(true);
               //  MainCamera.gameObject.SetActive(false);
             }
             else 
             { 
-                FishCamera.gameObject.SetActive(false);
+                fishCamera.gameObject.SetActive(false);
               //  MainCamera.gameObject.SetActive(true);
             }
         }
 
-
+        /// <summary>
+        /// Calculates the trajectory of the fishing line
+        /// </summary>
         private void ShowTrajectory(Vector3 origin, Vector3 speed)
         {
             Vector3[] points = new Vector3[10];
@@ -256,7 +257,7 @@ namespace PrototypeFishingMechanics
                 }
             }
 
-            RodBobber.transform.position = points[points.Length - 1];
+            rodBobber.transform.position = points[points.Length - 1];
 
             _playerTrajectoryLine.SetPositions(points);
         }

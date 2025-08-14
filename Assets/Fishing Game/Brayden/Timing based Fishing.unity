@@ -354,18 +354,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc84f7d72f337704eb4a36ac6d4648c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReelingMaster: {fileID: 139337787}
-  RealisticCanvas: {fileID: 721883576}
-  PlayerCircle: {fileID: 1858065115}
-  GoalCircle: {fileID: 1734906962}
-  ProgressSlider: {fileID: 90196891}
+  reelingMaster: {fileID: 139337787}
+  realisticCanvas: {fileID: 721883576}
+  playerCircle: {fileID: 1858065115}
+  goalCircle: {fileID: 1734906962}
+  progressSlider: {fileID: 90196891}
+  realisticGoalChecker: {fileID: 1734906965}
+  progressIncreaseIncrements: 10
   Animator: {fileID: 693804126}
-  AnimationSpeed: 0.404
-  ReverseTarget: 0
-  SpeedChangeDelay: 2
-  MaxCatchProgress: 100
-  TimeLimit: 20
-  _currentTimeSpent: 0
+  animationSpeed: 0
+  speedChangeDelay: 2
+  maxCatchProgress: 50
+  timeLimit: 20
+  _isMinigameActive: 0
 --- !u!1 &139337783
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,14 +411,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cac9426ce74939245bb38b2abdb32d67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitiationScript: {fileID: 203917542}
-  MiniGameTypes:
+  initiationScript: {fileID: 203917542}
+  miniGameTypes:
   - {fileID: 1024315333}
   - {fileID: 519049953}
   - {fileID: 132836565}
-  CharacterController: {fileID: 203917533}
-  WinText: {fileID: 2043667651}
-  LoseText: {fileID: 262712537}
+  characterController: {fileID: 203917533}
+  winText: {fileID: 2043667651}
+  loseText: {fileID: 262712537}
 --- !u!1 &175559641
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,8 +556,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanCatchFish: 0
-  ReelingMaster: {fileID: 139337787}
-  InitiationScript: {fileID: 0}
+  reelingMaster: {fileID: 0}
+  initiationScript: {fileID: 0}
 --- !u!1 &203917533
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,17 +716,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50978f4899fa6b3418b355f9cdfa26f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReelingMasterScript: {fileID: 139337787}
   AllowControls: 1
-  FishCamera: {fileID: 748381879}
-  MainCamera: {fileID: 1995123215}
+  reelingMasterScript: {fileID: 139337787}
+  fishCamera: {fileID: 748381879}
+  mainCamera: {fileID: 1995123215}
   _playerTrajectoryLine: {fileID: 203917543}
-  ChargeScalar: 2
-  ChargeSlider: {fileID: 693102108}
-  RodEndPoint: {fileID: 1459595591}
-  RodBobber: {fileID: 197294432}
-  FishingHook: {fileID: 2004321232}
-  TestFishObject: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9, type: 3}
+  chargeScalar: 2
+  chargeSlider: {fileID: 693102108}
+  rodEndPoint: {fileID: 1459595591}
+  rodBobber: {fileID: 197294432}
+  fishingHook: {fileID: 2004321232}
+  testFishObject: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9, type: 3}
 --- !u!120 &203917543
 LineRenderer:
   serializedVersion: 2
@@ -1307,81 +1308,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 408738439}
   m_CullTransparentMesh: 1
---- !u!1 &433840290
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 433840291}
-  - component: {fileID: 433840293}
-  - component: {fileID: 433840292}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &433840291
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433840290}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 730608312}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8, y: 161.90073}
-  m_SizeDelta: {x: 25.9998, y: 204.1985}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &433840292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433840290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &433840293
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433840290}
-  m_CullTransparentMesh: 1
 --- !u!1 &445945435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,22 +1452,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d5d6d1580811e438daa69120d32a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReelingMaster: {fileID: 139337787}
-  SliderCanvas: {fileID: 234385062}
-  CatchIncreaseAmount: 30
-  CatchDecreaseAmount: -10
-  ProgressSlider: {fileID: 1952000872}
-  UiCatchBoxScript: {fileID: 707191095}
-  CatchBox: {fileID: 707191093}
-  FishImage: {fileID: 788185598}
-  FishMoveMin: -30
-  FishMoveMax: 30
-  RotationMin: -30
-  RotationMax: 30
-  FishMaxXCord: 149
-  FishMinXCord: -149
-  CatchBoxMaxXCord: 132
-  CatchBoxMinXCord: -132
+  reelingMaster: {fileID: 139337787}
+  sliderCanvas: {fileID: 234385062}
+  catchIncreaseAmount: 30
+  catchDecreaseAmount: -10
+  progressSlider: {fileID: 1952000872}
+  uiCatchBoxScript: {fileID: 707191095}
+  catchBox: {fileID: 707191093}
+  fishImage: {fileID: 788185598}
+  fishMoveMin: -30
+  fishMoveMax: 30
+  rotationMin: -30
+  rotationMax: 30
+  fishMaxYCord: 0
+  fishMinYCord: 0
+  catchBoxMaxXCord: 132
+  catchBoxMinXCord: -132
 --- !u!1 &548568467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2038,79 +1964,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 721883576}
-  m_CullTransparentMesh: 1
---- !u!1 &730608311
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 730608312}
-  - component: {fileID: 730608314}
-  - component: {fileID: 730608313}
-  m_Layer: 5
-  m_Name: TEMPFISHIMAGE
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &730608312
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 730608311}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 433840291}
-  m_Father: {fileID: 1796431234}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2, y: -9.1791}
-  m_SizeDelta: {x: 232.5589, y: 118.3581}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &730608313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 730608311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 2800000, guid: d3c57d5104e0f9d4697b6b92a56bf2db, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &730608314
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 730608311}
   m_CullTransparentMesh: 1
 --- !u!1 &732541771
 GameObject:
@@ -3012,18 +2865,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a81907e40b1729f4ea7b59c98f2af9d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReelingMaster: {fileID: 139337787}
-  ArrowSlots:
+  reelingMaster: {fileID: 139337787}
+  arrowSlots:
   - {fileID: 392296281}
   - {fileID: 1503801245}
   - {fileID: 1757922056}
   - {fileID: 1979032527}
-  FishingCanvas: {fileID: 1330828733}
-  UpSprite: {fileID: 21300000, guid: 748b994460c79aa45aaa8fe3e4674e23, type: 3}
-  DownSprite: {fileID: 21300000, guid: 6663e10550e4d724d886f549267d7d3b, type: 3}
-  LeftSprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
-  RightSprite: {fileID: 21300000, guid: 297585c6fed9c9e42b95e54ba2f5ebfd, type: 3}
-  InputTimeLimit: 3
+  fishingCanvas: {fileID: 1330828733}
+  upSprite: {fileID: 21300000, guid: 748b994460c79aa45aaa8fe3e4674e23, type: 3}
+  downSprite: {fileID: 21300000, guid: 6663e10550e4d724d886f549267d7d3b, type: 3}
+  leftSprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
+  rightSprite: {fileID: 21300000, guid: 297585c6fed9c9e42b95e54ba2f5ebfd, type: 3}
+  inputTimeLimit: 3
 --- !u!4 &1024315335
 Transform:
   m_ObjectHideFlags: 0
@@ -4137,7 +3990,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 730608312}
   - {fileID: 1330828734}
   - {fileID: 234385063}
   - {fileID: 721883577}
@@ -5228,8 +5080,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanCatchFish: 0
-  ReelingMaster: {fileID: 139337787}
-  InitiationScript: {fileID: 203917542}
+  reelingMaster: {fileID: 139337787}
+  initiationScript: {fileID: 203917542}
 --- !u!135 &2004321233
 SphereCollider:
   m_ObjectHideFlags: 0
