@@ -9,6 +9,7 @@ namespace FishingGame.QuestSystem
     /// </summary>
     public static class QuestManager
     {
+        // TODO: SHOULD THIS BE NON STATIC AND EXTEND MONO BEHAVIOUR AS A SINGLETON SO I CAN REFERENCE PLAYER?
         private static List<IQuest> _quests;
 
         public static List<IQuest> Quests => _quests;
@@ -18,6 +19,11 @@ namespace FishingGame.QuestSystem
             _quests = new List<IQuest>();
         }
 
+        
+        /// <summary>
+        /// Add the specified quest to the list of quests. Typically called by NPCs
+        /// </summary>
+        /// <param name="quest">The quest to add</param>
         public static void AddQuest(IQuest quest)
         {
             _quests.Add(quest);
@@ -31,6 +37,7 @@ namespace FishingGame.QuestSystem
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the specified questName was not found.</exception>
         public static void EndQuest(string questName)
         {
+            // TODO: GIVE REWARD (HOW ON A STATIC CLASS AND SCRIPTABLE OBJECT)?
             int questIndex = _quests.FindIndex(quest => quest.Equals(questName));
 
             if (questIndex == QuestConstants.INDEX_NOT_FOUND)
@@ -76,6 +83,12 @@ namespace FishingGame.QuestSystem
             _quests[questIndex].ProgressStage(questStage);
         }
 
+        public static bool HasQuestBegun(string questName)
+        {
+            int questIndex = FindQuestIndex(questName);
+            return _quests[questIndex].IsQuestInProgress();
+        }
+        
         private static int FindQuestIndex(string questName)
         {
             int questIndex = _quests.FindIndex(quest => quest.Equals(questName));

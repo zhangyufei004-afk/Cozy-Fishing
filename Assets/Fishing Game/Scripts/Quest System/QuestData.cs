@@ -47,7 +47,7 @@ namespace FishingGame.QuestSystem
         /// </summary>
         public void EndQuest()
         {
-            throw new System.NotImplementedException();
+            // TODO: DO I NEED THIS? - WE COULD HANDLE ALL THIS IN QUEST MANAGER
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace FishingGame.QuestSystem
         /// </summary>
         public void ProgressStage()
         {
-            throw new System.NotImplementedException();
+            currentStageIndex++;
         }
 
         /// <summary>
@@ -96,7 +96,12 @@ namespace FishingGame.QuestSystem
         {
             return this.questName == otherQuestName;
         }
-        
+
+        public bool IsQuestInProgress()
+        {
+            return this.currentStageIndex > -1;
+        }
+
         // TODO: DO I NEED THIS?
         // public static bool operator ==(QuestData thisQuestData, QuestData otherQuestData)
         // {
