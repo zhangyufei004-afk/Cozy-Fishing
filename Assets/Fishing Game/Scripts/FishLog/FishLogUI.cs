@@ -27,17 +27,12 @@ namespace FishingGame.FishLog
                     entry.MarkAsCaught(fishLogSystem.HasCaughtFish(entry.GetFishData()));
                 }
             }
+            fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
         }
 
         private void OnEnable()
         {
-            fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
             RefreshAllEntries(); // Fix: refresh when UI becomes visible
-        }
-
-        private void OnDisable()
-        {
-            fishLogSystem.FishCaughtForFirstTime -= OnFishCaught;
         }
 
         private void OnFishCaught(FishScriptableObject fish)
@@ -46,6 +41,7 @@ namespace FishingGame.FishLog
             {
                 entry.MarkAsCaught(true);
             }
+            fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
         }
 
         /// <summary>
