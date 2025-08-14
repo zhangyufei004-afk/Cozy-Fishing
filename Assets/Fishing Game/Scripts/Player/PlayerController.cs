@@ -17,6 +17,7 @@ namespace FishingGame.Player
         [SerializeField]
         private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
         private Vector2 _moveInput;
+        [SerializeField] private Transform cameraTransform;
 
         private void OnEnable()
         {
@@ -29,13 +30,13 @@ namespace FishingGame.Player
 
         void Update()
         {
-            Vector3 directionNormalized = new Vector3(_moveInput.y, 0, -_moveInput.x).normalized;
+            Vector3 directionNormalized = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
             
             characterController.SimpleMove(directionNormalized * movementSpeed);
 
             if (_moveInput != Vector2.zero)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up) * Quaternion.Euler(0, -90f, 0);
+                Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
                 playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
         }
