@@ -1,47 +1,83 @@
 using UnityEngine;
+using FishingGame.GameTime;
 
-/// <summary>
-/// <para>
-/// Fish Runtime Object.
-/// </para>
-/// <para>
-/// Stores Details including: Fish SO Base, Length, Fish Difficulty.
-/// </para>
-/// </summary>
-public class Fish
+namespace FishingGame.FishSystem
 {
-    private FishScritableObject _fishBase;
-
-    private float _length;
-
-    public int _FishCatchDifficulty;
-
     /// <summary>
-    /// Constructor.
+    /// <para>Represents a runtime fish object.</para>
+    /// <para>Stores dynamic data including base info, length, weight, caught time, and location.</para>
     /// </summary>
-    /// <param name="newFishBase"> Fish scriptable object </param>
-    public Fish(FishScritableObject newFishBase)
+    public class Fish
     {
-        this._fishBase = newFishBase;
-        this._length = Random.Range(this._fishBase.MinMaxLength.x, this._fishBase.MinMaxLength.y);
-        this._FishCatchDifficulty = this._fishBase.FishCatchDifficulty;
-    }
+        private FishScriptableObject _fishBase;
+        private float _length;
+        private float _weight;
+        private TimeOfDay _caughtTime;
+        private string _caughtLocation;
 
-    /// <summary>
-    /// Gets Fish Scriptable Object.
-    /// </summary>
-    /// <returns> Fish Scriptable Object </returns>
-    public FishScritableObject GetFishBase()
-    {
-        return this._fishBase;
-    }
+        /// <summary>
+        /// Constructor for generating a new fish instance.
+        /// </summary>
+        /// <param name="newFishBase">Reference to the base fish ScriptableObject</param>
+        /// <param name="time">Time of day when caught</param>
+        /// <param name="location">Location where the fish was caught</param>
+        public Fish(FishScriptableObject newFishBase, TimeOfDay time, string location)
+        {
+            _fishBase = newFishBase;
+            _length = Random.Range(_fishBase.MinMaxLength.x, _fishBase.MinMaxLength.y);
+            _weight = CalculateWeight(_length); // Simple formula based on length
+            _caughtTime = time;
+            _caughtLocation = location;
+        }
 
-    /// <summary>
-    /// Gets Fish Length.
-    /// </summary>
-    /// <returns> Fish length as a float </returns>
-    public float GetLength()
-    {
-        return this._length;
+        /// <summary>
+        /// Calculates fish weight based on its length.
+        /// </summary>
+        /// <param name="length">Length of the fish</param>
+        /// <returns>Weight in kilograms</returns>
+        private float CalculateWeight(float length)
+        {
+            return length * 0.2f + Random.Range(-0.1f, 0.1f); // Example formula
+        }
+
+        /// <summary>
+        /// Gets the base ScriptableObject of the fish.
+        /// </summary>
+        public FishScriptableObject GetFishBase()
+        {
+            return _fishBase;
+        }
+
+        /// <summary>
+        /// Gets the length of the fish.
+        /// </summary>
+        public float GetLength()
+        {
+            return _length;
+        }
+
+        /// <summary>
+        /// Gets the weight of the fish.
+        /// </summary>
+        public float GetWeight()
+        {
+            return _weight;
+        }
+
+        /// <summary>
+        /// Gets the time of day the fish was caught.
+        /// </summary>
+        public TimeOfDay GetCaughtTime()
+        {
+            return _caughtTime;
+        }
+
+        /// <summary>
+        /// Gets the location where the fish was caught.
+        /// </summary>
+        public string GetCaughtLocation()
+        {
+            return _caughtLocation;
+        }
     }
 }
