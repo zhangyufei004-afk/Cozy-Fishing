@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using ReelingMasterScript;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -31,12 +32,15 @@ namespace PrototypeFishingMechanics
         private int _currentMiniGameWins;
         private bool _hasWon = false;
         private int _fishDifficulty;
-        private FishScritableObject _currentlyReelingFish;
+        private FishScriptableObject _currentlyReelingFish;
         //TODO: Can combine this likely with the other fish variable once I have scriptable objects working
-        private GameObject _currentFishTemp;
+        private GameObject _currentFish3DObject;
 
         [SerializeField]
         private ReelingInitiation initiationScript;
+
+        [SerializeField]
+        private FishingHook fishingHook;
 
         // Unity dosen't support making interface types a list so this is a gameobject list
         [SerializeField]
@@ -56,49 +60,19 @@ namespace PrototypeFishingMechanics
         #endregion
 
         /// <summary>
-        /// This is a temporary function to be used until scriptable objects are fully setup
-        /// </summary>
-        /// <param name="tempFish">This is specifically a gameobject and not a fish scriptable object</param>
-        public void TEMPSTART(GameObject tempFish)
-        {
-            characterController.GetComponent<CharacterMovement>().AllowMovement = false;
-            characterController.GetComponent<CameraRotation>().AllowRotation = false;
-
-            _currentFishTemp = tempFish;
-
-            _fishDifficulty = 4;
-
-            _currentMinigame = null;
-
-            _currentMiniGameWins = 0;
-
-            initiationScript.AllowControls = false;
-
-            loseText.SetActive(false);
-            winText.SetActive(false);
-
-            // Check if the fish is strong enough for minigames to be ran
-            if (CheckIsFishDifficult() == true)
-            {
-                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
-                SetNextMiniGame();
-            }
-            else
-            {
-                EndCatch(true);
-            }
-        }
-
-
-        /// <summary>
         /// Begin Catch is run immeaditly once a fish collides with the players fishing rod
         /// it initializes the catch process
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
-        public void BeginCatch(FishScritableObject fishCaught)
+        /// /// <param name="fish3DObject">The 3D object of the fish</param>
+        public void BeginCatch(FishScriptableObject fishCaught, GameObject fish3DObject)
         {
+            _currentFish3DObject = fish3DObject;
+
             characterController.GetComponent<CharacterMovement>().AllowMovement = false;
             characterController.GetComponent<CameraRotation>().AllowRotation = false;
+
+            initiationScript.InitiateFishingPerspective();
 
             //Resset properties for the new catch
             _currentlyReelingFish = fishCaught;
@@ -118,6 +92,8 @@ namespace PrototypeFishingMechanics
             }
             else
             {
+                // TODO: Implement a visual indicator so this debug log is not needed when a catch is not difficult enough
+                Debug.Log("DEBUGLOG: This fish was not difficult enough to cause minigames");
                 EndCatch(true);
             }
         }
@@ -163,8 +139,8 @@ namespace PrototypeFishingMechanics
             }
 
             _currentMiniGameWins += 1;
-            Vector3 fishPosition = _currentFishTemp.transform.position;
-            _currentFishTemp.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
+            Vector3 fishPosition = _currentFish3DObject.transform.position;
+            _currentFish3DObject.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
             _hasWon = CheckIfWonEnough();
 
             if (_hasWon)
@@ -230,8 +206,9 @@ namespace PrototypeFishingMechanics
             characterController.GetComponent<CameraRotation>().AllowRotation = true;
             initiationScript.AllowControls = true;
             initiationScript.ShouldEnableFishPerspective(false);
+            
 
-            _currentFishTemp.SetActive(false);
+            _currentFish3DObject.SetActive(false);
 
 
             // TODO: Implement more logic on if reeling was a win or not
@@ -259,11 +236,13 @@ namespace PrototypeFishingMechanics
 
         /// <summary>
         /// Starts a timer that will then run the HideReelFinishedUI() function
+        /// Also resets the position of the hook, this avoids camera freaking out as it is attatched to the hook
         /// </summary>
         private IEnumerator HideUIAfterCatch()
         {
             yield return new WaitForSeconds(2);
             HideReelFinishedUI();
+            fishingHook.ResetHookSpot();
         }
     }
 }

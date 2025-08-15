@@ -26,15 +26,24 @@ namespace ReelingMasterScript
         private ReelingInitiation initiationScript;
         #endregion
 
-
-        public void OnCollisionEnter(Collision collision)
+        public void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.GetComponent<FishScritableObject>() && CanCatchFish)
+            if (CanCatchFish == false) { return; }
+
+            if (other.gameObject.GetComponent<FishingPool>())
             {
+                GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
                 CanCatchFish = false;
-                
-                reelingMaster.BeginCatch(collision.gameObject.GetComponent<FishScritableObject>());
+                reelingMaster.BeginCatch(other.gameObject.GetComponent<FishingPool>().DetermineFishCaught(), fishModel);
             }
+        }
+
+        /// <summary>
+        /// Resets the position of the hook so it is no longer colliding with fishing objects
+        /// </summary>
+        public void ResetHookSpot()
+        {
+            gameObject.transform.position = Vector3.zero;
         }
     }
 }

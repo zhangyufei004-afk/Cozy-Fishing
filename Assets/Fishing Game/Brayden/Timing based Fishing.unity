@@ -366,7 +366,6 @@ MonoBehaviour:
   speedChangeDelay: 2
   maxCatchProgress: 50
   timeLimit: 20
-  _isMinigameActive: 0
 --- !u!1 &139337783
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,6 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initiationScript: {fileID: 203917542}
+  fishingHook: {fileID: 2004321232}
   miniGameTypes:
   - {fileID: 1024315333}
   - {fileID: 519049953}
@@ -726,7 +726,7 @@ MonoBehaviour:
   rodEndPoint: {fileID: 1459595591}
   rodBobber: {fileID: 197294432}
   fishingHook: {fileID: 2004321232}
-  testFishObject: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9, type: 3}
+  fishModelPrefab: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9, type: 3}
 --- !u!120 &203917543
 LineRenderer:
   serializedVersion: 2
@@ -4568,7 +4568,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -4594,8 +4594,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1947552813}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20417611, y: 0, z: 0, w: 0.9789342}
-  m_LocalPosition: {x: 0, y: 3.4142451, z: -3.4995375}
+  m_LocalRotation: {x: -0.000000073943156, y: 0.0000001397748, z: 1.0335389e-14, w: 1}
+  m_LocalPosition: {x: 1.2919984, y: -1.1970006, z: -1.184}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5032,6 +5032,38 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!1 &2001406980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5479309997563062849, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+  m_PrefabInstance: {fileID: 5210895439481460586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2001406984
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001406980}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &2004321230
 GameObject:
   m_ObjectHideFlags: 0
@@ -5300,6 +5332,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3118447298795630334, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: amountOfFishHeld
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: typeOfFishCaught
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e18f13829ff9a947a5e1c64bd77a8fe, type: 2}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: typesOfFishInPool.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: 'typesOfFishInPool.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e18f13829ff9a947a5e1c64bd77a8fe, type: 2}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: 'typesOfFishInPool.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 57e98515d4d1b9c488b9761eb805a4ba, type: 2}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: 'typesOfFishInPool.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a4b7dc4e07e29f4696e72b3ca330091, type: 2}
     - target: {fileID: 5479309997563062849, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
       propertyPath: m_Name
       value: FishingPool
@@ -5347,7 +5407,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5479309997563062849, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2001406984}
   m_SourcePrefab: {fileID: 100100000, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

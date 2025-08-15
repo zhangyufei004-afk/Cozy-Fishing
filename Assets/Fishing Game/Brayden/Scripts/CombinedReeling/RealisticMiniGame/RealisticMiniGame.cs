@@ -1,3 +1,4 @@
+using FishingGame;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,14 +8,10 @@ namespace PrototypeFishingMechanics
     /// <summary>
     /// Realistic minigame uses the IReelingMiniGame interface
     /// The realistic minigame involves the player keeping their mouse ontop of a spinning circle
-    /// Palyer has a set time limit to complete the minigame and gains progress whenever the mouse is ontop of said circle
+    /// Player has a set time limit to complete the minigame and gains progress whenever the mouse is ontop of said circle
     /// </summary>
     public class RealisticMiniGame : MonoBehaviour, IReelingMinigame
     {
-        #region Public Variables
-
-        #endregion
-
         #region Private Fields
 
         [SerializeField]
@@ -57,7 +54,7 @@ namespace PrototypeFishingMechanics
         private float timeLimit;
 
         private float _currentTimeSpent = 0f;
-        public bool _isMinigameActive = false;
+        private bool _isMinigameActive = false;
 
         #endregion
 

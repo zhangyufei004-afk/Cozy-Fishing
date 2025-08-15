@@ -1,27 +1,54 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PrototypeFishingMechanics
 {
     /// <summary>
-    /// Fishing pools contain a type of fish scriptable object that is fished from them
+    /// Fishing pools contain types of fish scriptable objects that is fished from them
     /// Player can cast lines into these to begin fishing
     /// These can randomly spawn and have a max amount of fish that can be caught from them
     /// These are designed to be easier to catch from compared to catching and individual swimming fish
     /// </summary>
     public class FishingPool : MonoBehaviour
     {
-        #region Public Parameters
-
-
-
-        #endregion
-
-
-
         #region Private Properties
         [SerializeField]
-        private FishScritableObject typeOfFishCaught;
+        [Tooltip("A list of the type of fish that can be caught from this pool")]
+        private List<FishScriptableObject> typesOfFishInPool;
+
+        [SerializeField]
+        [Tooltip("How much fish this began with, this changes as pool is fished from")]
+        private int amountOfFishHeld;
 
         #endregion
+
+        /// <summary>
+        /// Checks if fish pool is empty and then determines the fish type caught
+        /// Randomly selects a fish type based on the amount of types in the pool
+        /// </summary>
+        public FishScriptableObject DetermineFishCaught()
+        {
+            if (CheckIfEmpty() == true) { return null; }
+
+            int fishTypeAmount = typesOfFishInPool.Count;
+            int fishCaughtIndex = Random.Range(0, fishTypeAmount);
+            FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
+
+            return fishCaught;
+        }
+
+        /// <summary>
+        /// Returns true if the fishing pool is empty
+        /// </summary>
+        private bool CheckIfEmpty()
+        {
+            if (amountOfFishHeld == 0) { return true; }
+            else { return false; }
+        }
+
+
+
+
+
     }
 }

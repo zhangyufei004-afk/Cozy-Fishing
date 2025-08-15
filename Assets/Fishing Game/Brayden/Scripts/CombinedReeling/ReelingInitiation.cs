@@ -59,7 +59,7 @@ namespace PrototypeFishingMechanics
         private FishingHook fishingHook;
 
         [SerializeField]
-        private GameObject testFishObject;
+        private GameObject fishModelPrefab;
 
 
         #endregion
@@ -170,13 +170,17 @@ namespace PrototypeFishingMechanics
             // Eventually this will be turned into a proper cast animation with the hook flying to
             // The target spot
             fishingHook.gameObject.transform.position = targetLocation;
+        }
 
-            GameObject testFish = Instantiate(testFishObject, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+        public void InitiateFishingPerspective()
+        {
             ShouldEnableFishPerspective(true);
-            reelingMasterScript.TEMPSTART(testFish);
+        }
 
-
-            // StartCoroutine(TempTimeForHook());
+        public GameObject CreateAndReturn3DFishModel()
+        {
+            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+            return fishModel;
         }
 
         /// <summary>
