@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace FishingGame.Dialogue
 {
+    /// <summary>
+    /// Enables the ability to switch to the dialogue camera when inside the trigger.
+    /// NOTE: The trigger position should reflect the position you want the character to stand in during the dialogue,
+    /// typically 1 meter away."
+    /// </summary>
     public class EnableDialogueCamera : MonoBehaviour
     {
         PlayerCameraController _playerCameraController;

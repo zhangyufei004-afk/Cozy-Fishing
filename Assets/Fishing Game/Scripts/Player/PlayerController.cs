@@ -22,6 +22,10 @@ namespace FishingGame.Player
         private float _initialMovementSpeed;
         private float _initialRotationSpeed;
 
+        /// <summary>
+        /// Enables or disables the characters movement
+        /// </summary>
+        /// <param name="isMovementEnabled">Sets the movement enabled parameter</param>
         public void SetMovementEnabled(bool isMovementEnabled)
         {
             if (isMovementEnabled)
