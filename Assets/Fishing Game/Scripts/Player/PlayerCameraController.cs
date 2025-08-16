@@ -15,7 +15,7 @@ namespace FishingGame.Player
         [SerializeField] private CinemachineCamera grappleCamera;
         
         [Header("Movement Components")]
-        [SerializeField] private CharacterController characterController;
+        [SerializeField] private PlayerController playerController;
 
         private bool _isInDialogueRange;
         
@@ -26,7 +26,7 @@ namespace FishingGame.Player
         {
             grappleCamera?.gameObject.SetActive(false);
             dialogCamera.gameObject.SetActive(false);
-            characterController.enabled = true;
+            playerController.SetMovementEnabled(true);
             _isInDialogueRange = false;
         }
         
@@ -53,7 +53,7 @@ namespace FishingGame.Player
             if (_isInDialogueRange)
             {
                 dialogCamera.gameObject.SetActive(switchToCamera);
-                characterController.enabled = false;
+                playerController.SetMovementEnabled(false);
 
             }
         }

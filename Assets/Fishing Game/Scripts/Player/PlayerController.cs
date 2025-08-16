@@ -16,9 +16,25 @@ namespace FishingGame.Player
         private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
         [SerializeField]
         private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
+        
         private Vector2 _moveInput;
-        [SerializeField] private Transform cameraTransform;
+        
+        private float _initialMovementSpeed;
+        private float _initialRotationSpeed;
 
+        public void SetMovementEnabled(bool isMovementEnabled)
+        {
+            if (isMovementEnabled)
+            {
+                movementSpeed = _initialMovementSpeed;
+                rotationSpeed = _initialRotationSpeed;
+                return;
+            }
+
+            movementSpeed = 0;
+            rotationSpeed = 0;
+        }
+        
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
@@ -26,6 +42,8 @@ namespace FishingGame.Player
             playerActionMap.Enable();
             playerActionMap.FindAction("Move").performed += Move;
             playerActionMap.FindAction("Move").canceled += CancelMove;
+            _initialMovementSpeed = movementSpeed;
+            _initialRotationSpeed = rotationSpeed;
         }
 
         void Update()

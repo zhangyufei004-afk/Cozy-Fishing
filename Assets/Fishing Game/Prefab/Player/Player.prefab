@@ -158,7 +158,6 @@ MonoBehaviour:
   characterController: {fileID: 9023993033158258449}
   movementSpeed: 6
   rotationSpeed: 20
-  cameraTransform: {fileID: 0}
 --- !u!143 &9023993033158258449
 CharacterController:
   m_ObjectHideFlags: 0
@@ -198,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogCamera: {fileID: 101844180539961190}
   grappleCamera: {fileID: 0}
-  characterController: {fileID: 9023993033158258449}
+  playerController: {fileID: 1148033641354189641}
 --- !u!1001 &2738297607126792477
 PrefabInstance:
   m_ObjectHideFlags: 0
