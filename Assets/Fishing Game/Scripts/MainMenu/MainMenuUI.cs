@@ -1,0 +1,31 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace FishingGame.MainMenu
+{
+    /// <summary>
+    /// Controls the main menu UI, including navigation to game, settings, quit functions.
+    /// </summary>
+    public class MainMenuUI : MonoBehaviour
+    {
+        [SerializeField] private GameObject settingsPanel;
+
+        public void OnStartGame()
+        {
+            SceneManager.LoadScene("Main Scene");
+        }
+
+        public void OnOpenSettings()
+        {
+            settingsPanel.SetActive(true);
+        }
+
+        public void OnQuitGame()
+        {
+            Application.Quit();
+#if UNITY_EDITOR
+            Debug.Log("Quitting game...");
+#endif
+        }
+    }
+}
