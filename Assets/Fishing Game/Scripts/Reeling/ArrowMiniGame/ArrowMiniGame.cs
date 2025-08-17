@@ -14,10 +14,6 @@ namespace PrototypeFishingMechanics
     /// </summary>
     public class ArrowMiniGame : MonoBehaviour, IReelingMinigame
     {
-        #region Public Variables
-
-        #endregion
-
         #region Private Properties
 
         [SerializeField]
@@ -26,7 +22,10 @@ namespace PrototypeFishingMechanics
 
         //UI
         [SerializeField]
+        [Tooltip("The image gameobjects that will be where each arrow is placed, left most is slot 1.")]
         private Image[] arrowSlots;
+
+        private Vector2[] _arrowSlotPositions;
 
         [SerializeField]
         [Tooltip("The parent object in the ui ")]
@@ -34,18 +33,19 @@ namespace PrototypeFishingMechanics
 
         //Arrow Sprites
         [SerializeField]
+        [Tooltip("Up arrow sprite")]
         private Sprite upSprite;
         [SerializeField]
+        [Tooltip("Down arrow sprite")]
         private Sprite downSprite;
         [SerializeField]
+        [Tooltip("Left arrow sprite")]
         private Sprite leftSprite;
         [SerializeField]
+        [Tooltip("Right arrow sprite")]
         private Sprite rightSprite;
 
-        private Transform _slot1Transform;
-        private Transform _slot2Transform;
-        private Transform _slot3Transform;
-        private Transform _slot4Transform;
+        
 
         //FishingBar
         [SerializeField]
@@ -60,6 +60,17 @@ namespace PrototypeFishingMechanics
 
         #endregion
 
+        private void Start()
+        {
+            _arrowSlotPositions = new Vector2[arrowSlots.Length];
+
+            for (int i = 0; i <arrowSlots.Length; i++)
+            {
+                _arrowSlotPositions[i] = arrowSlots[i].gameObject.transform.localPosition;
+            }
+        }
+
+
         /// <summary>
         /// Setsup any properties/variables needed for the minigame
         /// Parameter fishCatchDifficulty can be used to modify difficulty of minigame
@@ -68,6 +79,10 @@ namespace PrototypeFishingMechanics
         public void InitializeMiniGame(int fishCatchDifficulty)
         {
             fishingCanvas.SetActive(true);
+            for (int i = 0; i < arrowSlots.Length; i++)
+            {
+                arrowSlots[i].gameObject.transform.localPosition = _arrowSlotPositions[i];
+            }
         }
 
         /// <summary>

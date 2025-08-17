@@ -64,10 +64,20 @@ namespace PrototypeFishingMechanics
 
         #endregion
 
-        public void Start()
+        public void OnEnable()
         {
             chargeSlider.maxValue = _maxCharge;
             fishCamera.gameObject.SetActive(false);
+
+        //    InputActionAsset inputActions = InputSystem.actions;
+         //   InputActionMap playerActionMap = inputActions.FindActionMap("Player");
+
+          //  playerActionMap.Enable();
+          //  playerActionMap.FindAction("LeftClick").performed += Move;
+
+
+           // playerActionMap.FindAction("RightClick").started += RightClickHeld;
+           // playerActionMap.FindAction("RightClick").canceled += CancelMove;
         }
 
 
