@@ -1,3 +1,4 @@
+using FishingGame.Player;
 using NUnit.Framework;
 using ReelingMasterScript;
 using System.Collections;
@@ -17,13 +18,6 @@ namespace PrototypeFishingMechanics
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
-        #region Public Variables
-
-        
-
-        #endregion
-
-
         #region Private Fields
 
         // Minigame stats and fields \\
@@ -50,7 +44,7 @@ namespace PrototypeFishingMechanics
         //***************************\\
 
         [SerializeField]
-        private GameObject characterController;
+        private PlayerController characterController;
 
         [SerializeField]
         private GameObject winText;
@@ -69,8 +63,7 @@ namespace PrototypeFishingMechanics
         {
             _currentFish3DObject = fish3DObject;
 
-            characterController.GetComponent<CharacterMovement>().AllowMovement = false;
-            characterController.GetComponent<CameraRotation>().AllowRotation = false;
+            characterController.GetComponent<PlayerController>().AreControlsEnabled = false;
 
             initiationScript.InitiateFishingPerspective();
 
@@ -202,8 +195,7 @@ namespace PrototypeFishingMechanics
             _currentlyReelingFish = null;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            characterController.GetComponent<CharacterMovement>().AllowMovement = true;
-            characterController.GetComponent<CameraRotation>().AllowRotation = true;
+            characterController.GetComponent<PlayerController>().AreControlsEnabled = true;
             initiationScript.AllowControls = true;
             initiationScript.ShouldEnableFishPerspective(false);
             

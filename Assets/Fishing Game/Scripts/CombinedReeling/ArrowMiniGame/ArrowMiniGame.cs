@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +32,6 @@ namespace PrototypeFishingMechanics
         [Tooltip("The parent object in the ui ")]
         private GameObject fishingCanvas;
 
-
         //Arrow Sprites
         [SerializeField]
         private Sprite upSprite;
@@ -41,6 +41,11 @@ namespace PrototypeFishingMechanics
         private Sprite leftSprite;
         [SerializeField]
         private Sprite rightSprite;
+
+        private Transform _slot1Transform;
+        private Transform _slot2Transform;
+        private Transform _slot3Transform;
+        private Transform _slot4Transform;
 
         //FishingBar
         [SerializeField]
@@ -92,7 +97,8 @@ namespace PrototypeFishingMechanics
                 {
                     if (pressedKey == _inputSequence[_inputIndex])
                     {
-                        arrowSlots[_inputIndex].color = Color.green;
+                        FlickAnimation(arrowSlots[_inputIndex]);
+                        //arrowSlots[_inputIndex].gameObject.SetActive(false);
                         _inputIndex++;
 
                         if (_inputIndex >= _inputSequence.Count)
@@ -114,7 +120,7 @@ namespace PrototypeFishingMechanics
         /// Starts the arrow quick time event
         /// Sets up a randomized arrow order and ties them to their respective key
         /// </summary>
-        public void StartQTE()
+        private void StartQTE()
         {
             if (_isFishingFinished) return;
 
@@ -125,7 +131,12 @@ namespace PrototypeFishingMechanics
 
             for (int i = 0; i < arrowSlots.Length; i++)
             {
+                Animator animatorToUse;
+                animatorToUse = arrowSlots[i].GameObject().GetComponent<Animator>();
+
+                arrowSlots[i].gameObject.SetActive(true);
                 arrowSlots[i].color = Color.white;
+                animatorToUse.SetInteger("ArrowSlot", i + 1);
 
                 int rand = Random.Range(0, 4);
                 KeyCode dirKey;
@@ -155,14 +166,26 @@ namespace PrototypeFishingMechanics
             }
         }
 
+        private void FlickAnimation(Image arrowSprite)
+        {
+            Animator animatorToUse;
+            animatorToUse = arrowSprite.GameObject().GetComponent<Animator>();
+
+            animatorToUse.SetBool("IsActive", true);
+        }
+
+
         /// <summary>
         /// Disables the quick time event, cleaing the arrowslots
         /// </summary>
-        void EndQTE()
+        private void EndQTE()
         {
             _isQTEActive = false;
             foreach (var img in arrowSlots)
             {
+                Animator animatorToUse;
+                animatorToUse = img.GameObject().GetComponent<Animator>();
+                animatorToUse.SetBool("IsActive", false);
                 img.enabled = false;
             }
         }
@@ -170,7 +193,7 @@ namespace PrototypeFishingMechanics
         /// <summary>
         /// Calls the end QTE event function and the lose minigame
         /// </summary>
-        void Fail()
+        private void Fail()
         {
             EndQTE();
             LoseMiniGame();
@@ -180,7 +203,7 @@ namespace PrototypeFishingMechanics
         /// Detects if a key has been pressed for any of the arrows
         /// </summary>
         /// /// <param name="key">The arrowkey pressed</param>
-        bool CheckKeyPressed(out KeyCode key)
+        private bool CheckKeyPressed(out KeyCode key)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow)) { key = KeyCode.UpArrow; return true; }
             if (Input.GetKeyDown(KeyCode.DownArrow)) { key = KeyCode.DownArrow; return true; }
