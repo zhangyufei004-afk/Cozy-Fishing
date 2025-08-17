@@ -35,6 +35,7 @@ namespace FishingGame.UI.Inventory
 
         private void Update()
         {
+            // Tab key toggle for inventory visibility
             if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
             {
                 ToggleInventoryVisibility();
@@ -126,4 +127,5 @@ namespace FishingGame.UI.Inventory
         }
     }
 }
+
 
