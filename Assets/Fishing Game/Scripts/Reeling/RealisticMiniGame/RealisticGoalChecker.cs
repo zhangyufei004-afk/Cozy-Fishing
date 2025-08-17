@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// This class is purley used to check if the mouse is ontop of the goal in the realisticminigame
@@ -46,7 +46,7 @@ namespace PrototypeFishingMechanics
         private static List<RaycastResult> GetEventSystemRaycastResults()
         {
             PointerEventData eventData = new PointerEventData(EventSystem.current);
-            eventData.position = Input.mousePosition;
+            eventData.position = UnityEngine.Input.mousePosition;
             List<RaycastResult> raysastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, raysastResults);
             return raysastResults;

@@ -1,11 +1,10 @@
-using Brayden;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// This class uses the IReelingGame interface
@@ -22,6 +21,7 @@ namespace PrototypeFishingMechanics
 
         #region Private Fields
 
+        private FishScriptableObject _fishData;
 
         [SerializeField]
         [Tooltip("Reference to the ReelingMaster script.")]
@@ -104,12 +104,12 @@ namespace PrototypeFishingMechanics
                 LoseMiniGame();
             }
 
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
             {
                 MoveCatchIndicator(10 * Time.deltaTime);
             }
 
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
             {
                 MoveCatchIndicator(-10 * Time.deltaTime);
             }
@@ -129,11 +129,14 @@ namespace PrototypeFishingMechanics
 
         /// <summary>
         /// Setups up any variable or field needed for the minigame to run
+        /// Difficulty variable from the fishscriptableobject can be used to modify stats
         /// </summary>
-        public void InitializeMiniGame(int fishCatchDifficulty) 
+        /// <param name="fishScriptable">The data of fish object being caught</param>
+        public void InitializeMiniGame(FishScriptableObject fishScriptable) 
         {
-            sliderCanvas.SetActive(true);
+            _fishData = fishScriptable;
 
+            sliderCanvas.SetActive(true);
             _timerValue = 0f;
             _catchProgress = 50;
 

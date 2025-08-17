@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// This interface is required for all minigames.
@@ -18,7 +18,7 @@ namespace PrototypeFishingMechanics
         /// Variables can be modified based on the difficulty of fish
         /// </summary>
         /// /// <param name="fishCatchDifficulty">Represesnts how difficult caught fish is</param>
-        public void InitializeMiniGame(int fishCatchDifficulty);
+        public void InitializeMiniGame(FishScriptableObject fishScriptable);
 
         /// <summary>
         /// Begins the currently selected minigame

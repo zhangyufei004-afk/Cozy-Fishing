@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// ArrowMiniGame uses the IReelingMinigame interface
@@ -15,6 +16,8 @@ namespace PrototypeFishingMechanics
     public class ArrowMiniGame : MonoBehaviour, IReelingMinigame
     {
         #region Private Properties
+
+        private FishScriptableObject _fishData;
 
         [SerializeField]
         [Tooltip("Reference to the ReelingMaster script.")]
@@ -28,8 +31,12 @@ namespace PrototypeFishingMechanics
         private Vector2[] _arrowSlotPositions;
 
         [SerializeField]
-        [Tooltip("The parent object in the ui ")]
+        [Tooltip("The parent object in the ui")]
         private GameObject fishingCanvas;
+
+        [SerializeField]
+        [Tooltip("The bar object in the ui")]
+        private GameObject uiBar;
 
         //Arrow Sprites
         [SerializeField]
@@ -49,6 +56,7 @@ namespace PrototypeFishingMechanics
 
         //FishingBar
         [SerializeField]
+        [Tooltip("The amount of time player has to beat the minigame")]
         private float inputTimeLimit = 3f;
 
         //QTE
@@ -59,30 +67,16 @@ namespace PrototypeFishingMechanics
         private bool _isFishingFinished = false;
 
         #endregion
-
-        private void Start()
-        {
-            _arrowSlotPositions = new Vector2[arrowSlots.Length];
-
-            for (int i = 0; i <arrowSlots.Length; i++)
-            {
-                _arrowSlotPositions[i] = arrowSlots[i].gameObject.transform.localPosition;
-            }
-        }
-
-
         /// <summary>
         /// Setsup any properties/variables needed for the minigame
-        /// Parameter fishCatchDifficulty can be used to modify difficulty of minigame
+        /// Difficulty variable from the fishscriptableobject can be used to modify stats
         /// </summary>
-        /// <param name="fishCatchDifficulty">The difficulty of the fish caught</param>
-        public void InitializeMiniGame(int fishCatchDifficulty)
+        /// <param name="fishScriptable">The data of fish object being caught</param>
+        public void InitializeMiniGame(FishScriptableObject fishScriptable)
         {
+            _fishData = fishScriptable;
+            uiBar.SetActive(true);
             fishingCanvas.SetActive(true);
-            for (int i = 0; i < arrowSlots.Length; i++)
-            {
-                arrowSlots[i].gameObject.transform.localPosition = _arrowSlotPositions[i];
-            }
         }
 
         /// <summary>
@@ -106,7 +100,7 @@ namespace PrototypeFishingMechanics
                 return;
             }
 
-            if (Input.anyKeyDown)
+            if (UnityEngine.Input.anyKeyDown)
             {
                 if (CheckKeyPressed(out KeyCode pressedKey))
                 {
@@ -196,13 +190,6 @@ namespace PrototypeFishingMechanics
         private void EndQTE()
         {
             _isQTEActive = false;
-            foreach (var img in arrowSlots)
-            {
-                Animator animatorToUse;
-                animatorToUse = img.GameObject().GetComponent<Animator>();
-                animatorToUse.SetBool("IsActive", false);
-                img.enabled = false;
-            }
         }
 
         /// <summary>
@@ -220,10 +207,10 @@ namespace PrototypeFishingMechanics
         /// /// <param name="key">The arrowkey pressed</param>
         private bool CheckKeyPressed(out KeyCode key)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow)) { key = KeyCode.UpArrow; return true; }
-            if (Input.GetKeyDown(KeyCode.DownArrow)) { key = KeyCode.DownArrow; return true; }
-            if (Input.GetKeyDown(KeyCode.LeftArrow)) { key = KeyCode.LeftArrow; return true; }
-            if (Input.GetKeyDown(KeyCode.RightArrow)) { key = KeyCode.RightArrow; return true; }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.UpArrow)) { key = KeyCode.UpArrow; return true; }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.DownArrow)) { key = KeyCode.DownArrow; return true; }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow)) { key = KeyCode.LeftArrow; return true; }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow)) { key = KeyCode.RightArrow; return true; }
             key = KeyCode.None;
             return false;
         }
@@ -233,9 +220,10 @@ namespace PrototypeFishingMechanics
         /// </summary>
         public void WinMiniGame()
         {
-            fishingCanvas.SetActive(false);
             EndQTE();
+            uiBar.SetActive(false);
             reelingMaster.EndCurrentMiniGame(true);
+            StartCoroutine(HideUI());
         }
 
         /// <summary>
@@ -243,9 +231,31 @@ namespace PrototypeFishingMechanics
         /// </summary>
         public void LoseMiniGame()
         {
-            fishingCanvas.SetActive(false);
+            uiBar.SetActive(false);
             EndQTE();
             reelingMaster.EndCurrentMiniGame(false);
+            StartCoroutine(HideUI());
+        }
+
+        /// <summary>
+        /// A timer that hides the fishing canvas after 2 seconds
+        /// This is run seperatly so the arrows can complete their animation
+        /// Before beind hidden
+        /// </summary>
+        IEnumerator HideUI()
+        {
+            yield return new WaitForSeconds(2f);
+            fishingCanvas.SetActive(false);
+
+            foreach (var img in arrowSlots)
+            {
+                Animator animatorToUse;
+                animatorToUse = img.GameObject().GetComponent<Animator>();
+                animatorToUse.SetBool("IsActive", false);
+                //  img.enabled = false;
+            }
         }
     }
+
+    
 }

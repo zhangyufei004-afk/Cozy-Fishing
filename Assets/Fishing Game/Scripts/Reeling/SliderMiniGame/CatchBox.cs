@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Brayden
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// This class is apart of the Slidersminigame

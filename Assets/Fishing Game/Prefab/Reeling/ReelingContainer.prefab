@@ -256,6 +256,7 @@ MonoBehaviour:
   miniGameTypes:
   - {fileID: 2680999012508629255}
   - {fileID: 313023259972732001}
+  - {fileID: 4518172318511371622}
   characterController: {fileID: 0}
   winText: {fileID: 0}
   loseText: {fileID: 0}

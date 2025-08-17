@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// Fishing pools contain types of fish scriptable objects that is fished from them

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// Realistic minigame uses the IReelingMiniGame interface
@@ -53,6 +53,8 @@ namespace PrototypeFishingMechanics
         [SerializeField]
         private float timeLimit;
 
+        private FishScriptableObject _fishData;
+
         private float _currentTimeSpent = 0f;
         private bool _isMinigameActive = false;
 
@@ -60,11 +62,12 @@ namespace PrototypeFishingMechanics
 
         /// <summary>
         /// Sets up the required properties for the minigame
-        /// FishcatchDifficulty can be used to modify difficulty aspects of the minigame
+        /// Difficulty variable from the fishscriptableobject can be used to modify stats
         /// </summary>
-        /// <param name="fishCatchDifficulty">The difficulty of the fish caught</param>
-        public void InitializeMiniGame(int fishCatchDifficulty)
+        /// <param name="fishScriptable">The data of fish object being caught</param>
+        public void InitializeMiniGame(FishScriptableObject fishScriptable)
         {
+            _fishData = fishScriptable;
             realisticCanvas.SetActive(true);
             progressSlider.value = 0f;
             _catchProgress = 0f;
@@ -158,7 +161,7 @@ namespace PrototypeFishingMechanics
         /// </summary>
         private Vector3 GetCursorPosition()
         {
-            Vector3 mousePos = Input.mousePosition;
+            Vector3 mousePos = UnityEngine.Input.mousePosition;
             return mousePos;
         }
 

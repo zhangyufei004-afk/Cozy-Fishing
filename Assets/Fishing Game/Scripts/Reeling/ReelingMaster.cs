@@ -1,6 +1,5 @@
 using FishingGame.Player;
 using NUnit.Framework;
-using ReelingMasterScript;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,7 +7,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Android;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
 
     /// <summary>

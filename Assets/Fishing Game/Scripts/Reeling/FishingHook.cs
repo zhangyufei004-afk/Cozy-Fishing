@@ -3,7 +3,7 @@ using PrototypeFishingMechanics;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReelingMasterScript
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// This class uses an OnCollisionEnter function to check determine when the players

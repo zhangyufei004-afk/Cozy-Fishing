@@ -524,6 +524,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4626143025870754190, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4766851537740856712, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3405,6 +3409,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1611936818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4626143025870754190, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+  m_PrefabInstance: {fileID: 198861678}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1720029159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3605,9 +3614,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: fishingCanvas
+      propertyPath: uiBar
       value: 
       objectReference: {fileID: 198861696}
+    - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: fishingCanvas
+      value: 
+      objectReference: {fileID: 1611936818}
+    - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: inputTimeLimit
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'arrowSlots.Array.data[0]'
       value: 

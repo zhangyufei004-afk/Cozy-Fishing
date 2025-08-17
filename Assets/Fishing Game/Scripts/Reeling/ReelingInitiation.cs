@@ -1,11 +1,10 @@
-using ReelingMasterScript;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace PrototypeFishingMechanics
+namespace FishingGame.Reeling
 {
 
     /// <summary>
@@ -88,22 +87,22 @@ namespace PrototypeFishingMechanics
                 return;
             }
 
-            if (Input.GetKey(KeyCode.Mouse1))
+            if (UnityEngine.Input.GetKey(KeyCode.Mouse1))
             {
                 RightClickHeld();
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse1))
             {
                 RightClickUsed();
             }
 
-            if (Input.GetKeyUp(KeyCode.Mouse1))
+            if (UnityEngine.Input.GetKeyUp(KeyCode.Mouse1))
             {
                 RightClickReleased();
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0))
             {
                 LeftClick();
             }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.Reeling
 {
     internal enum FishingDifficulty : int
     {
