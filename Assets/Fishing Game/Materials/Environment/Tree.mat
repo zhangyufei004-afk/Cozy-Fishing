@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wood
+  m_Name: Tree
   m_Shader: {fileID: -6465566751694194690, guid: 1e6e37ae6c788ee48937091ac2037cb8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -62,7 +62,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f6da9cf46e3eb844faadb79f700fd49f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -130,7 +130,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.46226418, g: 0.30428338, b: 0.16353686, a: 1}
     - _Color: {r: 0.46226412, g: 0.30428335, b: 0.16353682, a: 1}
-    - _Diffuse: {r: 0.41509432, g: 0.28955758, b: 0.09985758, a: 0}
+    - _Diffuse: {r: 0.745283, g: 0.745283, b: 0.745283, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
