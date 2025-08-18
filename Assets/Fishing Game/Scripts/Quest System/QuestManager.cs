@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FishingGame.QuestSystem
 {
@@ -7,7 +8,7 @@ namespace FishingGame.QuestSystem
     /// Class which manages all quests in the world. Saves quests when ending the game and restores quests from persistent storage
     /// when loading a save. 
     /// </summary>
-    public static class QuestManager
+    public class QuestManager : MonoBehaviour
     {
         // TODO: SHOULD THIS BE NON STATIC AND EXTEND MONO BEHAVIOUR AS A SINGLETON SO I CAN REFERENCE PLAYER?
         private static List<IQuest> _quests;
