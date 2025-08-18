@@ -3794,7 +3794,7 @@ PrefabInstance:
       objectReference: {fileID: 198861691}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: boxSpeedScalar
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: progressSlider
@@ -3804,6 +3804,10 @@ PrefabInstance:
       propertyPath: uiCatchBoxScript
       value: 
       objectReference: {fileID: 198861690}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: catchIncreaseAmount
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

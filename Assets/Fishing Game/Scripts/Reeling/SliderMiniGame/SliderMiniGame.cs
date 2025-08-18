@@ -141,8 +141,6 @@ namespace FishingGame.Reeling
                 MoveCatchIndicator(-boxSpeedScalar * Time.deltaTime);
             }
 
-            ///////////
-
             DetermineIfNeedGoal();
             UpdateFishLocation();
             EvadePlayer();
@@ -218,30 +216,20 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// This function will generate a location goal for the fish to move to and return it.
+        /// It will find a random location that does not collide with the catchbox and set that as the new
+        /// goal.
+        /// </summary>
+        /// <returns>Vector3 newGoalLocation</returns>
         private Vector3 CreateGoalLocation()
         {
-            float fishYLocation = fishImage.transform.localPosition.y;
+            Vector3 currentPosition = fishImage.transform.localPosition;
 
-            float distanceFromLeftSide = fishYLocation - fishMinYCord;
-            float distanceFromRightSide = fishYLocation - fishMaxYCord;
+            float randomYPosition = UnityEngine.Random.Range(fishMinYCord, fishMaxYCord);
 
-            // Go towards the left
-            if (distanceFromLeftSide < distanceFromRightSide)
-            {
-                isGoingLeft = true;
-                int randomYPosition = (int)UnityEngine.Random.Range(catchBox.transform.localPosition.y, fishMinYCord);
-
-                Vector3 newGoalLocation = new Vector3(fishImage.transform.localPosition.x, randomYPosition, fishImage.transform.localPosition.z);
-                return newGoalLocation;
-            }
-            else
-            {
-                isGoingLeft = false;
-                int randomYPosition = (int)UnityEngine.Random.Range(catchBox.transform.localPosition.y, fishMaxYCord);
-
-                Vector3 newGoalLocation = new Vector3(fishImage.transform.localPosition.x, randomYPosition, fishImage.transform.localPosition.z);
-                return newGoalLocation;
-            }
+            Vector3 newGoal = new Vector3(currentPosition.x, randomYPosition, currentPosition.z);
+            return newGoal;
         }
 
         private void FishSetGoal(Vector3 goalLocation)
