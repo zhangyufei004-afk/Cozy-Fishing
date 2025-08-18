@@ -40,8 +40,11 @@ namespace FishingGame.Reeling
         private float _maxTimeBetweenGoals = 0f;
         private bool isGoingLeft;
 
-        // Awareness is a difficulty variable, it affects how often a fish can attempt to avoid the catchbox
-        // Higher Awareness means a fish will attempt to avoid the player more often
+        private float _timeInCatchBox = 0f;
+        private float _maxTimeInCatchBox = 0f;
+
+        // Awareness is a difficulty variable, it affects how quick a fish will attempt to escape when the box is on it
+        // Higher awareness = less time before attempting an escape
         private int _awareness = 0;
 
         [SerializeField]
@@ -141,8 +144,8 @@ namespace FishingGame.Reeling
             ///////////
 
             DetermineIfNeedGoal();
-
             UpdateFishLocation();
+            EvadePlayer();
 
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
             {
@@ -164,14 +167,18 @@ namespace FishingGame.Reeling
         {
             _fishData = fishScriptable;
 
-            fishImage.sprite = fishScriptable.Texture;
+            fishImage.sprite = _fishData.Texture;
             sliderCanvas.SetActive(true);
             _timerValue = 0f;
             _catchProgress = 50;
-            _awareness = fishScriptable.FishCatchDifficulty;
-            _maxTimeBetweenGoals = 15 - _awareness;
+            _maxTimeBetweenGoals = 8;
             Vector3 newFishGoal = CreateGoalLocation();
             FishSetGoal(newFishGoal);
+
+            // Scaling variables based on difficulty
+            _awareness = _fishData.FishCatchDifficulty;
+            _maxTimeInCatchBox = 5;
+
 
             // TODO: Set this to scale based on fish difficulty?
             _maxTime = 30f;
@@ -239,8 +246,20 @@ namespace FishingGame.Reeling
 
         private void FishSetGoal(Vector3 goalLocation)
         {
+            _timeSinceLastGoal = 0;
             _fishMoveGoal = goalLocation;
         }
+
+        private void EvadePlayer()
+        {
+            if (_timeInCatchBox >= _maxTimeInCatchBox)
+            {
+                _timeInCatchBox = 0;
+                Vector3 newGoalLocation = CreateGoalLocation();
+                FishSetGoal(newGoalLocation);
+            }
+        }
+
 
         private void UpdateFishLocation()
         {
