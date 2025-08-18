@@ -106,7 +106,7 @@ namespace FishingGame.Reeling
             // 5/08/2025 - Brayden
             if (testNextMiniGame != _currentMinigame)
             {
-                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_fishDifficulty);
+                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingFish);
                 _currentMinigame = testNextMiniGame;
                 _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
             }

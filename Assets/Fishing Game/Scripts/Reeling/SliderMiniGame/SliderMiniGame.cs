@@ -3,6 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 namespace FishingGame.Reeling
 {
@@ -35,24 +36,44 @@ namespace FishingGame.Reeling
         private float _maxTime = 0f;
         private float _catchProgress = 50f;
         private int _catchMax = 100;
+        private float _timeSinceLastGoal = 0f;
+        private float _maxTimeBetweenGoals = 0f;
+        private bool isGoingLeft;
+
+        // Awareness is a difficulty variable, it affects how often a fish can attempt to avoid the catchbox
+        // Higher Awareness means a fish will attempt to avoid the player more often
+        private int _awareness = 0;
 
         [SerializeField]
+        private Vector3 _fishMoveGoal = Vector3.zero;
+
+        [SerializeField]
+        [Tooltip("Scales how much to increase the progress by when the fish is inside of the catchbox")]
         private int catchIncreaseAmount;
 
         [SerializeField]
+        [Tooltip("Scales how much to decrease the progress by when the fish is outside of the catchbox")]
         private int catchDecreaseAmount;
 
         [SerializeField]
+        [Tooltip("Scales how fast the player moves the catchbox with input")]
+        private int boxSpeedScalar;
+
+        [SerializeField]
+        [Tooltip("The slider that shows the total progress of this minigame")]
         private UnityEngine.UI.Slider progressSlider;
 
         [SerializeField]
+        [Tooltip("This is connected to the catch box (green square) of the ui")]
         private CatchBox uiCatchBoxScript;
 
         [SerializeField]
+        [Tooltip("Transform of the catch box ui element")]
         private RectTransform catchBox;
 
         [SerializeField]
-        private RectTransform fishImage;
+        [Tooltip("The fish image that the player is trying to catch")]
+        private UnityEngine.UI.Image fishImage;
 
         [SerializeField]
         [Tooltip("Minimum amount of distance fish can move")]
@@ -97,6 +118,7 @@ namespace FishingGame.Reeling
             }
 
             _timerValue += Time.deltaTime;
+            _timeSinceLastGoal += Time.deltaTime;
 
             // Check if timer complete
             if (_timerValue >= _maxTime)
@@ -104,19 +126,25 @@ namespace FishingGame.Reeling
                 LoseMiniGame();
             }
 
+            // Move player if keys are held
+
             if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
             {
-                MoveCatchIndicator(10 * Time.deltaTime);
+                MoveCatchIndicator(boxSpeedScalar * Time.deltaTime);
             }
 
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
             {
-                MoveCatchIndicator(-10 * Time.deltaTime);
+                MoveCatchIndicator(-boxSpeedScalar * Time.deltaTime);
             }
 
-            MoveFish();
+            ///////////
 
-            if (uiCatchBoxScript.CheckUIOverlap(fishImage, catchBox))
+            DetermineIfNeedGoal();
+
+            UpdateFishLocation();
+
+            if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
             {
                 ModifyCatchProgress(catchIncreaseAmount);
             }
@@ -136,9 +164,14 @@ namespace FishingGame.Reeling
         {
             _fishData = fishScriptable;
 
+            fishImage.sprite = fishScriptable.Texture;
             sliderCanvas.SetActive(true);
             _timerValue = 0f;
             _catchProgress = 50;
+            _awareness = fishScriptable.FishCatchDifficulty;
+            _maxTimeBetweenGoals = 15 - _awareness;
+            Vector3 newFishGoal = CreateGoalLocation();
+            FishSetGoal(newFishGoal);
 
             // TODO: Set this to scale based on fish difficulty?
             _maxTime = 30f;
@@ -163,17 +196,82 @@ namespace FishingGame.Reeling
         {
             Vector3 currentPosition = catchBox.transform.localPosition;
             float yPosition = currentPosition.y += moveValue;
-            Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
+            yPosition = Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
 
             catchBox.localPosition = newPosition;
+        }
+
+        private void DetermineIfNeedGoal()
+        {
+            if (_timeSinceLastGoal >= _maxTimeBetweenGoals)
+            {
+                Vector3 newFishGoal = CreateGoalLocation();
+                FishSetGoal(newFishGoal);
+            }
+        }
+
+        private Vector3 CreateGoalLocation()
+        {
+            float fishYLocation = fishImage.transform.localPosition.y;
+
+            float distanceFromLeftSide = fishYLocation - fishMinYCord;
+            float distanceFromRightSide = fishYLocation - fishMaxYCord;
+
+            // Go towards the left
+            if (distanceFromLeftSide < distanceFromRightSide)
+            {
+                isGoingLeft = true;
+                int randomYPosition = (int)UnityEngine.Random.Range(catchBox.transform.localPosition.y, fishMinYCord);
+
+                Vector3 newGoalLocation = new Vector3(fishImage.transform.localPosition.x, randomYPosition, fishImage.transform.localPosition.z);
+                return newGoalLocation;
+            }
+            else
+            {
+                isGoingLeft = false;
+                int randomYPosition = (int)UnityEngine.Random.Range(catchBox.transform.localPosition.y, fishMaxYCord);
+
+                Vector3 newGoalLocation = new Vector3(fishImage.transform.localPosition.x, randomYPosition, fishImage.transform.localPosition.z);
+                return newGoalLocation;
+            }
+        }
+
+        private void FishSetGoal(Vector3 goalLocation)
+        {
+            _fishMoveGoal = goalLocation;
+        }
+
+        private void UpdateFishLocation()
+        {
+            if (fishImage.transform.position.y == _fishMoveGoal.y)
+            {
+                return;
+            }
+
+            if (isGoingLeft)
+            {
+                int randomValue = UnityEngine.Random.Range(fishMoveMin, 0);
+
+                Vector3 currentPosition = fishImage.transform.localPosition;
+                Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, randomValue * Time.deltaTime);
+                fishImage.transform.localPosition = newPosition;
+            }
+            else
+            {
+                int randomValue = UnityEngine.Random.Range(0, fishMoveMax);
+
+                Vector3 currentPosition = fishImage.transform.localPosition;
+                Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, randomValue * Time.deltaTime);
+                fishImage.transform.localPosition = newPosition;
+            }
         }
 
         /// <summary>
         /// Randomly moves the fish ui element
         /// Limits the y position based on the Min and Max fishMove values
         /// </summary>
-        public void MoveFish()
+        private void MoveFish()
         {
             int randomValue = UnityEngine.Random.Range(fishMoveMin, fishMoveMax);
 
