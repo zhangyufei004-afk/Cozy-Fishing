@@ -1,22 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
+using FishingGame.FishSystem;
+using FishingGame.FishLog;
 
 namespace FishingGame.Inventory
 {
     /// <summary>
-    /// Inventory System - Stores caught fish.
+    /// Inventory System - Stores caught fish and updates FishLog.
     /// </summary>
     public class InventorySystem : MonoBehaviour
     {
-        private List<Fish> fishInventory = new List<Fish>();
+        [SerializeField] private FishLogSystem fishLogSystem;
+        private List<Fish> _fishInventory = new List<Fish>();
 
         /// <summary>
-        /// Adds a new fish to the inventory.
+        /// Adds a new fish to the inventory and marks it as caught in FishLogSystem.
         /// </summary>
         /// <param name="newFish">Fish instance</param>
         public void AddFish(Fish newFish)
         {
-            fishInventory.Add(newFish);
+            _fishInventory.Add(newFish);
+
+            if (fishLogSystem != null)
+            {
+                fishLogSystem.RegisterFishCaught(newFish.GetFishBase());
+            }
         }
 
         /// <summary>
@@ -24,7 +32,7 @@ namespace FishingGame.Inventory
         /// </summary>
         public List<Fish> GetFishInventory()
         {
-            return fishInventory;
+            return _fishInventory;
         }
 
         /// <summary>
@@ -32,7 +40,7 @@ namespace FishingGame.Inventory
         /// </summary>
         public void ClearInventory()
         {
-            fishInventory.Clear();
+            _fishInventory.Clear();
         }
     }
 }
