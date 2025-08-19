@@ -3511,6 +3511,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1852017159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5283355686091651846, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+  m_PrefabInstance: {fileID: 198861678}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1889168685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3666,6 +3671,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 198861696}
     - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 2008178089}
+    - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fishingCanvas
       value: 
       objectReference: {fileID: 1611936818}
@@ -3746,6 +3755,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 395450389}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: timerObject
+      value: 
+      objectReference: {fileID: 1852017159}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: initiationScript
       value: 
       objectReference: {fileID: 2991282359923290823}
@@ -3765,6 +3778,10 @@ PrefabInstance:
       propertyPath: Animator
       value: 
       objectReference: {fileID: 198861685}
+    - target: {fileID: 7358692044108832365, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 2008178089}
     - target: {fileID: 7358692044108832365, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: goalCircle
       value: 
@@ -3793,6 +3810,10 @@ PrefabInstance:
       propertyPath: fishImage
       value: 
       objectReference: {fileID: 1339708505}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 2008178089}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fishMoveMax
       value: 200
@@ -4007,6 +4028,17 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &2008178089 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4962659832065889942, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+  m_PrefabInstance: {fileID: 198861678}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2124013169
 GameObject:
   m_ObjectHideFlags: 0

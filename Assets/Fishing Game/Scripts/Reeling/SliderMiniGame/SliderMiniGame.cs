@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using TMPro;
+using TMPro.Examples;
 
 namespace FishingGame.Reeling
 {
@@ -109,8 +111,12 @@ namespace FishingGame.Reeling
         [Tooltip("The minimum y axis value the catchbox can have")]
         private float catchBoxMinXCord;
 
-        
-        
+        [SerializeField]
+        [Tooltip("The UI text that shows how much time is left")]
+        private TextMeshProUGUI timerText;
+
+
+
 
 
         #endregion
@@ -146,6 +152,7 @@ namespace FishingGame.Reeling
             DetermineIfNeedGoal();
             UpdateFishLocation();
             SetFishDirection();
+            UpdateTimer();
 
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
             {
@@ -367,6 +374,11 @@ namespace FishingGame.Reeling
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
+        }
+
+        public void UpdateTimer()
+        {
+            timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_maxTime - _timerValue));
         }
     }
 }

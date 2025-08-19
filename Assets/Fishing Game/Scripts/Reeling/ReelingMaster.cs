@@ -52,6 +52,10 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         private GameObject loseText;
+
+        [SerializeField]
+        [Tooltip("The timer UI element.")]
+        private GameObject timerObject;
         #endregion
 
         /// <summary>
@@ -78,6 +82,7 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             initiationScript.AllowControls = false;
+            timerObject.SetActive(true);
 
             loseText.SetActive(false);
             winText.SetActive(false);
@@ -121,6 +126,7 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             initiationScript.AllowControls = false;
+            timerObject.SetActive(true);
 
             loseText.SetActive(false);
             winText.SetActive(false);
@@ -247,7 +253,8 @@ namespace FishingGame.Reeling
             characterController.GetComponent<PlayerController>().AreControlsEnabled = true;
             initiationScript.AllowControls = true;
             initiationScript.ShouldEnableFishPerspective(false);
-            
+            timerObject.SetActive(false);
+
 
             _currentFish3DObject.SetActive(false);
 

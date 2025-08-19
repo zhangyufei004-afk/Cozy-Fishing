@@ -40,6 +40,10 @@ namespace FishingGame.Reeling
 
         private bool _arrowDisabled = false;
 
+        [SerializeField]
+        [Tooltip("The UI text that shows how much time is left")]
+        private TextMeshProUGUI timerText;
+
         //Arrow Sprites
         [SerializeField]
         [Tooltip("Up arrow sprite")]
@@ -69,6 +73,7 @@ namespace FishingGame.Reeling
         private bool _isFishingFinished = false;
 
         #endregion
+
         /// <summary>
         /// Setsup any properties/variables needed for the minigame
         /// Difficulty variable from the fishscriptableobject can be used to modify stats
@@ -95,6 +100,7 @@ namespace FishingGame.Reeling
             if (!_isQTEActive || _isFishingFinished) return;
 
             _inputTimer -= Time.deltaTime;
+            UpdateTimer();
 
             if (_inputTimer <= 0f)
             {
@@ -280,6 +286,11 @@ namespace FishingGame.Reeling
             arrowSprite.color = Color.white;
             arrowAnimator.SetBool("Shake", false);
             _arrowDisabled = false;
+        }
+
+        public void UpdateTimer()
+        {
+            timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_inputTimer));
         }
     }
 

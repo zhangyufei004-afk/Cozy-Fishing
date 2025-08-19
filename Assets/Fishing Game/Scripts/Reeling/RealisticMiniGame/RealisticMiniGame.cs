@@ -1,5 +1,6 @@
 using FishingGame;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,6 +53,10 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         private float timeLimit;
+
+        [SerializeField]
+        [Tooltip("The UI text that shows how much time is left")]
+        private TextMeshProUGUI timerText;
 
         private FishScriptableObject _fishData;
 
@@ -129,6 +134,7 @@ namespace FishingGame.Reeling
 
 
             _currentTimeSpent = UpdateTime(_currentTimeSpent);
+            UpdateTimer();
 
 
             playerCircle.transform.position = GetCursorPosition();
@@ -213,5 +219,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        public void UpdateTimer()
+        {
+            timerText.text = ("Time Remaining: " + Mathf.RoundToInt(timeLimit - _currentTimeSpent));
+        }
     }
 }
