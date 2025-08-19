@@ -16,15 +16,15 @@ namespace FishingGame.QuestSystem
         [SerializeField] protected TextAsset questDialogue;
         [SerializeField] [CanBeNull] protected GameObject questReward;
 
-        private bool isComplete = false;
+        private bool _isComplete = false;
 
         public abstract void StartStage();
 
         protected virtual void FinishStage()
         {
-            if (!isComplete)
+            if (!_isComplete)
             {
-                isComplete = true;
+                _isComplete = true;
 
                 if (questReward is not null)
                 {
