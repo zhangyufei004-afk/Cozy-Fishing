@@ -21,11 +21,13 @@ namespace FishingGame.Reeling
 
         // Minigame stats and fields \\
         private GameObject _currentMinigame;
-        private int _miniGameWinsRequired = 4;
+        private int _miniGameWinsRequired = 1;
         private int _currentMiniGameWins;
         private bool _hasWon = false;
         private int _fishDifficulty;
         private FishScriptableObject _currentlyReelingFish;
+        private FishingPool _currentFishPool;
+
         //TODO: Can combine this likely with the other fish variable once I have scriptable objects working
         private GameObject _currentFish3DObject;
 
@@ -53,13 +55,17 @@ namespace FishingGame.Reeling
         #endregion
 
         /// <summary>
-        /// Begin Catch is run immeaditly once a fish collides with the players fishing rod
-        /// it initializes the catch process
+        /// Begin catch is run once a player succsesfully lands the fishing rod on a pool or an individual fish
+        /// It has two variations, 1 takes a fishscriptableobject and a gameobject
+        /// The other variation additionally takes a Fishing pool input.
+        /// This variation is to be used for individually caught fish and not fishing pools.
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
-        /// /// <param name="fish3DObject">The 3D object of the fish</param>
+        /// <param name="fish3DObject">The 3D object of the fish</param>
         public void BeginCatch(FishScriptableObject fishCaught, GameObject fish3DObject)
         {
+            _currentFishPool = null;
+
             _currentFish3DObject = fish3DObject;
 
             characterController.GetComponent<PlayerController>().AreControlsEnabled = false;
@@ -81,6 +87,49 @@ namespace FishingGame.Reeling
             {
                 _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
                 SetNextMiniGame(); 
+            }
+            else
+            {
+                // TODO: Implement a visual indicator so this debug log is not needed when a catch is not difficult enough
+                Debug.Log("DEBUGLOG: This fish was not difficult enough to cause minigames");
+                EndCatch(true);
+            }
+        }
+
+        /// <summary>
+        /// Begin catch is run once a player succsesfully lands the fishing rod on a pool or an individual fish
+        /// It has two variations, 1 takes a fishscriptableobject and a gameobject
+        /// The other variation additionally takes a Fishing pool input.
+        /// This variation is to be used for fishing pools. 
+        /// </summary>
+        /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
+        /// <param name="fish3DObject">The 3D object of the fish</param>
+        /// <param name="fishPool">The fish pool being fished from</param>
+        public void BeginCatch(FishScriptableObject fishCaught, GameObject fish3DObject, FishingPool fishPool)
+        {
+            _currentFishPool = fishPool;
+
+            _currentFish3DObject = fish3DObject;
+
+            characterController.GetComponent<PlayerController>().AreControlsEnabled = false;
+
+            initiationScript.InitiateFishingPerspective();
+
+            //Resset properties for the new catch
+            _currentlyReelingFish = fishCaught;
+            _fishDifficulty = _currentlyReelingFish.FishCatchDifficulty;
+            _currentMinigame = null;
+            _currentMiniGameWins = 0;
+            initiationScript.AllowControls = false;
+
+            loseText.SetActive(false);
+            winText.SetActive(false);
+
+            // Check if the fish is strong enough for minigames to be ran
+            if (CheckIsFishDifficult() == true)
+            {
+                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
+                SetNextMiniGame();
             }
             else
             {
@@ -180,7 +229,8 @@ namespace FishingGame.Reeling
         /// <param name="fishDifficulty">The difficulty of caught fish</param>
         private int GetMiniGamesRequired(int fishDifficulty)
         {
-            return fishDifficulty += 1;
+            _miniGameWinsRequired = 1;
+            return _miniGameWinsRequired + (fishDifficulty / 2);
         }
 
 
@@ -210,6 +260,10 @@ namespace FishingGame.Reeling
             }
             else
             {
+                if (_currentFishPool != null)
+                {
+                    _currentFishPool.FishCaught();
+                }
                 winText.SetActive(true);
                 StartCoroutine(HideUIAfterCatch());
             }

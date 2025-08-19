@@ -34,7 +34,9 @@ namespace FishingGame.Reeling
             {
                 GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
                 CanCatchFish = false;
-                reelingMaster.BeginCatch(other.gameObject.GetComponent<FishingPool>().DetermineFishCaught(), fishModel);
+                FishingPool fishingPoolScript = other.gameObject.GetComponent<FishingPool>();
+
+                reelingMaster.BeginCatch(fishingPoolScript.DetermineFishCaught(), fishModel, fishingPoolScript);
             }
         }
 

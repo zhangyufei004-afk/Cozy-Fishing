@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace FishingGame.Reeling
@@ -35,6 +36,18 @@ namespace FishingGame.Reeling
             FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
 
             return fishCaught;
+        }
+
+        public void FishCaught()
+        {
+            if (CheckIfEmpty())
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                amountOfFishHeld -= 1;
+            }
         }
 
         /// <summary>

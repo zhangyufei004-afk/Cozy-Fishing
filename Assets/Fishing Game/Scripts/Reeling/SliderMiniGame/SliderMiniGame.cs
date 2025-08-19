@@ -16,10 +16,6 @@ namespace FishingGame.Reeling
     /// </summary>
     public class SliderMiniGame : MonoBehaviour, IReelingMinigame
     {
-        #region Public Variables
-
-        #endregion
-
         #region Private Fields
 
         private FishScriptableObject _fishData;
@@ -29,6 +25,7 @@ namespace FishingGame.Reeling
         private ReelingMaster reelingMaster;
 
         [SerializeField]
+        [Tooltip("The UI gameobject that parents the UI.")]
         private GameObject sliderCanvas;
 
         private bool _isMinigameActive = false;
@@ -38,10 +35,9 @@ namespace FishingGame.Reeling
         private int _catchMax = 100;
         private float _timeSinceLastGoal = 0f;
         private float _maxTimeBetweenGoals = 0f;
-        private bool isGoingLeft;
-
-        private float _timeInCatchBox = 0f;
-        private float _maxTimeInCatchBox = 0f;
+        private bool _isGoingLeft;
+        private float _catchBoxScale;
+        private float _catchBoxVelocity = 0f;
 
         // Awareness is a difficulty variable, it affects how quick a fish will attempt to escape when the box is on it
         // Higher awareness = less time before attempting an escape
@@ -69,6 +65,9 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("This is connected to the catch box (green square) of the ui")]
         private CatchBox uiCatchBoxScript;
+
+        // NOTE: All UI transform modifications in this script use Y for left to right
+        // This is because the ui image has been rotated by default
 
         [SerializeField]
         [Tooltip("Transform of the catch box ui element")]
@@ -110,6 +109,9 @@ namespace FishingGame.Reeling
         [Tooltip("The minimum y axis value the catchbox can have")]
         private float catchBoxMinXCord;
 
+        
+        
+
 
         #endregion
 
@@ -143,7 +145,7 @@ namespace FishingGame.Reeling
 
             DetermineIfNeedGoal();
             UpdateFishLocation();
-            EvadePlayer();
+            SetFishDirection();
 
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
             {
@@ -159,6 +161,9 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Setups up any variable or field needed for the minigame to run
         /// Difficulty variable from the fishscriptableobject can be used to modify stats
+        /// 
+        /// Difficulty modifiers:
+        /// The initial catch progress is 55, each level of difficulty reduces the initial progress by 5 i.e a difficulty of 2 will result in an initial progress of 45
         /// </summary>
         /// <param name="fishScriptable">The data of fish object being caught</param>
         public void InitializeMiniGame(FishScriptableObject fishScriptable) 
@@ -168,14 +173,17 @@ namespace FishingGame.Reeling
             fishImage.sprite = _fishData.Texture;
             sliderCanvas.SetActive(true);
             _timerValue = 0f;
-            _catchProgress = 50;
-            _maxTimeBetweenGoals = 8;
+            _maxTimeBetweenGoals = 1;
+            Vector3 startLocation = CreateGoalLocation();
+            fishImage.transform.localPosition = startLocation;
             Vector3 newFishGoal = CreateGoalLocation();
             FishSetGoal(newFishGoal);
 
             // Scaling variables based on difficulty
-            _awareness = _fishData.FishCatchDifficulty;
-            _maxTimeInCatchBox = 5;
+            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.FishCatchDifficulty, 0, 100);
+            _catchBoxScale = Mathf.Clamp(1.5f - 0.1f * fishScriptable.FishCatchDifficulty, 0.5f, 1.5f);
+            SetCatchBoxYScale(_catchBoxScale);
+
 
 
             // TODO: Set this to scale based on fish difficulty?
@@ -197,16 +205,31 @@ namespace FishingGame.Reeling
         /// Limits the y position based on the catchbox min and max values
         /// </summary>
         /// <param name="moveValue">The value for how far to move</param>
-        public void MoveCatchIndicator(float moveValue)
+        private void MoveCatchIndicator(float accelerationValue)
         {
+            if (_catchBoxVelocity > 0)
+            {
+                _catchBoxVelocity -= 0.5f;
+            }
+            else if (_catchBoxVelocity < 0)
+            {
+                _catchBoxVelocity += 0.5f;
+            }
+
+                _catchBoxVelocity += accelerationValue;
+
             Vector3 currentPosition = catchBox.transform.localPosition;
-            float yPosition = currentPosition.y += moveValue;
+            float yPosition = currentPosition.y += _catchBoxVelocity;
             yPosition = Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
-
             catchBox.localPosition = newPosition;
         }
 
+        /// <summary>
+        /// Checks the time since last goal was set to determine if it has been long enough to set a new goal
+        /// If it has been long enough this function will then create a new goal location through CreateGoalLocation()
+        /// and then set it through FishSetGoal.
+        /// </summary>
         private void DetermineIfNeedGoal()
         {
             if (_timeSinceLastGoal >= _maxTimeBetweenGoals)
@@ -232,23 +255,36 @@ namespace FishingGame.Reeling
             return newGoal;
         }
 
+        /// <summary>
+        /// Takes a Vector3 goal local variable, sets the _fishMoveGoal to equal this
+        /// Resets the time since last goal variable
+        /// </summary>
+        /// <param name="goalLocation">The new location to move to</param>
         private void FishSetGoal(Vector3 goalLocation)
         {
             _timeSinceLastGoal = 0;
             _fishMoveGoal = goalLocation;
         }
 
-        private void EvadePlayer()
+        /// <summary>
+        /// Checks if the fish's current goal is to the left or right of the fish
+        /// Sets the animators IsLeft bool parameter based on the direction determined.
+        /// </summary>
+        private void SetFishDirection()
         {
-            if (_timeInCatchBox >= _maxTimeInCatchBox)
+            if (_fishMoveGoal.y > fishImage.transform.localPosition.y)
             {
-                _timeInCatchBox = 0;
-                Vector3 newGoalLocation = CreateGoalLocation();
-                FishSetGoal(newGoalLocation);
+                fishImage.GameObject().GetComponent<Animator>().SetBool("IsLeft", false);
+            }
+            else
+            {
+                fishImage.GameObject().GetComponent<Animator>().SetBool("IsLeft", true);
             }
         }
 
-
+        /// <summary>
+        /// Moves the fish towards its current goal if it is not already at it
+        /// </summary>
         private void UpdateFishLocation()
         {
             if (fishImage.transform.position.y == _fishMoveGoal.y)
@@ -256,7 +292,7 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            if (isGoingLeft)
+            if (_isGoingLeft)
             {
                 int randomValue = UnityEngine.Random.Range(fishMoveMin, 0);
 
@@ -275,24 +311,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Randomly moves the fish ui element
-        /// Limits the y position based on the Min and Max fishMove values
-        /// </summary>
-        private void MoveFish()
-        {
-            int randomValue = UnityEngine.Random.Range(fishMoveMin, fishMoveMax);
-
-            Vector3 currentPosition = fishImage.transform.localPosition;
-            float yPosition = Mathf.Clamp(currentPosition.y += randomValue * Time.deltaTime, fishMoveMin, fishMoveMax);
-            Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
-
-            int rotationRandomValue = UnityEngine.Random.Range(rotationMin, rotationMax);
-            fishImage.transform.rotation *= Quaternion.Euler(0, 0, rotationRandomValue * Time.deltaTime);
-
-            fishImage.transform.localPosition = newPosition;
-        }
-
-        /// <summary>
         /// Modifys the progress bar for this minigame
         /// Checks if the minigame has been won
         /// </summary>
@@ -306,6 +324,18 @@ namespace FishingGame.Reeling
             {
                 WinMiniGame();
             }
+        }
+
+        /// <summary>
+        /// Sets the catchboxes y scale to the inputed float variable
+        /// Does not change x or z scale.
+        /// </summary>
+        /// <param name="newYScale">The value for new y scale</param>
+        private void SetCatchBoxYScale(float newYScale)
+        {
+            Vector3 currentScale = catchBox.transform.localScale;
+            Vector3 newScale = new Vector3(currentScale.x, newYScale, currentScale.z);
+            catchBox.transform.localScale = newScale;
         }
 
         /// <summary>
