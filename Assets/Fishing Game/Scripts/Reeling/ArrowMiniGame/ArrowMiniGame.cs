@@ -38,6 +38,8 @@ namespace FishingGame.Reeling
         [Tooltip("The bar object in the ui")]
         private GameObject uiBar;
 
+        private bool _arrowDisabled = false;
+
         //Arrow Sprites
         [SerializeField]
         [Tooltip("Up arrow sprite")]
@@ -102,7 +104,7 @@ namespace FishingGame.Reeling
 
             if (UnityEngine.Input.anyKeyDown)
             {
-                if (CheckKeyPressed(out KeyCode pressedKey))
+                if (CheckKeyPressed(out KeyCode pressedKey) && _arrowDisabled == false)
                 {
                     if (pressedKey == _inputSequence[_inputIndex])
                     {
@@ -112,14 +114,12 @@ namespace FishingGame.Reeling
 
                         if (_inputIndex >= _inputSequence.Count)
                         {
-
                             WinMiniGame();
                         }
                     }
                     else
                     {
-                        arrowSlots[_inputIndex].color = Color.red;
-                        Fail();
+                        BadKeyPress(arrowSlots[_inputIndex]);
                     }
                 }
             }
@@ -175,12 +175,30 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Sets the arrows IsActive animator value to true causing it to play a flick animation
+        /// </summary>
+        /// /// <param name="arrowSprite">The arrow being animated</param>
         private void FlickAnimation(Image arrowSprite)
         {
             Animator animatorToUse;
             animatorToUse = arrowSprite.GameObject().GetComponent<Animator>();
 
             animatorToUse.SetBool("IsActive", true);
+        }
+
+        /// <summary>
+        /// Run when the wrong key is pressed, makes the current arrow go red and shake for a second
+        /// </summary>
+        private void BadKeyPress(Image arrowSprite)
+        {
+            Animator animatorToUse;
+            animatorToUse = arrowSprite.GameObject().GetComponent<Animator>();
+
+            _arrowDisabled = true;
+            arrowSprite.color = Color.red;
+            animatorToUse.SetBool("Shake", true);
+            StartCoroutine(StopShake(arrowSprite, animatorToUse));
         }
 
 
@@ -254,6 +272,14 @@ namespace FishingGame.Reeling
                 animatorToUse.SetBool("IsActive", false);
                 //  img.enabled = false;
             }
+        }
+
+        IEnumerator StopShake(Image arrowSprite, Animator arrowAnimator)
+        {
+            yield return new WaitForSeconds(1f);
+            arrowSprite.color = Color.white;
+            arrowAnimator.SetBool("Shake", false);
+            _arrowDisabled = false;
         }
     }
 
