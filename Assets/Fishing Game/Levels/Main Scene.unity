@@ -1378,6 +1378,7 @@ MonoBehaviour:
   CanCatchFish: 0
   reelingMaster: {fileID: 1913533455}
   initiationScript: {fileID: 2991282359923290823}
+  hookResetSpot: {x: 0.055, y: 0, z: 2.509}
 --- !u!135 &395450390
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2728,16 +2729,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
       propertyPath: typesOfFishInPool.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
       propertyPath: 'typesOfFishInPool.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 57e98515d4d1b9c488b9761eb805a4ba, type: 2}
+      objectReference: {fileID: 11400000, guid: 471e2267df312b54a8af90035804a224, type: 2}
     - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
       propertyPath: 'typesOfFishInPool.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 3e18f13829ff9a947a5e1c64bd77a8fe, type: 2}
+      objectReference: {fileID: 11400000, guid: 57e98515d4d1b9c488b9761eb805a4ba, type: 2}
     - target: {fileID: 5479309997563062849, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
       propertyPath: m_Name
       value: FishingPool
@@ -3680,7 +3681,7 @@ PrefabInstance:
       objectReference: {fileID: 1611936818}
     - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: inputTimeLimit
-      value: 60
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2536617657580143345, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'arrowSlots.Array.data[0]'

@@ -256,7 +256,7 @@ namespace FishingGame.Reeling
             timerObject.SetActive(false);
 
 
-            _currentFish3DObject.SetActive(false);
+            Destroy(_currentFish3DObject);
 
 
             // TODO: Implement more logic on if reeling was a win or not

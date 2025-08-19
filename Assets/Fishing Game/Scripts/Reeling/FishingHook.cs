@@ -24,6 +24,10 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         private ReelingInitiation initiationScript;
+
+        [SerializeField]
+        [Tooltip("The spot where the hook will default back to after casting. NOTE: For current implementation make sure the y is 0 or above.")]
+        private Vector3 hookResetSpot;
         #endregion
 
         public void OnTriggerEnter(Collider other)
@@ -45,7 +49,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void ResetHookSpot()
         {
-            gameObject.transform.position = Vector3.zero;
+            gameObject.transform.position = hookResetSpot;
         }
     }
 }

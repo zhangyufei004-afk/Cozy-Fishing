@@ -40,14 +40,8 @@ namespace FishingGame.Reeling
 
         public void FishCaught()
         {
-            if (CheckIfEmpty())
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                amountOfFishHeld -= 1;
-            }
+            amountOfFishHeld -= 1;
+            if (CheckIfEmpty()) { Destroy(gameObject); }
         }
 
         /// <summary>
