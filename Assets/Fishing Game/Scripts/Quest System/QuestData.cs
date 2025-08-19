@@ -20,14 +20,14 @@ namespace FishingGame.QuestSystem
         public GameObject QuestReward => questReward;
         public double QuestMoneyReward => questMoneyReward;
         public bool IsMonetaryRewardQuest => isMonetaryRewardQuest;
-        public List<string> QuestStages => questStages;
+        public List<QuestStage> QuestStages => questStages;
         
         [SerializeField] private string questName;
         [SerializeField] private string questDescription;
         [SerializeField] private GameObject questReward;
         [SerializeField] private double questMoneyReward;
         [SerializeField] private bool isMonetaryRewardQuest;
-        [SerializeField] private List<string> questStages = new List<string> {"Beginning", "End"}; // TODO: MAYBE CHANGE THIS TO AN ENUM I CAN ADJUST SOMEHOW??
+        [SerializeField] private List<QuestStage> questStages;
         [SerializeField][HideInInspector] private int currentStageIndex;
 
         /// <summary>

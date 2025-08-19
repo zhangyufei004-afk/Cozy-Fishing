@@ -29,7 +29,7 @@ namespace FishingGame.QuestSystem
 
         private void OnEnable()
         {   // TODO: MIGHT NEED TO MOVE THIS INTO AWAKE FOR PROPER SERIALIZATION
-            
+            InitializeQuests();
         }
 
 
@@ -105,8 +105,8 @@ namespace FishingGame.QuestSystem
         {
             _quests = new List<IQuest>();
             foreach (QuestData questData in questDataObjects)
-            {
-                Quest newQuest = new Quest(questData);
+            {   // TODO: ADD SERIALIZATION SO THE PREVIOUS STAGE INDEX MATCHES THE SAVED VERSION
+                Quest newQuest = new Quest(questData, 0);
                 _quests.Add(newQuest);
             } 
         }

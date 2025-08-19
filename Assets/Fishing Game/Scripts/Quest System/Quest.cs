@@ -5,10 +5,12 @@ namespace FishingGame.QuestSystem
         public QuestData Data => _questData; 
         
         private readonly QuestData _questData;
+        private int _currentStageIndex;
 
-        public Quest(QuestData questData)
+        public Quest(QuestData questData, int previousStageIndex)
         {
             this._questData = questData;
+            this._currentStageIndex = previousStageIndex;
         }
         public void EndQuest()
         {
