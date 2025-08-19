@@ -9,7 +9,6 @@ namespace FishingGame.QuestSystem
         public void EndQuest();
         public void BeginQuest();
         public void ProgressStage();
-        public void ProgressStage(string newStage);
         public bool Equals(string otherQuestName);
         public bool IsQuestInProgress();
     }

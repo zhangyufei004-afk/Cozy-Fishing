@@ -12,7 +12,7 @@ namespace FishingGame.QuestSystem
         
         private void OnTriggerEnter(Collider other)
         {
-            QuestManager.EndQuest(questNameToEnd);
+            QuestManager.Instance.EndQuest(questNameToEnd);
         }
     }
 }
