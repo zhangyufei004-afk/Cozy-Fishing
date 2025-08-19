@@ -11,32 +11,33 @@ namespace FishingGame.Inventory
     public class InventorySystem : MonoBehaviour
     {
         [SerializeField] private FishLogSystem fishLogSystem;
-        private List<Fish> _fishInventory = new List<Fish>();
+        private List<IStorable> _fishInventory = new List<IStorable>();
 
         /// <summary>
-        /// Adds a new fish to the inventory and marks it as caught in FishLogSystem.
+        /// Adds a new item to the inventory. If the item is a fish, it marks it as caught in FishLogSystem.
         /// </summary>
-        /// <param name="newFish">Fish instance</param>
-        public void AddFish(Fish newFish)
+        /// <param name="newItem">The new item instance to add</param>
+        public void AddItem(IStorable newItem)
         {
-            _fishInventory.Add(newFish);
+            _fishInventory.Add(newItem);
 
-            if (fishLogSystem != null)
+            if (fishLogSystem is not null && newItem.GetItemType() == EItemType.Fish)
             {
-                fishLogSystem.RegisterFishCaught(newFish.GetFishBase());
+                Fish newFish = newItem as Fish;
+                fishLogSystem.RegisterFishCaught(newFish?.GetFishBase());
             }
         }
 
         /// <summary>
-        /// Returns the full list of caught fish.
+        /// Returns the full list of items in the inventory.
         /// </summary>
-        public List<Fish> GetFishInventory()
+        public List<IStorable> GetFishInventory()
         {
             return _fishInventory;
         }
 
         /// <summary>
-        /// Clears all caught fish.
+        /// Clears the inventory of all items. 
         /// </summary>
         public void ClearInventory()
         {
