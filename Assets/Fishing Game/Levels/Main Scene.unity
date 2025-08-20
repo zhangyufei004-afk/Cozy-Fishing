@@ -3236,7 +3236,7 @@ PrefabInstance:
     - target: {fileID: 3322672883398320453, guid: caaa78df24aee0d438873a850217695b, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
-      objectReference: {fileID: 1896094948}
+      objectReference: {fileID: 1458666378}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3875,6 +3875,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439872451}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1458666378 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4305141477973444740, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+  m_PrefabInstance: {fileID: 2991282359923290821}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1489033069
 GameObject:
   m_ObjectHideFlags: 0
@@ -4466,11 +4471,6 @@ MonoBehaviour:
   fishLogSystem: {fileID: 799561866}
   allEntries:
   - {fileID: 1307106072}
---- !u!4 &1896094948 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2416984217715302134, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1904718683
 GameObject:
   m_ObjectHideFlags: 0
