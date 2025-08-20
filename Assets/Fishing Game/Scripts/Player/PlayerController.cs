@@ -8,6 +8,8 @@ namespace FishingGame.Player
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        private readonly int _speed = Animator.StringToHash("Speed");
+
         [SerializeField]
         private GameObject playerBody;
         [SerializeField]
@@ -18,6 +20,7 @@ namespace FishingGame.Player
         private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
         private Vector2 _moveInput;
         [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Animator animator;
 
         private void OnEnable()
         {
@@ -34,6 +37,10 @@ namespace FishingGame.Player
             
             characterController.SimpleMove(directionNormalized * movementSpeed);
 
+            float animationSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, min: 0, max: 2f);
+            
+            animator.SetFloat(_speed, animationSpeed);
+            
             if (_moveInput != Vector2.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
