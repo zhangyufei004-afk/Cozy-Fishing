@@ -1,0 +1,307 @@
+fileFormatVersion: 2
+guid: 42f083966d49643409cb4451f02195fe
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: CharacterPlayer(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Character_Player
+      parentName: CharacterPlayer(Clone)
+      position: {x: -0, y: 0.0009687365, z: 0.000000014305114}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Body
+      parentName: Character_Player
+      position: {x: -0, y: 0, z: -0.000000014305114}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hair
+      parentName: Character_Player
+      position: {x: -0, y: 0, z: -0.000000014305114}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hat
+      parentName: Character_Player
+      position: {x: -0, y: 0, z: -0.000000014305114}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Root
+      parentName: CharacterPlayer(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Hips
+      parentName: Joint_Root
+      position: {x: -0.099999994, y: -1.9721522e-33, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Hip
+      parentName: Joint_Hips
+      position: {x: 0.018, y: -0.022, z: -1.7747944e-21}
+      rotation: {x: -1.2702686e-16, y: 0.9953902, z: -1.5809286e-15, w: 0.09590836}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Knee
+      parentName: Joint_Left_Hip
+      position: {x: -0.031424724, y: 4.440892e-18, z: -2.220446e-18}
+      rotation: {x: 0, y: 0.16730039, z: -0, w: 0.985906}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Foot
+      parentName: Joint_Left_Knee
+      position: {x: -0.04179095, y: 1.7763568e-17, z: 5.2735593e-18}
+      rotation: {x: 0, y: -0.6510055, z: -0, w: 0.7590731}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Toe
+      parentName: Joint_Left_Foot
+      position: {x: -0.03346565, y: 4.7032584e-18, z: 1.150903e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Hip
+      parentName: Joint_Hips
+      position: {x: 0.018, y: 0.022, z: -4.907617e-19}
+      rotation: {x: 0, y: -0.09590836, z: -0, w: 0.9953902}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Knee
+      parentName: Joint_Right_Hip
+      position: {x: 0.031424716, y: 4.440892e-18, z: 0.0000000012175695}
+      rotation: {x: 0, y: 0.16730039, z: -0, w: 0.985906}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Foot
+      parentName: Joint_Right_Knee
+      position: {x: 0.041790955, y: -4.440892e-18, z: 6.935581e-10}
+      rotation: {x: 0, y: -0.6510055, z: -0, w: 0.7590731}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Toe
+      parentName: Joint_Right_Foot
+      position: {x: 0.03346565, y: 4.440892e-18, z: -0.0000000014785034}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Spine
+      parentName: Joint_Hips
+      position: {x: -0.02, y: -1.9721522e-33, z: -0.002}
+      rotation: {x: 0.999688, y: -5.4860725e-20, z: 0.0249766, w: 6.11764e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Spine2
+      parentName: Joint_Spine
+      position: {x: -0.020024983, y: -9.725821e-19, z: 9.52484e-11}
+      rotation: {x: 0.99875236, y: -3.0577972e-18, z: 0.049937617, w: 6.1155944e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Spine3
+      parentName: Joint_Spine2
+      position: {x: -0.020024983, y: 5.546678e-34, z: -4.3021143e-18}
+      rotation: {x: 0, y: 0.02485257, z: -0, w: 0.9996911}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Chest
+      parentName: Joint_Spine3
+      position: {x: -0.020099752, y: -1.9721522e-33, z: 4.8849813e-17}
+      rotation: {x: 0.99875855, y: -2.684801e-17, z: 0.049813703, w: 6.234325e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Shoulder
+      parentName: Joint_Chest
+      position: {x: -0.0021405746, y: 0.03, z: 3.602516e-18}
+      rotation: {x: 0.020063993, y: 0.020063993, z: -0.7068221, w: 0.7068221}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Elbow
+      parentName: Joint_Left_Shoulder
+      position: {x: -0.044070963, y: 0, z: 9.992007e-18}
+      rotation: {x: 0.998248, y: -3.6230614e-18, z: 0.059169084, w: 6.112506e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Wrist
+      parentName: Joint_Left_Elbow
+      position: {x: -0.040577088, y: 3.5527136e-17, z: 8.881784e-18}
+      rotation: {x: 0.99952495, y: -1.8871931e-18, z: 0.030820204, w: 6.120325e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Hand
+      parentName: Joint_Left_Wrist
+      position: {x: -0.008750585, y: 3.5527136e-17, z: -8.3266725e-19}
+      rotation: {x: 0.7071068, y: 6.282514e-16, z: -6.2291613e-16, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Hand2
+      parentName: Joint_Left_Hand
+      position: {x: -0.01041943, y: -8.2375514e-33, z: 1.1740474e-33}
+      rotation: {x: 0, y: -0.030405564, z: -0, w: 0.99953765}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Hand3
+      parentName: Joint_Left_Hand2
+      position: {x: -0.014806769, y: -3.996803e-19, z: -3.7134896e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Thumb
+      parentName: Joint_Left_Wrist
+      position: {x: -0.007110568, y: 0.0010584448, z: -0.010602446}
+      rotation: {x: 0.7043161, y: -0.318161, z: 0.26622924, w: 0.5760507}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Thumb1
+      parentName: Joint_Left_Thumb
+      position: {x: -0.006156303, y: 2.1734246e-19, z: -9.952366e-18}
+      rotation: {x: 0.074260145, y: -0.03266818, z: -0.0024339745, w: 0.9967007}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Left_Thumb2
+      parentName: Joint_Left_Thumb1
+      position: {x: -0.005350933, y: -5.3833464e-18, z: -5.0634455e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Neck
+      parentName: Joint_Chest
+      position: {x: -0.022, y: -1.110223e-18, z: -2.220446e-18}
+      rotation: {x: 0.7071068, y: -2.2204463e-16, z: 2.2204463e-16, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Head
+      parentName: Joint_Neck
+      position: {x: -0.03, y: 7.077672e-18, z: 1.6653345e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Head_Top
+      parentName: Joint_Head
+      position: {x: -0.049999997, y: 0, z: 1.5777218e-32}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Shoulder
+      parentName: Joint_Chest
+      position: {x: -0.002141, y: -0.03, z: -1.8415755e-17}
+      rotation: {x: 0.7068221, y: -0.7068221, z: 0.020063993, w: 0.020063993}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Elbow
+      parentName: Joint_Right_Shoulder
+      position: {x: 0.044070963, y: 0, z: 1.9151347e-17}
+      rotation: {x: 0.998248, y: 0.0000000019117838, z: 0.059169084, w: 1.1331702e-10}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Wrist
+      parentName: Joint_Right_Elbow
+      position: {x: 0.040577088, y: 0, z: 2.3314683e-17}
+      rotation: {x: 0.99952495, y: 9.913755e-10, z: 0.030820204, w: 3.0568898e-11}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Hand
+      parentName: Joint_Right_Wrist
+      position: {x: 0.008751, y: 3.5527136e-17, z: 1.02525075e-17}
+      rotation: {x: 0.7071068, y: 2.9389402e-16, z: -2.4091878e-16, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Hand2
+      parentName: Joint_Right_Hand
+      position: {x: 0.010419, y: 1.0556e-17, z: 0}
+      rotation: {x: -1.5414566e-33, y: -0.030405564, z: 5.075305e-16, w: 0.99953765}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Hand3
+      parentName: Joint_Right_Hand2
+      position: {x: 0.014806378, y: 1.5422783e-17, z: 0.000000023747358}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Thumb
+      parentName: Joint_Right_Wrist
+      position: {x: 0.0071109994, y: -0.0010589999, z: 0.0106024}
+      rotation: {x: 0.70432264, y: -0.3181457, z: 0.26620492, w: 0.5760625}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Thumb1
+      parentName: Joint_Right_Thumb
+      position: {x: 0.006155939, y: 0.00000056232034, z: -0.00000017080558}
+      rotation: {x: 0.074260145, y: -0.03266818, z: -0.0024339745, w: 0.9967007}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Joint_Right_Thumb2
+      parentName: Joint_Right_Thumb1
+      position: {x: 0.0053508664, y: -0.00000019933888, z: -0.00000014388709}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
