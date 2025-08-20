@@ -247,7 +247,7 @@ namespace FishingGame.Reeling
             EndQTE();
             uiBar.SetActive(false);
             reelingMaster.EndCurrentMiniGame(true);
-            StartCoroutine(HideUI());
+            StartCoroutine(HideUITimer());
         }
 
         /// <summary>
@@ -258,17 +258,14 @@ namespace FishingGame.Reeling
             uiBar.SetActive(false);
             EndQTE();
             reelingMaster.EndCurrentMiniGame(false);
-            StartCoroutine(HideUI());
+            HideUINonTimer();
         }
 
         /// <summary>
-        /// A timer that hides the fishing canvas after 2 seconds
-        /// This is run seperatly so the arrows can complete their animation
-        /// Before beind hidden
+        /// Immeaditly hides ui including arrows
         /// </summary>
-        IEnumerator HideUI()
+        private void HideUINonTimer()
         {
-            yield return new WaitForSeconds(2f);
             fishingCanvas.SetActive(false);
 
             foreach (var img in arrowSlots)
@@ -278,6 +275,30 @@ namespace FishingGame.Reeling
                 animatorToUse.SetBool("IsActive", false);
                 //  img.enabled = false;
             }
+        }
+
+        /// <summary>
+        /// A timer that hides the fishing canvas after 2 seconds
+        /// This is run seperatly so the arrows can complete their animation
+        /// Before beind hidden
+        /// </summary>
+        IEnumerator HideUITimer()
+        {
+            yield return new WaitForSeconds(2f);
+            // Check the minigame isin't still running
+            if (!_isQTEActive)
+            {
+                fishingCanvas.SetActive(false);
+
+                foreach (var img in arrowSlots)
+                {
+                    Animator animatorToUse;
+                    animatorToUse = img.GameObject().GetComponent<Animator>();
+                    animatorToUse.SetBool("IsActive", false);
+                    //  img.enabled = false;
+                }
+            }
+            
         }
 
         IEnumerator StopShake(Image arrowSprite, Animator arrowAnimator)
