@@ -8,9 +8,6 @@ namespace FishingGame.Player
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
-        [Tooltip ("When set to false the player will not be able to use controls from this script")]
-        public bool AreControlsEnabled = true;
-
         [SerializeField]
         private GameObject playerBody;
         [SerializeField]
@@ -33,12 +30,7 @@ namespace FishingGame.Player
 
         void Update()
         {
-            // Do not allow movement if controls are disabled
-            if (AreControlsEnabled != true)
-            {
-                return;
-            }
-            Vector3 directionNormalized = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+            Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
             
             characterController.SimpleMove(directionNormalized * movementSpeed);
 

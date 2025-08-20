@@ -84,18 +84,9 @@ namespace FishingGame.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""LeftClick"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""2959f0a0-1f7f-4fbc-a582-ed3940acd36b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RightClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""7582cbf5-df32-4170-acd6-b8186f306806"",
+                    ""id"": ""62ba194a-473b-4244-81f0-886780d114b2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -402,23 +393,23 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6550f369-c3ee-482e-a2f2-9dcfaf89f542"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""283a9c3c-ea9b-40d2-88a5-27fa883a55d9"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""LeftClick"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""758f2b6d-7828-4bf8-b67a-9ce5700bfc8a"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""22f08234-4af3-4ca6-9b9e-8393078b5b37"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightClick"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1012,8 +1003,7 @@ namespace FishingGame.Input
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
-            m_Player_LeftClick = m_Player.FindAction("LeftClick", throwIfNotFound: true);
-            m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
+            m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1099,8 +1089,7 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_Crouch;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Inventory;
-        private readonly InputAction m_Player_LeftClick;
-        private readonly InputAction m_Player_RightClick;
+        private readonly InputAction m_Player_Pause;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -1111,8 +1100,7 @@ namespace FishingGame.Input
             public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
-            public InputAction @LeftClick => m_Wrapper.m_Player_LeftClick;
-            public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
+            public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1140,12 +1128,9 @@ namespace FishingGame.Input
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
-                @LeftClick.started += instance.OnLeftClick;
-                @LeftClick.performed += instance.OnLeftClick;
-                @LeftClick.canceled += instance.OnLeftClick;
-                @RightClick.started += instance.OnRightClick;
-                @RightClick.performed += instance.OnRightClick;
-                @RightClick.canceled += instance.OnRightClick;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1168,12 +1153,9 @@ namespace FishingGame.Input
                 @Inventory.started -= instance.OnInventory;
                 @Inventory.performed -= instance.OnInventory;
                 @Inventory.canceled -= instance.OnInventory;
-                @LeftClick.started -= instance.OnLeftClick;
-                @LeftClick.performed -= instance.OnLeftClick;
-                @LeftClick.canceled -= instance.OnLeftClick;
-                @RightClick.started -= instance.OnRightClick;
-                @RightClick.performed -= instance.OnRightClick;
-                @RightClick.canceled -= instance.OnRightClick;
+                @Pause.started -= instance.OnPause;
+                @Pause.performed -= instance.OnPause;
+                @Pause.canceled -= instance.OnPause;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1362,8 +1344,7 @@ namespace FishingGame.Input
             void OnCrouch(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
-            void OnLeftClick(InputAction.CallbackContext context);
-            void OnRightClick(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
