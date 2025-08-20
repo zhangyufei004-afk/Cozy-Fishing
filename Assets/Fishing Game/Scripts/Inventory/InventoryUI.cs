@@ -33,15 +33,6 @@ namespace FishingGame.UI.Inventory
             panelDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         }
 
-        private void Update()
-        {
-            // Tab key toggle for inventory visibility
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
-            {
-                ToggleInventoryVisibility();
-            }
-        }
-
         private void ToggleInventoryVisibility()
         {
             if (_inventoryPanel)
