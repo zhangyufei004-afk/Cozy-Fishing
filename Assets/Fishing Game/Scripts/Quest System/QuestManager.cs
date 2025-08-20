@@ -16,7 +16,7 @@ namespace FishingGame.QuestSystem
         [SerializeField] private List<QuestData> questDataObjects;
         
         private static QuestManager _instance;
-        private List<IQuest> _quests;
+        private Dictionary<string, IQuest> _quests;
         
         private void Awake()
         {
@@ -39,7 +39,7 @@ namespace FishingGame.QuestSystem
         /// <param name="quest">The quest to add</param>
         public void AddQuest(IQuest quest)
         {
-            _quests.Add(quest);
+            _quests.Add(quest.GetId(), quest);
         }
         
         // Methods mapping to the IQUest Interface
@@ -50,15 +50,12 @@ namespace FishingGame.QuestSystem
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the specified questName was not found.</exception>
         public void EndQuest(string questName)
         {
-            // TODO: GIVE REWARD (HOW ON A STATIC CLASS AND SCRIPTABLE OBJECT)?
-            int questIndex = _quests.FindIndex(quest => quest.Equals(questName));
-
-            if (questIndex == QuestConstants.INDEX_NOT_FOUND)
+            if (!_quests.TryGetValue(questName, out IQuest quest))
             {
                 throw new ArgumentOutOfRangeException($"Quest {questName} was unable to be ended, as it was not found. Did you make a spelling mistake?");
             }
             
-            _quests[questIndex].EndQuest();
+            quest.EndQuest();
         }
 
         /// <summary>
@@ -68,9 +65,7 @@ namespace FishingGame.QuestSystem
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the specified questName was not found.</exception>
         public void StartQuest(string questName)
         {
-            int questIndex = FindQuestIndex(questName);
-            
-            _quests[questIndex].BeginQuest();
+            _quests[questName].BeginQuest();
         }
 
         /// <summary>
@@ -79,35 +74,36 @@ namespace FishingGame.QuestSystem
         /// <param name="questName">The quest to move to the next stage.</param>
         public void ProgressQuest(string questName)
         {
-            int questIndex = FindQuestIndex(questName);
-            
-            _quests[questIndex].ProgressStage();
+            _quests[questName].ProgressStage();
         }
 
+        /// <summary>
+        /// Returns whether the specified quest has begun
+        /// </summary>
+        /// <param name="questName">The quest to check</param>
+        /// <returns>True is the quest is in progress, false otherwise.</returns>
         public bool HasQuestBegun(string questName)
         {
-            int questIndex = FindQuestIndex(questName);
-            return _quests[questIndex].IsQuestInProgress();
+            return _quests[questName].IsQuestInProgress();
         }
-        
-        private int FindQuestIndex(string questName)
+        /// <summary>
+        /// Gets the IQuest object by the specified name. 
+        /// </summary>
+        /// <param name="questName">The name of the quest to retrieve.</param>
+        /// <returns>The IQuest object which matches that name, or null if it wasn't found.</returns>
+        public IQuest GetQuestByName(string questName)
         {
-            int questIndex = _quests.FindIndex(quest => quest.Equals(questName));
-
-            if (questIndex == QuestConstants.INDEX_NOT_FOUND)
-            {
-                throw new ArgumentOutOfRangeException($"Unable to start quest {questName}, as it was not found. Did you make a spelling mistake?");
-            }
-            return questIndex;
+            return _quests[questName];
         }
 
         private void InitializeQuests()
         {
-            _quests = new List<IQuest>();
+            _quests = new ();
             foreach (QuestData questData in questDataObjects)
             {   // TODO: ADD SERIALIZATION SO THE PREVIOUS STAGE INDEX MATCHES THE SAVED VERSION
+                string questName = questData.QuestName;
                 Quest newQuest = new Quest(questData, 0);
-                _quests.Add(newQuest);
+                _quests.Add(questName, newQuest);
             } 
         }
     }

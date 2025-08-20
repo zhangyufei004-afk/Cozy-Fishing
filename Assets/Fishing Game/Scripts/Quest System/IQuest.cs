@@ -11,5 +11,7 @@ namespace FishingGame.QuestSystem
         public void ProgressStage();
         public bool Equals(string otherQuestName);
         public bool IsQuestInProgress();
+        public string GetId();
+        
     }
 }
