@@ -22,9 +22,10 @@ namespace FishingGame.MainMenu
 
         public void OnQuitGame()
         {
-            Application.Quit();
 #if UNITY_EDITOR
-            Debug.Log("Quitting game...");
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
 #endif
         }
     }
