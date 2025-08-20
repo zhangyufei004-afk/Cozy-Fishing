@@ -1,3 +1,4 @@
+using FishingGame.FishSystem;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,7 +18,7 @@ namespace FishingGame.Reeling
     {
         #region Private Properties
 
-        private FishScriptableObject _fishData;
+        private Fish _fishData;
 
         [SerializeField]
         [Tooltip("Reference to the ReelingMaster script.")]
@@ -79,7 +80,7 @@ namespace FishingGame.Reeling
         /// Difficulty variable from the fishscriptableobject can be used to modify stats
         /// </summary>
         /// <param name="fishScriptable">The data of fish object being caught</param>
-        public void InitializeMiniGame(FishScriptableObject fishScriptable)
+        public void InitializeMiniGame(Fish fishScriptable)
         {
             _fishData = fishScriptable;
             uiBar.SetActive(true);
@@ -273,7 +274,6 @@ namespace FishingGame.Reeling
                 Animator animatorToUse;
                 animatorToUse = img.GameObject().GetComponent<Animator>();
                 animatorToUse.SetBool("IsActive", false);
-                //  img.enabled = false;
             }
         }
 
@@ -295,12 +295,16 @@ namespace FishingGame.Reeling
                     Animator animatorToUse;
                     animatorToUse = img.GameObject().GetComponent<Animator>();
                     animatorToUse.SetBool("IsActive", false);
-                    //  img.enabled = false;
                 }
             }
-            
+
         }
 
+        /// <summary>
+        /// Stops the arrows from shaking after a second
+        /// </summary>
+        /// <param name = "arrowSprite" > The image being animated</param>
+        /// <param name="arrowAnimator">The animator attatched to the sprite gameobject</param>
         IEnumerator StopShake(Image arrowSprite, Animator arrowAnimator)
         {
             yield return new WaitForSeconds(1f);
@@ -309,6 +313,9 @@ namespace FishingGame.Reeling
             _arrowDisabled = false;
         }
 
+        /// <summary>
+        /// Updates the ui timer
+        /// </summary>
         public void UpdateTimer()
         {
             timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_inputTimer));

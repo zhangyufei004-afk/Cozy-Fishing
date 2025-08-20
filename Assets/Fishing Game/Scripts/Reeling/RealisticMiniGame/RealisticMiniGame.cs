@@ -1,4 +1,5 @@
 using FishingGame;
+using FishingGame.FishSystem;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -58,7 +59,7 @@ namespace FishingGame.Reeling
         [Tooltip("The UI text that shows how much time is left")]
         private TextMeshProUGUI timerText;
 
-        private FishScriptableObject _fishData;
+        private Fish _fishData;
 
         private float _currentTimeSpent = 0f;
         private bool _isMinigameActive = false;
@@ -70,7 +71,7 @@ namespace FishingGame.Reeling
         /// Difficulty variable from the fishscriptableobject can be used to modify stats
         /// </summary>
         /// <param name="fishScriptable">The data of fish object being caught</param>
-        public void InitializeMiniGame(FishScriptableObject fishScriptable)
+        public void InitializeMiniGame(Fish fishScriptable)
         {
             _fishData = fishScriptable;
             realisticCanvas.SetActive(true);
@@ -219,6 +220,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Updates the ui timer
+        /// </summary>
         public void UpdateTimer()
         {
             timerText.text = ("Time Remaining: " + Mathf.RoundToInt(timeLimit - _currentTimeSpent));

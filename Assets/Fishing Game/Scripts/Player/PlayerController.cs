@@ -8,6 +8,9 @@ namespace FishingGame.Player
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        [Tooltip("When enabled player can move normally, when disabled player cant")]
+        public bool AreControlsEnabled = true;
+
         [SerializeField]
         private GameObject playerBody;
         [SerializeField]
@@ -30,6 +33,7 @@ namespace FishingGame.Player
 
         void Update()
         {
+            if (AreControlsEnabled == false) { return; }
             Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
             
             characterController.SimpleMove(directionNormalized * movementSpeed);

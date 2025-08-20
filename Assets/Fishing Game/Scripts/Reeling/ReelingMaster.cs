@@ -1,3 +1,5 @@
+using FishingGame.FishSystem;
+using FishingGame.Inventory;
 using FishingGame.Player;
 using NUnit.Framework;
 using System.Collections;
@@ -25,7 +27,7 @@ namespace FishingGame.Reeling
         private int _currentMiniGameWins;
         private bool _hasWon = false;
         private int _fishDifficulty;
-        private FishScriptableObject _currentlyReelingFish;
+        private Fish _currentlyReelingFish;
         private FishingPool _currentFishPool;
 
         //TODO: Can combine this likely with the other fish variable once I have scriptable objects working
@@ -36,6 +38,9 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         private FishingHook fishingHook;
+
+        [SerializeField]
+        private InventorySystem inventoryScript;
 
         // Unity dosen't support making interface types a list so this is a gameobject list
         [SerializeField]
@@ -66,7 +71,7 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
         /// <param name="fish3DObject">The 3D object of the fish</param>
-        public void BeginCatch(FishScriptableObject fishCaught, GameObject fish3DObject)
+        public void BeginCatch(Fish fishCaught, GameObject fish3DObject)
         {
             _currentFishPool = null;
 
@@ -76,9 +81,9 @@ namespace FishingGame.Reeling
 
             initiationScript.InitiateFishingPerspective();
 
-            //Resset properties for the new catch
+            //Reset properties for the new catch
             _currentlyReelingFish = fishCaught;
-            _fishDifficulty = _currentlyReelingFish.FishCatchDifficulty;
+            _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             initiationScript.AllowControls = false;
@@ -110,7 +115,7 @@ namespace FishingGame.Reeling
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
         /// <param name="fish3DObject">The 3D object of the fish</param>
         /// <param name="fishPool">The fish pool being fished from</param>
-        public void BeginCatch(FishScriptableObject fishCaught, GameObject fish3DObject, FishingPool fishPool)
+        public void BeginCatch(Fish fishCaught, GameObject fish3DObject, FishingPool fishPool)
         {
             _currentFishPool = fishPool;
 
@@ -120,9 +125,9 @@ namespace FishingGame.Reeling
 
             initiationScript.InitiateFishingPerspective();
 
-            //Resset properties for the new catch
+            //Reset properties for the new catch
             _currentlyReelingFish = fishCaught;
-            _fishDifficulty = _currentlyReelingFish.FishCatchDifficulty;
+            _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             initiationScript.AllowControls = false;
@@ -247,7 +252,6 @@ namespace FishingGame.Reeling
         /// <param name="didWin">Represents if the minigame was succsesful or not</param>
         private void EndCatch(bool didWin)
         {
-            _currentlyReelingFish = null;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             characterController.GetComponent<PlayerController>().AreControlsEnabled = true;
@@ -267,13 +271,19 @@ namespace FishingGame.Reeling
             }
             else
             {
+                // Check if this was from a fishing pool
                 if (_currentFishPool != null)
                 {
                     _currentFishPool.FishCaught();
                 }
+                inventoryScript.AddFish(_currentlyReelingFish);
+                _currentlyReelingFish = null;
+
                 winText.SetActive(true);
                 StartCoroutine(HideUIAfterCatch());
             }
+
+            _currentlyReelingFish = null;
         }
 
         /// <summary>

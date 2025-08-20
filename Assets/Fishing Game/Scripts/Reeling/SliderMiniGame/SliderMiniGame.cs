@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using TMPro;
 using TMPro.Examples;
+using FishingGame.FishSystem;
 
 namespace FishingGame.Reeling
 {
@@ -20,7 +21,7 @@ namespace FishingGame.Reeling
     {
         #region Private Fields
 
-        private FishScriptableObject _fishData;
+        private Fish _fishData;
 
         [SerializeField]
         [Tooltip("Reference to the ReelingMaster script.")]
@@ -173,11 +174,11 @@ namespace FishingGame.Reeling
         /// The initial catch progress is 55, each level of difficulty reduces the initial progress by 5 i.e a difficulty of 2 will result in an initial progress of 45
         /// </summary>
         /// <param name="fishScriptable">The data of fish object being caught</param>
-        public void InitializeMiniGame(FishScriptableObject fishScriptable) 
+        public void InitializeMiniGame(Fish fishScriptable) 
         {
             _fishData = fishScriptable;
 
-            fishImage.sprite = _fishData.Texture;
+            fishImage.sprite = _fishData.GetTexture();
             sliderCanvas.SetActive(true);
             _timerValue = 0f;
             _maxTimeBetweenGoals = 1;
@@ -187,8 +188,8 @@ namespace FishingGame.Reeling
             FishSetGoal(newFishGoal);
 
             // Scaling variables based on difficulty
-            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.FishCatchDifficulty, 0, 100);
-            _catchBoxScale = Mathf.Clamp(1.5f - 0.1f * fishScriptable.FishCatchDifficulty, 0.5f, 1.5f);
+            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 0, 100);
+            _catchBoxScale = Mathf.Clamp(1.5f - 0.1f * fishScriptable.GetFishCatchDifficulty(), 0.5f, 1.5f);
             SetCatchBoxYScale(_catchBoxScale);
 
 
@@ -376,6 +377,9 @@ namespace FishingGame.Reeling
             reelingMaster.EndCurrentMiniGame(false);
         }
 
+        /// <summary>
+        /// Updates the ui timer
+        /// </summary>
         public void UpdateTimer()
         {
             timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_maxTime - _timerValue));

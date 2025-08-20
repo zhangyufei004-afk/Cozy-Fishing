@@ -1,3 +1,4 @@
+using FishingGame.FishSystem;
 using UnityEngine;
 
 namespace FishingGame.Reeling
@@ -17,8 +18,8 @@ namespace FishingGame.Reeling
         /// Takes the difficulty of the fish
         /// Variables can be modified based on the difficulty of fish
         /// </summary>
-        /// /// <param name="fishCatchDifficulty">Represesnts how difficult caught fish is</param>
-        public void InitializeMiniGame(FishScriptableObject fishScriptable);
+        /// /// <param name="fishScriptable">The data of the fish being caught</param>
+        public void InitializeMiniGame(Fish fishScriptable);
 
         /// <summary>
         /// Begins the currently selected minigame

@@ -14,6 +14,8 @@ namespace FishingGame.FishSystem
         private float _weight;
         private TimeOfDay _caughtTime;
         private string _caughtLocation;
+        private int _fishCatchDifficulty;
+        private Sprite _fishTexture;
 
         /// <summary>
         /// Constructor for generating a new fish instance.
@@ -28,6 +30,8 @@ namespace FishingGame.FishSystem
             _weight = CalculateWeight(_length); // Simple formula based on length
             _caughtTime = time;
             _caughtLocation = location;
+            _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
+            _fishTexture = _fishBase.Texture;
         }
 
         /// <summary>
@@ -78,6 +82,22 @@ namespace FishingGame.FishSystem
         public string GetCaughtLocation()
         {
             return _caughtLocation;
+        }
+
+        /// <summary>
+        /// Gets the fish catch difficulty.
+        /// </summary>
+        public int GetFishCatchDifficulty()
+        {
+            return _fishCatchDifficulty;
+        }
+
+        /// <summary>
+        /// Gets the fish texture
+        /// </summary>
+        public Sprite GetTexture()
+        {
+            return _fishTexture;
         }
     }
 }

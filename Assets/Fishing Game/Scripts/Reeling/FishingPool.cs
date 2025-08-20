@@ -1,3 +1,5 @@
+using FishingGame.FishSystem;
+using FishingGame.GameTime;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,15 +29,19 @@ namespace FishingGame.Reeling
         /// Checks if fish pool is empty and then determines the fish type caught
         /// Randomly selects a fish type based on the amount of types in the pool
         /// </summary>
-        public FishScriptableObject DetermineFishCaught()
+        public Fish DetermineFishCaught()
         {
             if (CheckIfEmpty() == true) { return null; }
 
             int fishTypeAmount = typesOfFishInPool.Count;
             int fishCaughtIndex = Random.Range(0, fishTypeAmount);
             FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
+            TimeOfDay tempTimeValue = TimeOfDay.Morning;
+            string tempLocation = "TEMPDATAFIELD";
 
-            return fishCaught;
+            Fish fishData = new Fish(fishCaught, tempTimeValue, tempLocation);
+
+            return fishData;
         }
 
         public void FishCaught()
