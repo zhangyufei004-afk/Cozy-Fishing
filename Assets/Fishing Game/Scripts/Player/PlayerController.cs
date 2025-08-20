@@ -30,7 +30,7 @@ namespace FishingGame.Player
 
         void Update()
         {
-            Vector3 directionNormalized = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+            Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
             
             characterController.SimpleMove(directionNormalized * movementSpeed);
 
