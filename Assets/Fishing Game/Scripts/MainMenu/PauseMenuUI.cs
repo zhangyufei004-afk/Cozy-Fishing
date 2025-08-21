@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace FishingGame.MainMenu
@@ -8,11 +9,11 @@ namespace FishingGame.MainMenu
     /// </summary>
     public class PauseMenuUI : MonoBehaviour
     {
+        [SerializeField] private InputActionReference pauseAction;
         [SerializeField] private GameObject pauseMenuUI;
         private bool _isPaused;
 
-        [SerializeField] private InputActionReference pauseAction;
-
+        
         private void OnEnable()
         {
             pauseAction.action.performed += OnPausePressed;
@@ -50,6 +51,7 @@ namespace FishingGame.MainMenu
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
             _isPaused = false;
+            ResetEventSystemSelection();
         }
 
         public void PauseGame()
@@ -57,6 +59,7 @@ namespace FishingGame.MainMenu
             pauseMenuUI.SetActive(true);
             Time.timeScale = 0f;
             _isPaused = true;
+            SetResumeButtonSelected();
         }
 
         public void QuitGame()
@@ -66,6 +69,16 @@ namespace FishingGame.MainMenu
 #else
             Application.Quit();
 #endif
+        }
+
+        private void SetResumeButtonSelected()
+        {
+            EventSystem.current.SetSelectedGameObject(pauseMenuUI.transform.GetChild(0).gameObject);
+        }
+
+        private void ResetEventSystemSelection()
+        {
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 }
