@@ -61,8 +61,9 @@ namespace FishingGame.Reeling
 
         //FishingBar
         [SerializeField]
-        [Tooltip("The amount of time player has to beat the minigame")]
-        private float inputTimeLimit = 3f;
+        [Tooltip("The amount of time player has to beat the minigame. Set a DEFAULT value here, this value will be modified based on difficulty, lowest it can go is 3.")]
+        private float defaultInputTimeLimit = 3f;
+        private float _modifiedTimeLimit = 0f;
 
         //QTE
         private List<KeyCode> _inputSequence = new List<KeyCode>();
@@ -81,6 +82,7 @@ namespace FishingGame.Reeling
         public void InitializeMiniGame(Fish fishScriptable)
         {
             _fishData = fishScriptable;
+            _modifiedTimeLimit = ModifyTimeLimit(defaultInputTimeLimit, _fishData.GetFishCatchDifficulty());
             uiBar.SetActive(true);
             fishingCanvas.SetActive(true);
         }
@@ -141,7 +143,7 @@ namespace FishingGame.Reeling
             _isQTEActive = true;
             _inputSequence.Clear();
             _inputIndex = 0;
-            _inputTimer = inputTimeLimit;
+            _inputTimer = _modifiedTimeLimit;
 
             for (int i = 0; i < arrowSlots.Length; i++)
             {
@@ -275,6 +277,18 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Modifys the time limit
+        /// </summary>
+        /// <param name="defaultTimeValue"></param>
+        /// <param name="catchDifficulty"></param>
+        /// <returns></returns>
+        private float ModifyTimeLimit(float defaultTimeValue, float catchDifficulty)
+        {
+            float newTimeLimit = Mathf.Clamp(defaultTimeValue / catchDifficulty, 3.0f, defaultTimeValue);
+            return newTimeLimit;
+        }
+        
         /// <summary>
         /// A timer that hides the fishing canvas after 2 seconds
         /// This is run seperatly so the arrows can complete their animation

@@ -287,7 +287,11 @@ namespace FishingGame.Reeling
                     _currentFishPool.FishCaught();
                 }
                 inventoryScript.AddFish(_currentlyReelingFish);
+
+                //TODO: Delete this once new inventory impelementation has been merged
                 _inventoryUI.RefreshInventoryUI(inventoryScript.GetFishInventory());
+                ///
+
                 _currentlyReelingFish = null;
 
                 winText.SetActive(true);
