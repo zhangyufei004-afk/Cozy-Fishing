@@ -1,6 +1,7 @@
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.Player;
+using FishingGame.UI.Inventory;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,6 +62,8 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The timer UI element.")]
         private GameObject timerObject;
+
+        [SerializeField] private InventoryUI _inventoryUI;
         #endregion
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace FishingGame.Reeling
 
             _currentFish3DObject = fish3DObject;
 
-            characterController.GetComponent<PlayerController>().AreControlsEnabled = false;
+            DisableOrEnableControls(false);
 
             initiationScript.InitiateFishingPerspective();
 
@@ -121,7 +124,7 @@ namespace FishingGame.Reeling
 
             _currentFish3DObject = fish3DObject;
 
-            characterController.GetComponent<PlayerController>().AreControlsEnabled = false;
+            DisableOrEnableControls(false);
 
             initiationScript.InitiateFishingPerspective();
 
@@ -254,10 +257,11 @@ namespace FishingGame.Reeling
         {
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            characterController.GetComponent<PlayerController>().AreControlsEnabled = true;
+            DisableOrEnableControls(true);
             initiationScript.AllowControls = true;
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
+            fishingHook.ResetHookSpot();
 
 
             Destroy(_currentFish3DObject);
@@ -277,6 +281,7 @@ namespace FishingGame.Reeling
                     _currentFishPool.FishCaught();
                 }
                 inventoryScript.AddFish(_currentlyReelingFish);
+                _inventoryUI.RefreshInventoryUI(inventoryScript.GetFishInventory());
                 _currentlyReelingFish = null;
 
                 winText.SetActive(true);
@@ -293,8 +298,18 @@ namespace FishingGame.Reeling
         {
             winText.SetActive(false);
             loseText.SetActive(false);
-        }
+        }           
 
+        /// <summary>
+        /// Enables or disables controls on the character controller
+        /// Public function
+        /// </summary>
+        /// <param name="isEnabled">True means the controls should be enabled, otherwise false</param>
+        public void DisableOrEnableControls(bool isEnabled)
+        {
+            if (isEnabled) { characterController.AreControlsEnabled = true; }
+            else { characterController.AreControlsEnabled = false; }
+        }
 
         /// <summary>
         /// Starts a timer that will then run the HideReelFinishedUI() function

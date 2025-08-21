@@ -212,8 +212,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 153803248}
   m_HandleRect: {fileID: 153803247}
   m_Direction: 2
-  m_Value: -0.00000006910585
-  m_Size: 0.11298136
+  m_Value: -0.00000034552926
+  m_Size: 0.112833895
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf11266ef6194a4499d8cfbfd61bfcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanCatchFish: 0
+  HookIsOut: 0
   reelingMaster: {fileID: 0}
   initiationScript: {fileID: 0}
   hookResetSpot: {x: 0, y: 0, z: 0}
@@ -817,7 +817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 7065.7007}
+  m_AnchoredPosition: {x: 0, y: 7065.7026}
   m_SizeDelta: {x: 7219.82, y: 7965.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &287286831
@@ -1486,6 +1486,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 847340576}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: _inventoryUI
+      value: 
+      objectReference: {fileID: 747605800}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: inventoryScript
       value: 
       objectReference: {fileID: 747605798}
@@ -1497,6 +1501,10 @@ PrefabInstance:
       propertyPath: characterController
       value: 
       objectReference: {fileID: 2991282359923290823}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: miniGameTypes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7358692044108832365, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: Animator
       value: 
@@ -1537,6 +1545,14 @@ PrefabInstance:
       propertyPath: timerText
       value: 
       objectReference: {fileID: 1195184301}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: fishMoveMax
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: fishMoveMin
+      value: -200
+      objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: sliderCanvas
       value: 
@@ -2092,12 +2108,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: ReelingUI
       objectReference: {fileID: 0}
+    - target: {fileID: 30562277025586974, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 1979633506889931897, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2968663498390666826, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4766851537740856712, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6606970007549933591, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821759457862353717, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9031331516391147190, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -2697,12 +2729,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 985057530}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.055, y: -2.417, z: 2.509}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.4847128, y: -0, z: -0, w: 0.87467337}
+  m_LocalPosition: {x: 0.5499995, y: 0.541, z: 31.74}
+  m_LocalScale: {x: 10, y: 1.7309337, z: 0.7562712}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1964135528}
+  m_Father: {fileID: 1343456322}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &985057532
 SphereCollider:
@@ -2790,10 +2822,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf11266ef6194a4499d8cfbfd61bfcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanCatchFish: 0
+  HookIsOut: 0
   reelingMaster: {fileID: 1087667597}
   initiationScript: {fileID: 2991282359923290822}
-  hookResetSpot: {x: 0, y: 0, z: 0}
+  hookResetSpot: {x: 0.5499995, y: 0.541, z: 31.74}
 --- !u!1 &996060156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,7 +3930,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 1.7999998, z: 0.1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 985057531}
   m_Father: {fileID: 1964135528}
   m_LocalEulerAnglesHint: {x: 57.987, y: 0, z: 0}
 --- !u!136 &1343456323
@@ -4932,7 +4965,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1343456322}
-  - {fileID: 985057531}
   - {fileID: 661310411}
   - {fileID: 212651114}
   - {fileID: 892669580}

@@ -44,6 +44,10 @@ namespace FishingGame.Reeling
             return fishData;
         }
 
+        /// <summary>
+        /// This is a public function that is called to reduce the amount of fish currently in the pool
+        /// It will also destroy the pool if the pool no longer has catchable fish.
+        /// </summary>
         public void FishCaught()
         {
             amountOfFishHeld -= 1;
@@ -58,10 +62,5 @@ namespace FishingGame.Reeling
             if (amountOfFishHeld == 0) { return true; }
             else { return false; }
         }
-
-
-
-
-
     }
 }

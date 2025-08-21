@@ -47,21 +47,21 @@ MonoBehaviour:
   reelingMaster: {fileID: 6051403347699497060}
   sliderCanvas: {fileID: 0}
   _fishMoveGoal: {x: 0, y: 0, z: 0}
-  catchIncreaseAmount: 30
+  catchIncreaseAmount: 15
   catchDecreaseAmount: -10
-  boxSpeedScalar: 0
+  boxSpeedScalar: 100
   progressSlider: {fileID: 0}
   uiCatchBoxScript: {fileID: 0}
   catchBox: {fileID: 0}
   fishImage: {fileID: 0}
-  fishMoveMin: -70
-  fishMoveMax: 70
+  fishMoveMin: -100
+  fishMoveMax: 100
   rotationMin: -30
   rotationMax: 30
-  fishMaxYCord: 149.1
-  fishMinYCord: -147.4
-  catchBoxMaxXCord: 132
-  catchBoxMinXCord: -132
+  fishMaxYCord: 297.6
+  fishMinYCord: -297.3
+  catchBoxMaxXCord: 292
+  catchBoxMinXCord: -291.4
   timerText: {fileID: 0}
 --- !u!1 &2680999012508629255
 GameObject:
@@ -259,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiationScript: {fileID: 0}
   fishingHook: {fileID: 0}
+  inventoryScript: {fileID: 0}
   miniGameTypes:
   - {fileID: 2680999012508629255}
   - {fileID: 313023259972732001}
@@ -267,3 +268,4 @@ MonoBehaviour:
   winText: {fileID: 0}
   loseText: {fileID: 0}
   timerObject: {fileID: 0}
+  _inventoryUI: {fileID: 0}

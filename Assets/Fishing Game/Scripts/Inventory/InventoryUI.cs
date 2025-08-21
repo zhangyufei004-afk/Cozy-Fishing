@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using FishingGame.FishSystem;
+using FishingGame.Inventory;
 
 namespace FishingGame.UI.Inventory
 {
@@ -25,6 +26,11 @@ namespace FishingGame.UI.Inventory
         private void Awake()
         {
             _inventoryPanel = gameObject;
+        }
+
+        private void OnDestroy()
+        {
+            
         }
 
         private void Start()

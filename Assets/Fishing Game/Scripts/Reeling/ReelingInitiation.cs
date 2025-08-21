@@ -87,6 +87,17 @@ namespace FishingGame.Reeling
                 return;
             }
 
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                LeftClick();
+            }
+
+            // TODO: THis can likely be done better and should be changed once this is setup to use new input system
+            if (fishingHook.HookIsOut == true)
+            {
+                return;
+            }
+
             if (UnityEngine.Input.GetKey(KeyCode.Mouse1))
             {
                 RightClickHeld();
@@ -100,11 +111,6 @@ namespace FishingGame.Reeling
             if (UnityEngine.Input.GetKeyUp(KeyCode.Mouse1))
             {
                 RightClickReleased();
-            }
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                LeftClick();
             }
         }
 
@@ -137,6 +143,10 @@ namespace FishingGame.Reeling
                 ThrowLine();
                 ResetCharge();
             }  
+            else if (fishingHook.HookIsOut)
+            {
+                fishingHook.PullBackHook();
+            }
         }
 
         /// <summary>
@@ -171,7 +181,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ThrowLine()
         {
-            fishingHook.CanCatchFish = true;
+            fishingHook.HookIsOut = true;
+            reelingMasterScript.DisableOrEnableControls(false);
 
             Vector3 targetLocation = rodBobber.transform.position;
 
@@ -179,6 +190,7 @@ namespace FishingGame.Reeling
             // Eventually this will be turned into a proper cast animation with the hook flying to
             // The target spot
             fishingHook.gameObject.transform.position = targetLocation;
+            fishingHook.gameObject.GetComponent<MeshRenderer>().enabled = true;
         }
 
         public void InitiateFishingPerspective()
