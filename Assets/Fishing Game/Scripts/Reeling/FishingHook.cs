@@ -21,6 +21,8 @@ namespace FishingGame.Reeling
         [Tooltip("This is a public variable that should initially be set to false, it is changed by both this script and others based on if the fishin line has been cast or not.")]
         public bool HookIsOut = false;
 
+        public Vector3 hookGoal;
+
         #endregion
 
         #region Private Fields
@@ -36,6 +38,9 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The spot where the hook will default back to after casting. NOTE: For current implementation make sure the y is 0 or above.")]
         private Vector3 hookResetSpot;
+
+        [SerializeField]
+        private Animator rodAnimator;
 
         // Fishing pool is not a list as there should never be two fishing pools colliding at once
         // There is a small chance for multipile fish to collide at once so I have made _collidingFish a list
@@ -182,7 +187,6 @@ namespace FishingGame.Reeling
             // TODO: This need to be physics logic soon
             gameObject.transform.localPosition = hookResetSpot;
             HookIsOut = false;
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
             reelingMaster.DisableOrEnableControls(true);
         }
     }
