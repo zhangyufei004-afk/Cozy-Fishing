@@ -16,13 +16,10 @@ namespace FishingGame.Reeling
     {
         #region Public Variables
 
-        public bool AllowControls = true;
-
         #endregion
 
         #region Private Fields
 
-        private Vector3 _aimPoint;
         private Vector3 _initialPosition;
         private Vector3 _CastDirection;
         private bool _isCharging = false;
@@ -30,34 +27,45 @@ namespace FishingGame.Reeling
         private float _maxCharge = 10;
 
         [SerializeField]
+        [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
         private ReelingMaster reelingMasterScript;
 
         [SerializeField]
+        [Tooltip("Reference to the fish camera this is attatched to the hook")]
         private CinemachineCamera fishCamera;
 
         [SerializeField]
+        [Tooltip("Reference to the default camera that is used")]
         private CinemachineCamera mainCamera;
 
         // TODO: I have currently disabled this visually but still use it to calculate the final location of the hook
         [SerializeField]
+        [Tooltip("Reference to a trajectorline attatched to player, used for calculating line casting")]
         private LineRenderer _playerTrajectoryLine;
 
         [SerializeField]
+        [Tooltip("Scales how fast the cast bar is charged when holding right click")]
         private int chargeScalar;
 
         [SerializeField]
+        [Tooltip("Slider for how much charge the cast bar has for reeling")]
         private Slider chargeSlider;
 
+        // TODO: See if I can just remove this probably not needed
         [SerializeField]
+        [Tooltip("End point of the rod")]
         private GameObject rodEndPoint;
 
         [SerializeField]
+        [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
         private GameObject rodBobber;
 
         [SerializeField]
+        [Tooltip("Contains logic for detecting if a fish or pool is touching the hook, gameobject is attatched to the fishing rod")]
         private FishingHook fishingHook;
 
         [SerializeField]
+        [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
 
 
@@ -82,10 +90,6 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (AllowControls == false)
-            {
-                return;
-            }
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -193,11 +197,17 @@ namespace FishingGame.Reeling
             fishingHook.gameObject.GetComponent<MeshRenderer>().enabled = true;
         }
 
+        /// <summary>
+        /// A public function that calls the private enable fish perspective function with a true value
+        /// </summary>
         public void InitiateFishingPerspective()
         {
             ShouldEnableFishPerspective(true);
         }
 
+        /// <summary>
+        /// Creates a 3D fish model for reeling vizualization and then returns it
+        /// </summary>
         public GameObject CreateAndReturn3DFishModel()
         {
             GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));

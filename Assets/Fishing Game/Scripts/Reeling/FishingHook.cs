@@ -9,8 +9,10 @@ using UnityEngine.ProBuilder.MeshOperations;
 namespace FishingGame.Reeling
 {
     /// <summary>
-    /// This class uses an OnCollisionEnter function to check determine when the players
-    /// fishing line has hit a fish
+    /// This class is responsible for containing the logic behind detecting the player has hit a fishing pool or fish
+    /// It contains a list of gameobjects for any colliding fish and a singular fishingpool reference for a colliding fishing pool
+    /// It updates these fields based on OnTriggerEnters when the fishing rod is being used
+    /// It will tell the ReelingInitiation script what type of fish is being caught and its data
     /// </summary>
     public class FishingHook : MonoBehaviour
     {
@@ -95,7 +97,7 @@ namespace FishingGame.Reeling
             else
             {
                 ResetHookSpot();
-                initiationScript.AllowControls = true;  
+                reelingMaster.DisableOrEnableControls(true);
             }
         }
 

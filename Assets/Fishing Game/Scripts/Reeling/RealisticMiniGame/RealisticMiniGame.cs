@@ -17,42 +17,51 @@ namespace FishingGame.Reeling
         #region Private Fields
 
         [SerializeField]
+        [Tooltip("Reference to the ReelingMaster script.")]
         private ReelingMaster reelingMaster;
 
         [SerializeField]
+        [Tooltip("The gameobject that holds the UI in it. This is a child of reelingUI.")]
         private GameObject realisticCanvas;
 
         [SerializeField]
+        [Tooltip("The circle that represents where the players mouse is.")]
         private Image playerCircle;
 
         [SerializeField]
+        [Tooltip("The circle that represents where the player needs to have their mouse over. This has a parent called MouseGoalHolder")]
         private Image goalCircle;
 
         [SerializeField]
+        [Tooltip("The UI slider that shows the progress of the minigame.")]
         private Slider progressSlider;
 
         [SerializeField]
+        [Tooltip("This is a script attatched to the same gameobject as goalCircle.")]
         private RealisticGoalChecker realisticGoalChecker;
 
         [SerializeField]
+        [Tooltip("Scales how fast the progress for the minigame increases.")]
         private float progressIncreaseIncrements;
 
         [SerializeField]
-        private Animator Animator;
+        [Tooltip("The animator that makes the target circle move, it is attatched to the object that parents the ReelGoalCircle.")]
+        private Animator animator;
 
         [SerializeField]
-        private float animationSpeed;
-
-        [SerializeField]
+        [Tooltip("Default value for how often the speed should be changed. This will be modified on runtime but should be set to a default value in the editor")]
         private float speedChangeDelay;
 
-        private bool _reverseTarget;
+        private float _animationSpeed = 0.5f;
+        private bool _reverseTarget = false;
         private float _catchProgress = 0f;
 
         [SerializeField]
+        [Tooltip("The max amount of progress for the minigame to complete.")]
         private float maxCatchProgress = 100f;
 
         [SerializeField]
+        [Tooltip("The time limit for this minigame.")]
         private float timeLimit;
 
         [SerializeField]
@@ -60,7 +69,6 @@ namespace FishingGame.Reeling
         private TextMeshProUGUI timerText;
 
         private Fish _fishData;
-
         private float _currentTimeSpent = 0f;
         private bool _isMinigameActive = false;
 
@@ -141,8 +149,8 @@ namespace FishingGame.Reeling
             playerCircle.transform.position = GetCursorPosition();
 
             //target
-            Animator.speed = animationSpeed;
-            Animator.SetFloat("direction", _reverseTarget ? -1f : 1f);
+            animator.speed = _animationSpeed;
+            animator.SetFloat("direction", _reverseTarget ? -1f : 1f);
         }
 
         /// <summary>
@@ -208,7 +216,7 @@ namespace FishingGame.Reeling
             while (_isMinigameActive)
             {
                 //random speed
-                animationSpeed = Random.Range(0.15f, 0.5f);
+                _animationSpeed = Random.Range(0.15f, 0.5f);
 
                 //1 in 6 change to reverse direction
                 if (Random.Range(1, 7) == 6)

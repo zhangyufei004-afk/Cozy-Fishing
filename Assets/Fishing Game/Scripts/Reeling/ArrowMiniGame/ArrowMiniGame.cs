@@ -12,7 +12,7 @@ namespace FishingGame.Reeling
     /// ArrowMiniGame uses the IReelingMinigame interface
     /// The arrowminigame involves showing a randomized set of arrows
     /// The player was press the correct arrows in the correct sequence
-    /// Pressing the wrong arrow or taking too long causes a loss
+    /// Taking too long causes a loss
     /// </summary>
     public class ArrowMiniGame : MonoBehaviour, IReelingMinigame
     {
@@ -28,8 +28,6 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The image gameobjects that will be where each arrow is placed, left most is slot 1.")]
         private Image[] arrowSlots;
-
-        private Vector2[] _arrowSlotPositions;
 
         [SerializeField]
         [Tooltip("The parent object in the ui")]

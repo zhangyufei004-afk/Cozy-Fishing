@@ -35,12 +35,15 @@ namespace FishingGame.Reeling
         private GameObject _currentFish3DObject;
 
         [SerializeField]
+        [Tooltip("A reference to the initiation script attatched to player.")]
         private ReelingInitiation initiationScript;
 
         [SerializeField]
+        [Tooltip("A reference to the fishing hook script which is attatched to a fishing rod.")]
         private FishingHook fishingHook;
 
         [SerializeField]
+        [Tooltip("A reference to the inventory system.")]
         private InventorySystem inventoryScript;
 
         // Unity dosen't support making interface types a list so this is a gameobject list
@@ -51,19 +54,25 @@ namespace FishingGame.Reeling
         //***************************\\
 
         [SerializeField]
+        [Tooltip("A reference to the character controller")]
         private PlayerController characterController;
 
         [SerializeField]
+        [Tooltip("The wintext contained in ReelingUI.")]
         private GameObject winText;
 
         [SerializeField]
+        [Tooltip("The losetext contained in ReelingUI.")]
         private GameObject loseText;
 
         [SerializeField]
-        [Tooltip("The timer UI element.")]
+        [Tooltip("The timer UI element contained in ReelingUI.")]
         private GameObject timerObject;
 
-        [SerializeField] private InventoryUI _inventoryUI;
+        // TODO: Remove this once not needed with new inventory setup
+        [SerializeField]
+        [Tooltip("A reference to the inventory UI.")] 
+        private InventoryUI _inventoryUI;
         #endregion
 
         /// <summary>
@@ -89,7 +98,6 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            initiationScript.AllowControls = false;
             timerObject.SetActive(true);
 
             loseText.SetActive(false);
@@ -133,7 +141,6 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            initiationScript.AllowControls = false;
             timerObject.SetActive(true);
 
             loseText.SetActive(false);
@@ -258,7 +265,6 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             DisableOrEnableControls(true);
-            initiationScript.AllowControls = true;
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
             fishingHook.ResetHookSpot();
