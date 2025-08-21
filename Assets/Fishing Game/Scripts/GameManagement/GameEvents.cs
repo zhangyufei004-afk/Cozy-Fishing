@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using FishingGame.Inventory;
 
 namespace FishingGame.GameManagement
 {
@@ -8,6 +10,7 @@ namespace FishingGame.GameManagement
 
         public event Action OnFishCaught;
         public event Action OnItemReceived;
+        public event Action<List<IStorable>> OnInventoryUpdated;
 
         #endregion
 
@@ -15,5 +18,10 @@ namespace FishingGame.GameManagement
         {
             OnFishCaught?.Invoke();
         }
-    }
+
+        public void InventoryUpdated(List<IStorable> itemList)
+        {
+            OnInventoryUpdated?.Invoke(itemList);
+        }
+}
 }

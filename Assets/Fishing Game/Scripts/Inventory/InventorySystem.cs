@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishingGame.FishSystem;
 using FishingGame.FishLog;
+using FishingGame.GameManagement;
 
 namespace FishingGame.Inventory
 {
@@ -20,7 +21,7 @@ namespace FishingGame.Inventory
         public void AddItem(IStorable newItem)
         {
             _fishInventory.Add(newItem);
-
+            GameManager.Instance.GameEvents.InventoryUpdated(_fishInventory);
             if (fishLogSystem is not null && newItem.GetItemType() == EItemType.Fish)
             {
                 Fish newFish = newItem as Fish;

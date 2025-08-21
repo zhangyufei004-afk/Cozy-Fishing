@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
 using FishingGame.Inventory;
 
 namespace FishingGame.UI.Inventory
@@ -33,6 +34,7 @@ namespace FishingGame.UI.Inventory
         {
             ShowFishInventory();
             panelDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+            GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
         }
 
         private void ToggleInventoryVisibility()
@@ -108,12 +110,12 @@ namespace FishingGame.UI.Inventory
         /// <summary>
         /// Refreshes the inventory UI with the latest list of items.
         /// </summary>
-        /// <param name="fishList">The list of items to display.</param>
-        public void RefreshInventoryUI(List<IStorable> fishList)
+        /// <param name="itemList">The list of items to display.</param>
+        public void RefreshInventoryUI(List<IStorable> itemList)
         {
             ClearInventoryUI();
 
-            foreach (var storable in fishList)
+            foreach (var storable in itemList)
             {
                 switch (storable.GetItemType())
                 {
