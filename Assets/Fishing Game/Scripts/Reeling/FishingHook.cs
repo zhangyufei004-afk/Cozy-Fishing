@@ -150,7 +150,7 @@ namespace FishingGame.Reeling
             {
                 SetupHookTravelBack();
                 ResetHookSpot();
-                reelingMaster.DisableOrEnableControls(true);
+                reelingMaster.DisableControls(false);
             }
         }
 
@@ -253,7 +253,7 @@ namespace FishingGame.Reeling
             // TODO: This need to be physics logic soon
           //  gameObject.transform.localPosition = hookResetSpot;
             HookIsOut = false;
-            reelingMaster.DisableOrEnableControls(true);
+            reelingMaster.DisableControls(false);
         }
     }
 }

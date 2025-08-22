@@ -93,7 +93,7 @@ namespace FishingGame.Reeling
 
             _currentFish3DObject = fish3DObject;
 
-            DisableOrEnableControls(false);
+            DisableControls(true);
 
             initiationScript.InitiateFishingPerspective();
 
@@ -138,7 +138,7 @@ namespace FishingGame.Reeling
 
             _currentFish3DObject = fish3DObject;
 
-            DisableOrEnableControls(false);
+            DisableControls(true);
 
             initiationScript.InitiateFishingPerspective();
 
@@ -273,7 +273,7 @@ namespace FishingGame.Reeling
             IsFishing = false;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            DisableOrEnableControls(true);
+            DisableControls(false);
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
             fishingHook.PullBackHook();
@@ -323,10 +323,10 @@ namespace FishingGame.Reeling
         /// Enables or disables controls on the character controller
         /// Public function
         /// </summary>
-        /// <param name="isEnabled">True means the controls should be enabled, otherwise false</param>
-        public void DisableOrEnableControls(bool isEnabled)
+        /// <param name="isDisabled">True means the controls should be disabled, otherwise false</param>
+        public void DisableControls(bool isDisabled)
         {
-            characterController.ToggleMovement(isEnabled);
+            characterController.ToggleMovement(isDisabled);
         }
 
         /// <summary>

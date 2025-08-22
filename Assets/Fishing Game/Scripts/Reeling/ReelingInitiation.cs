@@ -185,7 +185,7 @@ namespace FishingGame.Reeling
         private void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-            reelingMasterScript.DisableOrEnableControls(false);
+            reelingMasterScript.DisableControls(true);
 
             Vector3 targetLocation = rodBobber.transform.position;
             fishingHook.SetUpHookTravelToFishSpot(targetLocation);
