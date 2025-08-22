@@ -2,8 +2,10 @@ using FishingGame.FishSystem;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.ProBuilder.MeshOperations;
 
 namespace FishingGame.Reeling
@@ -42,6 +44,28 @@ namespace FishingGame.Reeling
         [SerializeField]
         private Animator rodAnimator;
 
+        private bool _headingToFishSpot = false;
+
+        private bool _headingBackToHook = false;
+
+        [SerializeField]
+        [Tooltip("Scales the speed the hook returns to the rod.")]
+        private float hookReturnSpeed;
+
+        [SerializeField]
+        [Tooltip("Scales the speed the hook heads to the target.")]
+        private float castHookSpeed;
+
+        [SerializeField]
+        [Tooltip("The water splash special effect")]
+        private ParticleSystem waterSplash;
+
+        [SerializeField]
+        [Tooltip("The audio component attatched to the hook")]
+        private AudioSource waterSound;
+
+        private Vector3 _fishingLocation;
+
         // Fishing pool is not a list as there should never be two fishing pools colliding at once
         // There is a small chance for multipile fish to collide at once so I have made _collidingFish a list
         private List<GameObject> _collidingFish;
@@ -51,6 +75,29 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             _collidingFish = new List<GameObject>();
+        }
+
+        private void Update()
+        {
+            if (_headingToFishSpot)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _fishingLocation, castHookSpeed * Time.deltaTime);
+                if (transform.position == _fishingLocation)
+                {
+                    _headingToFishSpot = false;
+                    waterSplash.Play();
+                    waterSound.Play();
+                }
+            }
+            if (_headingBackToHook)
+            {
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, hookResetSpot, hookReturnSpeed * Time.deltaTime);
+                if (transform.localPosition == hookResetSpot)
+                {
+                    _headingBackToHook = false;
+                }
+            }
+
         }
 
         /// <summary>
@@ -101,9 +148,28 @@ namespace FishingGame.Reeling
             }
             else
             {
+                SetupHookTravelBack();
                 ResetHookSpot();
                 reelingMaster.DisableOrEnableControls(true);
             }
+        }
+
+        /// <summary>
+        /// Sets variables to allow hook to head back to its original spot
+        /// </summary>
+        private void SetupHookTravelBack()
+        {
+            _headingBackToHook = true;
+        }
+
+        /// <summary>
+        /// Sets variables to allow hook to head to target location
+        /// </summary>
+        /// /// <param name="targetLocation">Location to move to</param>
+        public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
+        {
+            _fishingLocation = targetLocation;
+            _headingToFishSpot = true;
         }
 
         /// <summary>
@@ -185,7 +251,7 @@ namespace FishingGame.Reeling
         public void ResetHookSpot()
         {
             // TODO: This need to be physics logic soon
-            gameObject.transform.localPosition = hookResetSpot;
+          //  gameObject.transform.localPosition = hookResetSpot;
             HookIsOut = false;
             reelingMaster.DisableOrEnableControls(true);
         }

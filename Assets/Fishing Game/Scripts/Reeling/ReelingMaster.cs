@@ -20,6 +20,10 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
+        [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
+        public bool IsFishing { get; private set; } 
+
+
         #region Private Fields
 
         // Minigame stats and fields \\
@@ -103,6 +107,8 @@ namespace FishingGame.Reeling
             loseText.SetActive(false);
             winText.SetActive(false);
 
+            IsFishing = true;
+
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
@@ -145,6 +151,8 @@ namespace FishingGame.Reeling
 
             loseText.SetActive(false);
             winText.SetActive(false);
+
+            IsFishing = true;
 
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
@@ -262,12 +270,13 @@ namespace FishingGame.Reeling
         /// <param name="didWin">Represents if the minigame was succsesful or not</param>
         private void EndCatch(bool didWin)
         {
+            IsFishing = false;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             DisableOrEnableControls(true);
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
-            fishingHook.ResetHookSpot();
+            fishingHook.PullBackHook();
 
 
             Destroy(_currentFish3DObject);
@@ -329,7 +338,7 @@ namespace FishingGame.Reeling
         {
             yield return new WaitForSeconds(2);
             HideReelFinishedUI();
-            fishingHook.ResetHookSpot();
+            //fishingHook.ResetHookSpot();
         }
     }
 }

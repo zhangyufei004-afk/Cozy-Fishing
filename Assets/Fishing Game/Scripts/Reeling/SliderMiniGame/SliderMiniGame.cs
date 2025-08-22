@@ -1,12 +1,13 @@
+using FishingGame.FishSystem;
 using System.Collections;
-using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 using TMPro;
 using TMPro.Examples;
-using FishingGame.FishSystem;
+using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace FishingGame.Reeling
 {
@@ -41,10 +42,6 @@ namespace FishingGame.Reeling
         private bool _isGoingLeft;
         private float _catchBoxScale;
         private float _catchBoxVelocity = 0f;
-
-        // Awareness is a difficulty variable, it affects how quick a fish will attempt to escape when the box is on it
-        // Higher awareness = less time before attempting an escape
-        private int _awareness = 0;
 
         [SerializeField]
         private Vector3 _fishMoveGoal = Vector3.zero;
@@ -89,14 +86,6 @@ namespace FishingGame.Reeling
         private int fishMoveMax;
 
         [SerializeField]
-        [Tooltip("Min rotation for the fish icon")]
-        private int rotationMin;
-
-        [SerializeField]
-        [Tooltip("Max rotation for the fish icon")]
-        private int rotationMax;
-
-        [SerializeField]
         [Tooltip("The maximum y axis value the fish icon can have")]
         private float fishMaxYCord;
 
@@ -116,11 +105,17 @@ namespace FishingGame.Reeling
         [Tooltip("The UI text that shows how much time is left")]
         private TextMeshProUGUI timerText;
 
-
-
-
+        private InputAction _directionAction;
 
         #endregion
+
+        private void OnEnable()
+        {
+            InputActionAsset inputActions = InputSystem.actions;
+            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
+            uiActionMap.Enable();
+            _directionAction = uiActionMap.FindAction("Navigate");
+        }
 
         public void Update()
         {
@@ -140,12 +135,12 @@ namespace FishingGame.Reeling
 
             // Move player if keys are held
 
-            if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
+            if (_directionAction.ReadValue<Vector2>().x > 0)
             {
                 MoveCatchIndicator(boxSpeedScalar * Time.deltaTime);
             }
 
-            if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+            if (_directionAction.ReadValue<Vector2>().x < 0)
             {
                 MoveCatchIndicator(-boxSpeedScalar * Time.deltaTime);
             }
@@ -224,7 +219,7 @@ namespace FishingGame.Reeling
                 _catchBoxVelocity += 0.5f;
             }
 
-                _catchBoxVelocity += accelerationValue;
+            _catchBoxVelocity += accelerationValue;
 
             Vector3 currentPosition = catchBox.transform.localPosition;
             float yPosition = currentPosition.y += _catchBoxVelocity;

@@ -47,17 +47,15 @@ MonoBehaviour:
   reelingMaster: {fileID: 6051403347699497060}
   sliderCanvas: {fileID: 0}
   _fishMoveGoal: {x: 0, y: 0, z: 0}
-  catchIncreaseAmount: 15
+  catchIncreaseAmount: 25
   catchDecreaseAmount: -10
   boxSpeedScalar: 100
   progressSlider: {fileID: 0}
   uiCatchBoxScript: {fileID: 0}
   catchBox: {fileID: 0}
   fishImage: {fileID: 0}
-  fishMoveMin: -100
-  fishMoveMax: 100
-  rotationMin: -30
-  rotationMax: 30
+  fishMoveMin: -300
+  fishMoveMax: 300
   fishMaxYCord: 297.6
   fishMinYCord: -297.3
   catchBoxMaxXCord: 292
@@ -120,7 +118,7 @@ MonoBehaviour:
   downSprite: {fileID: 21300000, guid: 6663e10550e4d724d886f549267d7d3b, type: 3}
   leftSprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
   rightSprite: {fileID: 21300000, guid: 297585c6fed9c9e42b95e54ba2f5ebfd, type: 3}
-  inputTimeLimit: 3
+  defaultInputTimeLimit: 20
 --- !u!1 &2981733044875708283
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,8 +205,7 @@ MonoBehaviour:
   progressSlider: {fileID: 0}
   realisticGoalChecker: {fileID: 0}
   progressIncreaseIncrements: 10
-  Animator: {fileID: 0}
-  animationSpeed: 0
+  animator: {fileID: 0}
   speedChangeDelay: 2
   maxCatchProgress: 50
   timeLimit: 20

@@ -68,6 +68,9 @@ namespace FishingGame.Reeling
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
 
+        private InputAction _castAction;
+        private InputAction _reelAction;
+
 
         #endregion
 
@@ -76,22 +79,18 @@ namespace FishingGame.Reeling
             chargeSlider.maxValue = _maxCharge;
             fishCamera.gameObject.SetActive(false);
 
-        //    InputActionAsset inputActions = InputSystem.actions;
-         //   InputActionMap playerActionMap = inputActions.FindActionMap("Player");
+            InputActionAsset inputActions = InputSystem.actions;
+            InputActionMap playerActionMap = inputActions.FindActionMap("Player");
+            playerActionMap.Enable();
+            _castAction = playerActionMap.FindAction("Cast");
+            _reelAction = playerActionMap.FindAction("Reel");
 
-          //  playerActionMap.Enable();
-          //  playerActionMap.FindAction("LeftClick").performed += Move;
-
-
-           // playerActionMap.FindAction("RightClick").started += RightClickHeld;
-           // playerActionMap.FindAction("RightClick").canceled += CancelMove;
         }
 
 
         public void Update()
         {
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse0))
+            if (_reelAction.WasPressedThisFrame())
             {
                 LeftClick();
             }
@@ -102,17 +101,17 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            if (UnityEngine.Input.GetKey(KeyCode.Mouse1))
+            if (_castAction.IsPressed())
             {
                 RightClickHeld();
             }
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Mouse1))
+            if (_castAction.WasPressedThisFrame())
             {
                 RightClickUsed();
             }
 
-            if (UnityEngine.Input.GetKeyUp(KeyCode.Mouse1))
+            if (_castAction.WasReleasedThisFrame())
             {
                 RightClickReleased();
             }
@@ -147,7 +146,7 @@ namespace FishingGame.Reeling
                 ThrowLine();
                 ResetCharge();
             }  
-            else if (fishingHook.HookIsOut)
+            else if (fishingHook.HookIsOut && reelingMasterScript.IsFishing == false)
             {
                 fishingHook.PullBackHook();
             }
@@ -189,12 +188,7 @@ namespace FishingGame.Reeling
             reelingMasterScript.DisableOrEnableControls(false);
 
             Vector3 targetLocation = rodBobber.transform.position;
-
-            // TODO: This is a temporary soloution to make the fishinghook apear where it is needed
-            // Eventually this will be turned into a proper cast animation with the hook flying to
-            // The target spot
-            fishingHook.gameObject.transform.position = targetLocation;
-            fishingHook.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            fishingHook.SetUpHookTravelToFishSpot(targetLocation);
         }
 
         /// <summary>

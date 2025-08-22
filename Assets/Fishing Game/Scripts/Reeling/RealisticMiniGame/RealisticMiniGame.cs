@@ -3,6 +3,7 @@ using FishingGame.FishSystem;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
@@ -72,7 +73,22 @@ namespace FishingGame.Reeling
         private float _currentTimeSpent = 0f;
         private bool _isMinigameActive = false;
 
+        private InputAction _realisticStickAction;
+
+        private PlayerInput _playerInput;
+
         #endregion
+
+        private void OnEnable()
+        {
+            InputActionAsset inputAsset = InputSystem.actions;
+            InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
+            uiActionMap.Enable();
+            _realisticStickAction = uiActionMap.FindAction("RealisticStickMovement");
+            _playerInput = GetComponent<PlayerInput>();
+        }
+
+
 
         /// <summary>
         /// Sets up the required properties for the minigame
@@ -141,12 +157,13 @@ namespace FishingGame.Reeling
                 IncreaseProgress();
             }
 
-
             _currentTimeSpent = UpdateTime(_currentTimeSpent);
             UpdateTimer();
 
-
-            playerCircle.transform.position = GetCursorPosition();
+            Vector2 currentPosition = playerCircle.transform.position;
+            Vector2 positionToAdd = GetCursorPosition();
+            Vector2 newPosition = new Vector2(currentPosition.x += positionToAdd.x, currentPosition.y += positionToAdd.y);
+            playerCircle.transform.position = newPosition;
 
             //target
             animator.speed = _animationSpeed;
@@ -174,9 +191,9 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Returns the current mouse position
         /// </summary>
-        private Vector3 GetCursorPosition()
+        private Vector2 GetCursorPosition()
         {
-            Vector3 mousePos = UnityEngine.Input.mousePosition;
+            Vector2 mousePos = _realisticStickAction.ReadValue<Vector2>();
             return mousePos;
         }
 

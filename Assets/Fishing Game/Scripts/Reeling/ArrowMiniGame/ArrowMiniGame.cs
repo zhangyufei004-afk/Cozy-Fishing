@@ -4,10 +4,22 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
+    internal enum EMovementDirection
+    {
+        Left, 
+        Right, 
+        Up, 
+        Down 
+    };
+
+
+
     /// <summary>
     /// ArrowMiniGame uses the IReelingMinigame interface
     /// The arrowminigame involves showing a randomized set of arrows
@@ -66,13 +78,26 @@ namespace FishingGame.Reeling
         private float _modifiedTimeLimit = 0f;
 
         //QTE
-        private List<KeyCode> _inputSequence = new List<KeyCode>();
+        private List<EMovementDirection> _inputSequence = new List<EMovementDirection>();
         private int _inputIndex = 0;
         private float _inputTimer = 0f;
         private bool _isQTEActive = false;
         private bool _isFishingFinished = false;
 
+        private InputAction _directionAction;
+
+
+
         #endregion
+
+        private void OnEnable()
+        {
+            InputActionAsset inputActions = InputSystem.actions;
+            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
+            uiActionMap.Enable();
+            _directionAction = uiActionMap.FindAction("ArrowMiniGame");
+        }
+
 
         /// <summary>
         /// Setsup any properties/variables needed for the minigame
@@ -109,14 +134,19 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            if (UnityEngine.Input.anyKeyDown)
+            if (_directionAction.WasPressedThisFrame())
             {
-                if (CheckKeyPressed(out KeyCode pressedKey) && _arrowDisabled == false)
+                if (_arrowDisabled == false)
                 {
-                    if (pressedKey == _inputSequence[_inputIndex])
+                    Vector2 direction = _directionAction.ReadValue<Vector2>();
+
+                    EMovementDirection directionToUse = GetMovementDirection(direction);
+
+                    
+
+                    if (directionToUse == _inputSequence[_inputIndex])
                     {
                         FlickAnimation(arrowSlots[_inputIndex]);
-                        //arrowSlots[_inputIndex].gameObject.SetActive(false);
                         _inputIndex++;
 
                         if (_inputIndex >= _inputSequence.Count)
@@ -155,29 +185,29 @@ namespace FishingGame.Reeling
                 animatorToUse.SetInteger("ArrowSlot", i + 1);
 
                 int rand = Random.Range(0, 4);
-                KeyCode dirKey;
+                EMovementDirection arrowDirection;
 
                 switch (rand)
                 {
                     case 0:
-                        dirKey = KeyCode.UpArrow;
+                        arrowDirection = EMovementDirection.Up;
                         arrowSlots[i].sprite = upSprite;
                         break;
                     case 1:
-                        dirKey = KeyCode.DownArrow;
+                        arrowDirection = EMovementDirection.Down;
                         arrowSlots[i].sprite = downSprite;
                         break;
                     case 2:
-                        dirKey = KeyCode.LeftArrow;
+                        arrowDirection = EMovementDirection.Left;
                         arrowSlots[i].sprite = leftSprite;
                         break;
                     default:
-                        dirKey = KeyCode.RightArrow;
+                        arrowDirection = EMovementDirection.Right;
                         arrowSlots[i].sprite = rightSprite;
                         break;
                 }
 
-                _inputSequence.Add(dirKey);
+                _inputSequence.Add(arrowDirection);
                 arrowSlots[i].enabled = true;
             }
         }
@@ -227,17 +257,15 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Detects if a key has been pressed for any of the arrows
+        /// Returns an EMovementDirection enum value based on the inputed Vector2
         /// </summary>
-        /// /// <param name="key">The arrowkey pressed</param>
-        private bool CheckKeyPressed(out KeyCode key)
+        /// /// <param name="directionValue">The Vector2 input from the action</param>
+        private EMovementDirection GetMovementDirection(Vector2 directionValue)
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.UpArrow)) { key = KeyCode.UpArrow; return true; }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.DownArrow)) { key = KeyCode.DownArrow; return true; }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow)) { key = KeyCode.LeftArrow; return true; }
-            if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow)) { key = KeyCode.RightArrow; return true; }
-            key = KeyCode.None;
-            return false;
+            if (directionValue.x > 0) { return EMovementDirection.Right; }
+            if (directionValue.x < 0) { return EMovementDirection.Left; }
+            if (directionValue.y > 0) { return EMovementDirection.Up; }
+            return EMovementDirection.Down;
         }
 
         /// <summary>
