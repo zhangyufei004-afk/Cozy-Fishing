@@ -326,8 +326,7 @@ namespace FishingGame.Reeling
         /// <param name="isEnabled">True means the controls should be enabled, otherwise false</param>
         public void DisableOrEnableControls(bool isEnabled)
         {
-            if (isEnabled) { characterController.AreControlsEnabled = true; }
-            else { characterController.AreControlsEnabled = false; }
+            characterController.ToggleMovement(isEnabled);
         }
 
         /// <summary>
