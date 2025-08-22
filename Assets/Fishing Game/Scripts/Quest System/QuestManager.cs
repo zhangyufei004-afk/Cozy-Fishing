@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,11 +26,21 @@ namespace FishingGame.QuestSystem
                 Destroy(this);
             }
             _instance = this;
+            InitializeQuests();
         }
 
         private void OnEnable()
         {   // TODO: MIGHT NEED TO MOVE THIS INTO AWAKE FOR PROPER SERIALIZATION
-            InitializeQuests();
+            GameManager.Instance.GameEvents.OnQuestStarted += StartQuest;
+            GameManager.Instance.GameEvents.OnQuestCompleted += EndQuest;
+            GameManager.Instance.GameEvents.OnQuestProgress += ProgressQuest;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.Instance.GameEvents.OnQuestStarted -= StartQuest;
+            GameManager.Instance.GameEvents.OnQuestCompleted -= EndQuest;
+            GameManager.Instance.GameEvents.OnQuestProgress -= ProgressQuest;
         }
 
 
@@ -104,7 +115,7 @@ namespace FishingGame.QuestSystem
                 string questName = questData.QuestName;
                 Quest newQuest = new Quest(questData, 0);
                 _quests.Add(questName, newQuest);
-            } 
+            }
         }
     }
 }
