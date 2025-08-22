@@ -1,3 +1,4 @@
+using FishingGame.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,7 @@ namespace FishingGame.UI.Inventory
     public class InventoryController : MonoBehaviour
     {
         [SerializeField] private GameObject inventoryPanel;
+        [SerializeField] private PlayerController playerController;
         private InputActionAsset _inputActions;
         private bool _isInventoryOpen;
         private InputAction _triggerInventoryAction;
@@ -27,9 +29,15 @@ namespace FishingGame.UI.Inventory
         {
             if (_triggerInventoryAction.WasPressedThisFrame())
             {
-                _isInventoryOpen = !_isInventoryOpen;
-                inventoryPanel.SetActive(_isInventoryOpen);
+                ToggleInventoryVisibility();
             }
+        }
+
+        private void ToggleInventoryVisibility()
+        {
+            _isInventoryOpen = !_isInventoryOpen;
+            inventoryPanel.SetActive(_isInventoryOpen);
+            playerController.ToggleMovement(_isInventoryOpen);
         }
     }
 }

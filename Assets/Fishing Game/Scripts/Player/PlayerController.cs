@@ -8,8 +8,7 @@ namespace FishingGame.Player
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
-        [Tooltip("When enabled player can move normally, when disabled player cant")]
-        public bool AreControlsEnabled = true;
+        private readonly int _speed = Animator.StringToHash("Speed");
 
         [SerializeField]
         private GameObject playerBody;
@@ -19,8 +18,13 @@ namespace FishingGame.Player
         private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
         [SerializeField]
         private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
-        private Vector2 _moveInput;
         [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Animator animator;
+        
+        private float _initialMovementSpeed;
+        private float _initialRotationSpeed;
+        private Vector2 _moveInput;
+        
 
         private void OnEnable()
         {
@@ -29,19 +33,42 @@ namespace FishingGame.Player
             playerActionMap.Enable();
             playerActionMap.FindAction("Move").performed += Move;
             playerActionMap.FindAction("Move").canceled += CancelMove;
+            _initialMovementSpeed = movementSpeed;
+            _initialRotationSpeed = rotationSpeed;
         }
 
         void Update()
         {
-            if (AreControlsEnabled == false) { return; }
             Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
             
             characterController.SimpleMove(directionNormalized * movementSpeed);
 
+            float animationSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, min: 0, max: 2f);
+            
+            animator.SetFloat(_speed, animationSpeed);
+            
             if (_moveInput != Vector2.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
                 playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+        }
+        
+        /// <summary>
+        /// Enables or Disables Player Movement
+        /// </summary>
+        /// <param name="isMovementEnabled">Is the movement enabled or disabled</param>
+        public void ToggleMovement(bool isMovementEnabled)
+        {
+            if (isMovementEnabled)
+            {
+                movementSpeed = 0;
+                rotationSpeed = 0;
+            }
+            else
+            {
+                movementSpeed = _initialMovementSpeed;
+                rotationSpeed = _initialRotationSpeed;
             }
         }
         
@@ -54,6 +81,8 @@ namespace FishingGame.Player
         {
             _moveInput = Vector2.zero;
         }
+
+        
 
     }
 }

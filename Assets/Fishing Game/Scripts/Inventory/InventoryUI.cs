@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using FishingGame.FishSystem;
-using FishingGame.Inventory;
+using UnityEngine.EventSystems;
 
 namespace FishingGame.UI.Inventory
 {
@@ -28,23 +28,20 @@ namespace FishingGame.UI.Inventory
             _inventoryPanel = gameObject;
         }
 
-        private void OnDestroy()
-        {
-            
-        }
-
         private void Start()
         {
             ShowFishInventory();
             panelDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         }
 
-        private void ToggleInventoryVisibility()
+        private void OnEnable()
         {
-            if (_inventoryPanel)
-            {
-                _inventoryPanel.SetActive(!_inventoryPanel.activeSelf);
-            }
+            EventSystem.current.SetSelectedGameObject(panelDropdown.gameObject);
+        }
+
+        private void OnDisable()
+        {
+            EventSystem.current.SetSelectedGameObject(null);
         }
 
         private void OnDropdownValueChanged(int index)

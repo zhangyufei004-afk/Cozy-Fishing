@@ -557,6 +557,15 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""49d08dfe-a2a8-40d5-b9d7-c0ef1aecd265"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1109,6 +1118,17 @@ namespace FishingGame.Input
                     ""action"": ""RealisticStickMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f9c94bb-d9dd-4c9a-904f-15cab7cfd8c3"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1200,6 +1220,7 @@ namespace FishingGame.Input
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
             m_UI_ArrowMiniGame = m_UI.FindAction("ArrowMiniGame", throwIfNotFound: true);
             m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
+            m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -1381,6 +1402,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_TrackedDeviceOrientation;
         private readonly InputAction m_UI_ArrowMiniGame;
         private readonly InputAction m_UI_RealisticStickMovement;
+        private readonly InputAction m_UI_Back;
         public struct UIActions
         {
             private @InputActions m_Wrapper;
@@ -1397,6 +1419,7 @@ namespace FishingGame.Input
             public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
             public InputAction @ArrowMiniGame => m_Wrapper.m_UI_ArrowMiniGame;
             public InputAction @RealisticStickMovement => m_Wrapper.m_UI_RealisticStickMovement;
+            public InputAction @Back => m_Wrapper.m_UI_Back;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1442,6 +1465,9 @@ namespace FishingGame.Input
                 @RealisticStickMovement.started += instance.OnRealisticStickMovement;
                 @RealisticStickMovement.performed += instance.OnRealisticStickMovement;
                 @RealisticStickMovement.canceled += instance.OnRealisticStickMovement;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
@@ -1482,6 +1508,9 @@ namespace FishingGame.Input
                 @RealisticStickMovement.started -= instance.OnRealisticStickMovement;
                 @RealisticStickMovement.performed -= instance.OnRealisticStickMovement;
                 @RealisticStickMovement.canceled -= instance.OnRealisticStickMovement;
+                @Back.started -= instance.OnBack;
+                @Back.performed -= instance.OnBack;
+                @Back.canceled -= instance.OnBack;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -1569,6 +1598,7 @@ namespace FishingGame.Input
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
             void OnArrowMiniGame(InputAction.CallbackContext context);
             void OnRealisticStickMovement(InputAction.CallbackContext context);
+            void OnBack(InputAction.CallbackContext context);
         }
     }
 }
