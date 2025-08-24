@@ -23,8 +23,6 @@ namespace FishingGame.Reeling
         [Tooltip("This is a public variable that should initially be set to false, it is changed by both this script and others based on if the fishin line has been cast or not.")]
         public bool HookIsOut = false;
 
-        public Vector3 hookGoal;
-
         #endregion
 
         #region Private Fields
@@ -131,6 +129,19 @@ namespace FishingGame.Reeling
             {
                 _collidingFish.Remove(other.gameObject);
             }
+        }
+
+        /// <summary>
+        /// Checks if the hook is able to be pulled back
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldTravelBack()
+        {
+            if (HookIsOut == true && _headingToFishSpot == false && reelingMaster.IsFishing == false)
+            {
+                return true;
+            }
+            else { return false; }
         }
 
         /// <summary>

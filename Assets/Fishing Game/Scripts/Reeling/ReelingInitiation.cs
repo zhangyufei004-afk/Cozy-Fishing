@@ -82,11 +82,6 @@ namespace FishingGame.Reeling
 
         private InputAction _castAction;
         private InputAction _reelAction;
-
-
-        
-
-
         #endregion
 
         public void OnEnable()
@@ -163,7 +158,7 @@ namespace FishingGame.Reeling
                 ThrowLine();
                 ResetCharge();
             }  
-            else if (fishingHook.HookIsOut && reelingMasterScript.IsFishing == false)
+            else if (fishingHook.ShouldTravelBack())
             {
                 fishingHook.PullBackHook();
             }
