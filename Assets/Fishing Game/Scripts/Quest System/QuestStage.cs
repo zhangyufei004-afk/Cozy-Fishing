@@ -1,4 +1,5 @@
 using System;
+using FishingGame.GameManagement;
 using FishingGame.Inventory;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -17,7 +18,13 @@ namespace FishingGame.QuestSystem
         [SerializeField] [CanBeNull] protected GameObject questReward;
 
         private bool _isComplete = false;
-
+        private string _questName;
+        
+        public void InitializeStage(string questName)
+        {
+            this._questName = questName;
+        }
+        
         public abstract void StartStage();
 
         protected virtual void FinishStage()
@@ -25,7 +32,7 @@ namespace FishingGame.QuestSystem
             if (!_isComplete)
             {
                 _isComplete = true;
-
+                GameManager.Instance.GameEvents.ProgressQuest(_questName);
                 if (questReward is not null)
                 {
                     QuestReward.GivePlayerItem(questReward);

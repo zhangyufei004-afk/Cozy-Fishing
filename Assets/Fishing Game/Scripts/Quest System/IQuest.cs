@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 namespace FishingGame.QuestSystem
 {
     /// <summary>
@@ -7,11 +9,11 @@ namespace FishingGame.QuestSystem
     public interface IQuest
     {
         public void EndQuest();
-        public void BeginQuest();
         public void ProgressStage();
         public bool Equals(string otherQuestName);
         public bool IsQuestInProgress();
         public string GetId();
-        
+        public void SetState(EQuestState newState);
+        public void InstantiateQuestStep(Transform parentTransform);
     }
 }

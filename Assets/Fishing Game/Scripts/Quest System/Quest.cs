@@ -2,11 +2,12 @@ using UnityEngine;
 
 namespace FishingGame.QuestSystem
 {
-    internal enum EQuestState : sbyte
+    public enum EQuestState : sbyte
     {
         RequirementsNotMet = -1,
         CanStart,
         InProgress,
+        CanFinish,
         Finished
     }
     
@@ -26,12 +27,7 @@ namespace FishingGame.QuestSystem
         }
         public void EndQuest()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void BeginQuest()
-        {
-            throw new System.NotImplementedException();
+            throw new System.NotImplementedException("TODO: IMPLEMENT ENDING QUESTS");
         }
 
         /// <summary>
@@ -39,7 +35,14 @@ namespace FishingGame.QuestSystem
         /// </summary>
         public void ProgressStage()
         {
-            _currentStageIndex++;
+            if (_currentStageIndex < _questData.QuestStages.Count - 1)
+            {
+                _currentStageIndex++;    
+            }
+            else
+            {
+                throw new QuestException("Unable to Progress Stage as the quest has reached the end of its stages.");
+            }
         }
 
         public bool Equals(string otherQuestName)
@@ -57,6 +60,11 @@ namespace FishingGame.QuestSystem
             return _questData.QuestName;
         }
 
+        public void SetState(EQuestState newState)
+        {
+            this._currentState = newState;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -64,7 +72,12 @@ namespace FishingGame.QuestSystem
         public void InstantiateQuestStep(Transform parentTransform)
         {
             QuestStage currentQuestStage = GetCurrentQuestStage();
-            Object.Instantiate(currentQuestStage, parentTransform);
+            if (currentQuestStage is not null)
+            {
+                Object.Instantiate(currentQuestStage, parentTransform);
+                currentQuestStage.InitializeStage(this.GetId());
+            }
+            
         }
 
         /// <summary>

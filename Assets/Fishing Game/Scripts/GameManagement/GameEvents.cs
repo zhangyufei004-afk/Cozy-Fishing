@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FishingGame.Inventory;
+using FishingGame.QuestSystem;
 
 namespace FishingGame.GameManagement
 {
@@ -56,9 +57,9 @@ namespace FishingGame.GameManagement
             OnQuestStarted?.Invoke(quest);
         }
 
-        public void QuestStateChange(string quest)
+        public void QuestStateChange(IQuest quest)
         {
-            OnQuestStateChange?.Invoke(quest);
+            OnQuestStateChange?.Invoke(quest.GetId());
         }
 
         public void QuestCompleted(string quest)
