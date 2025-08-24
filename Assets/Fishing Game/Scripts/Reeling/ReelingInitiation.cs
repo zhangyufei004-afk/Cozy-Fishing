@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace FishingGame.Reeling
 {
@@ -20,8 +21,19 @@ namespace FishingGame.Reeling
 
         #region Private Fields
 
-        private Vector3 _initialPosition;
-        private Vector3 _CastDirection;
+        [SerializeField]
+        private GameObject characterParent;
+
+        [SerializeField] 
+        private GameObject characterModel;
+
+        [SerializeField]
+        private Vector3 aimStartPoint;
+
+        [SerializeField]
+        private Vector3 aimDirection;
+
+        private Vector3 _aimHorizontalEndPoint;
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 10;
@@ -45,11 +57,11 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("Scales how fast the cast bar is charged when holding right click")]
-        private int chargeScalar;
+        private float chargeScalar;
 
         [SerializeField]
         [Tooltip("Slider for how much charge the cast bar has for reeling")]
-        private Slider chargeSlider;
+        private UnityEngine.UI.Slider chargeSlider;
 
         // TODO: See if I can just remove this probably not needed
         [SerializeField]
@@ -70,6 +82,9 @@ namespace FishingGame.Reeling
 
         private InputAction _castAction;
         private InputAction _reelAction;
+
+
+        
 
 
         #endregion
@@ -124,14 +139,16 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ChargeLine()
         {
+            aimDirection = characterModel.transform.forward;
+            aimStartPoint = characterParent.transform.position;
+
             _chargePower += Time.deltaTime * chargeScalar;
+            _chargePower = Mathf.Min(_chargePower, _maxCharge);
+
             chargeSlider.value = _chargePower;
 
-            
-            _initialPosition = rodEndPoint.transform.position;
-            _CastDirection = gameObject.transform.forward;
-            Vector3 castVelocity = (_CastDirection + _CastDirection).normalized * Mathf.Min(_chargePower, _maxCharge);
-            ShowTrajectory(_initialPosition + _CastDirection, castVelocity);
+            Vector3 aimLocation = aimStartPoint + (aimDirection * _chargePower);
+            SetAimPoint(aimLocation);
         }
 
         /// <summary>
@@ -251,32 +268,33 @@ namespace FishingGame.Reeling
             }
         }
 
-        /// <summary>
-        /// Calculates the trajectory of the fishing line
-        /// </summary>
-        private void ShowTrajectory(Vector3 origin, Vector3 speed)
+        private void AimFishingRod()
         {
-            Vector3[] points = new Vector3[10];
-            _playerTrajectoryLine.positionCount = points.Length;
-            for (int i = 0; i < points.Length; i++)
-            {
-                float time = i * 0.1f;
-                points[i] = origin + speed * time + 0.5f * Physics.gravity * time * time;
 
-                // This here is currently how I cut down how far the rod goes
-                // And try to somewhat accuratley place the bobber
-                // TODO: Figure out how to replace this with something better
-                if (points[i].y < this.transform.position.y - 2)
-                {
-                    points[i] = points[i-1];
-                }
-            }
-
-            rodBobber.transform.position = points[points.Length - 1];
-
-            _playerTrajectoryLine.SetPositions(points);
         }
 
+
+        private void SetAimPoint(Vector3 locationToUse)
+        {
+            RaycastHit hit;
+            float maxDistance = 200f; // Set a maximum distance for the raycast
+            LayerMask whatToHit = 1; // Define which layers the raycast should interact with
+
+            if (Physics.Raycast(locationToUse, Vector3.down, out hit, maxDistance, whatToHit))
+            {
+                // The ray hit something!
+                Debug.Log("Hit " + hit.collider.name + " at " + hit.point);
+                // You can use hit.point for bullet trails, target indicators, etc.
+            }
+            else
+            {
+                // The ray didn't hit anything within the maxDistance
+                Debug.Log("Raycast did not hit anything.");
+            }
+
+            Debug.DrawRay(locationToUse, Vector3.down * maxDistance, Color.red);
+            rodBobber.transform.position = hit.point;
+        }
 
 
     }
