@@ -62,6 +62,10 @@ namespace FishingGame.Reeling
         [Tooltip("The audio component attatched to the hook")]
         private AudioSource waterSound;
 
+        [SerializeField]
+        [Tooltip("How far from the fishing spot the hook needs to be")]
+        private float rangeFromFishSpot;
+
         private Vector3 _fishingLocation;
 
         // Fishing pool is not a list as there should never be two fishing pools colliding at once
@@ -80,7 +84,7 @@ namespace FishingGame.Reeling
             if (_headingToFishSpot)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _fishingLocation, castHookSpeed * Time.deltaTime);
-                if (transform.position == _fishingLocation)
+                if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
                     _headingToFishSpot = false;
                     waterSplash.Play();

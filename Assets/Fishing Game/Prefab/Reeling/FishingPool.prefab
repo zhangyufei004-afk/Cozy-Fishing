@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4651824731388908997}
   - component: {fileID: 3118447298795630334}
   - component: {fileID: -723397963929834765}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FishingPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}

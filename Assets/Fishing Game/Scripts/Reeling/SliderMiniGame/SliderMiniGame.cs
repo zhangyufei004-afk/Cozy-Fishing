@@ -74,6 +74,14 @@ namespace FishingGame.Reeling
         private RectTransform catchBox;
 
         [SerializeField]
+        [Tooltip("The middle point of the bar.")]
+        private float middleBarPoint;
+
+        [SerializeField]
+        [Tooltip("How strong the fight back force on the box is.")]
+        private float fightBackSpeed;
+
+        [SerializeField]
         [Tooltip("The fish image that the player is trying to catch")]
         private UnityEngine.UI.Image fishImage;
 
@@ -133,17 +141,21 @@ namespace FishingGame.Reeling
                 LoseMiniGame();
             }
 
+            MovementFightBack();
+
             // Move player if keys are held
 
             if (_directionAction.ReadValue<Vector2>().x > 0)
             {
-                MoveCatchIndicator(boxSpeedScalar * Time.deltaTime);
+                SetPlayerVelocity(boxSpeedScalar * Time.deltaTime);
             }
 
             if (_directionAction.ReadValue<Vector2>().x < 0)
             {
-                MoveCatchIndicator(-boxSpeedScalar * Time.deltaTime);
+                SetPlayerVelocity(-boxSpeedScalar * Time.deltaTime);
             }
+
+            MoveCatchBox();
 
             DetermineIfNeedGoal();
             UpdateFishLocation();
@@ -203,24 +215,42 @@ namespace FishingGame.Reeling
             _isMinigameActive = true;
         }
 
+        private void MovementFightBack()
+        {
+            if (IsLeftSide())
+            {
+                _catchBoxVelocity -= fightBackSpeed * Time.deltaTime;
+            }
+            else
+            {
+                _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
+            }
+        }
+
+        private bool IsLeftSide()
+        {
+            if (middleBarPoint > catchBox.transform.localPosition.y)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Move the catchbox ui element based on player input
         /// Limits the y position based on the catchbox min and max values
         /// </summary>
         /// <param name="moveValue">The value for how far to move</param>
-        private void MoveCatchIndicator(float accelerationValue)
+        private void SetPlayerVelocity(float accelerationValue)
         {
-            if (_catchBoxVelocity > 0)
-            {
-                _catchBoxVelocity -= 0.5f;
-            }
-            else if (_catchBoxVelocity < 0)
-            {
-                _catchBoxVelocity += 0.5f;
-            }
+            _catchBoxVelocity += accelerationValue * Time.deltaTime;
+        }
 
-            _catchBoxVelocity += accelerationValue;
-
+        private void MoveCatchBox()
+        {
             Vector3 currentPosition = catchBox.transform.localPosition;
             float yPosition = currentPosition.y += _catchBoxVelocity;
             yPosition = Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
