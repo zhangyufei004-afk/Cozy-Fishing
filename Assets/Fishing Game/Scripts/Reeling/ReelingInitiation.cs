@@ -15,10 +15,6 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingInitiation : MonoBehaviour
     {
-        #region Public Variables
-
-        #endregion
-
         #region Private Fields
 
         [SerializeField]
@@ -27,13 +23,9 @@ namespace FishingGame.Reeling
         [SerializeField] 
         private GameObject characterModel;
 
-        [SerializeField]
-        private Vector3 aimStartPoint;
+        private Vector3 _aimStartPoint;
+        private Vector3 _aimDirection;
 
-        [SerializeField]
-        private Vector3 aimDirection;
-
-        private Vector3 _aimHorizontalEndPoint;
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 10;
@@ -50,11 +42,6 @@ namespace FishingGame.Reeling
         [Tooltip("Reference to the default camera that is used")]
         private CinemachineCamera mainCamera;
 
-        // TODO: I have currently disabled this visually but still use it to calculate the final location of the hook
-        [SerializeField]
-        [Tooltip("Reference to a trajectorline attatched to player, used for calculating line casting")]
-        private LineRenderer _playerTrajectoryLine;
-
         [SerializeField]
         [Tooltip("Scales how fast the cast bar is charged when holding right click")]
         private float chargeScalar;
@@ -62,11 +49,6 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("Slider for how much charge the cast bar has for reeling")]
         private UnityEngine.UI.Slider chargeSlider;
-
-        // TODO: See if I can just remove this probably not needed
-        [SerializeField]
-        [Tooltip("End point of the rod")]
-        private GameObject rodEndPoint;
 
         [SerializeField]
         [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
@@ -79,6 +61,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
+
+        [SerializeField]
+        [Tooltip("Max amount of distance a cast can be")]
+        private float fishingRange;
 
         private InputAction _castAction;
         private InputAction _reelAction;
@@ -134,15 +120,15 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ChargeLine()
         {
-            aimDirection = characterModel.transform.forward;
-            aimStartPoint = characterParent.transform.position;
+            _aimDirection = characterModel.transform.forward;
+            _aimStartPoint = characterParent.transform.position;
 
             _chargePower += Time.deltaTime * chargeScalar;
             _chargePower = Mathf.Min(_chargePower, _maxCharge);
 
             chargeSlider.value = _chargePower;
 
-            Vector3 aimLocation = aimStartPoint + (aimDirection * _chargePower);
+            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
             SetAimPoint(aimLocation);
         }
 
@@ -254,43 +240,27 @@ namespace FishingGame.Reeling
             if (enable) 
             {
                 fishCamera.gameObject.SetActive(true);
-              //  MainCamera.gameObject.SetActive(false);
             }
             else 
             { 
                 fishCamera.gameObject.SetActive(false);
-              //  MainCamera.gameObject.SetActive(true);
             }
         }
 
-        private void AimFishingRod()
-        {
-
-        }
-
-
+        /// <summary>
+        /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
+        /// </summary>
+        /// <param name="locationToUse"> The location that will be raycasted from</param>
         private void SetAimPoint(Vector3 locationToUse)
         {
             RaycastHit hit;
-            float maxDistance = 200f; // Set a maximum distance for the raycast
-            LayerMask whatToHit = 1; // Define which layers the raycast should interact with
+            float maxDistance = fishingRange;
+            LayerMask whatToHit = 1;
 
             if (Physics.Raycast(locationToUse, Vector3.down, out hit, maxDistance, whatToHit))
             {
-                // The ray hit something!
-                Debug.Log("Hit " + hit.collider.name + " at " + hit.point);
-                // You can use hit.point for bullet trails, target indicators, etc.
+                rodBobber.transform.position = hit.point;
             }
-            else
-            {
-                // The ray didn't hit anything within the maxDistance
-                Debug.Log("Raycast did not hit anything.");
-            }
-
-            Debug.DrawRay(locationToUse, Vector3.down * maxDistance, Color.red);
-            rodBobber.transform.position = hit.point;
         }
-
-
     }
 }

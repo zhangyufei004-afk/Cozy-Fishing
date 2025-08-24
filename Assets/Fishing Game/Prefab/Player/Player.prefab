@@ -206,12 +206,12 @@ MonoBehaviour:
   fishCamera: {fileID: 3271367095338794917}
   mainCamera: {fileID: 0}
   _playerTrajectoryLine: {fileID: 1930003660602179154}
-  chargeScalar: 1
+  chargeScalar: 3
   chargeSlider: {fileID: 0}
   rodEndPoint: {fileID: 7835449091446976627}
   rodBobber: {fileID: 1450020752843532558}
   fishingHook: {fileID: 826344329452521392}
-  fishModelPrefab: {fileID: 5242574628363947174, guid: ca218602bcb20622ba6f03eb26995bca, type: 3}
+  fishModelPrefab: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9, type: 3}
 --- !u!1 &7138077586599879889
 GameObject:
   m_ObjectHideFlags: 0
