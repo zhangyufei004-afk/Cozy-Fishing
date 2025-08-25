@@ -93,18 +93,18 @@ namespace FishingGame.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleQuestLog"",
+                    ""name"": ""Cast"",
                     ""type"": ""Button"",
-                    ""id"": ""4d845462-c1bf-485a-9dd9-fc21264f2a0c"",
+                    ""id"": ""6eb796ec-77ad-48ed-b427-cef75b8183ca"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast"",
+                    ""name"": ""ToggleQuestLog"",
                     ""type"": ""Button"",
-                    ""id"": ""6eb796ec-77ad-48ed-b427-cef75b8183ca"",
+                    ""id"": ""4d845462-c1bf-485a-9dd9-fc21264f2a0c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1267,8 +1267,8 @@ namespace FishingGame.Input
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
             m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
-            m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
             m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
+            m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1359,8 +1359,8 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Inventory;
         private readonly InputAction m_Player_Pause;
-        private readonly InputAction m_Player_ToggleQuestLog;
         private readonly InputAction m_Player_Cast;
+        private readonly InputAction m_Player_ToggleQuestLog;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -1372,8 +1372,8 @@ namespace FishingGame.Input
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
             public InputAction @Pause => m_Wrapper.m_Player_Pause;
-            public InputAction @ToggleQuestLog => m_Wrapper.m_Player_ToggleQuestLog;
             public InputAction @Cast => m_Wrapper.m_Player_Cast;
+            public InputAction @ToggleQuestLog => m_Wrapper.m_Player_ToggleQuestLog;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1435,12 +1435,12 @@ namespace FishingGame.Input
                 @Pause.started -= instance.OnPause;
                 @Pause.performed -= instance.OnPause;
                 @Pause.canceled -= instance.OnPause;
-                @ToggleQuestLog.started -= instance.OnToggleQuestLog;
-                @ToggleQuestLog.performed -= instance.OnToggleQuestLog;
-                @ToggleQuestLog.canceled -= instance.OnToggleQuestLog;
                 @Cast.started -= instance.OnCast;
                 @Cast.performed -= instance.OnCast;
                 @Cast.canceled -= instance.OnCast;
+                @ToggleQuestLog.started -= instance.OnToggleQuestLog;
+                @ToggleQuestLog.performed -= instance.OnToggleQuestLog;
+                @ToggleQuestLog.canceled -= instance.OnToggleQuestLog;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1662,8 +1662,8 @@ namespace FishingGame.Input
             void OnJump(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
             void OnPause(InputAction.CallbackContext context);
-            void OnToggleQuestLog(InputAction.CallbackContext context);
             void OnCast(InputAction.CallbackContext context);
+            void OnToggleQuestLog(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

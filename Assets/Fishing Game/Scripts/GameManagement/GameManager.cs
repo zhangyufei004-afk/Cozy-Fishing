@@ -11,13 +11,9 @@ namespace FishingGame.GameManagement
         private static GameManager _instance;
         private GameEvents _gameEvents;
 
-        private void Awake()
-        {
-            _gameEvents = new GameEvents();
-        }
-
         private void OnEnable()
         {
+            _gameEvents = new GameEvents();
             if (_instance != null && _instance != this)
             {
                 Destroy(this.gameObject);

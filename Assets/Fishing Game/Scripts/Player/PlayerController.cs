@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FishingGame.GameManagement;
 
 namespace FishingGame.Player
 {

@@ -5,6 +5,7 @@ using FishingGame.UI.Inventory;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using FishingGame.GameManagement;
 using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -295,11 +296,8 @@ namespace FishingGame.Reeling
                 {
                     _currentFishPool.FishCaught();
                 }
-                inventoryScript.AddFish(_currentlyReelingFish);
-
-                //TODO: Delete this once new inventory impelementation has been merged
-                _inventoryUI.RefreshInventoryUI(inventoryScript.GetFishInventory());
-                ///
+                inventoryScript.AddItem(_currentlyReelingFish);
+                GameManager.Instance.GameEvents.FishCaught();
 
                 _currentlyReelingFish = null;
 
@@ -326,7 +324,7 @@ namespace FishingGame.Reeling
         /// <param name="isDisabled">True means the controls should be disabled, otherwise false</param>
         public void DisableControls(bool isDisabled)
         {
-            characterController.ToggleMovement(isDisabled);
+            characterController.ToggleMovement(!isDisabled);
         }
 
         /// <summary>

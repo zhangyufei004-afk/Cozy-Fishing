@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36c26b23bfe1467ea54b9fef8a780f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageDialogue: Have you been to the river yet?
+  stageDialogue: Have you been to the docks yet?
   questReward: {fileID: 0}
-  stageName: Travel to the local river.
-  pointLocationWorld: {x: 44, y: 8, z: 22}
+  stageName: Travel to the local docks.
+  pointLocationWorld: {x: 5, y: 5, z: -20}
 --- !u!65 &5053669640455164220
 BoxCollider:
   m_ObjectHideFlags: 0
