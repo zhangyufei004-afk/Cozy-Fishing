@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageDialogue: Remember, I need 5 fish!
   questReward: {fileID: 0}
-  stageName: Catch 5 fish at the river!
+  stageName: Catch 5 fish at the dock!
   numFishToCatch: 5
