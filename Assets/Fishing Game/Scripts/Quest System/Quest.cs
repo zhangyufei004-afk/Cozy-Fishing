@@ -63,7 +63,7 @@ namespace FishingGame.QuestSystem
         /// <returns>True if the Quest is in Progress, can be finished or has finished, false otherwise.</returns>
         public bool IsQuestInProgress()
         {
-            return _currentState >= EQuestState.InProgress;
+            return _currentState == EQuestState.InProgress;
         }
         
         /// <summary>
