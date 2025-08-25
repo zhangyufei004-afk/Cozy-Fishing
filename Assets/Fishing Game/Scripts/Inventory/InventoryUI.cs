@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
+using FishingGame.Inventory;
+using UnityEngine.EventSystems;
 
 namespace FishingGame.UI.Inventory
 {
@@ -31,14 +35,17 @@ namespace FishingGame.UI.Inventory
         {
             ShowFishInventory();
             panelDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+            GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
         }
 
-        private void ToggleInventoryVisibility()
+        private void OnEnable()
         {
-            if (_inventoryPanel)
-            {
-                _inventoryPanel.SetActive(!_inventoryPanel.activeSelf);
-            }
+            EventSystem.current.SetSelectedGameObject(panelDropdown.gameObject);
+        }
+
+        private void OnDisable()
+        {
+            EventSystem.current.SetSelectedGameObject(null);
         }
 
         private void OnDropdownValueChanged(int index)
@@ -104,16 +111,33 @@ namespace FishingGame.UI.Inventory
         }
 
         /// <summary>
-        /// Refreshes the inventory UI with the latest list of fish.
+        /// Refreshes the inventory UI with the latest list of items.
         /// </summary>
-        /// <param name="fishList">The list of fish to display.</param>
-        public void RefreshInventoryUI(List<Fish> fishList)
+        /// <param name="itemList">The list of items to display.</param>
+        public void RefreshInventoryUI(List<IStorable> itemList)
         {
             ClearInventoryUI();
 
-            foreach (Fish fish in fishList)
+            foreach (var storable in itemList)
             {
-                AddFishToUI(fish);
+                switch (storable.GetItemType())
+                {
+                    case EItemType.Fish:
+                        Fish fish = storable as Fish;
+                        AddFishToUI(fish);
+                        break;
+                    case EItemType.Rod:
+                        Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
+                        break;
+                    case EItemType.RodAttachment:
+                        Debug.Log("TODO: Tried to add a rod attachment to the inventory UI, but we don't have logic for that yet. ");
+                        break;
+                    case EItemType.Money:
+                        Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }

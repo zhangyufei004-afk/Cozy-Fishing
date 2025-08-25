@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FishingGame.GameManagement;
 
 namespace FishingGame.Player
 {
@@ -18,10 +19,31 @@ namespace FishingGame.Player
         private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
         [SerializeField]
         private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
-        private Vector2 _moveInput;
+        
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private Animator animator;
+        
+        private Vector2 _moveInput;
+        private float _initialMovementSpeed;
+        private float _initialRotationSpeed;
 
+        /// <summary>
+        /// Enables or disables the characters movement
+        /// </summary>
+        /// <param name="isMovementEnabled">Sets the movement enabled parameter</param>
+        public void ToggleMovement(bool isMovementEnabled)
+        {
+            if (isMovementEnabled)
+            {
+                movementSpeed = _initialMovementSpeed;
+                rotationSpeed = _initialRotationSpeed;
+                return;
+            }
+
+            movementSpeed = 0;
+            rotationSpeed = 0;
+        }
+        
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
@@ -29,6 +51,10 @@ namespace FishingGame.Player
             playerActionMap.Enable();
             playerActionMap.FindAction("Move").performed += Move;
             playerActionMap.FindAction("Move").canceled += CancelMove;
+            _initialMovementSpeed = movementSpeed;
+            _initialRotationSpeed = rotationSpeed;
+
+            GameManager.Instance.GameEvents.OnTogglePlayerMovement += ToggleMovement;
         }
 
         void Update()
@@ -57,6 +83,8 @@ namespace FishingGame.Player
         {
             _moveInput = Vector2.zero;
         }
+
+        
 
     }
 }

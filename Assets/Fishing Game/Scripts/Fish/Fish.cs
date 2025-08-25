@@ -1,5 +1,9 @@
+using System;
 using UnityEngine;
 using FishingGame.GameTime;
+using FishingGame.Inventory;
+using FishingGame.SaveGame;
+using Random = UnityEngine.Random;
 
 namespace FishingGame.FishSystem
 {
@@ -7,13 +11,15 @@ namespace FishingGame.FishSystem
     /// <para>Represents a runtime fish object.</para>
     /// <para>Stores dynamic data including base info, length, weight, caught time, and location.</para>
     /// </summary>
-    public class Fish
+    public class Fish : IStorable
     {
         private FishScriptableObject _fishBase;
         private float _length;
         private float _weight;
         private TimeOfDay _caughtTime;
         private string _caughtLocation;
+        private int _fishCatchDifficulty;
+        private Sprite _fishTexture;
 
         /// <summary>
         /// Constructor for generating a new fish instance.
@@ -28,6 +34,8 @@ namespace FishingGame.FishSystem
             _weight = CalculateWeight(_length); // Simple formula based on length
             _caughtTime = time;
             _caughtLocation = location;
+            _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
+            _fishTexture = _fishBase.Texture;
         }
 
         /// <summary>
@@ -57,14 +65,6 @@ namespace FishingGame.FishSystem
         }
 
         /// <summary>
-        /// Gets the weight of the fish.
-        /// </summary>
-        public float GetWeight()
-        {
-            return _weight;
-        }
-
-        /// <summary>
         /// Gets the time of day the fish was caught.
         /// </summary>
         public TimeOfDay GetCaughtTime()
@@ -78,6 +78,41 @@ namespace FishingGame.FishSystem
         public string GetCaughtLocation()
         {
             return _caughtLocation;
+        }
+        
+        /// <summary>
+        /// Gets the weight of the fish.
+        /// </summary>
+        public float GetWeight()
+        {
+            return _weight;
+        }
+
+        public EItemType GetItemType()
+        {
+            return EItemType.Fish;
+        }
+
+        public SerializableObject GetDataObject(out Type dataClassType)
+        {
+            dataClassType = typeof(FishScriptableObject);
+            return _fishBase;
+        }
+
+        /// <summary>
+        /// Gets the fish catch difficulty.
+        /// </summary>
+        public int GetFishCatchDifficulty()
+        {
+            return _fishCatchDifficulty;
+        }
+
+        /// <summary>
+        /// Gets the fish texture
+        /// </summary>
+        public Sprite GetTexture()
+        {
+            return _fishTexture;
         }
     }
 }

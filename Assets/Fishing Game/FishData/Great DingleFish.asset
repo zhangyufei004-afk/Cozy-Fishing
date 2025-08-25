@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
+  m_Name: Great DingleFish
+  m_EditorClassIdentifier: 
+  Texture: {fileID: 21300000, guid: 2108a73fd4062814ab56d6df91ff8788, type: 3}
+  Id: 3
+  MinMaxLength: {x: 0.25, y: 0.5}
+  MinMaxSizeKg: {x: 0.25, y: 0.5}
+  SpeciesName: Great Dinglefish
+  FishCatchDifficulty: 3
+  FishBio: ???
+  LocationsFound: Ocean
+  TimeOfDayFound: Any time

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FishingGame.FishSystem;
 using UnityEngine;
 
 namespace FishingGame.FishLog
