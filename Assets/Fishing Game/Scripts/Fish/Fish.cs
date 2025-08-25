@@ -1,5 +1,9 @@
+using System;
 using UnityEngine;
 using FishingGame.GameTime;
+using FishingGame.Inventory;
+using FishingGame.SaveGame;
+using Random = UnityEngine.Random;
 
 namespace FishingGame.FishSystem
 {
@@ -7,7 +11,7 @@ namespace FishingGame.FishSystem
     /// <para>Represents a runtime fish object.</para>
     /// <para>Stores dynamic data including base info, length, weight, caught time, and location.</para>
     /// </summary>
-    public class Fish
+    public class Fish : IStorable
     {
         private FishScriptableObject _fishBase;
         private float _length;
@@ -61,14 +65,6 @@ namespace FishingGame.FishSystem
         }
 
         /// <summary>
-        /// Gets the weight of the fish.
-        /// </summary>
-        public float GetWeight()
-        {
-            return _weight;
-        }
-
-        /// <summary>
         /// Gets the time of day the fish was caught.
         /// </summary>
         public TimeOfDay GetCaughtTime()
@@ -82,6 +78,25 @@ namespace FishingGame.FishSystem
         public string GetCaughtLocation()
         {
             return _caughtLocation;
+        }
+        
+        /// <summary>
+        /// Gets the weight of the fish.
+        /// </summary>
+        public float GetWeight()
+        {
+            return _weight;
+        }
+
+        public EItemType GetItemType()
+        {
+            return EItemType.Fish;
+        }
+
+        public SerializableObject GetDataObject(out Type dataClassType)
+        {
+            dataClassType = typeof(FishScriptableObject);
+            return _fishBase;
         }
 
         /// <summary>

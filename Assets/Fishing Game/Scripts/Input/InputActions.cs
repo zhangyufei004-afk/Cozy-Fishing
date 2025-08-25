@@ -100,6 +100,15 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleQuestLog"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d845462-c1bf-485a-9dd9-fc21264f2a0c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +241,28 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a69a97c6-19f4-4b6c-9f37-da953de06b82"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ToggleQuestLog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d324b47-25c1-4898-b146-57224f8284e4"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ToggleQuestLog"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -536,6 +567,15 @@ namespace FishingGame.Input
                     ""type"": ""PassThrough"",
                     ""id"": ""9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be"",
                     ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ContinueDialogue"",
+                    ""type"": ""Button"",
+                    ""id"": ""319e4560-f859-4ed3-bd69-2ce3b3d2e304"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -989,6 +1029,28 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
+                    ""id"": ""4274abdf-01ab-418a-9af9-b94de99a89fd"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ContinueDialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1b8cf2e-d2d0-45cd-9a28-5c2d49af53f5"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ContinueDialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5d5ad9a7-565b-44f1-a318-791095c4a4bc"",
                     ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
@@ -1206,6 +1268,7 @@ namespace FishingGame.Input
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
             m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
+            m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1218,6 +1281,7 @@ namespace FishingGame.Input
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            m_UI_ContinueDialogue = m_UI.FindAction("ContinueDialogue", throwIfNotFound: true);
             m_UI_ArrowMiniGame = m_UI.FindAction("ArrowMiniGame", throwIfNotFound: true);
             m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
@@ -1296,6 +1360,7 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_Inventory;
         private readonly InputAction m_Player_Pause;
         private readonly InputAction m_Player_Cast;
+        private readonly InputAction m_Player_ToggleQuestLog;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -1308,6 +1373,7 @@ namespace FishingGame.Input
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
             public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputAction @Cast => m_Wrapper.m_Player_Cast;
+            public InputAction @ToggleQuestLog => m_Wrapper.m_Player_ToggleQuestLog;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1341,6 +1407,9 @@ namespace FishingGame.Input
                 @Cast.started += instance.OnCast;
                 @Cast.performed += instance.OnCast;
                 @Cast.canceled += instance.OnCast;
+                @ToggleQuestLog.started += instance.OnToggleQuestLog;
+                @ToggleQuestLog.performed += instance.OnToggleQuestLog;
+                @ToggleQuestLog.canceled += instance.OnToggleQuestLog;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1369,6 +1438,9 @@ namespace FishingGame.Input
                 @Cast.started -= instance.OnCast;
                 @Cast.performed -= instance.OnCast;
                 @Cast.canceled -= instance.OnCast;
+                @ToggleQuestLog.started -= instance.OnToggleQuestLog;
+                @ToggleQuestLog.performed -= instance.OnToggleQuestLog;
+                @ToggleQuestLog.canceled -= instance.OnToggleQuestLog;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1400,6 +1472,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_ScrollWheel;
         private readonly InputAction m_UI_TrackedDevicePosition;
         private readonly InputAction m_UI_TrackedDeviceOrientation;
+        private readonly InputAction m_UI_ContinueDialogue;
         private readonly InputAction m_UI_ArrowMiniGame;
         private readonly InputAction m_UI_RealisticStickMovement;
         private readonly InputAction m_UI_Back;
@@ -1417,6 +1490,7 @@ namespace FishingGame.Input
             public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
             public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
             public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+            public InputAction @ContinueDialogue => m_Wrapper.m_UI_ContinueDialogue;
             public InputAction @ArrowMiniGame => m_Wrapper.m_UI_ArrowMiniGame;
             public InputAction @RealisticStickMovement => m_Wrapper.m_UI_RealisticStickMovement;
             public InputAction @Back => m_Wrapper.m_UI_Back;
@@ -1459,6 +1533,9 @@ namespace FishingGame.Input
                 @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+                @ContinueDialogue.started += instance.OnContinueDialogue;
+                @ContinueDialogue.performed += instance.OnContinueDialogue;
+                @ContinueDialogue.canceled += instance.OnContinueDialogue;
                 @ArrowMiniGame.started += instance.OnArrowMiniGame;
                 @ArrowMiniGame.performed += instance.OnArrowMiniGame;
                 @ArrowMiniGame.canceled += instance.OnArrowMiniGame;
@@ -1502,6 +1579,9 @@ namespace FishingGame.Input
                 @TrackedDeviceOrientation.started -= instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.performed -= instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.canceled -= instance.OnTrackedDeviceOrientation;
+                @ContinueDialogue.started -= instance.OnContinueDialogue;
+                @ContinueDialogue.performed -= instance.OnContinueDialogue;
+                @ContinueDialogue.canceled -= instance.OnContinueDialogue;
                 @ArrowMiniGame.started -= instance.OnArrowMiniGame;
                 @ArrowMiniGame.performed -= instance.OnArrowMiniGame;
                 @ArrowMiniGame.canceled -= instance.OnArrowMiniGame;
@@ -1583,6 +1663,7 @@ namespace FishingGame.Input
             void OnInventory(InputAction.CallbackContext context);
             void OnPause(InputAction.CallbackContext context);
             void OnCast(InputAction.CallbackContext context);
+            void OnToggleQuestLog(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
@@ -1596,6 +1677,7 @@ namespace FishingGame.Input
             void OnScrollWheel(InputAction.CallbackContext context);
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+            void OnContinueDialogue(InputAction.CallbackContext context);
             void OnArrowMiniGame(InputAction.CallbackContext context);
             void OnRealisticStickMovement(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);

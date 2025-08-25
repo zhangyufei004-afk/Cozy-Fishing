@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 016fbdb8e6c290b4083d63b259c7bbbb, type: 3}
+  m_Name: Tutorial Quest
+  m_EditorClassIdentifier: 
+  persistentID: 0
+  questName: Catch 5 Fish
+  questDescription: Down by the docks there are some fishing pools, try to catch
+    5 fish from them.
+  questReward: {fileID: 0}
+  questMoneyReward: 0
+  isMonetaryRewardQuest: 0
+  questStagePrefabs:
+  - {fileID: 4925909472967109011, guid: efb82dde91d74254ba44be7f5724afb8, type: 3}
+  - {fileID: 2229936083515554206, guid: 72d486090f4e2274a81619817c7aa694, type: 3}
+  questRewardImages: []

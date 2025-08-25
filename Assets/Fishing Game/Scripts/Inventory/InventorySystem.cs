@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishingGame.FishSystem;
 using FishingGame.FishLog;
-using System;
+using FishingGame.GameManagement;
 
 namespace FishingGame.Inventory
 {
@@ -11,37 +11,34 @@ namespace FishingGame.Inventory
     /// </summary>
     public class InventorySystem : MonoBehaviour
     {
-        public static event Action OnInventoryChanged;
-
         [SerializeField] private FishLogSystem fishLogSystem;
-        private List<Fish> _fishInventory = new List<Fish>();
+        private List<IStorable> _fishInventory = new List<IStorable>();
 
         /// <summary>
-        /// Adds a new fish to the inventory and marks it as caught in FishLogSystem.
+        /// Adds a new item to the inventory. If the item is a fish, it marks it as caught in FishLogSystem.
         /// </summary>
-        /// <param name="newFish">Fish instance</param>
-        public void AddFish(Fish newFish)
+        /// <param name="newItem">The new item instance to add</param>
+        public void AddItem(IStorable newItem)
         {
-            _fishInventory.Add(newFish);
-
-            if (fishLogSystem != null)
+            _fishInventory.Add(newItem);
+            GameManager.Instance.GameEvents.InventoryUpdated(_fishInventory);
+            if (fishLogSystem is not null && newItem.GetItemType() == EItemType.Fish)
             {
-                fishLogSystem.RegisterFishCaught(newFish.GetFishBase());
+                Fish newFish = newItem as Fish;
+                fishLogSystem.RegisterFishCaught(newFish?.GetFishBase());
             }
-
-            OnInventoryChanged?.Invoke();
         }
 
         /// <summary>
-        /// Returns the full list of caught fish.
+        /// Returns the full list of items in the inventory.
         /// </summary>
-        public List<Fish> GetFishInventory()
+        public List<IStorable> GetFishInventory()
         {
             return _fishInventory;
         }
 
         /// <summary>
-        /// Clears all caught fish.
+        /// Clears the inventory of all items. 
         /// </summary>
         public void ClearInventory()
         {

@@ -29,7 +29,7 @@ namespace FishingGame.Inventory
                     TimeOfDay.Morning, 
                     "Lake"
                 );
-                _inventorySystem.AddFish(newFish);
+                _inventorySystem.AddItem(newFish);
 
                 _inventoryUI.RefreshInventoryUI(_inventorySystem.GetFishInventory());
 

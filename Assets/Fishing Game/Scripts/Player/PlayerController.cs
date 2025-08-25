@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FishingGame.GameManagement;
 
 namespace FishingGame.Player
 {
@@ -18,14 +19,31 @@ namespace FishingGame.Player
         private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
         [SerializeField]
         private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20
+        
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private Animator animator;
         
+        private Vector2 _moveInput;
         private float _initialMovementSpeed;
         private float _initialRotationSpeed;
-        private Vector2 _moveInput;
-        
 
+        /// <summary>
+        /// Enables or disables the characters movement
+        /// </summary>
+        /// <param name="isMovementEnabled">Sets the movement enabled parameter</param>
+        public void ToggleMovement(bool isMovementEnabled)
+        {
+            if (isMovementEnabled)
+            {
+                movementSpeed = _initialMovementSpeed;
+                rotationSpeed = _initialRotationSpeed;
+                return;
+            }
+
+            movementSpeed = 0;
+            rotationSpeed = 0;
+        }
+        
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
@@ -35,6 +53,8 @@ namespace FishingGame.Player
             playerActionMap.FindAction("Move").canceled += CancelMove;
             _initialMovementSpeed = movementSpeed;
             _initialRotationSpeed = rotationSpeed;
+
+            GameManager.Instance.GameEvents.OnTogglePlayerMovement += ToggleMovement;
         }
 
         void Update()
@@ -51,24 +71,6 @@ namespace FishingGame.Player
             {
                 Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
                 playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-        }
-        
-        /// <summary>
-        /// Enables or Disables Player Movement
-        /// </summary>
-        /// <param name="isMovementEnabled">Is the movement enabled or disabled</param>
-        public void ToggleMovement(bool isMovementEnabled)
-        {
-            if (isMovementEnabled)
-            {
-                movementSpeed = 0;
-                rotationSpeed = 0;
-            }
-            else
-            {
-                movementSpeed = _initialMovementSpeed;
-                rotationSpeed = _initialRotationSpeed;
             }
         }
         
