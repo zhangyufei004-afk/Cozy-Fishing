@@ -49,12 +49,12 @@ MonoBehaviour:
   _fishMoveGoal: {x: 0, y: 0, z: 0}
   catchIncreaseAmount: 25
   catchDecreaseAmount: -10
-  boxSpeedScalar: 100
+  boxSpeedScalar: 120
   progressSlider: {fileID: 0}
   uiCatchBoxScript: {fileID: 0}
   catchBox: {fileID: 0}
   middleBarPoint: 23.3
-  fightBackSpeed: 60
+  fightBackSpeed: -15
   fishImage: {fileID: 0}
   fishMoveMin: -300
   fishMoveMax: 300

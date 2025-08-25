@@ -5807,10 +5807,6 @@ PrefabInstance:
       propertyPath: characterController
       value: 
       objectReference: {fileID: 1175047035}
-    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: miniGameTypes.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7358692044108832365, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: animator
       value: 
@@ -5855,14 +5851,6 @@ PrefabInstance:
       propertyPath: sliderCanvas
       value: 
       objectReference: {fileID: 1867482762}
-    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: boxSpeedScalar
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: fightBackSpeed
-      value: -15
-      objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: progressSlider
       value: 

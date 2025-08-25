@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
   m_Name: Silver Finfish
   m_EditorClassIdentifier: 
-  Texture: {fileID: 0}
+  Texture: {fileID: 21300000, guid: 3aee3a9821425e944906f691bb3aead9, type: 3}
   Id: 5
   MinMaxLength: {x: 0.1, y: 0.55}
   MinMaxSizeKg: {x: 0.1, y: 0.55}
