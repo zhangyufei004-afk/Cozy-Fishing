@@ -42,7 +42,6 @@ namespace FishingGame.Reeling
         private bool _isGoingLeft;
         private float _catchBoxScale;
         private float _catchBoxVelocity = 0f;
-        private float _fightBackVelocity = 0f;
 
         [SerializeField]
         private Vector3 _fishMoveGoal = Vector3.zero;
