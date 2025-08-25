@@ -5,6 +5,9 @@ using UnityEngine.Serialization;
 
 namespace FishingGame.QuestSystem.Stages
 {
+    /// <summary>
+    /// This quest stage counts how many fish have been caught and when it matches the specified number the Quest can progress.
+    /// </summary>
     public class CatchFishQuestStage : QuestStage
     {
         [SerializeField] private int numFishToCatch;

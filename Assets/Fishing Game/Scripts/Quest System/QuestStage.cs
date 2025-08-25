@@ -20,7 +20,10 @@ namespace FishingGame.QuestSystem
         private bool _isComplete = false;
         private string _questName;
         
-        
+        /// <summary>
+        /// Initializes the Stage to store the name of the quest it belongs to
+        /// </summary>
+        /// <param name="questName">The name of the quest this stage is apart of</param>
         public void InitializeStage(string questName)
         {
             this._questName = questName;
@@ -28,6 +31,10 @@ namespace FishingGame.QuestSystem
         
         public abstract void StartStage();
 
+        /// <summary>
+        /// Finishes the stage by invoking the ProgressQuest event, dispensing the reward if there is one, and then
+        /// destroying itself.
+        /// </summary>
         protected virtual void FinishStage()
         {
             if (!_isComplete)
@@ -43,11 +50,25 @@ namespace FishingGame.QuestSystem
             }
         }
 
+        /// <summary>
+        /// Get the quest stages name. This is different to the quest name, and is the specific stage.
+        /// <para>For Example:</para>
+        /// <code>
+        /// Class:                      CatchFishQuestStage.cs
+        /// Number of Fish to catch:    5
+        /// stageName :                 Catch 5 fish
+        /// </code>
+        /// </summary>
+        /// <returns>The name of the stage</returns>
         public string GetName()
         {
             return stageName;
         }
 
+        /// <summary>
+        /// Gets the dialogue for this stage. This is a single string, and is more of a quip.
+        /// </summary>
+        /// <returns>The quip the NPC gives this stage.</returns>
         public string GetDialogue()
         {
             return stageDialogue;

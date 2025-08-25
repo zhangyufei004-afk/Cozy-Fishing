@@ -33,7 +33,15 @@ namespace FishingGame.NPC.UI
             inputActions.Enable();
             inputActions.FindActionMap("UI").FindAction("ContinueDialogue").performed -= IncrementDialogueIndex;
         }
-
+        
+        /// <summary>
+        /// Displays the specified Dialogue on the screen for the player to read.
+        /// <para>
+        /// Dialogue is a list because it can be multiple sentences worth, and only a single sentence will appear at one time.
+        /// </para>
+        /// </summary>
+        /// <param name="dialogue">The list of sentences to display</param>
+        /// <param name="questNameToStart">The quest which should be started after displaying the dialogue. If not specified no Quest will be started.</param>
         public void DisplayDialogue(List<string> dialogue, [CanBeNull] string questNameToStart = null)
         {
             dialoguePanel.SetActive(true);
@@ -41,7 +49,7 @@ namespace FishingGame.NPC.UI
             StartCoroutine(DisplayDialogueRoutine(dialogue, questNameToStart));
         }
 
-        IEnumerator DisplayDialogueRoutine(List<string> dialogue, [CanBeNull] string questNameToStart)
+        private IEnumerator DisplayDialogueRoutine(List<string> dialogue, [CanBeNull] string questNameToStart)
         {
             int previousDialogueIndex = -1;
             while (_currentDialogueIndex < dialogue.Count)

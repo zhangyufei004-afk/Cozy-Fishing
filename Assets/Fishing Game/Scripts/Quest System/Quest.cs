@@ -57,16 +57,28 @@ namespace FishingGame.QuestSystem
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Is the quest in Progress - Does its state match the in progress state.
+        /// </summary>
+        /// <returns>True if the Quest is in Progress, can be finished or has finished, false otherwise.</returns>
         public bool IsQuestInProgress()
         {
             return _currentState >= EQuestState.InProgress;
         }
-
+        
+        /// <summary>
+        /// Gets the quests name
+        /// </summary>
+        /// <returns>The quest name</returns>
         public string GetName()
         {
             return _questData.QuestName;
         }
 
+        /// <summary>
+        /// Sets the quests state to <c>newState</c>
+        /// </summary>
+        /// <param name="newState">The new state of the quest</param>
         public void SetState(EQuestState newState)
         {
             this._currentState = newState;
@@ -88,31 +100,55 @@ namespace FishingGame.QuestSystem
             
         }
 
+        /// <summary>
+        /// Gets the quests description as decribed in the Scriptable Object Instance
+        /// </summary>
+        /// <returns>The Description string</returns>
         public string GetDescription()
         {
             return _questData.QuestDescription;
         }
 
+        /// <summary>
+        /// Gets a list of the names of all the completed quest stages
+        /// </summary>
+        /// <returns>A list of names of completed stages</returns>
         public List<string> GetCompletedStageNames()
         {
             return _completedStages;
         }
 
+        /// <summary>
+        /// Gets the current stage name
+        /// </summary>
+        /// <returns>The stage name</returns>
         public string GetCurrentStageName()
         {
             return _questStages[_currentStageIndex].GetName();
         }
 
+        /// <summary>
+        /// Gets the reward sprite images set in the Scriptable Object instance.
+        /// </summary>
+        /// <returns>A list of reward image sprites</returns>
         public List<Sprite> GetRewardImages()
         {
             return _questData.QuestRewardImages;
         }
 
+        /// <summary>
+        /// Gets the current stages quip dialogue
+        /// </summary>
+        /// <returns>The quip string</returns>
         public string GetCurrentStageQuip()
         {
             return _questStages[_currentStageIndex].GetDialogue();
         }
 
+        /// <summary>
+        /// Checks whether the quest can be marked completed or not
+        /// </summary>
+        /// <returns>True if the current state is Can Finish, false otherwise.</returns>
         public bool CanQuestBeMarkedComplete()
         {
             return _currentState == EQuestState.CanFinish;

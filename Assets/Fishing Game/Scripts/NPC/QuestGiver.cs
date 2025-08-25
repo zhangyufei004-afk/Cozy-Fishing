@@ -8,7 +8,8 @@ using UnityEngine;
 namespace FishingGame.NPC
 {
     /// <summary>
-    /// Class which gives out a quest to the player.
+    /// Class which gives out a quest to the player. The class should be placed on an NPC Gameobject, and then you can interact
+    /// with them through methods in this class.
     /// </summary>
     [Obsolete("This class will be refactored in future versions to support Inkle scripts. " +
               "Do not rely heavily on its existing implementation.")]
@@ -23,11 +24,11 @@ namespace FishingGame.NPC
         [Header("UI Elements")]
         [SerializeField] private DialogueUI questDialogueUI;
 
-        private IQuest questToGive;
+        private IQuest _questToGive;
 
         private void Start()
         {
-            questToGive = questManager.GetQuestByName(questName);
+            _questToGive = questManager.GetQuestByName(questName);
         }
 
         /// <summary>
@@ -35,16 +36,16 @@ namespace FishingGame.NPC
         /// </summary>
         public void InteractWithNPC()
         {
-            if (questToGive is not null && questToGive.IsQuestInProgress())
+            if (_questToGive is not null && _questToGive.IsQuestInProgress())
             {
-                string stageDialogue = questToGive.GetCurrentStageQuip();
+                string stageDialogue = _questToGive.GetCurrentStageQuip();
                 List<string> dialogueList = new List<string>();
                 dialogueList.Add(stageDialogue);
                 questDialogueUI.DisplayDialogue(dialogueList);
                 return;
             }
             
-            if (questToGive is not null && questToGive.CanQuestBeMarkedComplete())
+            if (_questToGive is not null && _questToGive.CanQuestBeMarkedComplete())
             {
                 questDialogueUI.DisplayDialogue(questEndDialogue);
                 return;

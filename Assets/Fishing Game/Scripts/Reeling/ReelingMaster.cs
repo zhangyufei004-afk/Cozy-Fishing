@@ -2,14 +2,10 @@ using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.Player;
 using FishingGame.UI.Inventory;
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using FishingGame.GameManagement;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Android;
 
 namespace FishingGame.Reeling
 {

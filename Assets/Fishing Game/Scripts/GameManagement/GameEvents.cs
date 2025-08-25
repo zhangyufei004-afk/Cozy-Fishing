@@ -5,6 +5,23 @@ using FishingGame.QuestSystem;
 
 namespace FishingGame.GameManagement
 {
+    /// <summary>
+    /// <para>The game events class is responsible for all game wide events that a class may need to subscribe to, or trigger.</para>
+    /// <list type="bullet">
+    ///     <listheader>
+    ///         <term>Example Events: </term>
+    ///     </listheader>
+    ///     <item>
+    ///         <description>Quest Events (OnQuestStarted, OnQuestCompleted, ...)</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>Inventory Events (OnFishCaught, OnItemReceived, OnInventoryUpdated, ...)</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>Player Events (OnMovementToggled, OnDialogCameraEnabled, ...)</description>
+    ///     </item>
+    /// </list>
+    /// </summary>
     public class GameEvents
     {
         #region Inventory Events
@@ -58,49 +75,81 @@ namespace FishingGame.GameManagement
         }
         
         /// <summary>
-        /// The quest requirements for 
+        /// The quest requirements for <c>quest</c> have been met - invokes all subscribers to the OnQuestRequirementsMet event.
         /// </summary>
-        /// <param name="quest"></param>
+        /// <param name="quest">The name of the quest for which the requirements have been met.</param>
         public void QuestRequirementsMet(string quest)
         {
             OnQuestRequirementsMet?.Invoke(quest);
         }
 
+        /// <summary>
+        /// The quest <c>quest</c> has been started. This method alerts all classes subscribed to the OnQuestStarted event.
+        /// </summary>
+        /// <param name="quest">The name of the quest which has begun.</param>
         public void QuestStarted(string quest)
         {
             OnQuestStarted?.Invoke(quest);
         }
 
+        /// <summary>
+        /// The state of <c>quest</c> has changed. Alerts all subscribers to OnQuestStateChange of the state change.
+        /// </summary>
+        /// <param name="quest">The quest object which has changed its state.</param>
         public void QuestStateChange(IQuest quest)
         {
             OnQuestStateChange?.Invoke(quest);
         }
-
+        
+        /// <summary>
+        /// <c>quest</c> has been completed. Invokes the OnQuestCompleted event to alert subscribers the quest has been completed.
+        /// </summary>
+        /// <param name="quest">The name of the quest which was completed</param>
         public void QuestCompleted(string quest)
         {
             OnQuestCompleted?.Invoke(quest);
         }
 
+        /// <summary>
+        /// Progress the quest named <c>quest</c> by invoking the OnQuestProgress event.
+        /// </summary>
+        /// <param name="quest">The name of the quest to progress</param>
         public void ProgressQuest(string quest)
         {
             OnQuestProgress?.Invoke(quest);
         }
 
+        /// <summary>
+        /// Changes the active quest to be <c>quest</c> by invoking the OnActiveQuestChanged event.
+        /// </summary>
+        /// <param name="quest"></param>
         public void ChangeActiveQuest(string quest)
         {
             OnActiveQuestChanged?.Invoke(quest);
         }
 
+        /// <summary>
+        /// Toggle the players movement to <c>isMovementEnabled</c>. 
+        /// </summary>
+        /// <param name="isMovementEnabled">Whether the players movement is enabled or disabled.</param>
         public void TogglePlayerMovement(bool isMovementEnabled)
         {
             OnTogglePlayerMovement?.Invoke(isMovementEnabled);
         }
 
+        /// <summary>
+        /// The item <c>item</c> has been received. Notify those subscribed to the OnItemReceived event.
+        /// </summary>
+        /// <param name="item">The item which was received.</param>
         public void ItemReceived(IStorable item)
         {
             OnItemReceived?.Invoke();
         }
 
+        /// <summary>
+        /// Toggle the dialogue camera to be enabled or disabled by invoking the OnToggleDialogueCamera event.
+        /// </summary>
+        /// <param name="isCameraEnabled">Whether the dialogue camera is enabled or disabled.</param>
         public void ToggleDialogueCamera(bool isCameraEnabled)
         {
             OnToggleDialogueCamera?.Invoke(isCameraEnabled);
