@@ -1,3 +1,4 @@
+using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,7 +31,7 @@ namespace FishingGame.Player
         /// Enables or disables the characters movement
         /// </summary>
         /// <param name="isMovementEnabled">Sets the movement enabled parameter</param>
-        public void SetMovementEnabled(bool isMovementEnabled)
+        public void ToggleMovement(bool isMovementEnabled)
         {
             if (isMovementEnabled)
             {
@@ -52,6 +53,8 @@ namespace FishingGame.Player
             playerActionMap.FindAction("Move").canceled += CancelMove;
             _initialMovementSpeed = movementSpeed;
             _initialRotationSpeed = rotationSpeed;
+
+            GameManager.Instance.GameEvents.OnTogglePlayerMovement += ToggleMovement;
         }
 
         void Update()

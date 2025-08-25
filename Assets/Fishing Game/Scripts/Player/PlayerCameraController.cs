@@ -1,3 +1,4 @@
+using FishingGame.GameManagement;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,9 +14,6 @@ namespace FishingGame.Player
         [Header("Cameras")]
         [SerializeField] private CinemachineCamera dialogCamera;
         [SerializeField] private CinemachineCamera grappleCamera;
-        
-        [Header("Movement Components")]
-        [SerializeField] private PlayerController playerController;
 
         private bool _isInDialogueRange;
         
@@ -26,7 +24,7 @@ namespace FishingGame.Player
         {
             grappleCamera?.gameObject.SetActive(false);
             dialogCamera.gameObject.SetActive(false);
-            playerController.SetMovementEnabled(true);
+            GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             _isInDialogueRange = false;
         }
         
@@ -53,7 +51,7 @@ namespace FishingGame.Player
             if (_isInDialogueRange)
             {
                 dialogCamera.gameObject.SetActive(switchToCamera);
-                playerController.SetMovementEnabled(false);
+                GameManager.Instance.GameEvents.TogglePlayerMovement(false);
 
             }
         }
