@@ -72,10 +72,11 @@ namespace FishingGame.Reeling
         private Fish _fishData;
         private float _currentTimeSpent = 0f;
         private bool _isMinigameActive = false;
-
         private InputAction _realisticStickAction;
-
         private PlayerInput _playerInput;
+
+        private InputAction _mouseInput;
+
 
         #endregion
 
@@ -85,6 +86,7 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
             uiActionMap.Enable();
             _realisticStickAction = uiActionMap.FindAction("RealisticStickMovement");
+            _mouseInput = uiActionMap.FindAction("Click");
             _playerInput = GetComponent<PlayerInput>();
         }
 
@@ -152,7 +154,7 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            if (IsCursorOnGoal())
+            if (IsCursorOnGoal() && _mouseInput.IsPressed())
             {
                 IncreaseProgress();
             }
