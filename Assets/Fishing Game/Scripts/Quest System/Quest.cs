@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace FishingGame.QuestSystem
 {
@@ -18,12 +22,17 @@ namespace FishingGame.QuestSystem
         private readonly QuestData _questData;
         private int _currentStageIndex;
         private EQuestState _currentState;
+        private List<String> _completedStages;
+        private List<QuestStage> _questStages;
 
         public Quest(QuestData questData, int previousStageIndex)
         {
             this._questData = questData;
             this._currentStageIndex = previousStageIndex;
             this._currentState = EQuestState.RequirementsNotMet;
+            _completedStages = new List<string>();
+            _questStages = new List<QuestStage>();
+            InitializeStagesList();
         }
         public void EndQuest()
         {
@@ -35,8 +44,10 @@ namespace FishingGame.QuestSystem
         /// </summary>
         public void ProgressStage()
         {
-            if (_currentStageIndex < _questData.QuestStages.Count - 1)
+            if (_currentStageIndex < _questStages.Count - 1)
             {
+                string currentQuestStageName = _questStages[_currentStageIndex].GetName();
+                _completedStages.Add(currentQuestStageName);
                 _currentStageIndex++;    
             }
             else
@@ -52,7 +63,7 @@ namespace FishingGame.QuestSystem
 
         public bool IsQuestInProgress()
         {
-            return _currentState == EQuestState.InProgress;
+            return _currentState >= EQuestState.InProgress;
         }
 
         public string GetId()
@@ -71,32 +82,58 @@ namespace FishingGame.QuestSystem
         /// <param name="parentTransform"></param>
         public void InstantiateQuestStep(Transform parentTransform)
         {
-            QuestStage currentQuestStage = GetCurrentQuestStage();
+            GameObject currentQuestStage = GetCurrentQuestStagePrefab();
             if (currentQuestStage is not null)
             {
-                Object.Instantiate(currentQuestStage, parentTransform);
-                currentQuestStage.InitializeStage(this.GetId());
+                GameObject instantiatedQuestStage = Object.Instantiate(currentQuestStage, parentTransform);
+                QuestStage questStage = instantiatedQuestStage.GetComponent<QuestStage>();
+                questStage.InitializeStage(this.GetId());
             }
             
         }
 
+        public string GetDescription()
+        {
+            return _questData.QuestDescription;
+        }
+
+        public List<string> GetCompletedStageNames()
+        {
+            return _completedStages;
+        }
+
+        public string GetCurrentStageName()
+        {
+            return _questStages[_currentStageIndex].GetName();
+        }
+
+        public List<Sprite> GetRewardImages()
+        {
+            return _questData.QuestRewardImages;
+        }
+
         /// <summary>
-        /// Gets the current quest stage, only if the quest stage exists.
+        /// Gets the current quest stage prefab, only if the quest stage exists.
         /// </summary>
         /// <returns>The current quest stage if it exists, null otherwise.</returns>
-        private QuestStage GetCurrentQuestStage()
+        private GameObject GetCurrentQuestStagePrefab()
         {
-            if (CurrentStageExists())
-            {
-                return _questData.QuestStages[_currentStageIndex];
-            }
-
-            return null;
+            return CurrentStageExists() ? _questData.QuestStagePrefabs[_currentStageIndex] : null;
         }
         
         private bool CurrentStageExists()
         {
-            return (_currentStageIndex < _questData.QuestStages.Count);
+            return (_currentStageIndex < _questStages.Count);
+        }
+
+        private void InitializeStagesList()
+        {
+            _questStages.Clear();
+            foreach (GameObject stagePrefab in _questData.QuestStagePrefabs)
+            {
+                QuestStage stage = stagePrefab.GetComponent<QuestStage>();
+                _questStages.Add(stage);
+            }
         }
     }
 }

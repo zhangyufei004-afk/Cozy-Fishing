@@ -19,10 +19,22 @@ namespace FishingGame.GameManagement
 
         public event Action<string> OnQuestRequirementsMet;
         public event Action<string> OnQuestStarted;
-        public event Action<string> OnQuestStateChange;
+        public event Action<IQuest> OnQuestStateChange;
 
         public event Action<string> OnQuestProgress;
         public event Action<string> OnQuestCompleted;
+
+        #region UI
+
+        public event Action<string> OnActiveQuestChanged;
+
+        #endregion
+
+        #endregion
+
+        #region Player Events
+
+        public event Action<bool> OnTogglePlayerMovement;
 
         #endregion
         
@@ -59,7 +71,7 @@ namespace FishingGame.GameManagement
 
         public void QuestStateChange(IQuest quest)
         {
-            OnQuestStateChange?.Invoke(quest.GetId());
+            OnQuestStateChange?.Invoke(quest);
         }
 
         public void QuestCompleted(string quest)
@@ -70,6 +82,16 @@ namespace FishingGame.GameManagement
         public void ProgressQuest(string quest)
         {
             OnQuestProgress?.Invoke(quest);
+        }
+
+        public void ChangeActiveQuest(string quest)
+        {
+            OnActiveQuestChanged?.Invoke(quest);
+        }
+
+        public void TogglePlayerMovement(bool isMovementEnabled)
+        {
+            OnTogglePlayerMovement?.Invoke(isMovementEnabled);
         }
     }
 }

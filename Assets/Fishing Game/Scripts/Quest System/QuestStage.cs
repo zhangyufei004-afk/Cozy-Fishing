@@ -1,9 +1,7 @@
-using System;
 using FishingGame.GameManagement;
-using FishingGame.Inventory;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 namespace FishingGame.QuestSystem
 {
@@ -16,9 +14,11 @@ namespace FishingGame.QuestSystem
         // TODO: Set this up for Ink
         [SerializeField] protected TextAsset questDialogue;
         [SerializeField] [CanBeNull] protected GameObject questReward;
+        [SerializeField] protected string stageName;
 
         private bool _isComplete = false;
         private string _questName;
+        
         
         public void InitializeStage(string questName)
         {
@@ -40,6 +40,11 @@ namespace FishingGame.QuestSystem
                 // TODO: DISPLAY DIALOGUE
                 Destroy(this.gameObject);
             }
+        }
+
+        public string GetName()
+        {
+            return stageName;
         }
     }
 }

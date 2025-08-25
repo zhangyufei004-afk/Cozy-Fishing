@@ -146,15 +146,20 @@ namespace FishingGame.QuestSystem
             _quests = new Dictionary<string, IQuest>();
             _questStageParentGameObjects = new Dictionary<string, GameObject>();
             foreach (QuestData questData in questDataObjects)
-            {   // TODO: ADD SERIALIZATION SO THE PREVIOUS STAGE INDEX MATCHES THE SAVED VERSION
+            {   /* 
+                *   TODO: ADD SERIALIZATION SO THE PREVIOUS STAGE INDEX MATCHES THE SAVED VERSION
+                *    DATE: 25-08-2025 
+                */ 
                 string questName = questData.QuestName;
                 Quest newQuest = new Quest(questData, 0);
                 _quests.Add(questName, newQuest);
+                ChangeState(questName, EQuestState.RequirementsNotMet);
                 
                 // Add the quest stage parents - Instantiate at start time for object pooling efficiency
                 GameObject questStageParentGameObject = new GameObject(questName);
                 questStageParentGameObject.transform.SetParent(transform);
                 _questStageParentGameObjects.Add(questName, questStageParentGameObject);
+                
             }
         }
     }

@@ -5,6 +5,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace FishingGame.QuestSystem
 {
@@ -20,16 +21,18 @@ namespace FishingGame.QuestSystem
         public GameObject QuestReward => questReward;
         public double QuestMoneyReward => questMoneyReward;
         public bool IsMonetaryRewardQuest => isMonetaryRewardQuest;
-        public List<QuestStage> QuestStages => questStages;
+        public List<GameObject> QuestStagePrefabs => questStagePrefabs;
+        
+        public List<Sprite> QuestRewardImages => questRewardImages;
         
         [SerializeField] private string questName;
         [SerializeField] private string questDescription;
         [SerializeField] private GameObject questReward;
         [SerializeField] private double questMoneyReward;
         [SerializeField] private bool isMonetaryRewardQuest;
-        [SerializeField] private List<QuestStage> questStages;
-        [SerializeField][HideInInspector] private int currentStageIndex;
-
+        [SerializeField] private List<GameObject> questStagePrefabs;
+        [SerializeField] private List<Sprite> questRewardImages;
+        
         /// <summary>
         /// Constructs a new Quest Data object using the specified persistentID
         /// </summary>

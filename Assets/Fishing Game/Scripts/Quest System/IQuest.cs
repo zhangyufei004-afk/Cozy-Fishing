@@ -1,5 +1,7 @@
 
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FishingGame.QuestSystem
 {
@@ -15,5 +17,9 @@ namespace FishingGame.QuestSystem
         public string GetId();
         public void SetState(EQuestState newState);
         public void InstantiateQuestStep(Transform parentTransform);
+        public string GetDescription();
+        public List<string> GetCompletedStageNames();
+        public string GetCurrentStageName();
+        public List<Sprite> GetRewardImages();
     }
 }
