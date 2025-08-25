@@ -1,4 +1,3 @@
-using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -83,6 +82,8 @@ namespace FishingGame.Player
         {
             _moveInput = Vector2.zero;
         }
+
+        
 
     }
 }

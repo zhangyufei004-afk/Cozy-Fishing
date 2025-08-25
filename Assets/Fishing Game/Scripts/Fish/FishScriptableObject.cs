@@ -19,6 +19,11 @@ namespace FishingGame.FishSystem
         public Vector2 MinMaxLength;
         public string SpeciesName;
 
+        public int FishCatchDifficulty;
+        public string FishBio;
+        public string LocationsFound;
+        public string TimeOfDayFound;
+
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {
         }

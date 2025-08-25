@@ -6,6 +6,7 @@ using TMPro;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Inventory;
+using UnityEngine.EventSystems;
 
 namespace FishingGame.UI.Inventory
 {
@@ -37,12 +38,14 @@ namespace FishingGame.UI.Inventory
             GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
         }
 
-        private void ToggleInventoryVisibility()
+        private void OnEnable()
         {
-            if (_inventoryPanel)
-            {
-                _inventoryPanel.SetActive(!_inventoryPanel.activeSelf);
-            }
+            EventSystem.current.SetSelectedGameObject(panelDropdown.gameObject);
+        }
+
+        private void OnDisable()
+        {
+            EventSystem.current.SetSelectedGameObject(null);
         }
 
         private void OnDropdownValueChanged(int index)
