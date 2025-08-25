@@ -42,6 +42,7 @@ namespace FishingGame.Reeling
         private bool _isGoingLeft;
         private float _catchBoxScale;
         private float _catchBoxVelocity = 0f;
+        private float _fightBackVelocity = 0f;
 
         [SerializeField]
         private Vector3 _fishMoveGoal = Vector3.zero;
@@ -147,12 +148,12 @@ namespace FishingGame.Reeling
 
             if (_directionAction.ReadValue<Vector2>().x > 0)
             {
-                SetPlayerVelocity(boxSpeedScalar * Time.deltaTime, false);
+                SetPlayerVelocity(boxSpeedScalar, false);
             }
 
             if (_directionAction.ReadValue<Vector2>().x < 0)
             {
-                SetPlayerVelocity(-boxSpeedScalar * Time.deltaTime, true);
+                SetPlayerVelocity(-boxSpeedScalar, true);
             }
 
             MoveCatchBox();
@@ -211,18 +212,28 @@ namespace FishingGame.Reeling
             _isMinigameActive = true;
         }
 
+        /// <summary>
+        /// This will cause the catchbox to try and fight back against the player
+        /// It will run IsLeftSide to check what side it is closest to then add some acceleration in that direction
+        /// TODO: Look into balancing this game mode more with feature like this, ran out of time for vertical slice
+        /// </summary>
         private void MovementFightBack()
         {
             if (IsLeftSide())
             {
-               // Mathf.Clamp(_catchBoxVelocity -= fightBackSpeed * Time.deltaTime, -2, 0);
+               //Mathf.Max(_fightBackVelocity += fightBackSpeed * Time.deltaTime, catchBoxFightBackSpeedMax);
             }
             else
             {
-               // Mathf.Clamp(_catchBoxVelocity += fightBackSpeed * Time.deltaTime, 0, 2);
+                //Mathf.Min(_fightBackVelocity -= fightBackSpeed * Time.deltaTime, -catchBoxFightBackSpeedMax);
             }
         }
 
+        /// <summary>
+        /// Compares localPosition to the middle point of the UI bar.
+        /// Returns true if closer to left, false if closer to right
+        /// </summary>
+        /// <returns> True if closer to left, false if closer to right</returns>
         private bool IsLeftSide()
         {
             if (middleBarPoint > catchBox.transform.localPosition.y)
@@ -242,13 +253,16 @@ namespace FishingGame.Reeling
         /// <param name="moveValue">The value for how far to move</param>
         private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
         {
-            if (isGoingLeft!  && _catchBoxVelocity < 0)
+            if (isGoingLeft  && _catchBoxVelocity < 0)
             {
                 _catchBoxVelocity = 0;
             }
-            
+            else if (!isGoingLeft && _catchBoxVelocity > 0)
+            {
+                _catchBoxVelocity = 0;
+            }
+
             _catchBoxVelocity += accelerationValue * Time.deltaTime;
-                
         }
 
         private void MoveCatchBox()
