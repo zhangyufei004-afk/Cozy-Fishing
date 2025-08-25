@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
+  m_Name: Silver Finfish
+  m_EditorClassIdentifier: 
+  Texture: {fileID: 0}
+  Id: 5
+  MinMaxLength: {x: 0.1, y: 0.55}
+  MinMaxSizeKg: {x: 0.1, y: 0.55}
+  SpeciesName: Silver Finfish
+  FishCatchDifficulty: 2
+  FishBio: 'With its shimmering blue body and distinct silver dorsal fins, the Silver
+    Finfish is often mistaken for a magical creature. Local fishermen believe it
+    brings good luck if caught under the moonlight. Despite its fragile appearance,
+    it is quite agile in the water. '
+  LocationsFound: Freshwater lakes
+  TimeOfDayFound: Night
