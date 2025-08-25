@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishingGame.FishSystem;
 using FishingGame.FishLog;
+using System;
 
 namespace FishingGame.Inventory
 {
@@ -10,6 +11,8 @@ namespace FishingGame.Inventory
     /// </summary>
     public class InventorySystem : MonoBehaviour
     {
+        public static event Action OnInventoryChanged;
+
         [SerializeField] private FishLogSystem fishLogSystem;
         private List<Fish> _fishInventory = new List<Fish>();
 
@@ -25,6 +28,8 @@ namespace FishingGame.Inventory
             {
                 fishLogSystem.RegisterFishCaught(newFish.GetFishBase());
             }
+
+            OnInventoryChanged?.Invoke();
         }
 
         /// <summary>
