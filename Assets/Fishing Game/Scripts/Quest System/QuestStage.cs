@@ -1,6 +1,7 @@
 using FishingGame.GameManagement;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 namespace FishingGame.QuestSystem
@@ -12,7 +13,7 @@ namespace FishingGame.QuestSystem
     public abstract class QuestStage : MonoBehaviour
     {
         // TODO: Set this up for Ink
-        [SerializeField] protected TextAsset questDialogue;
+        [SerializeField] protected string stageDialogue;
         [SerializeField] [CanBeNull] protected GameObject questReward;
         [SerializeField] protected string stageName;
 
@@ -33,7 +34,7 @@ namespace FishingGame.QuestSystem
             {
                 _isComplete = true;
                 GameManager.Instance.GameEvents.ProgressQuest(_questName);
-                if (questReward is not null)
+                if (questReward != null)
                 {
                     QuestReward.GivePlayerItem(questReward);
                 }
@@ -45,6 +46,11 @@ namespace FishingGame.QuestSystem
         public string GetName()
         {
             return stageName;
+        }
+
+        public string GetDialogue()
+        {
+            return stageDialogue;
         }
     }
 }

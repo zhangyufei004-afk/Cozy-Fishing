@@ -115,6 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a4223cda287c24daca87b9dcbc102a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questLogPanel: {fileID: 7049144531427327694}
   questDetails: {fileID: 5290615412679112129}
   questScrollList: {fileID: 1644941605966240174}
 --- !u!1 &6456708951027424567

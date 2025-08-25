@@ -57,8 +57,8 @@ namespace FishingGame.QuestSystem
             {
                 throw new ArgumentOutOfRangeException($"Quest {questName} was unable to be ended, as it was not found. Did you make a spelling mistake?");
             }
-            
-            quest.EndQuest();
+
+            ChangeState(quest.GetName(), EQuestState.CanFinish);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace FishingGame.QuestSystem
         {
             IQuest quest = _quests[questName];
             quest.InstantiateQuestStep(_questStageParentGameObjects[questName].transform);
-            ChangeState(quest.GetId(), EQuestState.InProgress);
+            ChangeState(quest.GetName(), EQuestState.InProgress);
         }
 
         /// <summary>

@@ -34,10 +34,6 @@ namespace FishingGame.QuestSystem
             _questStages = new List<QuestStage>();
             InitializeStagesList();
         }
-        public void EndQuest()
-        {
-            throw new System.NotImplementedException("TODO: IMPLEMENT ENDING QUESTS");
-        }
 
         /// <summary>
         /// Progress the quest to the next stage.
@@ -66,7 +62,7 @@ namespace FishingGame.QuestSystem
             return _currentState >= EQuestState.InProgress;
         }
 
-        public string GetId()
+        public string GetName()
         {
             return _questData.QuestName;
         }
@@ -87,7 +83,7 @@ namespace FishingGame.QuestSystem
             {
                 GameObject instantiatedQuestStage = Object.Instantiate(currentQuestStage, parentTransform);
                 QuestStage questStage = instantiatedQuestStage.GetComponent<QuestStage>();
-                questStage.InitializeStage(this.GetId());
+                questStage.InitializeStage(this.GetName());
             }
             
         }
@@ -110,6 +106,16 @@ namespace FishingGame.QuestSystem
         public List<Sprite> GetRewardImages()
         {
             return _questData.QuestRewardImages;
+        }
+
+        public string GetCurrentStageQuip()
+        {
+            return _questStages[_currentStageIndex].GetDialogue();
+        }
+
+        public bool CanQuestBeMarkedComplete()
+        {
+            return _currentState == EQuestState.CanFinish;
         }
 
         /// <summary>

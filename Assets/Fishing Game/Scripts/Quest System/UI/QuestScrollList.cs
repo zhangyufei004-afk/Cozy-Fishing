@@ -13,7 +13,7 @@ namespace FishingGame.QuestSystem.UI
         {
             QuestLogButton questLogButton = Instantiate(logButtonPrefab, contentContainer.transform)
                 .GetComponent<QuestLogButton>();
-            questLogButton.InitializeButton(quest.GetId(), onQuestClick);
+            questLogButton.InitializeButton(quest.GetName(), onQuestClick);
         }
     }
 }

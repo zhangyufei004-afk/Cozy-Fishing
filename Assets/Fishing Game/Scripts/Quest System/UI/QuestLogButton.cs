@@ -8,19 +8,13 @@ namespace FishingGame.QuestSystem.UI
 {
     public class QuestLogButton : MonoBehaviour
     {
-        private Button _button;
-        private TextMeshProUGUI _buttonText;
+        [SerializeField] private Button button;
+        [SerializeField] private TextMeshProUGUI buttonText;
         
-        private void OnEnable()
-        {
-            _button = GetComponent<Button>();
-            _buttonText = GetComponentInChildren<TextMeshProUGUI>();
-        }
-
         public void InitializeButton(string questName, UnityAction onClickAction)
         {
-            _button.onClick.AddListener(onClickAction);
-            _buttonText.text = questName;
+            button.onClick.AddListener(onClickAction);
+            buttonText.text = questName;
         }
     }
 }

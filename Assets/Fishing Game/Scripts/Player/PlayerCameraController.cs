@@ -1,4 +1,5 @@
 using FishingGame.GameManagement;
+using FishingGame.NPC;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,7 @@ namespace FishingGame.Player
         [SerializeField] private CinemachineCamera grappleCamera;
 
         private bool _isInDialogueRange;
+        private QuestGiver _questGiver;
         
         /// <summary>
         /// Switches from the current camera back to the top-down camera. 
@@ -27,14 +29,16 @@ namespace FishingGame.Player
             GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             _isInDialogueRange = false;
         }
-        
+
         /// <summary>
         /// Sets the in range of NPC with dialogue boolen.
         /// </summary>
         /// <param name="isInDialogueRange">Whether we are in range of an NPC.</param>
-        public void SetInDialogueRange(bool isInDialogueRange)
+        /// <param name="questGiver">The quest giver NPC we are close to.</param>
+        public void SetInDialogueRange(bool isInDialogueRange, QuestGiver questGiver)
         {
             _isInDialogueRange = isInDialogueRange;
+            _questGiver = questGiver;
         }
 
         private void OnEnable()
@@ -43,6 +47,7 @@ namespace FishingGame.Player
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
             playerActionMap.Enable();
             playerActionMap.FindAction("Interact").started += SwitchToDialogueCamera;
+            GameManager.Instance.GameEvents.OnToggleDialogueCamera += ToggleDialogueCamera;
         }
 
         private void SwitchToDialogueCamera(InputAction.CallbackContext context)
@@ -52,10 +57,13 @@ namespace FishingGame.Player
             {
                 dialogCamera.gameObject.SetActive(switchToCamera);
                 GameManager.Instance.GameEvents.TogglePlayerMovement(false);
-
+                _questGiver.InteractWithNPC();
             }
         }
 
-        
+        private void ToggleDialogueCamera(bool enableCamera)
+        {
+            dialogCamera.gameObject.SetActive(enableCamera);
+        }
     }
 }

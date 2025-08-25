@@ -36,6 +36,8 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnTogglePlayerMovement;
 
+        public event Action<bool> OnToggleDialogueCamera;
+
         #endregion
         
         /// <summary>
@@ -92,6 +94,16 @@ namespace FishingGame.GameManagement
         public void TogglePlayerMovement(bool isMovementEnabled)
         {
             OnTogglePlayerMovement?.Invoke(isMovementEnabled);
+        }
+
+        public void ItemReceived(IStorable item)
+        {
+            OnItemReceived?.Invoke();
+        }
+
+        public void ToggleDialogueCamera(bool isCameraEnabled)
+        {
+            OnToggleDialogueCamera?.Invoke(isCameraEnabled);
         }
     }
 }

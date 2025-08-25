@@ -1266,6 +1266,8 @@ MonoBehaviour:
   setActiveQuestButton: {fileID: 8101903335552863177}
   questStageContentParent: {fileID: 3529744671710237598}
   questRewardContentParent: {fileID: 8938476382569963078}
+  selectPanel: {fileID: 3455095181453475354}
+  detailsPanel: {fileID: 62977650214943400}
   questStageUIPrefab: {fileID: 9853488620193369, guid: 93d5e89aef87eab44a5c0499ee408f0b, type: 3}
   questRewardImagePrefab: {fileID: 2937647957999400207, guid: 04ae6ce29add9df4390262699bcfb501, type: 3}
 --- !u!1 &8607083777946311820

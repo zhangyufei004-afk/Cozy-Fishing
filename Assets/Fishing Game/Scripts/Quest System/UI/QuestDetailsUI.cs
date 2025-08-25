@@ -14,6 +14,8 @@ namespace FishingGame.QuestSystem.UI
         [SerializeField] private Button setActiveQuestButton;
         [SerializeField] private GameObject questStageContentParent;
         [SerializeField] private GameObject questRewardContentParent;
+        [SerializeField] private GameObject selectPanel;
+        [SerializeField] private GameObject detailsPanel;
         
         [Header("Prefabs")]
         [SerializeField] private GameObject questStageUIPrefab;
@@ -23,7 +25,12 @@ namespace FishingGame.QuestSystem.UI
 
         public void InitializeQuestDetailsUI(IQuest quest)
         {
-            _questName = quest.GetId();
+            if (selectPanel.activeSelf)
+            {
+                selectPanel.SetActive(false);
+                detailsPanel.SetActive(true);
+            }
+            _questName = quest.GetName();
             titleText.text = _questName;
             descriptionText.text = quest.GetDescription();
             setActiveQuestButton.onClick.AddListener(() =>
