@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   questName: Catch 5 Fish
-  questDescription: Down in the river there are some fishing pools, try to catch
+  questDescription: Down by the docks there are some fishing pools, try to catch
     5 fish from them.
   questReward: {fileID: 0}
   questMoneyReward: 0
