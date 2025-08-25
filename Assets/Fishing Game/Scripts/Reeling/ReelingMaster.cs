@@ -294,7 +294,7 @@ namespace FishingGame.Reeling
                 }
                 inventoryScript.AddItem(_currentlyReelingFish);
                 GameManager.Instance.GameEvents.FishCaught();
-
+                
                 _currentlyReelingFish = null;
 
                 winText.SetActive(true);
