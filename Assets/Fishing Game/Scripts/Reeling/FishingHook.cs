@@ -4,6 +4,7 @@ using PrototypeFishingMechanics;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.Timers;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.ProBuilder.MeshOperations;
@@ -51,7 +52,7 @@ namespace FishingGame.Reeling
         private float hookReturnSpeed;
 
         [SerializeField]
-        [Tooltip("Scales the speed the hook heads to the target.")]
+        [Tooltip("How long should it take in seconds for the hook to reach its target.")]
         private float castHookSpeed;
 
         [SerializeField]
@@ -65,6 +66,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("How far from the fishing spot the hook needs to be")]
         private float rangeFromFishSpot;
+
+        [SerializeField]
+        [Tooltip("Curve for the arc")]
+        private AnimationCurve curve;
 
         private Vector3 _fishingLocation;
 
@@ -84,6 +89,7 @@ namespace FishingGame.Reeling
             if (_headingToFishSpot)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _fishingLocation, castHookSpeed * Time.deltaTime);
+
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
                     _headingToFishSpot = false;

@@ -147,12 +147,12 @@ namespace FishingGame.Reeling
 
             if (_directionAction.ReadValue<Vector2>().x > 0)
             {
-                SetPlayerVelocity(boxSpeedScalar * Time.deltaTime);
+                SetPlayerVelocity(boxSpeedScalar * Time.deltaTime, false);
             }
 
             if (_directionAction.ReadValue<Vector2>().x < 0)
             {
-                SetPlayerVelocity(-boxSpeedScalar * Time.deltaTime);
+                SetPlayerVelocity(-boxSpeedScalar * Time.deltaTime, true);
             }
 
             MoveCatchBox();
@@ -199,12 +199,8 @@ namespace FishingGame.Reeling
             _catchBoxScale = Mathf.Clamp(1.5f - 0.1f * fishScriptable.GetFishCatchDifficulty(), 0.5f, 1.5f);
             SetCatchBoxYScale(_catchBoxScale);
 
-
-
             // TODO: Set this to scale based on fish difficulty?
             _maxTime = 30f;
-
-
         }
 
         /// <summary>
@@ -219,11 +215,11 @@ namespace FishingGame.Reeling
         {
             if (IsLeftSide())
             {
-                _catchBoxVelocity -= fightBackSpeed * Time.deltaTime;
+               // Mathf.Clamp(_catchBoxVelocity -= fightBackSpeed * Time.deltaTime, -2, 0);
             }
             else
             {
-                _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
+               // Mathf.Clamp(_catchBoxVelocity += fightBackSpeed * Time.deltaTime, 0, 2);
             }
         }
 
@@ -244,9 +240,15 @@ namespace FishingGame.Reeling
         /// Limits the y position based on the catchbox min and max values
         /// </summary>
         /// <param name="moveValue">The value for how far to move</param>
-        private void SetPlayerVelocity(float accelerationValue)
+        private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
         {
+            if (isGoingLeft!  && _catchBoxVelocity < 0)
+            {
+                _catchBoxVelocity = 0;
+            }
+            
             _catchBoxVelocity += accelerationValue * Time.deltaTime;
+                
         }
 
         private void MoveCatchBox()

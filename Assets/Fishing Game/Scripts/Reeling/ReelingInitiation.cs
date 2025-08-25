@@ -43,6 +43,10 @@ namespace FishingGame.Reeling
         private CinemachineCamera mainCamera;
 
         [SerializeField]
+        [Tooltip("The animator attatched to the player")]
+        private Animator characterAnimator;
+
+        [SerializeField]
         [Tooltip("Scales how fast the cast bar is charged when holding right click")]
         private float chargeScalar;
 
@@ -68,6 +72,7 @@ namespace FishingGame.Reeling
 
         private InputAction _castAction;
         private InputAction _reelAction;
+        private Vector3 _targetLocation;
         #endregion
 
         public void OnEnable()
@@ -141,7 +146,7 @@ namespace FishingGame.Reeling
         {
             if (_isCharging == true)
             {
-                ThrowLine();
+                SetThrowAnimation();
                 ResetCharge();
             }  
             else if (fishingHook.ShouldTravelBack())
@@ -178,15 +183,24 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Makes the throw line animation play
+        /// </summary>
+        private void SetThrowAnimation()
+        {
+            _targetLocation = rodBobber.transform.position;
+            characterAnimator.SetTrigger("ThrowTrigger");
+        }
+
+        /// <summary>
         /// Throws the fishing line at the location shown by the bobber
+        /// This is run through an animation event
         /// </summary>
         private void ThrowLine()
         {
             fishingHook.HookIsOut = true;
             reelingMasterScript.DisableControls(true);
 
-            Vector3 targetLocation = rodBobber.transform.position;
-            fishingHook.SetUpHookTravelToFishSpot(targetLocation);
+            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
         }
 
         /// <summary>
