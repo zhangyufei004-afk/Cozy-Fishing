@@ -189,7 +189,9 @@ namespace FishingGame.Reeling
         /// /// <param name="targetLocation">Location to move to</param>
         public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
         {
-            _fishingLocation = targetLocation;
+            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
+
+            _fishingLocation = newPosition;
             _headingToFishSpot = true;
         }
 

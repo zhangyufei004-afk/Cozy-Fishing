@@ -24,7 +24,29 @@ namespace FishingGame.Reeling
         private int amountOfFishHeld;
 
         [SerializeField]
+        [Tooltip("Reference to the gametime script running")]
         private IngameTime timeScript;
+
+        [SerializeField]
+        private PossibleFish levelsPossibleFish;
+
+        [SerializeField]
+        [Tooltip("What type of location is this fishing area")]
+        private EFishingLocation _fisingLocation;
+
+        [SerializeField]
+        [Tooltip("The lowest difficulty a fish from this area can have")]
+        private int lowestFishDifficulty;
+
+        [SerializeField]
+        [Tooltip("The highest difficulty a fish from this area can have")]
+        private int highestFishDifficulty;
+
+       
+
+
+
+
 
         #endregion
 
@@ -36,6 +58,13 @@ namespace FishingGame.Reeling
         {
             if (CheckIfEmpty() == true) { return null; }
 
+            List<FishScriptableObject> potentialFish = levelsPossibleFish.GetPossibleFishList();
+
+            foreach (FishScriptableObject fish in potentialFish)
+            {
+                if (fish.LocationsFounds.)
+            }
+
             int fishTypeAmount = typesOfFishInPool.Count;
             int fishCaughtIndex = Random.Range(0, fishTypeAmount);
             FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
@@ -43,6 +72,12 @@ namespace FishingGame.Reeling
             string tempLocation = "TEMPDATAFIELD";
 
             Fish fishData = new Fish(fishCaught, tempTimeValue, tempLocation);
+
+            
+            
+
+
+
 
             return fishData;
         }
