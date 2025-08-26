@@ -42,13 +42,20 @@ namespace FishingGame.Reeling
         [Tooltip("The highest difficulty a fish from this area can have")]
         private int highestFishDifficulty;
 
-       
+        [SerializeField]
+        [Tooltip("Infested pools only spawn invasive fish untill they are depleted")]
+        private bool isInfested = false;
 
-
-
-
+        // The type of fish that is spawned when the location is infested
+        [SerializeField]
+        private FishScriptableObject infestationFish;
 
         #endregion
+
+        public void OnEnable()
+        {
+            BecomeInfested();
+        }
 
         /// <summary>
         /// Checks if fish pool is empty and then determines the fish type caught
@@ -58,27 +65,35 @@ namespace FishingGame.Reeling
         {
             if (CheckIfEmpty() == true) { return null; }
 
+            ETimeOfDay timeCaught = timeScript.GetTimePeriod();
+            string locationCaught = gameObject.name;
+
             List<FishScriptableObject> potentialFish = levelsPossibleFish.GetPossibleFishList();
+            List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
+
+            if (isInfested)
+            {
+                Fish evilFishData = new Fish(infestationFish, timeCaught, locationCaught);
+                return evilFishData;
+            }
 
             foreach (FishScriptableObject fish in potentialFish)
             {
-                if (fish.LocationsFounds.)
+                if (fish.LocationsFound.Contains(_fisingLocation))
+                {
+                    if (fish.FishCatchDifficulty <= highestFishDifficulty && fish.FishCatchDifficulty >= lowestFishDifficulty)
+                    {
+                        fishAvailable.Add(fish);
+                    }
+                }
             }
 
-            int fishTypeAmount = typesOfFishInPool.Count;
+            int fishTypeAmount = fishAvailable.Count;
             int fishCaughtIndex = Random.Range(0, fishTypeAmount);
-            FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
-            ETimeOfDay tempTimeValue = timeScript.GetTimePeriod();
-            string tempLocation = "TEMPDATAFIELD";
-
-            Fish fishData = new Fish(fishCaught, tempTimeValue, tempLocation);
-
-            
+            FishScriptableObject fishCaught = fishAvailable[fishCaughtIndex];
             
 
-
-
-
+            Fish fishData = new Fish(fishCaught, timeCaught, locationCaught);
             return fishData;
         }
 
@@ -99,6 +114,27 @@ namespace FishingGame.Reeling
         {
             if (amountOfFishHeld == 0) { return true; }
             else { return false; }
+        }
+
+        public void BecomeInfested()
+        {
+            isInfested = true;
+
+            List<FishScriptableObject> potentialFish = levelsPossibleFish.GetPossibleFishList();
+            List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
+
+            foreach (FishScriptableObject fish in potentialFish)
+            {
+                if (fish.LocationsFound.Contains(_fisingLocation) && fish.IsInvasive)
+                {
+                    fishAvailable.Add(fish);
+                }
+            }
+
+            int fishTypeAmount = fishAvailable.Count;
+            int fishCaughtIndex = Random.Range(0, fishTypeAmount);
+            FishScriptableObject invasiveFish = fishAvailable[fishCaughtIndex];
+            infestationFish = invasiveFish;
         }
     }
 }

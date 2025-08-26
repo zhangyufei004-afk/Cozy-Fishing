@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
   m_Name: Great DingleFish
   m_EditorClassIdentifier: 
+  persistentID: 0
   Texture: {fileID: 21300000, guid: 2108a73fd4062814ab56d6df91ff8788, type: 3}
   Id: 3
   MinMaxLength: {x: 0.25, y: 0.5}
-  MinMaxSizeKg: {x: 0.25, y: 0.5}
   SpeciesName: Great Dinglefish
   FishCatchDifficulty: 3
   FishBio: ???
-  LocationsFound: Ocean
+  LocationsFound: 0300000000000000
   TimeOfDayFound: Any time

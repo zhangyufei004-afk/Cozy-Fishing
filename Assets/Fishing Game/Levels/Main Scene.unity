@@ -235,12 +235,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typesOfFishInPool:
-  - {fileID: 11400000, guid: 41e32878341444e4a9469e39b26457b2, type: 2}
-  - {fileID: 11400000, guid: 6d5c27600c0ce8b44943753fb26b5865, type: 2}
+  typesOfFishInPool: []
   amountOfFishHeld: 5
   timeScript: {fileID: 1847882215}
-  levelsPossibleFish: {fileID: 0}
+  levelsPossibleFish: {fileID: 1073959634}
   _fisingLocation: 3
   lowestFishDifficulty: 1
   highestFishDifficulty: 3
@@ -2908,6 +2906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Environment
       objectReference: {fileID: 0}
+    - target: {fileID: 7318588648341795359, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: m_Name
+      value: TestingRiver
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -3637,6 +3639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1073959633}
+  - component: {fileID: 1073959634}
   m_Layer: 0
   m_Name: FishInLevel
   m_TagString: Untagged
@@ -3659,6 +3662,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1272523031}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1073959634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073959632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebd4cd18a59c5ba4589866a33d01d705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  potentialFishTypes:
+  - {fileID: 11400000, guid: 41e32878341444e4a9469e39b26457b2, type: 2}
+  - {fileID: 11400000, guid: b67ecb4d61e70124cb65ca8ce958765a, type: 2}
+  - {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}
+  - {fileID: 11400000, guid: 6d5c27600c0ce8b44943753fb26b5865, type: 2}
+  - {fileID: 11400000, guid: a1cf381a33b0c9045b2ba0600bc05e1d, type: 2}
+  - {fileID: 11400000, guid: 13c52a2e6616f8043b1f7d6aff0badaf, type: 2}
 --- !u!224 &1088488885 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 963141656346053713, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}

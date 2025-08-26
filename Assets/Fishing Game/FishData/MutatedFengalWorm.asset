@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
   m_Name: MutatedFengalWorm
   m_EditorClassIdentifier: 
+  persistentID: 0
   Texture: {fileID: 21300000, guid: 3032385d02f31f642b7760451236371a, type: 3}
   Id: 1
   MinMaxLength: {x: 0.05, y: 0.2}
-  MinMaxSizeKg: {x: 0.05, y: 0.2}
   SpeciesName: Mutated Fengal Worm
   FishCatchDifficulty: 3
   FishBio: 'Fengal worms don''t usually swim well, but when alchemists keep dumping
     their leftover waste in the lake you get some odd side effects. While they dont
     look edible they are a suprising delicacy to some. Typically found in smaller
     warm island lakes. '
-  LocationsFound: Lakes, Small islands, moderate - warm environment, slight water
-    pollution
+  LocationsFound: 02000000
   TimeOfDayFound: 'Most active at night but still active during the day '
