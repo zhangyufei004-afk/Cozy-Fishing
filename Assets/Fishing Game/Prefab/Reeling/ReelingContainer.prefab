@@ -1,0 +1,270 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &313023259972732001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2671019939275705314}
+  - component: {fileID: 7509907826693546763}
+  m_Layer: 0
+  m_Name: SliderMiniGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2671019939275705314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313023259972732001}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6035613099975597251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7509907826693546763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313023259972732001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d5d6d1580811e438daa69120d32a6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reelingMaster: {fileID: 6051403347699497060}
+  sliderCanvas: {fileID: 0}
+  _fishMoveGoal: {x: 0, y: 0, z: 0}
+  catchIncreaseAmount: 25
+  catchDecreaseAmount: -10
+  boxSpeedScalar: 120
+  progressSlider: {fileID: 0}
+  uiCatchBoxScript: {fileID: 0}
+  catchBox: {fileID: 0}
+  middleBarPoint: 23.3
+  fightBackSpeed: -15
+  fishImage: {fileID: 0}
+  fishMoveMin: -300
+  fishMoveMax: 300
+  fishMaxYCord: 297.6
+  fishMinYCord: -297.3
+  catchBoxMaxXCord: 292
+  catchBoxMinXCord: -291.4
+  timerText: {fileID: 0}
+--- !u!1 &2680999012508629255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3709708385333524940}
+  - component: {fileID: 2536617657580143345}
+  m_Layer: 0
+  m_Name: ArrowMiniGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3709708385333524940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680999012508629255}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6035613099975597251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2536617657580143345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680999012508629255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81907e40b1729f4ea7b59c98f2af9d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reelingMaster: {fileID: 6051403347699497060}
+  arrowSlots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fishingCanvas: {fileID: 0}
+  uiBar: {fileID: 0}
+  timerText: {fileID: 0}
+  upSprite: {fileID: 21300000, guid: 748b994460c79aa45aaa8fe3e4674e23, type: 3}
+  downSprite: {fileID: 21300000, guid: 6663e10550e4d724d886f549267d7d3b, type: 3}
+  leftSprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
+  rightSprite: {fileID: 21300000, guid: 297585c6fed9c9e42b95e54ba2f5ebfd, type: 3}
+  defaultInputTimeLimit: 20
+--- !u!1 &2981733044875708283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6035613099975597251}
+  m_Layer: 0
+  m_Name: ReelingContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6035613099975597251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2981733044875708283}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.8870754, y: 9.77123, z: -2.876365}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7239155952378619634}
+  - {fileID: 3709708385333524940}
+  - {fileID: 2671019939275705314}
+  - {fileID: 2495067146915306493}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4518172318511371622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2495067146915306493}
+  - component: {fileID: 7358692044108832365}
+  m_Layer: 0
+  m_Name: RealisticMiniGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2495067146915306493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4518172318511371622}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6035613099975597251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7358692044108832365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4518172318511371622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc84f7d72f337704eb4a36ac6d4648c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reelingMaster: {fileID: 6051403347699497060}
+  realisticCanvas: {fileID: 0}
+  playerCircle: {fileID: 0}
+  goalCircle: {fileID: 0}
+  progressSlider: {fileID: 0}
+  realisticGoalChecker: {fileID: 0}
+  progressIncreaseIncrements: 10
+  animator: {fileID: 0}
+  speedChangeDelay: 2
+  maxCatchProgress: 50
+  timeLimit: 20
+  timerText: {fileID: 0}
+--- !u!1 &5300646475322154039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7239155952378619634}
+  - component: {fileID: 6051403347699497060}
+  m_Layer: 0
+  m_Name: ReelingMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7239155952378619634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5300646475322154039}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1128.8162, y: 1054.4186, z: -1755.4225}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6035613099975597251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6051403347699497060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5300646475322154039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac9426ce74939245bb38b2abdb32d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initiationScript: {fileID: 0}
+  fishingHook: {fileID: 0}
+  inventoryScript: {fileID: 0}
+  miniGameTypes:
+  - {fileID: 2680999012508629255}
+  - {fileID: 313023259972732001}
+  - {fileID: 4518172318511371622}
+  characterController: {fileID: 0}
+  winText: {fileID: 0}
+  loseText: {fileID: 0}
+  timerObject: {fileID: 0}
+  _inventoryUI: {fileID: 0}

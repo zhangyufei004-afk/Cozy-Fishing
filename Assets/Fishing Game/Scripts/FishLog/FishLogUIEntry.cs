@@ -1,3 +1,4 @@
+using FishingGame.FishSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
