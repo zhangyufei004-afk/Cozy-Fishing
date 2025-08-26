@@ -16,7 +16,7 @@ namespace FishingGame.GameTime
         Night = 3
     }
 
-    public class GameTime : MonoBehaviour
+    public class IngameTime : MonoBehaviour
     {
         [Tooltip("Tracks the current time of day as a float")]
         public float currentTimeOfDay { get; private set; }

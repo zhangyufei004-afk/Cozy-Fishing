@@ -4608,6 +4608,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 57975d58e4e88d15d8a29c280101b49e, type: 2}
     - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
+      propertyPath: timeScript
+      value: 
+      objectReference: {fileID: 1847882215}
+    - target: {fileID: 4651824731388908997, guid: ebe961c9f9091f24183a92f8c14cafcb, type: 3}
       propertyPath: amountOfFishHeld
       value: 4
       objectReference: {fileID: 0}

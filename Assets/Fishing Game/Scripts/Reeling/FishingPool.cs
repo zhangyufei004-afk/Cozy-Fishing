@@ -23,6 +23,9 @@ namespace FishingGame.Reeling
         [Tooltip("How much fish this began with, this changes as pool is fished from")]
         private int amountOfFishHeld;
 
+        [SerializeField]
+        private IngameTime timeScript;
+
         #endregion
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace FishingGame.Reeling
             int fishTypeAmount = typesOfFishInPool.Count;
             int fishCaughtIndex = Random.Range(0, fishTypeAmount);
             FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
-            ETimeOfDay tempTimeValue = ETimeOfDay.Morning;
+            ETimeOfDay tempTimeValue = timeScript.GetTimePeriod();
             string tempLocation = "TEMPDATAFIELD";
 
             Fish fishData = new Fish(fishCaught, tempTimeValue, tempLocation);
