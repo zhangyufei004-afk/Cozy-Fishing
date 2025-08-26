@@ -36,7 +36,7 @@ namespace FishingGame.Reeling
             int fishTypeAmount = typesOfFishInPool.Count;
             int fishCaughtIndex = Random.Range(0, fishTypeAmount);
             FishScriptableObject fishCaught = typesOfFishInPool[fishCaughtIndex];
-            TimeOfDay tempTimeValue = TimeOfDay.Morning;
+            ETimeOfDay tempTimeValue = ETimeOfDay.Morning;
             string tempLocation = "TEMPDATAFIELD";
 
             Fish fishData = new Fish(fishCaught, tempTimeValue, tempLocation);

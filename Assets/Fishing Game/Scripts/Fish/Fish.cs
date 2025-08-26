@@ -16,7 +16,7 @@ namespace FishingGame.FishSystem
         private FishScriptableObject _fishBase;
         private float _length;
         private float _weight;
-        private TimeOfDay _caughtTime;
+        private ETimeOfDay _caughtTime;
         private string _caughtLocation;
         private int _fishCatchDifficulty;
         private Sprite _fishTexture;
@@ -27,7 +27,7 @@ namespace FishingGame.FishSystem
         /// <param name="newFishBase">Reference to the base fish ScriptableObject</param>
         /// <param name="time">Time of day when caught</param>
         /// <param name="location">Location where the fish was caught</param>
-        public Fish(FishScriptableObject newFishBase, TimeOfDay time, string location)
+        public Fish(FishScriptableObject newFishBase, ETimeOfDay time, string location)
         {
             _fishBase = newFishBase;
             _length = Random.Range(_fishBase.MinMaxLength.x, _fishBase.MinMaxLength.y);
@@ -67,7 +67,7 @@ namespace FishingGame.FishSystem
         /// <summary>
         /// Gets the time of day the fish was caught.
         /// </summary>
-        public TimeOfDay GetCaughtTime()
+        public ETimeOfDay GetCaughtTime()
         {
             return _caughtTime;
         }
