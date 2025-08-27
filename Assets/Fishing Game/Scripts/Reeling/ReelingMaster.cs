@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using FishingGame.GameManagement;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
@@ -60,12 +61,12 @@ namespace FishingGame.Reeling
         private PlayerController characterController;
 
         [SerializeField]
-        [Tooltip("The wintext contained in ReelingUI.")]
-        private GameObject finishFishingTextHolder;
+        [Tooltip("The image UI element shown if succsesfully fishing.")]
+        private Image caughtFishImage;
 
         [SerializeField]
         [Tooltip("The textbox that is displayed after fishing")]
-        private TextMeshProUGUI fishingFinishedTest;
+        private TextMeshProUGUI fishingFinishedText;
 
         [SerializeField]
         [Tooltip("The timer UI element contained in ReelingUI.")]
@@ -303,7 +304,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void HideReelFinishedUI()
         {
-            finishFishingTextHolder.SetActive(false);
+            fishingFinishedText.gameObject.SetActive(false);
+            caughtFishImage.gameObject.SetActive(false);
         }           
 
         /// <summary>
@@ -322,7 +324,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private IEnumerator HideUIAfterCatch()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(4);
             HideReelFinishedUI();
         }
 
@@ -331,14 +333,16 @@ namespace FishingGame.Reeling
             if (didCatch)
             {
                 string textToDisplay = $"You have caught a {fishData.GetSpeciesName()} at the {fishData.GetCaughtLocation()}, in the {fishData.GetCaughtTime()}";
-                fishingFinishedTest.text = textToDisplay;
-                finishFishingTextHolder.SetActive(true);
+                caughtFishImage.sprite = fishData.GetTexture();
+                fishingFinishedText.text = textToDisplay;
+                caughtFishImage.gameObject.SetActive(true);
+                fishingFinishedText.gameObject.SetActive(true);
             }
             else
             {
                 string textToDisplay = $"The {fishData.GetSpeciesName()} got away!";
-                fishingFinishedTest.text = textToDisplay;
-                finishFishingTextHolder.SetActive(true);
+                fishingFinishedText.text = textToDisplay;
+                fishingFinishedText.gameObject.SetActive(true);
             }
 
         }
