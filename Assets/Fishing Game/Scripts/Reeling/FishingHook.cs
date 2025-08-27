@@ -95,6 +95,7 @@ namespace FishingGame.Reeling
                     _headingToFishSpot = false;
                     waterSplash.Play();
                     waterSound.Play();
+                    PullBackHook();
                 }
             }
             if (_headingBackToHook)
@@ -164,7 +165,6 @@ namespace FishingGame.Reeling
             if (_collidingFish.Count > 0 || _collidingPool != null)
             {
                 ReactToFishOnHook();
-
                 ClearCollidingFishAndPool();
             }
             else
@@ -264,6 +264,9 @@ namespace FishingGame.Reeling
             Fish randomPoolFish = fishingPool.DetermineFishCaught();
             GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
 
+            ClearCollidingFishAndPool();
+            HookIsOut = false;
+
             reelingMaster.BeginCatch(randomPoolFish, fishModel, fishingPool);
         }
 
@@ -271,10 +274,9 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Resets the position of the hook so it is no longer colliding with fishing objects
         /// </summary>
-        public void ResetHookSpot()
+        private void ResetHookSpot()
         {
             // TODO: This need to be physics logic soon
-          //  gameObject.transform.localPosition = hookResetSpot;
             HookIsOut = false;
             reelingMaster.DisableControls(false);
         }

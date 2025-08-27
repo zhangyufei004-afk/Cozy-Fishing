@@ -91,15 +91,14 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (_reelAction.WasPressedThisFrame())
-            {
-                LeftClick();
-            }
-
-            // TODO: THis can likely be done better and should be changed once this is setup to use new input system
             if (fishingHook.HookIsOut == true)
             {
                 return;
+            }
+
+            if (_reelAction.WasPressedThisFrame())
+            {
+                LeftClick();
             }
 
             if (_castAction.IsPressed())
@@ -148,10 +147,6 @@ namespace FishingGame.Reeling
             {
                 SetThrowAnimation();
                 ResetCharge();
-            }  
-            else if (fishingHook.ShouldTravelBack())
-            {
-                fishingHook.PullBackHook();
             }
         }
 
