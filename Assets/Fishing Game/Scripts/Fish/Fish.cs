@@ -14,6 +14,7 @@ namespace FishingGame.FishSystem
     public class Fish : IStorable
     {
         private FishScriptableObject _fishBase;
+        private string _speciesName;
         private float _length;
         private float _weight;
         private ETimeOfDay _caughtTime;
@@ -36,6 +37,7 @@ namespace FishingGame.FishSystem
             _caughtLocation = location;
             _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
             _fishTexture = _fishBase.Texture;
+            _speciesName = _fishBase.SpeciesName;
         }
 
         /// <summary>
@@ -113,6 +115,14 @@ namespace FishingGame.FishSystem
         public Sprite GetTexture()
         {
             return _fishTexture;
+        }
+
+        /// <summary>
+        /// Gets the species name
+        /// </summary>
+        public string GetSpeciesName()
+        {
+            return _speciesName;
         }
     }
 }

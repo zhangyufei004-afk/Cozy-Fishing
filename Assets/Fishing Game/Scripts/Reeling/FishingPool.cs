@@ -46,9 +46,12 @@ namespace FishingGame.Reeling
         [Tooltip("Infested pools only spawn invasive fish untill they are depleted")]
         private bool isInfested = false;
 
-        // The type of fish that is spawned when the location is infested
         [SerializeField]
-        private FishScriptableObject infestationFish;
+        [Tooltip("This field can be used to force the pool to spawn specific fish instead of randomized")]
+        private List<FishScriptableObject> overrideFishList;
+
+        // The type of fish that is spawned when the location is infested
+        private FishScriptableObject _infestationFish;
 
         #endregion
 
@@ -73,7 +76,7 @@ namespace FishingGame.Reeling
 
             if (isInfested)
             {
-                Fish evilFishData = new Fish(infestationFish, timeCaught, locationCaught);
+                Fish evilFishData = new Fish(_infestationFish, timeCaught, locationCaught);
                 return evilFishData;
             }
 
@@ -134,7 +137,17 @@ namespace FishingGame.Reeling
             int fishTypeAmount = fishAvailable.Count;
             int fishCaughtIndex = Random.Range(0, fishTypeAmount);
             FishScriptableObject invasiveFish = fishAvailable[fishCaughtIndex];
-            infestationFish = invasiveFish;
+            _infestationFish = invasiveFish;
+        }
+
+        public void AddOverRideFish(bool clearList, FishScriptableObject fishToAdd)
+        {
+            if (clearList)
+            {
+                overrideFishList.Clear();
+            }
+
+            overrideFishList.Add(fishToAdd);
         }
     }
 }

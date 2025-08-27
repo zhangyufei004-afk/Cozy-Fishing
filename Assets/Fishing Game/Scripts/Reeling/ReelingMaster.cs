@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using FishingGame.GameManagement;
 using UnityEngine;
+using TMPro;
 
 namespace FishingGame.Reeling
 {
@@ -60,11 +61,11 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("The wintext contained in ReelingUI.")]
-        private GameObject winText;
+        private GameObject finishFishingTextHolder;
 
         [SerializeField]
-        [Tooltip("The losetext contained in ReelingUI.")]
-        private GameObject loseText;
+        [Tooltip("The textbox that is displayed after fishing")]
+        private TextMeshProUGUI fishingFinishedTest;
 
         [SerializeField]
         [Tooltip("The timer UI element contained in ReelingUI.")]
@@ -100,9 +101,6 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             timerObject.SetActive(true);
-
-            loseText.SetActive(false);
-            winText.SetActive(false);
 
             IsFishing = true;
 
@@ -145,9 +143,6 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             timerObject.SetActive(true);
-
-            loseText.SetActive(false);
-            winText.SetActive(false);
 
             IsFishing = true;
 
@@ -282,8 +277,9 @@ namespace FishingGame.Reeling
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
-                loseText.SetActive(true);
+                DisplayFishingResult(_currentlyReelingFish, false);
                 StartCoroutine(HideUIAfterCatch());
+                _currentlyReelingFish = null;
             }
             else
             {
@@ -292,16 +288,14 @@ namespace FishingGame.Reeling
                 {
                     _currentFishPool.FishCaught();
                 }
+
                 inventoryScript.AddItem(_currentlyReelingFish);
                 GameManager.Instance.GameEvents.FishCaught();
-                
-                _currentlyReelingFish = null;
+                DisplayFishingResult(_currentlyReelingFish, true);
 
-                winText.SetActive(true);
+                _currentlyReelingFish = null;
                 StartCoroutine(HideUIAfterCatch());
             }
-
-            _currentlyReelingFish = null;
         }
 
         /// <summary>
@@ -309,8 +303,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void HideReelFinishedUI()
         {
-            winText.SetActive(false);
-            loseText.SetActive(false);
+            finishFishingTextHolder.SetActive(false);
         }           
 
         /// <summary>
@@ -331,7 +324,23 @@ namespace FishingGame.Reeling
         {
             yield return new WaitForSeconds(2);
             HideReelFinishedUI();
-            //fishingHook.ResetHookSpot();
+        }
+
+        private void DisplayFishingResult(Fish fishData, bool didCatch)
+        {
+            if (didCatch)
+            {
+                string textToDisplay = $"You have caught a {fishData.GetSpeciesName()} at the {fishData.GetCaughtLocation()}, in the {fishData.GetCaughtTime()}";
+                fishingFinishedTest.text = textToDisplay;
+                finishFishingTextHolder.SetActive(true);
+            }
+            else
+            {
+                string textToDisplay = $"The {fishData.GetSpeciesName()} got away!";
+                fishingFinishedTest.text = textToDisplay;
+                finishFishingTextHolder.SetActive(true);
+            }
+
         }
     }
 }
