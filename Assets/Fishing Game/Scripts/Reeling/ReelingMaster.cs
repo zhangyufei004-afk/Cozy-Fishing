@@ -332,7 +332,8 @@ namespace FishingGame.Reeling
         {
             if (didCatch)
             {
-                string textToDisplay = $"You have caught a {fishData.GetSpeciesName()} at the {fishData.GetCaughtLocation()}, in the {fishData.GetCaughtTime()}";
+                string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetSpeciesName()}!";
+
                 caughtFishImage.sprite = fishData.GetTexture();
                 fishingFinishedText.text = textToDisplay;
                 caughtFishImage.gameObject.SetActive(true);

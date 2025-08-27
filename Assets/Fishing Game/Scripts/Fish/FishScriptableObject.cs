@@ -18,7 +18,7 @@ namespace FishingGame.FishSystem
     {
         public Sprite Texture;
         public string Id;
-        public Vector2 MinMaxLength;
+        public Vector2 MinMaxWeight;
         public string SpeciesName;
 
         public int FishCatchDifficulty;

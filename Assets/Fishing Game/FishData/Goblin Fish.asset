@@ -15,7 +15,7 @@ MonoBehaviour:
   persistentID: 0
   Texture: {fileID: 21300000, guid: 8c49b36c433b9c845864d80fbcc6a34c, type: 3}
   Id: 6
-  MinMaxLength: {x: 0.5, y: 1.2}
+  MinMaxWeight: {x: 0.5, y: 1.2}
   SpeciesName: Goblin Fish
   FishCatchDifficulty: 4
   FishBio: Wicked creature of the sea that feeds on other fish

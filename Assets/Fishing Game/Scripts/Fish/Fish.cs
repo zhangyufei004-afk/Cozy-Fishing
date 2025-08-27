@@ -15,7 +15,6 @@ namespace FishingGame.FishSystem
     {
         private FishScriptableObject _fishBase;
         private string _speciesName;
-        private float _length;
         private float _weight;
         private ETimeOfDay _caughtTime;
         private string _caughtLocation;
@@ -31,8 +30,9 @@ namespace FishingGame.FishSystem
         public Fish(FishScriptableObject newFishBase, ETimeOfDay time, string location)
         {
             _fishBase = newFishBase;
-            _length = Random.Range(_fishBase.MinMaxLength.x, _fishBase.MinMaxLength.y);
-            _weight = CalculateWeight(_length); // Simple formula based on length
+            _weight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
+            // Round weight to 2 decimal places
+            _weight = Mathf.Round(_weight * 100) / 100;
             _caughtTime = time;
             _caughtLocation = location;
             _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
@@ -41,29 +41,11 @@ namespace FishingGame.FishSystem
         }
 
         /// <summary>
-        /// Calculates fish weight based on its length.
-        /// </summary>
-        /// <param name="length">Length of the fish</param>
-        /// <returns>Weight in kilograms</returns>
-        private float CalculateWeight(float length)
-        {
-            return length * 0.2f + Random.Range(-0.1f, 0.1f); // Example formula
-        }
-
-        /// <summary>
         /// Gets the base ScriptableObject of the fish.
         /// </summary>
         public FishScriptableObject GetFishBase()
         {
             return _fishBase;
-        }
-
-        /// <summary>
-        /// Gets the length of the fish.
-        /// </summary>
-        public float GetLength()
-        {
-            return _length;
         }
 
         /// <summary>

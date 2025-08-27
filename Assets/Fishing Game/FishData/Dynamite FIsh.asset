@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
-  m_Name: Dynamite FIsh
+  m_Name: Dynamite Fish
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 295a2f559cbf35d42a1616c88db493ac, type: 3}
   Id: 2
-  MinMaxLength: {x: 1, y: 2}
+  MinMaxWeight: {x: 0.25, y: 5}
   SpeciesName: Dynamite Fish
   FishCatchDifficulty: 5
   FishBio: Although it looks like this fish has fused with some sticks of dynamite,
@@ -27,3 +27,4 @@ MonoBehaviour:
     frills that attract prey for the host when in dark environments.
   LocationsFound: 03000000
   TimeOfDayFound: Anytime
+  IsInvasive: 0

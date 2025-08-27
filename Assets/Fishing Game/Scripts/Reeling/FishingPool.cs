@@ -55,11 +55,6 @@ namespace FishingGame.Reeling
 
         #endregion
 
-        public void OnEnable()
-        {
-            BecomeInfested();
-        }
-
         /// <summary>
         /// Checks if fish pool is empty and then determines the fish type caught
         /// Randomly selects a fish type based on the amount of types in the pool

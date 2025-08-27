@@ -15,7 +15,7 @@ MonoBehaviour:
   persistentID: 0
   Texture: {fileID: 21300000, guid: 3aee3a9821425e944906f691bb3aead9, type: 3}
   Id: 5
-  MinMaxLength: {x: 0.1, y: 0.55}
+  MinMaxWeight: {x: 0.15, y: 0.6}
   SpeciesName: Silver Finfish
   FishCatchDifficulty: 2
   FishBio: 'With its shimmering blue body and distinct silver dorsal fins, the Silver
@@ -24,3 +24,4 @@ MonoBehaviour:
     it is quite agile in the water. '
   LocationsFound: 0100000003000000
   TimeOfDayFound: Night
+  IsInvasive: 0
