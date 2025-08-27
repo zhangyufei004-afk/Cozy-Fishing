@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typesOfFishInPool: []
-  amountOfFishHeld: 5
+  amountOfFishHeld: 1
   timeScript: {fileID: 1847882215}
   levelsPossibleFish: {fileID: 1073959634}
   _fisingLocation: 3

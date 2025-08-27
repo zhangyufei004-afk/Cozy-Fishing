@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
 using FishingGame.GameTime;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -55,14 +56,17 @@ namespace FishingGame.Reeling
 
         #endregion
 
+        private void OnEnable()
+        {
+            GameManager gameManager = GameManager.Instance;
+        }
+
         /// <summary>
         /// Checks if fish pool is empty and then determines the fish type caught
         /// Randomly selects a fish type based on the amount of types in the pool
         /// </summary>
         public Fish DetermineFishCaught()
         {
-            if (CheckIfEmpty() == true) { return null; }
-
             ETimeOfDay timeCaught = timeScript.GetTimePeriod();
             string locationCaught = gameObject.name;
 
@@ -95,20 +99,24 @@ namespace FishingGame.Reeling
             return fishData;
         }
 
+        private void EmptyPool()
+        {
+
+        }
+
         /// <summary>
         /// This is a public function that is called to reduce the amount of fish currently in the pool
-        /// It will also destroy the pool if the pool no longer has catchable fish.
         /// </summary>
         public void FishCaught()
         {
             amountOfFishHeld -= 1;
-            if (CheckIfEmpty()) { Destroy(gameObject); }
+            if (CheckIfEmpty()) { EmptyPool(); }
         }
 
         /// <summary>
         /// Returns true if the fishing pool is empty
         /// </summary>
-        private bool CheckIfEmpty()
+        public bool CheckIfEmpty()
         {
             if (amountOfFishHeld == 0) { return true; }
             else { return false; }

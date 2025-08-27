@@ -274,12 +274,12 @@ namespace FishingGame.Reeling
 
             Destroy(_currentFish3DObject);
 
-
+             
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
                 DisplayFishingResult(_currentlyReelingFish, false);
-                StartCoroutine(HideUIAfterCatch());
+                StartCoroutine(HideUIAfterCatch(4));
                 _currentlyReelingFish = null;
             }
             else
@@ -295,8 +295,23 @@ namespace FishingGame.Reeling
                 DisplayFishingResult(_currentlyReelingFish, true);
 
                 _currentlyReelingFish = null;
-                StartCoroutine(HideUIAfterCatch());
+                StartCoroutine(HideUIAfterCatch(2));
             }
+        }
+
+        /// <summary>
+        /// Run when a fishing location is empty when fished from, rather than begin catch. This will display a text to the player
+        /// saying the fishing location is empty. 
+        /// </summary>
+        /// <param name="fishingLocation">The fishing location that is empty</param>
+        public void CaughtNothing(FishingPool fishingLocation)
+        {
+            string textToDisplay = $"The {fishingLocation.gameObject.name} is empty of fish!";
+
+            fishingFinishedText.text = textToDisplay;
+            fishingFinishedText.gameObject.SetActive(true);
+            fishingHook.PullBackHook();
+            HideUIAfterCatch(2);
         }
 
         /// <summary>
@@ -322,9 +337,9 @@ namespace FishingGame.Reeling
         /// Starts a timer that will then run the HideReelFinishedUI() function
         /// Also resets the position of the hook, this avoids camera freaking out as it is attatched to the hook
         /// </summary>
-        private IEnumerator HideUIAfterCatch()
+        private IEnumerator HideUIAfterCatch(int secondsToWait)
         {
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(secondsToWait);
             HideReelFinishedUI();
         }
 

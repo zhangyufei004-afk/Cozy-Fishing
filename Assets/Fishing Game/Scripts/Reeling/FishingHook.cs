@@ -245,7 +245,7 @@ namespace FishingGame.Reeling
             }
         }
 
-        /// <summary>
+        /// <summary>s
         /// Gets the data needed from the fish, begins the reelingmaster minigame script
         /// </summary>
         /// /// <param name="fishCaught">The fish that has been caught</param>
@@ -261,6 +261,12 @@ namespace FishingGame.Reeling
         /// <param name="fishingPool">The pool the hook has found</param>
         private void CaughtFish(FishingPool fishingPool)
         {
+            if (fishingPool.CheckIfEmpty())
+            {
+                reelingMaster.CaughtNothing(fishingPool);
+                return;
+            }
+
             Fish randomPoolFish = fishingPool.DetermineFishCaught();
             GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
 
