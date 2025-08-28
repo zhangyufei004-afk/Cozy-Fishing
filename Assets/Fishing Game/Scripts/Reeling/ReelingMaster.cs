@@ -344,6 +344,13 @@ namespace FishingGame.Reeling
             HideReelFinishedUI();
         }
 
+        /// <summary>
+        /// Displays the fishing reslt after a catch is ended. Formats the text based on what is caught
+        /// Sets the required UI elements to be active
+        /// If the catch was a failure string will be formated to show that the fish got away
+        /// </summary>
+        /// <param name="fishData">The data of the fish being reeled</param>
+        /// <param name="didCatch">Was the fish caught</param>
         private void DisplayFishingResult(Fish fishData, bool didCatch)
         {
             if (didCatch)

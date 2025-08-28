@@ -11,7 +11,6 @@ namespace FishingGame.Reeling
     /// Fishing pools contain types of fish scriptable objects that is fished from them
     /// Player can cast lines into these to begin fishing
     /// These can randomly spawn and have a max amount of fish that can be caught from them
-    /// These are designed to be easier to catch from compared to catching and individual swimming fish
     /// </summary>
     public class FishingPool : MonoBehaviour
     {
@@ -99,6 +98,10 @@ namespace FishingGame.Reeling
             return fishData;
         }
 
+        /// <summary>
+        /// Currently empty, this will contain logic for what to do upon becoming empty
+        /// TODO: Add event here so the emptying of a pool can be tied to a quest
+        /// </summary>
         private void EmptyPool()
         {
 
@@ -122,6 +125,11 @@ namespace FishingGame.Reeling
             else { return false; }
         }
 
+        /// <summary>
+        /// Causes a pool to become infested
+        /// This will find a random fish that is allowed in the level that is tagged with IsInvasive
+        /// That fish will then be chosen to be the only fish that is catchable while the infestation remains
+        /// </summary>
         public void BecomeInfested()
         {
             isInfested = true;
@@ -143,6 +151,13 @@ namespace FishingGame.Reeling
             _infestationFish = invasiveFish;
         }
 
+        /// <summary>
+        /// Adds a fish to the override list.
+        /// Takes a bool that tells the function wether it needs to clear the current override list or not
+        /// And the fish data to add
+        /// </summary>
+        /// <param name="clearList">Clear the current ovveride list</param>
+        /// <param name="fishToAdd">The data of the fish to add</param>
         public void AddOverRideFish(bool clearList, FishScriptableObject fishToAdd)
         {
             if (clearList)
