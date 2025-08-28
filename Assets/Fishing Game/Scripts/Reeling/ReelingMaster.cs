@@ -310,8 +310,9 @@ namespace FishingGame.Reeling
 
             fishingFinishedText.text = textToDisplay;
             fishingFinishedText.gameObject.SetActive(true);
+            fishingHook.ClearCollidingFishAndPool();
             fishingHook.PullBackHook();
-            HideUIAfterCatch(2);
+            StartCoroutine(HideUIAfterCatch(2));
         }
 
         /// <summary>

@@ -198,7 +198,7 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Clears the colliding object variables from this class
         /// </summary>
-        private void ClearCollidingFishAndPool()
+        public void ClearCollidingFishAndPool()
         {
             _collidingPool = null;
             _collidingFish.Clear();
