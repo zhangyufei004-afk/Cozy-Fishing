@@ -12,7 +12,7 @@ namespace FishingGame.MainMenu
 
         public void OnStartGame()
         {
-            SceneManager.LoadScene("Main Scene");
+            SceneManager.LoadScene("PlayerSetting");
         }
 
         public void OnOpenSettings()
