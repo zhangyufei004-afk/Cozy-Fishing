@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_NPC_OldMan_Body
+  m_Name: M_Roof_Temp
   m_Shader: {fileID: 4800000, guid: be891319084e9d147b09d89e80ce60e0, type: 3}
   m_Parent: {fileID: 2100000, guid: 4c0577862874e119fb24489d07d1218e, type: 2}
   m_ModifiedSerializedProperties: 16
@@ -17,9 +17,7 @@ Material:
   - _IS_CLIPPING_TRANSMODE
   - _IS_OUTLINE_CLIPPING_YES
   - _OUTLINE_NML
-  m_InvalidKeywords:
-  - _METALLICSPECGLOSSMAP
-  - _NORMALMAP
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34,15 +32,18 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3da3ab54f96938f46af2cbead535282b, type: 3}
+        m_Texture: {fileID: 2800000, guid: c25a265fde697df48a95e10e34096f15, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    - _1st_ShadeColor: {r: 0.53475523, g: 0.27752423, b: 0.10096866, a: 1}
+    - _BaseColor: {r: 0.77254903, g: 0.4509804, b: 0.23529412, a: 1}
+    - _Color: {r: 0.77254903, g: 0.45098037, b: 0.23529407, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &124760788574845902
+--- !u!114 &182877875453460006
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

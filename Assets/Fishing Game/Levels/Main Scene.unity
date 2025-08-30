@@ -192,11 +192,11 @@ PrefabInstance:
     - target: {fileID: -1990475100100284689, guid: 1b37203e0494a9242b2f9346eb94f4f5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3364519ca72c5d746b847ea1578daf4d, type: 2}
+      objectReference: {fileID: 2100000, guid: 7dd5029918bd91a4e805b56539e42d63, type: 2}
     - target: {fileID: -734240374466611347, guid: 1b37203e0494a9242b2f9346eb94f4f5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: d3fd716578423d945a4b209cd777be03, type: 2}
+      objectReference: {fileID: 2100000, guid: 1e7e7c3f96a16d148a670f643876cca4, type: 2}
     - target: {fileID: 919132149155446097, guid: 1b37203e0494a9242b2f9346eb94f4f5, type: 3}
       propertyPath: m_Name
       value: Character_NPC_Oldman
@@ -204,7 +204,7 @@ PrefabInstance:
     - target: {fileID: 7409286740509830097, guid: 1b37203e0494a9242b2f9346eb94f4f5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a4f983270e0f2d648bcfc81f0c352db0, type: 2}
+      objectReference: {fileID: 2100000, guid: 84d829a421966774e803bfd0fce5581e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2723,10 +2723,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 3.295
       objectReference: {fileID: 0}
+    - target: {fileID: 4213363537414109044, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3ee5e9f9504d4d9459bf04b2bb2deb86, type: 2}
     - target: {fileID: 7103861231677024068, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_Name
       value: Environment
       objectReference: {fileID: 0}
+    - target: {fileID: 7686964489368267127, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3ee5e9f9504d4d9459bf04b2bb2deb86, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5254,8 +5262,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1947552813}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00000011722098, y: -0.000000025024702, z: -2.9334202e-15, w: 1}
-  m_LocalPosition: {x: -5.397812, y: 4.9237175, z: -20.614}
+  m_LocalRotation: {x: 0.46410668, y: -5.3398455e-23, z: 4.3028374e-23, w: 0.8857793}
+  m_LocalPosition: {x: -3.93, y: 12.07, z: -19.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
