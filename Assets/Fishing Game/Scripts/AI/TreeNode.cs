@@ -36,7 +36,7 @@ namespace FishingGame.AI
         {
             foreach (TreeNode treeNode in children)
             {
-                _Attach(treeNode);
+                Attach(treeNode);
             }
         }
 
@@ -44,7 +44,7 @@ namespace FishingGame.AI
         /// Attach this Behaviour Tree node to another Behaviour Tree Node, making this node the new parent.
         /// </summary>
         /// <param name="treeNode">The node to make the new child of this Node.</param>
-        private void _Attach(TreeNode treeNode)
+        protected void Attach(TreeNode treeNode)
         {
             treeNode._parent = this;
             Children.Add(treeNode);
