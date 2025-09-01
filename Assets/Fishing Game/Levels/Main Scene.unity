@@ -5798,8 +5798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552b72375dc4173418709e82d9dbc458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDayTimeHour: 12
-  gameSpeed: 1
+  initialStateOfDay: 2
+  gameSpeed: 8
   uiText: {fileID: 1473637882}
   gameTimeUI: {fileID: 1064181142}
 --- !u!114 &1851540540 stripped

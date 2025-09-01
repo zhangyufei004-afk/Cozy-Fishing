@@ -16,14 +16,18 @@ namespace FishingGame.GameTime
         Night = 3
     }
 
+    /// <summary>
+    /// This class tracks the current time of the day.
+    /// It tracks these as both a float value and an enum representing the state of the day
+    /// </summary>
     public class IngameTime : MonoBehaviour
     {
         [Tooltip("Tracks the current time of day as a float")]
         public float currentTimeOfDay { get; private set; }
 
         [SerializeField]
-        [Tooltip("The time that the game will start at, in ingame hours")]
-        private float initialDayTimeHour;
+        [Tooltip("The time period that the game ewill start in")]
+        private ETimeOfDay initialStateOfDay;
 
         [SerializeField]
         [Tooltip("A tweakable value that scales how fast game time is calculated")]
@@ -44,15 +48,12 @@ namespace FishingGame.GameTime
         [Tooltip("The UI parent")]
         private GameObject gameTimeUI;
 
-
-
         // 24 minutes = 1 in game day
 
         private void OnEnable()
         {
             int numberOfMembers = Enum.GetNames(typeof(ETimeOfDay)).Length;
             _maxSecondsPerState = _secondsPerDay / numberOfMembers;
-            currentTimeOfDay = initialDayTimeHour * 60f;
 
             SetInitialTimeState();
             UpdateUITImer();
@@ -69,12 +70,19 @@ namespace FishingGame.GameTime
             if (CheckIfDayPassed()) { ProcessEndOfDay(); }
         }
 
+        /// <summary>
+        /// Returns true if the time spent in the current day state is greater than the 
+        /// </summary>
+        /// <returns></returns>
         private bool CheckIfTimePeriodChange()
         {
             if (_elapsedTimeInCurrentState >= _maxSecondsPerState) { return true; }
             return false;
         }
 
+        /// <summary>
+        /// Sets the day state to be equal to the next state in the day cycle
+        /// </summary>
         private void SetNewDayState()
         {
             _elapsedTimeInCurrentState = 0f;
@@ -90,41 +98,35 @@ namespace FishingGame.GameTime
             UpdateUITImer();
         }
 
+        /// <summary>
+        /// Sets the current time of day float value to be 0
+        /// </summary>
         private void ProcessEndOfDay()
         {
             currentTimeOfDay = 0f;
         }
 
+        /// <summary>
+        /// Returns true if current time of day is greater than the seconds per day
+        /// </summary>
+        /// <returns>True if the day has passed, false otherwise</returns>
         private bool CheckIfDayPassed()
         {
             if (currentTimeOfDay >= _secondsPerDay) { return true; }
             else { return false; }
         }
 
-        // Morning 6 - 12
-        // Afternoon 12 - 18
-        // Evening 18 - 24
-        // Night 0 - 6
+        /// <summary>
+        /// Sets the state of the day enum to be equal to the initial state of day enum
+        /// </summary>
         private void SetInitialTimeState()
         {
-            if (initialDayTimeHour >= 6 && initialDayTimeHour < 12)
-            {
-                _timeAsState = ETimeOfDay.Morning;
-            }
-            else if (initialDayTimeHour >= 12 && initialDayTimeHour < 18)
-            {
-                _timeAsState = ETimeOfDay.Afternoon;
-            }
-            else if (initialDayTimeHour >= 18  && initialDayTimeHour < 24)
-            {
-                _timeAsState = ETimeOfDay.Evening;
-            }
-            else
-            {
-                _timeAsState = ETimeOfDay.Night;
-            }
+            _timeAsState = initialStateOfDay;
         }
 
+        /// <summary>
+        /// Sets the timer UI text to say what state of day it is
+        /// </summary>
         private void UpdateUITImer()
         {
             switch (_timeAsState)
@@ -146,16 +148,28 @@ namespace FishingGame.GameTime
 
         #region Public Functions
 
+        /// <summary>
+        /// Shows or hides the game time UI
+        /// </summary>
+        /// <param name="hide">True will set the UI to appear, false will make it be hidden</param>
         public void ShowGameTimeUI(bool hide)
         {
             gameTimeUI.SetActive(hide);
         }
 
+        /// <summary>
+        /// Returns the time period of the current day
+        /// </summary>
+        /// <returns>Time period of current day</returns>
         public ETimeOfDay GetTimePeriod()
         {
             return _timeAsState;
         }
 
+        /// <summary>
+        /// Sets the days timer to be either active or inactive
+        /// </summary>
+        /// <param name="active">True will set time to be active, false will set it to not</param>
         public void SetTimeActive(bool active)
         {
             if (active) { _timeActive = true; }
