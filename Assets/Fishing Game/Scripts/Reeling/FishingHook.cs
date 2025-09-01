@@ -93,8 +93,6 @@ namespace FishingGame.Reeling
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
                     _headingToFishSpot = false;
-                    waterSplash.Play();
-                    waterSound.Play();
                     PullBackHook();
                 }
             }
@@ -241,6 +239,8 @@ namespace FishingGame.Reeling
             }
             else if (_collidingPool != null)
             {
+                waterSplash.Play();
+                waterSound.Play();
                 CaughtFish(_collidingPool);
             }
         }
