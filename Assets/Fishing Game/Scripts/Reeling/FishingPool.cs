@@ -15,9 +15,6 @@ namespace FishingGame.Reeling
     public class FishingPool : MonoBehaviour
     {
         #region Private Properties
-        [SerializeField]
-        [Tooltip("A list of the type of fish that can be caught from this pool")]
-        private List<FishScriptableObject> typesOfFishInPool;
 
         [SerializeField]
         [Tooltip("How much fish this began with, this changes as pool is fished from")]
