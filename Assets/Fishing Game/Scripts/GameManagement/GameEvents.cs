@@ -56,7 +56,7 @@ namespace FishingGame.GameManagement
         public event Action<bool> OnToggleDialogueCamera;
 
         #endregion
-        
+
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
