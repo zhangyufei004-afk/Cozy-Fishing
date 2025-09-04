@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 namespace FishingGame.PlayerCustomization
 {
@@ -38,12 +39,18 @@ namespace FishingGame.PlayerCustomization
 
         private void OnDisable()
         {
-            _mousePressAction.started -= ctx => _isDragging = true;
-            _mousePressAction.canceled -= ctx => _isDragging = false;
+            if (_mousePressAction != null)
+            {
+                _mousePressAction.started -= ctx => _isDragging = true;
+                _mousePressAction.canceled -= ctx => _isDragging = false;
+            }
         }
 
         private void Update()
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                return;
+
             if (_isDragging && modelTransform != null)
             {
                 Vector2 delta = _mouseDeltaAction.ReadValue<Vector2>();
@@ -53,3 +60,4 @@ namespace FishingGame.PlayerCustomization
         }
     }
 }
+

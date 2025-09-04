@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace FishingGame.MainMenu
 {
@@ -11,9 +12,10 @@ namespace FishingGame.MainMenu
     {
         [SerializeField] private InputActionReference pauseAction;
         [SerializeField] private GameObject pauseMenuUI;
+        [SerializeField] private GameObject settingsMenuUI;
+
         private bool _isPaused;
 
-        
         private void OnEnable()
         {
             pauseAction.action.performed += OnPausePressed;
@@ -31,24 +33,18 @@ namespace FishingGame.MainMenu
             TogglePause();
         }
 
-        /// <summary>
-        /// Can be called from both button and input action.
-        /// </summary>
         public void TogglePause()
         {
             if (_isPaused)
-            {
                 ResumeGame();
-            }
             else
-            {
                 PauseGame();
-            }
         }
 
         public void ResumeGame()
         {
             pauseMenuUI.SetActive(false);
+            settingsMenuUI.SetActive(false);
             Time.timeScale = 1f;
             _isPaused = false;
             ResetEventSystemSelection();
@@ -57,6 +53,7 @@ namespace FishingGame.MainMenu
         public void PauseGame()
         {
             pauseMenuUI.SetActive(true);
+            settingsMenuUI.SetActive(false);
             Time.timeScale = 0f;
             _isPaused = true;
             SetResumeButtonSelected();
@@ -73,12 +70,33 @@ namespace FishingGame.MainMenu
 
         private void SetResumeButtonSelected()
         {
-            EventSystem.current.SetSelectedGameObject(pauseMenuUI.transform.GetChild(0).gameObject);
+            if (pauseMenuUI.transform.childCount > 0)
+            {
+                EventSystem.current.SetSelectedGameObject(pauseMenuUI.transform.GetChild(0).gameObject);
+            }
         }
 
         private void ResetEventSystemSelection()
         {
             EventSystem.current.SetSelectedGameObject(null);
+        }
+
+        public void JumpToScene(string sceneName)
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(sceneName);
+        }
+
+        public void OpenSettings()
+        {
+            pauseMenuUI.SetActive(false);
+            settingsMenuUI.SetActive(true);
+        }
+
+        public void CloseSettings()
+        {
+            settingsMenuUI.SetActive(false);
+            pauseMenuUI.SetActive(true);
         }
     }
 }
