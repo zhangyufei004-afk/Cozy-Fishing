@@ -143,7 +143,7 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Checks if the hook is able to be pulled back
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if the hook is out and can be returned, else returns false</returns>
         public bool ShouldTravelBack()
         {
             if (HookIsOut == true && _headingToFishSpot == false && reelingMaster.IsFishing == false)
@@ -174,17 +174,9 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Sets variables to allow hook to head back to its original spot
-        /// </summary>
-        private void SetupHookTravelBack()
-        {
-            _headingBackToHook = true;
-        }
-
-        /// <summary>
         /// Sets variables to allow hook to head to target location
         /// </summary>
-        /// /// <param name="targetLocation">Location to move to</param>
+        /// <param name="targetLocation">Location to move to</param>
         public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
         {
             Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
@@ -203,9 +195,18 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Sets variables to allow hook to head back to its original spot
+        /// </summary>
+        private void SetupHookTravelBack()
+        {
+            _headingBackToHook = true;
+        }
+
+        /// <summary>
         /// Checks to see if gameobject tag is a fish, returns true if so false otherwise
         /// </summary>
         /// <param name="objectToCheck">Game object to check</param>
+        /// <returns>Returns true if the object passed through has the fish tag, otherwise false</returns>
         private bool CheckIfFish(GameObject objectToCheck)
         {
             if (objectToCheck.CompareTag("Fish")) { return true; }
@@ -216,6 +217,7 @@ namespace FishingGame.Reeling
         /// Checks the object to see if it contains the FishingPool script, if so returns true, else returns false
         /// </summary>
         /// <param name="objectToCheck">Game object to check</param>
+        /// <returns>Returns true if the object passed through has the fishing pool script, otherwise false</returns>
         private bool CheckIfPool(GameObject objectToCheck)
         {
             if (objectToCheck.GetComponent<FishingPool>()) { return true; }
@@ -261,7 +263,7 @@ namespace FishingGame.Reeling
         /// <param name="fishingPool">The pool the hook has found</param>
         private void CaughtFish(FishingPool fishingPool)
         {
-            if (fishingPool.CheckIfEmpty())
+            if (fishingPool.IsEmpty())
             {
                 reelingMaster.CaughtNothing(fishingPool);
                 return;

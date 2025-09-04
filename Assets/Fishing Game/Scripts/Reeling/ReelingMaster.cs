@@ -75,8 +75,10 @@ namespace FishingGame.Reeling
         // TODO: Remove this once not needed with new inventory setup
         [SerializeField]
         [Tooltip("A reference to the inventory UI.")] 
-        private InventoryUI _inventoryUI;
+        private InventoryUI inventoryUI;
         #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Begin catch is run once a player succsesfully lands the fishing rod on a pool or an individual fish
@@ -162,32 +164,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Randomly selects the next minigame that will be played and then initializes and begins it
-        /// The same minigame can not be player two times in a row
-        /// </summary>
-        private void SetNextMiniGame()
-        {
-            int index = Random.Range(0, miniGameTypes.Count);
-
-            GameObject testNextMiniGame = miniGameTypes[index];
-
-            // TODO: Check if next minigame is not the current minigame
-            // Going to try find a more efficient way to do this if I have time
-            // Not sure rerunning the function in the event of an overlap is the best way to do it
-            // 5/08/2025 - Brayden
-            if (testNextMiniGame != _currentMinigame)
-            {
-                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingFish);
-                _currentMinigame = testNextMiniGame;
-                _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
-            }
-            else
-            {
-                SetNextMiniGame();
-            }
-        }
-
-        /// <summary>
         /// Ends the current catch and runs logic based on if the player won the minigame or did not
         /// If player won the minigame this checks if they have won enough to have completed the catch
         /// If player lost the catch is immeaditly ended with a loss
@@ -214,12 +190,69 @@ namespace FishingGame.Reeling
             else
             {
                 SetNextMiniGame();
-            }   
+            }
         }
+
+        /// <summary>
+        /// Run when a fishing location is empty when fished from, rather than begin catch. This will display a text to the player
+        /// saying the fishing location is empty. 
+        /// </summary>
+        /// <param name="fishingLocation">The fishing location that is empty</param>
+        public void CaughtNothing(FishingPool fishingLocation)
+        {
+            string textToDisplay = $"The {fishingLocation.gameObject.name} is empty of fish!";
+
+            fishingFinishedText.text = textToDisplay;
+            fishingFinishedText.gameObject.SetActive(true);
+            fishingHook.ClearCollidingFishAndPool();
+            fishingHook.PullBackHook();
+            StartCoroutine(HideUIAfterCatch(2));
+        }
+
+        /// <summary>
+        /// Enables or disables controls on the character controller
+        /// Public function
+        /// </summary>
+        /// <param name="isDisabled">True means the controls should be disabled, otherwise false</param>
+        public void DisableControls(bool isDisabled)
+        {
+            characterController.ToggleMovement(!isDisabled);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Randomly selects the next minigame that will be played and then initializes and begins it
+        /// The same minigame can not be player two times in a row
+        /// </summary>
+        private void SetNextMiniGame()
+        {
+            int index = Random.Range(0, miniGameTypes.Count);
+
+            GameObject testNextMiniGame = miniGameTypes[index];
+
+            // TODO: Check if next minigame is not the current minigame
+            // Going to try find a more efficient way to do this if I have time
+            // Not sure rerunning the function in the event of an overlap is the best way to do it
+            // 5/08/2025 - Brayden
+            if (testNextMiniGame != _currentMinigame)
+            {
+                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingFish);
+                _currentMinigame = testNextMiniGame;
+                _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
+            }
+            else
+            {
+                SetNextMiniGame();
+            }
+        }
+
+
 
         /// <summary>
         /// Returns true if the fish difficulty of the current fish is above 0
         /// </summary>
+        /// <returns>Returns true if the fish difficulty is above 0</returns>
         private bool CheckIsFishDifficult()
         {
             if (_fishDifficulty > 0)
@@ -232,6 +265,7 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Returns true if the player has won the required amount of minigames
         /// </summary>
+        /// <returns>Returns true if the currentMiniGamesWon variables is greater than the minigamewins required variable</returns>
         private bool CheckIfWonEnough()
         {
             if (_currentMiniGameWins > _miniGameWinsRequired)
@@ -249,6 +283,7 @@ namespace FishingGame.Reeling
         /// This is based of the fishes difficulty
         /// </summary>
         /// <param name="fishDifficulty">The difficulty of caught fish</param>
+        /// <returns>Returns the amount of minigames that will need to be done based on the inputed fishdifficulty</returns>
         private int GetMiniGamesRequired(int fishDifficulty)
         {
             _miniGameWinsRequired = 1;
@@ -299,21 +334,7 @@ namespace FishingGame.Reeling
             }
         }
 
-        /// <summary>
-        /// Run when a fishing location is empty when fished from, rather than begin catch. This will display a text to the player
-        /// saying the fishing location is empty. 
-        /// </summary>
-        /// <param name="fishingLocation">The fishing location that is empty</param>
-        public void CaughtNothing(FishingPool fishingLocation)
-        {
-            string textToDisplay = $"The {fishingLocation.gameObject.name} is empty of fish!";
-
-            fishingFinishedText.text = textToDisplay;
-            fishingFinishedText.gameObject.SetActive(true);
-            fishingHook.ClearCollidingFishAndPool();
-            fishingHook.PullBackHook();
-            StartCoroutine(HideUIAfterCatch(2));
-        }
+        
 
         /// <summary>
         /// Hides the ui shown after completiting a reel
@@ -322,17 +343,7 @@ namespace FishingGame.Reeling
         {
             fishingFinishedText.gameObject.SetActive(false);
             caughtFishImage.gameObject.SetActive(false);
-        }           
-
-        /// <summary>
-        /// Enables or disables controls on the character controller
-        /// Public function
-        /// </summary>
-        /// <param name="isDisabled">True means the controls should be disabled, otherwise false</param>
-        public void DisableControls(bool isDisabled)
-        {
-            characterController.ToggleMovement(!isDisabled);
-        }
+        }       
 
         /// <summary>
         /// Starts a timer that will then run the HideReelFinishedUI() function

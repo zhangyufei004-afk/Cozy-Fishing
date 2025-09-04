@@ -23,7 +23,7 @@ namespace FishingGame.GameTime
     public class IngameTime : MonoBehaviour
     {
         [Tooltip("Tracks the current time of day as a float")]
-        public float currentTimeOfDay { get; private set; }
+        public float CurrentTimeOfDay { get; private set; }
 
         [SerializeField]
         [Tooltip("The time period that the game ewill start in")]
@@ -63,7 +63,7 @@ namespace FishingGame.GameTime
         {
             if (!_timeActive) { return;  }
 
-            currentTimeOfDay += Time.deltaTime * gameSpeed;
+            CurrentTimeOfDay += Time.deltaTime * gameSpeed;
             _elapsedTimeInCurrentState += Time.deltaTime * gameSpeed;
 
             if (CheckIfTimePeriodChange()) { SetNewDayState(); }
@@ -103,7 +103,7 @@ namespace FishingGame.GameTime
         /// </summary>
         private void ProcessEndOfDay()
         {
-            currentTimeOfDay = 0f;
+            CurrentTimeOfDay = 0f;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace FishingGame.GameTime
         /// <returns>True if the day has passed, false otherwise</returns>
         private bool CheckIfDayPassed()
         {
-            if (currentTimeOfDay >= _secondsPerDay) { return true; }
+            if (CurrentTimeOfDay >= _secondsPerDay) { return true; }
             else { return false; }
         }
 

@@ -25,11 +25,8 @@ namespace FishingGame.Reeling
         private IngameTime timeScript;
 
         [SerializeField]
-        private PossibleFish levelsPossibleFish;
-
-        [SerializeField]
         [Tooltip("What type of location is this fishing area")]
-        private EFishingLocation _fisingLocation;
+        private EFishingLocation fishingLocation;
 
         [SerializeField]
         [Tooltip("The lowest difficulty a fish from this area can have")]
@@ -50,23 +47,26 @@ namespace FishingGame.Reeling
         // The type of fish that is spawned when the location is infested
         private FishScriptableObject _infestationFish;
 
+        private GameManager _gameManager;
+
         #endregion
 
         private void OnEnable()
         {
-            GameManager gameManager = GameManager.Instance;
+            _gameManager = GameManager.Instance;
         }
 
         /// <summary>
         /// Checks if fish pool is empty and then determines the fish type caught
         /// Randomly selects a fish type based on the amount of types in the pool
         /// </summary>
+        /// <returns>Returns the data of the fish being caught</returns>
         public Fish DetermineFishCaught()
         {
             ETimeOfDay timeCaught = timeScript.GetTimePeriod();
             string locationCaught = gameObject.name;
 
-            List<FishScriptableObject> potentialFish = levelsPossibleFish.GetPossibleFishList();
+            List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
             List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
 
             if (isInfested)
@@ -77,7 +77,7 @@ namespace FishingGame.Reeling
 
             foreach (FishScriptableObject fish in potentialFish)
             {
-                if (fish.LocationsFound.Contains(_fisingLocation))
+                if (fish.LocationsFound.Contains(fishingLocation))
                 {
                     if (fish.FishCatchDifficulty <= highestFishDifficulty && fish.FishCatchDifficulty >= lowestFishDifficulty)
                     {
@@ -110,13 +110,14 @@ namespace FishingGame.Reeling
         public void FishCaught()
         {
             amountOfFishHeld -= 1;
-            if (CheckIfEmpty()) { EmptyPool(); }
+            if (IsEmpty()) { EmptyPool(); }
         }
 
         /// <summary>
-        /// Returns true if the fishing pool is empty
+        /// Checks if fishing pool is empty or not and then returns true if so otherwise false
         /// </summary>
-        public bool CheckIfEmpty()
+        /// <returns>Returns true if fishing pool is empty, otherwise false</returns>
+        public bool IsEmpty()
         {
             if (amountOfFishHeld == 0) { return true; }
             else { return false; }
@@ -131,12 +132,12 @@ namespace FishingGame.Reeling
         {
             isInfested = true;
 
-            List<FishScriptableObject> potentialFish = levelsPossibleFish.GetPossibleFishList();
+            List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
             List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
 
             foreach (FishScriptableObject fish in potentialFish)
             {
-                if (fish.LocationsFound.Contains(_fisingLocation) && fish.IsInvasive)
+                if (fish.LocationsFound.Contains(fishingLocation) && fish.IsInvasive)
                 {
                     fishAvailable.Add(fish);
                 }
