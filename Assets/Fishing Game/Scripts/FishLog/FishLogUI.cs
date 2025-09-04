@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using FishingGame.FishSystem;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FishingGame.FishLog
 {
@@ -15,6 +17,26 @@ namespace FishingGame.FishLog
         [SerializeField] private FishLogUIEntry[] allEntries;
 
         private Dictionary<FishScriptableObject, FishLogUIEntry> _entryDict;
+
+        #region Fish info screen variables
+        [SerializeField]
+        [Tooltip("The parent of the individual fish ui elements")]
+        private GameObject individualFishParent;
+
+        [SerializeField]
+        [Tooltip("The image that shows what fish is being looked at")]
+        private Image fishImage;
+
+        [SerializeField]
+        [Tooltip("The textbox that says the species name")]
+        private TextMeshProUGUI speciesNameText;
+
+        [SerializeField]
+        [Tooltip("The textbox that shows the species bio")]
+        private TextMeshProUGUI speciesBioText;
+
+
+        #endregion
 
         private void Awake()
         {
@@ -34,6 +56,19 @@ namespace FishingGame.FishLog
         private void OnEnable()
         {
             RefreshAllEntries(); // Fix: refresh when UI becomes visible
+        }
+
+        /// <summary>
+        /// Enables and disables required UI elements to change the display to show whatever fish was clicked
+        /// </summary>
+        public void FishEntryClicked(FishScriptableObject fishData)
+        {
+            gameObject.SetActive(false);
+            individualFishParent.SetActive(true);
+
+            fishImage.sprite = fishData.Texture;
+            speciesNameText.text = fishData.SpeciesName;
+            speciesBioText.text = fishData.FishBio;
         }
 
         private void OnFishCaught(FishScriptableObject fish)
