@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using FishingGame.FishSystem;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +37,25 @@ namespace FishingGame.FishLog
         [Tooltip("The textbox that shows the species bio")]
         private TextMeshProUGUI speciesBioText;
 
+        [SerializeField]
+        [Tooltip("The list of location text")]
+        private List<TextMeshProUGUI> locations;
+
+        [SerializeField]
+        [Tooltip("The list of time texts")]
+        private List<TextMeshProUGUI> timeTexts;
+
+        [SerializeField]
+        [Tooltip("The text showing how many times this has been caught")]
+        private TextMeshProUGUI amountCaughtText;
+
+        [SerializeField]
+        [Tooltip("The text showing the biggest every caught size in KG")]
+        private TextMeshProUGUI biggestCatchText;
+
+        [SerializeField]
+        [Tooltip("The text showing if this is invasive or not")]
+        private TextMeshProUGUI isInvasiveText;
 
         #endregion
 
@@ -63,12 +84,35 @@ namespace FishingGame.FishLog
         /// </summary>
         public void FishEntryClicked(FishScriptableObject fishData)
         {
+            if (!CheckIfFishHasBeenCaught(fishData)) { return; }
+
             gameObject.SetActive(false);
             individualFishParent.SetActive(true);
 
             fishImage.sprite = fishData.Texture;
             speciesNameText.text = fishData.SpeciesName;
             speciesBioText.text = fishData.FishBio;
+            
+            if (fishData.IsInvasive){ isInvasiveText.text = "Invasive Fish"; }
+            else { isInvasiveText.text = "Noninvasive Fish"; }
+
+            SetupLocationTexts(fishData);
+
+
+            
+
+
+        }
+
+        public void GoBackToLog()
+        {
+            gameObject.SetActive(true);
+            individualFishParent.SetActive(false);
+
+            foreach (TextMeshProUGUI locationText in locations)
+            {
+                locationText.gameObject.SetActive(false);
+            }
         }
 
         private void OnFishCaught(FishScriptableObject fish)
@@ -78,6 +122,12 @@ namespace FishingGame.FishLog
                 entry.MarkAsCaught(true);
             }
             fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
+        }
+
+        private bool CheckIfFishHasBeenCaught(FishScriptableObject fish)
+        {
+            if (fishLogSystem.HasCaughtFish(fish)) { return true; }
+            else { return false; }
         }
 
         /// <summary>
@@ -91,6 +141,24 @@ namespace FishingGame.FishLog
                 FishLogUIEntry entry = pair.Value;
                 bool isCaught = fishLogSystem.HasCaughtFish(fishData);
                 entry.MarkAsCaught(isCaught);
+            }
+        }
+
+        private void SetupLocationTexts(FishScriptableObject fishData)
+        {
+            List<EFishingLocation> fishLocations = fishData.LocationsFound;
+            List<string> fishLocationsString = new List<string>();
+
+            for (int i = 0; i < fishLocations.Count; i++)
+            {
+                var location = fishLocations[i];
+                fishLocationsString.Add(location.ToString());
+            }
+
+            for (int i = 0; i < fishLocationsString.Count; i++)
+            {
+                locations[i].gameObject.SetActive(true);
+                locations[i].text = fishLocationsString[i];
             }
         }
     }
