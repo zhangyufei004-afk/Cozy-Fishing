@@ -35,7 +35,6 @@ namespace FishingGame.FishLog
         public void OnClick()
         {
             logUIMaster.FishEntryClicked(GetFishData());
-            Debug.Log("TEST");
         }
     }
 }
