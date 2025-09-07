@@ -22,5 +22,5 @@ MonoBehaviour:
     are often used to create a dye, leading to mass harvesting in the past, leaving
     its population scarce in most areas.
   LocationsFound: 0300000002000000
-  TimeOfDayFound: Morning
+  TimesFound: 010000000200000003000000
   IsInvasive: 0

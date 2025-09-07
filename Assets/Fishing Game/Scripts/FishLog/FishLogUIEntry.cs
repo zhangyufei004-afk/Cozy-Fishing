@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ namespace FishingGame.FishLog
 
         [Tooltip("The parent of this object")]
         [SerializeField] private FishLogUI logUIMaster;
+
+        
 
         /// <summary>
         /// Fish data corresponding to the entry

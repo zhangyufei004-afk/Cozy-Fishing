@@ -21,6 +21,9 @@ namespace FishingGame.GameManagement
         [Tooltip("A list of all potential fish in this level")]
         private List<FishScriptableObject> potentialFishTypes;
 
+        private Dictionary<FishScriptableObject, int> _fishTimesCaught;
+        private Dictionary<FishScriptableObject, float> _fishBiggestCatch;
+
         private void OnEnable()
         {
             _gameEvents = new GameEvents();
@@ -29,6 +32,18 @@ namespace FishingGame.GameManagement
                 Destroy(this.gameObject);
             }
             _instance = this;
+
+            _instance.GameEvents.OnFishCaught += AddToTimesCaught;
+            _instance.GameEvents.OnFishCaught += CheckBiggestCatch;
+
+            _fishTimesCaught = new Dictionary<FishScriptableObject, int>();
+            _fishBiggestCatch = new Dictionary<FishScriptableObject, float>();
+
+            foreach (FishScriptableObject fishData in potentialFishTypes)
+            {
+                _fishTimesCaught.Add(fishData, 0);
+                _fishBiggestCatch.Add(fishData, 0);
+            }
         }
 
         /// <summary>
@@ -39,5 +54,29 @@ namespace FishingGame.GameManagement
         {
             return potentialFishTypes;
         }
+
+        public int GetFishTimesCaught(FishScriptableObject fishToCheck)
+        {
+            return _fishTimesCaught[fishToCheck];
+        }
+
+        public float GetBiggestCaught(FishScriptableObject fishToCheck)
+        {
+            return _fishBiggestCatch[fishToCheck];
+        }
+
+        private void AddToTimesCaught(Fish fishToAddTo)
+        {
+            _fishTimesCaught[fishToAddTo.GetFishBase()] += 1;
+        }
+
+        private void CheckBiggestCatch(Fish newFish)
+        {
+           if (newFish.GetWeight() > _fishBiggestCatch[newFish.GetFishBase()])
+            {
+                _fishBiggestCatch[newFish.GetFishBase()] = newFish.GetWeight();
+            }
+        }
+
     }
 }

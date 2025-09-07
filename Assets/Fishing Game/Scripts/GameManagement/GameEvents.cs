@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
 
@@ -26,7 +27,7 @@ namespace FishingGame.GameManagement
     {
         #region Inventory Events
 
-        public event Action OnFishCaught;
+        public event Action<Fish> OnFishCaught;
         public event Action OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
 
@@ -60,9 +61,9 @@ namespace FishingGame.GameManagement
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
-        public void FishCaught()
+        public void FishCaught(Fish fishCaught)
         {
-            OnFishCaught?.Invoke();
+            OnFishCaught?.Invoke(fishCaught);
         }
 
         /// <summary>
