@@ -6759,6 +6759,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1172452966}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: defaultSpeed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: sliderCanvas
       value: 
       objectReference: {fileID: 1867482762}

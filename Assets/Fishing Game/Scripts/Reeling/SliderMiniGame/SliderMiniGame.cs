@@ -94,6 +94,10 @@ namespace FishingGame.Reeling
         private int fishMoveMax;
 
         [SerializeField]
+        [Tooltip("The default speed of fish")]
+        private int defaultSpeed;
+
+        [SerializeField]
         [Tooltip("The maximum y axis value the fish icon can have")]
         private float fishMaxYCord;
 
@@ -342,18 +346,18 @@ namespace FishingGame.Reeling
 
             if (_isGoingLeft)
             {
-                int randomValue = UnityEngine.Random.Range(fishMoveMin, 0);
+                int speedValue = defaultSpeed * _fishData.GetFishCatchDifficulty();
 
                 Vector3 currentPosition = fishImage.transform.localPosition;
-                Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, randomValue * Time.deltaTime);
+                Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);
                 fishImage.transform.localPosition = newPosition;
             }
             else
             {
-                int randomValue = UnityEngine.Random.Range(0, fishMoveMax);
+                int speedValue = defaultSpeed * _fishData.GetFishCatchDifficulty();
 
                 Vector3 currentPosition = fishImage.transform.localPosition;
-                Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, randomValue * Time.deltaTime);
+                Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);
                 fishImage.transform.localPosition = newPosition;
             }
         }
