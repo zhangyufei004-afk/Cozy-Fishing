@@ -55,21 +55,41 @@ namespace FishingGame.GameManagement
             return potentialFishTypes;
         }
 
+        /// <summary>
+        /// Returns the amount of times a fish type has been caught
+        /// </summary>
+        /// <param name="fishToCheck">The fish type being checked</param>
+        /// <returns>Amount of times this fish type has been caught as an int value</returns>
         public int GetFishTimesCaught(FishScriptableObject fishToCheck)
         {
             return _fishTimesCaught[fishToCheck];
         }
 
+        /// <summary>
+        /// Returns the biggest size ever caught of the inputed fishtype
+        /// </summary>
+        /// <param name="fishToCheck">Fish type to check</param>
+        /// <returns>The biggest ever caught size as a float</returns>
         public float GetBiggestCaught(FishScriptableObject fishToCheck)
         {
             return _fishBiggestCatch[fishToCheck];
         }
 
+        /// <summary>
+        /// Updates a fishtype to show it has been caught an additional time
+        /// This is tied to the onfishcaught event
+        /// </summary>
+        /// <param name="fishToAddTo">Fish being caught</param>
         private void AddToTimesCaught(Fish fishToAddTo)
         {
             _fishTimesCaught[fishToAddTo.GetFishBase()] += 1;
         }
 
+        /// <summary>
+        /// Checks if the caught fish is bigger than the current biggest caught fish of this type
+        /// Updates biggest caught fish if so
+        /// </summary>
+        /// <param name="newFish">The fish being caught</param>
         private void CheckBiggestCatch(Fish newFish)
         {
            if (newFish.GetWeight() > _fishBiggestCatch[newFish.GetFishBase()])

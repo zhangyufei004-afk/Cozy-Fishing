@@ -111,9 +111,11 @@ namespace FishingGame.FishLog
             biggestCatchText.text = "Biggest Catch: " + fishBiggestCatch + " kg";
         }
 
-        public void GoBackToLog()
+        /// <summary>
+        /// Sets the fish Entry UI elements to be invisible 
+        /// </summary>
+        public void HideFishEntry()
         {
-            gameObject.SetActive(true);
             individualFishParent.SetActive(false);
 
             foreach (TextMeshProUGUI locationText in locations)
@@ -127,6 +129,18 @@ namespace FishingGame.FishLog
             }
         }
 
+        /// <summary>
+        /// Sets the fishlogui to be active
+        /// </summary>
+        public void EnableFishLogUI()
+        {
+            gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Marks a fish as being caught and then calls the event
+        /// </summary>
+        /// <param name="fish">The fish caught</param>
         private void OnFishCaught(FishScriptableObject fish)
         {
             if (_entryDict.TryGetValue(fish, out FishLogUIEntry entry))
@@ -136,6 +150,11 @@ namespace FishingGame.FishLog
             fishLogSystem.FishCaughtForFirstTime += OnFishCaught;
         }
 
+        /// <summary>
+        /// Returns true if a specific fish type has been caught before
+        /// </summary>
+        /// <param name="fish">The fish type to check</param>
+        /// <returns>True if fish type has been caught before otherwise false</returns>
         private bool CheckIfFishHasBeenCaught(FishScriptableObject fish)
         {
             if (fishLogSystem.HasCaughtFish(fish)) { return true; }
@@ -156,6 +175,10 @@ namespace FishingGame.FishLog
             }
         }
 
+        /// <summary>
+        /// Sets up the location text ui elements.
+        /// </summary>
+        /// <param name="fishData">The fish data that is being used</param>
         private void SetupLocationTexts(FishScriptableObject fishData)
         {
             List<EFishingLocation> fishLocations = fishData.LocationsFound;
@@ -174,6 +197,10 @@ namespace FishingGame.FishLog
             }
         }
 
+        /// <summary>
+        /// Sets up the time UI text elements
+        /// </summary>
+        /// <param name="fishData">The fish data being used for the UI</param>
         private void SetupTimeTexts(FishScriptableObject fishData)
         {
             List<ETimeOfDay> timesFound = fishData.TimesFound;
