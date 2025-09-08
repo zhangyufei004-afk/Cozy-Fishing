@@ -86,14 +86,6 @@ namespace FishingGame.Reeling
         private UnityEngine.UI.Image fishImage;
 
         [SerializeField]
-        [Tooltip("Minimum amount of distance fish can move")]
-        private int fishMoveMin;
-
-        [SerializeField]
-        [Tooltip("Maximum amount of distance fish can move")]
-        private int fishMoveMax;
-
-        [SerializeField]
         [Tooltip("The default speed of fish")]
         private int defaultSpeed;
 
@@ -116,6 +108,14 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The UI text that shows how much time is left")]
         private TextMeshProUGUI timerText;
+
+        [SerializeField]
+        [Tooltip("The left arrow UI indicator")]
+        private UnityEngine.UI.Image leftArrow;
+
+        [SerializeField]
+        [Tooltip("The right arrow UI indicator")]
+        private UnityEngine.UI.Image rightArrow;
 
         private InputAction _directionAction;
 
@@ -149,14 +149,26 @@ namespace FishingGame.Reeling
 
             // Move player if keys are held
 
+            // Right
             if (_directionAction.ReadValue<Vector2>().x > 0)
             {
+                leftArrow.color = Color.white;
+                rightArrow.color = Color.green;
                 SetPlayerVelocity(boxSpeedScalar, false);
             }
 
+            // Left
             if (_directionAction.ReadValue<Vector2>().x < 0)
             {
+                leftArrow.color = Color.green;
+                rightArrow.color = Color.white;
                 SetPlayerVelocity(-boxSpeedScalar, true);
+            }
+
+            if (_directionAction.ReadValue<Vector2>().x == 0)
+            {
+                leftArrow.color = Color.white;
+                rightArrow.color = Color.white;
             }
 
             MoveCatchBox();
