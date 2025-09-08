@@ -213,7 +213,6 @@ namespace FishingGame.Reeling
             // Scaling variables based on difficulty
             _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 0, 100);
             _catchBoxScale = Mathf.Clamp(1.5f - 0.1f * fishScriptable.GetFishCatchDifficulty(), 0.5f, 1.5f);
-            SetCatchBoxYScale(_catchBoxScale);
 
             // TODO: Set this to scale based on fish difficulty?
             _maxTime = 30f;
@@ -390,17 +389,6 @@ namespace FishingGame.Reeling
             }
         }
 
-        /// <summary>
-        /// Sets the catchboxes y scale to the inputed float variable
-        /// Does not change x or z scale.
-        /// </summary>
-        /// <param name="newYScale">The value for new y scale</param>
-        private void SetCatchBoxYScale(float newYScale)
-        {
-            Vector3 currentScale = catchBox.transform.localScale;
-            Vector3 newScale = new Vector3(currentScale.x, newYScale, currentScale.z);
-            catchBox.transform.localScale = newScale;
-        }
 
         /// <summary>
         /// Returns true if _catchProgress is greater or equal to the max progress value
@@ -440,5 +428,23 @@ namespace FishingGame.Reeling
         {
             timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_maxTime - _timerValue));
         }
+
+
+
+        #region TOBEPOTENTIALLY REMOVED
+
+        /// <summary>
+        /// Sets the catchboxes y scale to the inputed float variable
+        /// Does not change x or z scale.
+        /// </summary>
+        /// <param name="newYScale">The value for new y scale</param>
+        private void SetCatchBoxYScale(float newYScale)
+        {
+            Vector3 currentScale = catchBox.transform.localScale;
+            Vector3 newScale = new Vector3(currentScale.x, newYScale, currentScale.z);
+            catchBox.transform.localScale = newScale;
+        }
+
+        #endregion
     }
 }
