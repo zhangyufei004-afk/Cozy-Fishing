@@ -14,9 +14,9 @@ namespace FishingGame.FishSystem
     public class Fish : IStorable
     {
         private FishScriptableObject _fishBase;
-        private float _length;
+        private string _speciesName;
         private float _weight;
-        private TimeOfDay _caughtTime;
+        private ETimeOfDay _caughtTime;
         private string _caughtLocation;
         private int _fishCatchDifficulty;
         private Sprite _fishTexture;
@@ -27,25 +27,17 @@ namespace FishingGame.FishSystem
         /// <param name="newFishBase">Reference to the base fish ScriptableObject</param>
         /// <param name="time">Time of day when caught</param>
         /// <param name="location">Location where the fish was caught</param>
-        public Fish(FishScriptableObject newFishBase, TimeOfDay time, string location)
+        public Fish(FishScriptableObject newFishBase, ETimeOfDay time, string location)
         {
             _fishBase = newFishBase;
-            _length = Random.Range(_fishBase.MinMaxLength.x, _fishBase.MinMaxLength.y);
-            _weight = CalculateWeight(_length); // Simple formula based on length
+            _weight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
+            // Round weight to 2 decimal places
+            _weight = Mathf.Round(_weight * 100) / 100;
             _caughtTime = time;
             _caughtLocation = location;
             _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
             _fishTexture = _fishBase.Texture;
-        }
-
-        /// <summary>
-        /// Calculates fish weight based on its length.
-        /// </summary>
-        /// <param name="length">Length of the fish</param>
-        /// <returns>Weight in kilograms</returns>
-        private float CalculateWeight(float length)
-        {
-            return length * 0.2f + Random.Range(-0.1f, 0.1f); // Example formula
+            _speciesName = _fishBase.SpeciesName;
         }
 
         /// <summary>
@@ -57,17 +49,9 @@ namespace FishingGame.FishSystem
         }
 
         /// <summary>
-        /// Gets the length of the fish.
-        /// </summary>
-        public float GetLength()
-        {
-            return _length;
-        }
-
-        /// <summary>
         /// Gets the time of day the fish was caught.
         /// </summary>
-        public TimeOfDay GetCaughtTime()
+        public ETimeOfDay GetCaughtTime()
         {
             return _caughtTime;
         }
@@ -113,6 +97,14 @@ namespace FishingGame.FishSystem
         public Sprite GetTexture()
         {
             return _fishTexture;
+        }
+
+        /// <summary>
+        /// Gets the species name
+        /// </summary>
+        public string GetSpeciesName()
+        {
+            return _speciesName;
         }
     }
 }

@@ -1,4 +1,6 @@
+using FishingGame.FishSystem;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace FishingGame.GameManagement
@@ -15,6 +17,10 @@ namespace FishingGame.GameManagement
         private static GameManager _instance;
         private GameEvents _gameEvents;
 
+        [SerializeField]
+        [Tooltip("A list of all potential fish in this level")]
+        private List<FishScriptableObject> potentialFishTypes;
+
         private void OnEnable()
         {
             _gameEvents = new GameEvents();
@@ -23,6 +29,15 @@ namespace FishingGame.GameManagement
                 Destroy(this.gameObject);
             }
             _instance = this;
+        }
+
+        /// <summary>
+        /// Returns the list of fish available in this level
+        /// </summary>
+        /// <returns>A list of fish available in this level</returns>
+        public List<FishScriptableObject> GetPossibleFishList()
+        {
+            return potentialFishTypes;
         }
     }
 }

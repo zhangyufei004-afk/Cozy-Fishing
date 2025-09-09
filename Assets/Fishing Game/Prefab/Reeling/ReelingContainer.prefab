@@ -264,7 +264,7 @@ MonoBehaviour:
   - {fileID: 313023259972732001}
   - {fileID: 4518172318511371622}
   characterController: {fileID: 0}
-  winText: {fileID: 0}
-  loseText: {fileID: 0}
+  caughtFishImage: {fileID: 0}
+  fishingFinishedText: {fileID: 0}
   timerObject: {fileID: 0}
   _inventoryUI: {fileID: 0}

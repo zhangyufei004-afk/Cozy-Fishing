@@ -1,4 +1,6 @@
 using FishingGame.SaveGame;
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace FishingGame.FishSystem
@@ -16,13 +18,14 @@ namespace FishingGame.FishSystem
     {
         public Sprite Texture;
         public string Id;
-        public Vector2 MinMaxLength;
+        public Vector2 MinMaxWeight;
         public string SpeciesName;
 
         public int FishCatchDifficulty;
         public string FishBio;
-        public string LocationsFound;
+        public List<EFishingLocation> LocationsFound;
         public string TimeOfDayFound;
+        public bool IsInvasive;
 
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {
