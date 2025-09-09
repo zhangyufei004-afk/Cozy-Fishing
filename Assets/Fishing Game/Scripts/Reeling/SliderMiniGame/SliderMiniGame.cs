@@ -33,14 +33,12 @@ namespace FishingGame.Reeling
         private GameObject sliderCanvas;
 
         private bool _isMinigameActive = false;
-        private float _timerValue = 0f;
-        private float _maxTime = 0f;
         private float _catchProgress = 50f;
         private int _catchMax = 100;
         private float _timeSinceLastGoal = 0f;
         private float _maxTimeBetweenGoals = 0f;
         private bool _isGoingLeft;
-        private float _catchBoxScale;
+        [SerializeField]
         private float _catchBoxVelocity = 0f;
 
         [SerializeField]
@@ -82,6 +80,12 @@ namespace FishingGame.Reeling
         private float fightBackSpeed;
 
         [SerializeField]
+        private float catchBoxMaxReverseSpeed;
+
+        [SerializeField]
+        private float catchBoxForwardMaxSpeed;
+
+        [SerializeField]
         [Tooltip("The fish image that the player is trying to catch")]
         private UnityEngine.UI.Image fishImage;
 
@@ -106,14 +110,6 @@ namespace FishingGame.Reeling
         private float catchBoxMinXCord;
 
         [SerializeField]
-        [Tooltip("The UI text that shows how much time is left")]
-        private TextMeshProUGUI timerText;
-
-        [SerializeField]
-        [Tooltip("The left arrow UI indicator")]
-        private UnityEngine.UI.Image leftArrow;
-
-        [SerializeField]
         [Tooltip("The right arrow UI indicator")]
         private UnityEngine.UI.Image rightArrow;
 
@@ -136,39 +132,24 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            _timerValue += Time.deltaTime;
             _timeSinceLastGoal += Time.deltaTime;
 
-            // Check if timer complete
-            if (_timerValue >= _maxTime)
+            if (_catchProgress <= 0)
             {
                 LoseMiniGame();
             }
 
-            MovementFightBack();
-
-            // Move player if keys are held
-
-            // Right
+            // Right movement
             if (_directionAction.ReadValue<Vector2>().x > 0)
             {
-                leftArrow.color = Color.white;
                 rightArrow.color = Color.green;
                 SetPlayerVelocity(boxSpeedScalar, false);
             }
 
-            // Left
-            if (_directionAction.ReadValue<Vector2>().x < 0)
+            if (_directionAction.ReadValue<Vector2>().x == 0 || _directionAction.ReadValue<Vector2>().x < 0)
             {
-                leftArrow.color = Color.green;
                 rightArrow.color = Color.white;
-                SetPlayerVelocity(-boxSpeedScalar, true);
-            }
-
-            if (_directionAction.ReadValue<Vector2>().x == 0)
-            {
-                leftArrow.color = Color.white;
-                rightArrow.color = Color.white;
+                MovementFightBack();
             }
 
             MoveCatchBox();
@@ -176,7 +157,6 @@ namespace FishingGame.Reeling
             DetermineIfNeedGoal();
             UpdateFishLocation();
             SetFishDirection();
-            UpdateTimer();
 
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
             {
@@ -203,7 +183,6 @@ namespace FishingGame.Reeling
 
             fishImage.sprite = _fishData.GetTexture();
             sliderCanvas.SetActive(true);
-            _timerValue = 0f;
             _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
             fishImage.transform.localPosition = startLocation;
@@ -211,11 +190,7 @@ namespace FishingGame.Reeling
             FishSetGoal(newFishGoal);
 
             // Scaling variables based on difficulty
-            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 0, 100);
-            _catchBoxScale = Mathf.Clamp(1.5f - 0.1f * fishScriptable.GetFishCatchDifficulty(), 0.5f, 1.5f);
-
-            // TODO: Set this to scale based on fish difficulty?
-            _maxTime = 30f;
+            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 20, 100);
         }
 
         /// <summary>
@@ -233,31 +208,13 @@ namespace FishingGame.Reeling
         /// </summary>
         private void MovementFightBack()
         {
-            if (IsLeftSide())
+            _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
+            if (_catchBoxVelocity > 0)
             {
-               //Mathf.Max(_fightBackVelocity += fightBackSpeed * Time.deltaTime, catchBoxFightBackSpeedMax);
+                _catchBoxVelocity /= 2;
             }
-            else
-            {
-                //Mathf.Min(_fightBackVelocity -= fightBackSpeed * Time.deltaTime, -catchBoxFightBackSpeedMax);
-            }
-        }
 
-        /// <summary>
-        /// Compares localPosition to the middle point of the UI bar.
-        /// Returns true if closer to left, false if closer to right
-        /// </summary>
-        /// <returns> True if closer to left, false if closer to right</returns>
-        private bool IsLeftSide()
-        {
-            if (middleBarPoint > catchBox.transform.localPosition.y)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
         }
 
         /// <summary>
@@ -267,15 +224,6 @@ namespace FishingGame.Reeling
         /// <param name="moveValue">The value for how far to move</param>
         private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
         {
-            if (isGoingLeft  && _catchBoxVelocity < 0)
-            {
-                _catchBoxVelocity = 0;
-            }
-            else if (!isGoingLeft && _catchBoxVelocity > 0)
-            {
-                _catchBoxVelocity = 0;
-            }
-
             _catchBoxVelocity += accelerationValue * Time.deltaTime;
         }
 
@@ -419,14 +367,6 @@ namespace FishingGame.Reeling
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
-        }
-
-        /// <summary>
-        /// Updates the ui timer
-        /// </summary>
-        public void UpdateTimer()
-        {
-            timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_maxTime - _timerValue));
         }
 
 

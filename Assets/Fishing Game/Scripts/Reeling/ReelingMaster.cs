@@ -71,11 +71,6 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The timer UI element contained in ReelingUI.")]
         private GameObject timerObject;
-
-        // TODO: Remove this once not needed with new inventory setup
-        [SerializeField]
-        [Tooltip("A reference to the inventory UI.")] 
-        private InventoryUI inventoryUI;
         #endregion
 
         #region Public Methods
