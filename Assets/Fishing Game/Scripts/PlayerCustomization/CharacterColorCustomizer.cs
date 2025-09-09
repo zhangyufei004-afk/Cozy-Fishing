@@ -9,6 +9,18 @@ namespace FishingGame.PlayerCustomization
     /// </summary>
     public class CharacterColorCustomizer : MonoBehaviour
     {
+        private Color GetHatSliderColor() => new Color(
+            hatR ? hatR.value : 0f,
+            hatG ? hatG.value : 0f,
+            hatB ? hatB.value : 0f,
+            1f);
+
+        private Color GetHairSliderColor() => new Color(
+            hairR ? hairR.value : 0f,
+            hairG ? hairG.value : 0f,
+            hairB ? hairB.value : 0f,
+            1f);
+        
         [Header("Materials")]
         [SerializeField] private Material hatMaterial;
         [SerializeField] private Material hairMaterial;
@@ -104,6 +116,43 @@ namespace FishingGame.PlayerCustomization
             foreach (var btn in hatPresetButtons) if (btn) btn.onClick.RemoveAllListeners();
             foreach (var btn in hairPresetButtons) if (btn) btn.onClick.RemoveAllListeners();
         }
+        
+        /// <summary>
+        /// Sets the hat sliders to the specified colour
+        /// </summary>
+        /// <param name="colour">The colour to set the sliders to.</param>
+        public void SetHatSliders(Color colour)
+        {
+            if (hatR) hatR.value = colour.r;
+            if (hatG) hatG.value = colour.g;
+            if (hatB) hatB.value = colour.b;
+        }
+
+        /// <summary>
+        /// Sets the Hair Sliders to the colour <c>colour</c>
+        /// </summary>
+        /// <param name="colour">The colour to set the hair sliders to.</param>
+        public void SetHairSliders(Color colour)
+        {
+            if (hairR) hairR.value = colour.r;
+            if (hairG) hairG.value = colour.g;
+            if (hairB) hairB.value = colour.b;
+        }
+
+        /// <summary>
+        /// Resets all the colours (Hat and Hair)
+        /// </summary>
+        public void ResetAllColors()
+        {
+            ApplyHatColor(defaultHatColor);
+            ApplyHairColor(defaultHairColor);
+
+            SetHatSliders(defaultHatColor);
+            SetHairSliders(defaultHairColor);
+
+            UpdateHatPreview();
+            UpdateHairPreview();
+        }
 
         // === Apply from sliders ===
         private void ApplyHatFromSliders() => ApplyHatColor(GetHatSliderColor());
@@ -129,44 +178,6 @@ namespace FishingGame.PlayerCustomization
         // === Previews ===
         private void UpdateHatPreview() { if (_hatBtnImage) _hatBtnImage.color = GetHatSliderColor(); }
         private void UpdateHairPreview() { if (_hairBtnImage) _hairBtnImage.color = GetHairSliderColor(); }
-
-        private Color GetHatSliderColor() => new Color(
-            hatR ? hatR.value : 0f,
-            hatG ? hatG.value : 0f,
-            hatB ? hatB.value : 0f,
-            1f);
-
-        private Color GetHairSliderColor() => new Color(
-            hairR ? hairR.value : 0f,
-            hairG ? hairG.value : 0f,
-            hairB ? hairB.value : 0f,
-            1f);
-
-        public void SetHatSliders(Color c)
-        {
-            if (hatR) hatR.value = c.r;
-            if (hatG) hatG.value = c.g;
-            if (hatB) hatB.value = c.b;
-        }
-
-        public void SetHairSliders(Color c)
-        {
-            if (hairR) hairR.value = c.r;
-            if (hairG) hairG.value = c.g;
-            if (hairB) hairB.value = c.b;
-        }
-
-        public void ResetAllColors()
-        {
-            ApplyHatColor(defaultHatColor);
-            ApplyHairColor(defaultHairColor);
-
-            SetHatSliders(defaultHatColor);
-            SetHairSliders(defaultHairColor);
-
-            UpdateHatPreview();
-            UpdateHairPreview();
-        }
 
         private void ApplyHatColor(Color c) => ApplyColor(hatMaterial, c);
         private void ApplyHairColor(Color c) => ApplyColor(hairMaterial, c);
