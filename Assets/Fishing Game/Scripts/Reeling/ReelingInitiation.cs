@@ -223,6 +223,7 @@ namespace FishingGame.Reeling
         {
             _targetLocation = rodBobber.transform.position;
             characterAnimator.SetTrigger("ThrowTrigger");
+            reelingMasterScript.DisableControls(true);
         }
 
         /// <summary>
@@ -232,7 +233,6 @@ namespace FishingGame.Reeling
         private void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-            reelingMasterScript.DisableControls(true);
 
             fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
         }
