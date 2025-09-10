@@ -6848,7 +6848,7 @@ PrefabInstance:
       objectReference: {fileID: 1867482762}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: boxSpeedScalar
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fightBackSpeed
