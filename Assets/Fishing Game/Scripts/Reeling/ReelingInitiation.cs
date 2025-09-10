@@ -273,7 +273,10 @@ namespace FishingGame.Reeling
             float maxDistance = fishingRange;
             LayerMask whatToHit = 1;
 
-            if (Physics.Raycast(locationToUse, Vector3.down, out hit, maxDistance, whatToHit))
+            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
+
+
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
             {
                 rodBobber.transform.position = hit.point;
             }
