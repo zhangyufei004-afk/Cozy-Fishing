@@ -96,15 +96,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Currently empty, this will contain logic for what to do upon becoming empty
-        /// TODO: Add event here so the emptying of a pool can be tied to a quest
-        /// </summary>
-        private void EmptyPool()
-        {
-
-        }
-
-        /// <summary>
         /// This is a public function that is called to reduce the amount of fish currently in the pool
         /// </summary>
         public void FishCaught()
@@ -122,7 +113,6 @@ namespace FishingGame.Reeling
             if (amountOfFishHeld == 0) { return true; }
             else { return false; }
         }
-
         /// <summary>
         /// Causes a pool to become infested
         /// This will find a random fish that is allowed in the level that is tagged with IsInvasive
@@ -164,6 +154,15 @@ namespace FishingGame.Reeling
             }
 
             overrideFishList.Add(fishToAdd);
+        }
+
+        /// <summary>
+        /// Currently empty, this will contain logic for what to do upon becoming empty
+        /// TODO: Add event here so the emptying of a pool can be tied to a quest
+        /// </summary>
+        private void EmptyPool()
+        {
+
         }
     }
 }

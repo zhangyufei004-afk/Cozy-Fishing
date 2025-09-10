@@ -26,5 +26,5 @@ MonoBehaviour:
     leech off of the nutrient-rich ballast water, in exchange for its bio-luminescent
     frills that attract prey for the host when in dark environments.
   LocationsFound: 03000000
-  TimeOfDayFound: Anytime
+  TimesFound: 0000000001000000
   IsInvasive: 0

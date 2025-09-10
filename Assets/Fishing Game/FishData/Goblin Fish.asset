@@ -20,5 +20,5 @@ MonoBehaviour:
   FishCatchDifficulty: 4
   FishBio: Wicked creature of the sea that feeds on other fish
   LocationsFound: 00000000030000000100000002000000
-  TimeOfDayFound: Anytime
+  TimesFound: 00000000010000000200000003000000
   IsInvasive: 1

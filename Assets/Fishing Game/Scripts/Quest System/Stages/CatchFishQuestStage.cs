@@ -1,4 +1,5 @@
 using System;
+using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,7 +30,7 @@ namespace FishingGame.QuestSystem.Stages
             GameManager.Instance.GameEvents.OnFishCaught -= FishCaught;
         }
 
-        private void FishCaught()
+        private void FishCaught(Fish fishCaught)
         {
             if (_numFishCaught < numFishToCatch)
             {
