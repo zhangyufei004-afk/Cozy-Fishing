@@ -61,6 +61,7 @@ namespace FishingGame.GameManagement
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
+        /// /// <param name="fishCaught">The data object of the fish being caught</param>
         public void FishCaught(Fish fishCaught)
         {
             OnFishCaught?.Invoke(fishCaught);
