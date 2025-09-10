@@ -26,6 +26,7 @@ namespace FishingGame.Reeling
         private Vector3 _aimStartPoint;
         private Vector3 _aimDirection;
 
+        private bool _allowControls = true;
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 10;
@@ -91,7 +92,7 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (fishingHook.HookIsOut == true)
+            if (fishingHook.HookIsOut == true || _allowControls == false)
             {
                 return;
             }
@@ -151,6 +152,22 @@ namespace FishingGame.Reeling
             else
             {
                 fishCamera.gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// Turns the left and right click controls for reeling off or on based on the paremeter inputed
+        /// </summary>
+        /// <param name="enable">Enables controls if set to true otherwise disables controls</param>
+        public void AreReelingControlsActive(bool enable)
+        {
+            if (enable)
+            {
+                _allowControls = true;
+            }
+            else
+            {
+                _allowControls = false;
             }
         }
 
@@ -224,6 +241,7 @@ namespace FishingGame.Reeling
             _targetLocation = rodBobber.transform.position;
             characterAnimator.SetTrigger("ThrowTrigger");
             reelingMasterScript.DisableControls(true);
+            AreReelingControlsActive(false);
         }
 
         /// <summary>

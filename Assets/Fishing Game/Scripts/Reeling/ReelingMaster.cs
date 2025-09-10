@@ -297,6 +297,7 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             DisableControls(false);
+            initiationScript.AreReelingControlsActive(true);
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
             fishingHook.PullBackHook();
