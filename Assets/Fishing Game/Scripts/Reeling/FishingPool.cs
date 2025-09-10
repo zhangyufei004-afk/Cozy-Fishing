@@ -69,6 +69,13 @@ namespace FishingGame.Reeling
             List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
             List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
 
+            if (overrideFishList.Count > 0)
+            {
+                int randomFish = Random.Range(0, overrideFishList.Count);
+                Fish overRideFish = new Fish(overrideFishList[randomFish], timeCaught, locationCaught);
+                return overRideFish;
+            }
+
             if (isInfested)
             {
                 Fish evilFishData = new Fish(_infestationFish, timeCaught, locationCaught);
@@ -93,15 +100,6 @@ namespace FishingGame.Reeling
 
             Fish fishData = new Fish(fishCaught, timeCaught, locationCaught);
             return fishData;
-        }
-
-        /// <summary>
-        /// Currently empty, this will contain logic for what to do upon becoming empty
-        /// TODO: Add event here so the emptying of a pool can be tied to a quest
-        /// </summary>
-        private void EmptyPool()
-        {
-
         }
 
         /// <summary>
@@ -164,6 +162,15 @@ namespace FishingGame.Reeling
             }
 
             overrideFishList.Add(fishToAdd);
+        }
+
+        /// <summary>
+        /// Currently empty, this will contain logic for what to do upon becoming empty
+        /// TODO: Add event here so the emptying of a pool can be tied to a quest
+        /// </summary>
+        private void EmptyPool()
+        {
+
         }
     }
 }
