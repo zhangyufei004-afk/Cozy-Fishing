@@ -190,7 +190,7 @@ namespace FishingGame.Reeling
             FishSetGoal(newFishGoal);
 
             // Scaling variables based on difficulty
-            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 20, 100);
+            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 40, 100);
         }
 
         /// <summary>

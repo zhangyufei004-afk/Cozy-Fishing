@@ -32,12 +32,16 @@ namespace FishingGame.Reeling
         private float _maxCharge = 10;
 
         private int _chanceToCatchFishThisTick = 1;
-        private int _maxChanceToCatchFish = 30;
+        private int _maxChanceToCatchFish = 10;
         private bool _isStageOne = false;
 
         [SerializeField]
         [Tooltip("The amount of seconds to wait inbetween a chance roll in stage 1 of fishing")]
         private int stageOneCycleSecondsToWait;
+
+        [SerializeField]
+        [Tooltip("How many seconds the fish button is clickable for")]
+        private int buttonClickWindowTime;
 
         [SerializeField]
         [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
@@ -80,12 +84,8 @@ namespace FishingGame.Reeling
         private float fishingRange;
 
         [SerializeField]
-        [Tooltip("The slider that is used for catching fish")]
-        private UnityEngine.UI.Slider wiggleBar;
-
-        [SerializeField]
-        [Tooltip("The button that is used for shaking")]
-        private UnityEngine.UI.Button shakeButton;
+        [Tooltip("The button that is clicked when the fish is ready to be caught")]
+        private UnityEngine.UI.Button catchFishButton;
 
         private InputAction _castAction;
         private InputAction _reelAction;
@@ -102,9 +102,7 @@ namespace FishingGame.Reeling
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Cast");
             _reelAction = playerActionMap.FindAction("Reel");
-
         }
-
 
         public void Update()
         {
@@ -142,8 +140,10 @@ namespace FishingGame.Reeling
         public void BeginStageOne()
         {
             _isStageOne = true;
+            catchFishButton.interactable = false;
+            catchFishButton.gameObject.SetActive(true);
+            catchFishButton.image.color = Color.grey;
 
-            DecideButtonOrSlider();
             StartCoroutine(StageOneCycle());
         }
 
@@ -200,17 +200,9 @@ namespace FishingGame.Reeling
 
         public void ButtonClicked()
         {
-            IncreaseChanceToCatch();
-            DecideButtonOrSlider();
-        }
-
-        public void SliderDragged()
-        {
-            if (wiggleBar.value == wiggleBar.maxValue)
-            {
-                IncreaseChanceToCatch();
-                DecideButtonOrSlider();
-            }
+            _isStageOne = false;
+            catchFishButton.gameObject.SetActive(false);
+            fishingHook.PullBackHook();
         }
 
         #endregion
@@ -344,16 +336,12 @@ namespace FishingGame.Reeling
             }
         }
 
-        private void CompleteStageOne()
+        private void SetCatchButtonClickable()
         {
-            _isStageOne = false;
             _chanceToCatchFishThisTick = 1;
-            shakeButton.gameObject.SetActive(false);
-            wiggleBar.gameObject.SetActive(false);
-
-            fishingHook.PullBackHook();
-
-            
+            catchFishButton.interactable = true;
+            catchFishButton.image.color = Color.green;
+            StartCoroutine(CatchWindow());
         }
 
         private void IncreaseChanceToCatch()
@@ -372,37 +360,13 @@ namespace FishingGame.Reeling
 
                 if (_chanceToCatchFishThisTick > rolledNumber)
                 {
-                    CompleteStageOne();
+                    SetCatchButtonClickable();
                 }
                 else
                 {
+                    IncreaseChanceToCatch();
                     StartCoroutine(StageOneCycle());
                 }
-            }
-        }
-
-        private void DecideButtonOrSlider()
-        {
-            shakeButton.gameObject.SetActive(false);
-            wiggleBar.gameObject.SetActive(false);
-
-            int rolledNumber = Random.Range(1, 3);
-            float randomX = Random.Range(0, Screen.width / 2);
-            float randomY = Random.Range(0, Screen.height / 2);
-
-            if (rolledNumber == 2)
-            {
-                shakeButton.transform.position = new Vector3(randomX, randomY, 0);
-                shakeButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                wiggleBar.value = 0;
-                float randomZRotation = Random.Range(0, 360);
-
-                wiggleBar.transform.position = new Vector3(randomX, randomY, 0);
-                wiggleBar.transform.Rotate(0, 0, randomZRotation);
-                wiggleBar.gameObject.SetActive(true);
             }
         }
 
@@ -410,6 +374,19 @@ namespace FishingGame.Reeling
         {
             yield return new WaitForSeconds(stageOneCycleSecondsToWait);
             AttemptToCatch();
+        }
+
+        private IEnumerator CatchWindow()
+        {
+            yield return new WaitForSeconds(buttonClickWindowTime);
+
+            if (_isStageOne)
+            {
+                catchFishButton.interactable = false;
+                catchFishButton.gameObject.SetActive(true);
+                catchFishButton.image.color = Color.grey;
+                BeginStageOne();
+            }
         }
     }
 }
