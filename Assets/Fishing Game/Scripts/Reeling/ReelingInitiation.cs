@@ -32,7 +32,7 @@ namespace FishingGame.Reeling
         private float _maxCharge = 10;
 
         private int _chanceToCatchFishThisTick = 1;
-        private int _maxChanceToCatchFish = 10;
+        private int _maxChanceToCatchFish = 30;
         private bool _isStageOne = false;
 
         [SerializeField]
@@ -387,8 +387,8 @@ namespace FishingGame.Reeling
             wiggleBar.gameObject.SetActive(false);
 
             int rolledNumber = Random.Range(1, 3);
-            float randomX = Random.Range(0, Screen.width);
-            float randomY = Random.Range(0, Screen.height);
+            float randomX = Random.Range(0, Screen.width / 2);
+            float randomY = Random.Range(0, Screen.height / 2);
 
             if (rolledNumber == 2)
             {
@@ -397,7 +397,11 @@ namespace FishingGame.Reeling
             }
             else
             {
+                wiggleBar.value = 0;
+                float randomZRotation = Random.Range(0, 360);
+
                 wiggleBar.transform.position = new Vector3(randomX, randomY, 0);
+                wiggleBar.transform.Rotate(0, 0, randomZRotation);
                 wiggleBar.gameObject.SetActive(true);
             }
         }
