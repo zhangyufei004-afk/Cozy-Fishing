@@ -9,18 +9,6 @@ namespace FishingGame.PlayerCustomization
     /// </summary>
     public class CharacterColorCustomizer : MonoBehaviour
     {
-        private Color GetHatSliderColor() => new Color(
-            hatR ? hatR.value : 0f,
-            hatG ? hatG.value : 0f,
-            hatB ? hatB.value : 0f,
-            1f);
-
-        private Color GetHairSliderColor() => new Color(
-            hairR ? hairR.value : 0f,
-            hairG ? hairG.value : 0f,
-            hairB ? hairB.value : 0f,
-            1f);
-        
         [Header("Materials")]
         [SerializeField] private Material hatMaterial;
         [SerializeField] private Material hairMaterial;
@@ -44,8 +32,8 @@ namespace FishingGame.PlayerCustomization
         [SerializeField] private Button hairApplyButton;
 
         [Header("Preset Buttons")]
-        [SerializeField] private Button[] hatPresetButtons;   // 4 hat colors
-        [SerializeField] private Color[] hatPresetColors;    // Must match button count
+        [SerializeField] private Button[] hatPresetButtons; // 4 hat colors
+        [SerializeField] private Color[] hatPresetColors;   // Must match button count
         [SerializeField] private Button[] hairPresetButtons; // 4 hair colors
         [SerializeField] private Color[] hairPresetColors;   // Must match button count
 
@@ -54,7 +42,7 @@ namespace FishingGame.PlayerCustomization
 
         private void Awake()
         {
-            if (hatApplyButton)  _hatBtnImage  = hatApplyButton.GetComponent<Image>();
+            if (hatApplyButton) _hatBtnImage = hatApplyButton.GetComponent<Image>();
             if (hairApplyButton) _hairBtnImage = hairApplyButton.GetComponent<Image>();
         }
 
@@ -70,7 +58,7 @@ namespace FishingGame.PlayerCustomization
             if (hairB) hairB.onValueChanged.AddListener(_ => UpdateHairPreview());
 
             // Buttons apply color
-            if (hatApplyButton)  hatApplyButton.onClick.AddListener(ApplyHatFromSliders);
+            if (hatApplyButton) hatApplyButton.onClick.AddListener(ApplyHatFromSliders);
             if (hairApplyButton) hairApplyButton.onClick.AddListener(ApplyHairFromSliders);
 
             // Preset buttons
@@ -78,6 +66,7 @@ namespace FishingGame.PlayerCustomization
             {
                 int index = i; // local copy
                 hatPresetButtons[i].onClick.AddListener(() => ApplyHatPreset(index));
+
                 // Show the color on the button
                 var img = hatPresetButtons[i].GetComponent<Image>();
                 if (img) img.color = hatPresetColors[i];
@@ -87,6 +76,7 @@ namespace FishingGame.PlayerCustomization
             {
                 int index = i;
                 hairPresetButtons[i].onClick.AddListener(() => ApplyHairPreset(index));
+
                 var img = hairPresetButtons[i].GetComponent<Image>();
                 if (img) img.color = hairPresetColors[i];
             }
@@ -110,55 +100,52 @@ namespace FishingGame.PlayerCustomization
             if (hairG) hairG.onValueChanged.RemoveAllListeners();
             if (hairB) hairB.onValueChanged.RemoveAllListeners();
 
-            if (hatApplyButton)  hatApplyButton.onClick.RemoveAllListeners();
+            if (hatApplyButton) hatApplyButton.onClick.RemoveAllListeners();
             if (hairApplyButton) hairApplyButton.onClick.RemoveAllListeners();
 
-            foreach (var btn in hatPresetButtons) if (btn) btn.onClick.RemoveAllListeners();
-            foreach (var btn in hairPresetButtons) if (btn) btn.onClick.RemoveAllListeners();
-        }
-        
-        /// <summary>
-        /// Sets the hat sliders to the specified colour
-        /// </summary>
-        /// <param name="colour">The colour to set the sliders to.</param>
-        public void SetHatSliders(Color colour)
-        {
-            if (hatR) hatR.value = colour.r;
-            if (hatG) hatG.value = colour.g;
-            if (hatB) hatB.value = colour.b;
+            foreach (var btn in hatPresetButtons)
+                if (btn) btn.onClick.RemoveAllListeners();
+
+            foreach (var btn in hairPresetButtons)
+                if (btn) btn.onClick.RemoveAllListeners();
         }
 
         /// <summary>
-        /// Sets the Hair Sliders to the colour <c>colour</c>
+        /// Sets the hat sliders to the specified colour.
         /// </summary>
-        /// <param name="colour">The colour to set the hair sliders to.</param>
-        public void SetHairSliders(Color colour)
+        public void SetHatSliders(Color c)
         {
-            if (hairR) hairR.value = colour.r;
-            if (hairG) hairG.value = colour.g;
-            if (hairB) hairB.value = colour.b;
+            if (hatR) hatR.value = c.r;
+            if (hatG) hatG.value = c.g;
+            if (hatB) hatB.value = c.b;
         }
 
         /// <summary>
-        /// Resets all the colours (Hat and Hair)
+        /// Sets the hair sliders to the specified colour.
+        /// </summary>
+        public void SetHairSliders(Color c)
+        {
+            if (hairR) hairR.value = c.r;
+            if (hairG) hairG.value = c.g;
+            if (hairB) hairB.value = c.b;
+        }
+
+        /// <summary>
+        /// Resets all the colours (Hat and Hair) to defaults.
         /// </summary>
         public void ResetAllColors()
         {
             ApplyHatColor(defaultHatColor);
             ApplyHairColor(defaultHairColor);
-
             SetHatSliders(defaultHatColor);
             SetHairSliders(defaultHairColor);
-
             UpdateHatPreview();
             UpdateHairPreview();
         }
 
-        // === Apply from sliders ===
         private void ApplyHatFromSliders() => ApplyHatColor(GetHatSliderColor());
         private void ApplyHairFromSliders() => ApplyHairColor(GetHairSliderColor());
 
-        // === Apply from presets ===
         private void ApplyHatPreset(int index)
         {
             if (index < 0 || index >= hatPresetColors.Length) return;
@@ -175,19 +162,50 @@ namespace FishingGame.PlayerCustomization
             UpdateHairPreview();
         }
 
-        // === Previews ===
-        private void UpdateHatPreview() { if (_hatBtnImage) _hatBtnImage.color = GetHatSliderColor(); }
-        private void UpdateHairPreview() { if (_hairBtnImage) _hairBtnImage.color = GetHairSliderColor(); }
+        private void UpdateHatPreview()
+        {
+            if (_hatBtnImage) _hatBtnImage.color = GetHatSliderColor();
+        }
+
+        private void UpdateHairPreview()
+        {
+            if (_hairBtnImage) _hairBtnImage.color = GetHairSliderColor();
+        }
+
+        private Color GetHatSliderColor() =>
+            new Color(hatR ? hatR.value : 0f, hatG ? hatG.value : 0f, hatB ? hatB.value : 0f, 1f);
+
+        private Color GetHairSliderColor() =>
+            new Color(hairR ? hairR.value : 0f, hairG ? hairG.value : 0f, hairB ? hairB.value : 0f, 1f);
 
         private void ApplyHatColor(Color c) => ApplyColor(hatMaterial, c);
         private void ApplyHairColor(Color c) => ApplyColor(hairMaterial, c);
 
+        /// <summary>
+        /// Applies a colour to the given material.
+        /// Supports Unity Toon Shader by using _BaseColor and _1st_ShadeColor.
+        /// </summary>
         private void ApplyColor(Material mat, Color color)
         {
             if (!mat) return;
-            if (mat.HasProperty("_Color")) mat.color = color;
-            else if (mat.HasProperty("_Diffuse")) mat.SetColor("_Diffuse", color);
+
+            // UTS base color
+            if (mat.HasProperty("_BaseColor"))
+            {
+                mat.SetColor("_BaseColor", color);
+            }
+            else if (mat.HasProperty("_Color"))
+            {
+                mat.SetColor("_Color", color);
+            }
+
+            // Sync 1st shade for toon shadow consistency
+            if (mat.HasProperty("_1st_ShadeColor"))
+            {
+                mat.SetColor("_1st_ShadeColor", color * 0.8f);
+            }
         }
     }
 }
+
 

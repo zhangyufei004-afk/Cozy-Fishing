@@ -1,59 +1,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 namespace FishingGame.UI
 {
     /// <summary>
-    /// Handles resolution and fullscreen/window settings via Dropdowns.
+    /// Handles resolution and fullscreen/window settings via Slider instead of Dropdown.
     /// Supports a Return button to go back to the previous UI.
     /// Works for both main menu and in-game settings.
+    /// Ensures controller navigation works by auto-selecting a starting UI element.
     /// </summary>
     public class SettingsManager : MonoBehaviour
     {
         [Header("UI Elements")]
-        [SerializeField] private TMP_Dropdown resolutionDropdown;
+        [SerializeField] private Slider resolutionSlider;
+        [SerializeField] private TMP_Text resolutionLabel;
         [SerializeField] private TMP_Dropdown displayModeDropdown;
         [SerializeField] private Button returnButton;
 
+        [Header("Controller Navigation")]
+        [SerializeField] private Selectable firstSelected;
+
         private Resolution[] _availableResolutions;
-        private List<string> _resolutionOptions = new List<string>();
 
-        private static string LastSceneName;
-        private static bool IsInGame; // true if settings opened in game
-
-        private void Start()
+        private void OnEnable()
         {
             SetupResolutions();
             SetupDisplayMode();
             SetupReturnButton();
+            SetInitialSelection();
         }
 
         private void SetupResolutions()
         {
             _availableResolutions = Screen.resolutions;
-            _resolutionOptions.Clear();
-            int currentResolutionIndex = 0;
 
+            int currentResolutionIndex = 0;
             for (int i = 0; i < _availableResolutions.Length; i++)
             {
-                Resolution res = _availableResolutions[i];
-                string option = $"{res.width} x {res.height}";
-                _resolutionOptions.Add(option);
-
-                if (res.width == Screen.currentResolution.width &&
-                    res.height == Screen.currentResolution.height)
+                if (_availableResolutions[i].width == Screen.currentResolution.width &&
+                    _availableResolutions[i].height == Screen.currentResolution.height)
+                {
                     currentResolutionIndex = i;
+                    break;
+                }
             }
 
-            resolutionDropdown.ClearOptions();
-            resolutionDropdown.AddOptions(_resolutionOptions);
-            resolutionDropdown.value = currentResolutionIndex;
-            resolutionDropdown.RefreshShownValue();
+            resolutionSlider.minValue = 0;
+            resolutionSlider.maxValue = _availableResolutions.Length - 1;
+            resolutionSlider.wholeNumbers = true;
+            resolutionSlider.value = currentResolutionIndex;
 
-            resolutionDropdown.onValueChanged.AddListener(SetResolution);
+            UpdateResolutionLabel(currentResolutionIndex);
+
+            resolutionSlider.onValueChanged.RemoveAllListeners();
+            resolutionSlider.onValueChanged.AddListener(index =>
+            {
+                SetResolution((int)index);
+                UpdateResolutionLabel((int)index);
+            });
         }
 
         private void SetupDisplayMode()
@@ -63,56 +70,65 @@ namespace FishingGame.UI
             displayModeDropdown.value = Screen.fullScreen ? 0 : 1;
             displayModeDropdown.RefreshShownValue();
 
+            displayModeDropdown.onValueChanged.RemoveAllListeners();
             displayModeDropdown.onValueChanged.AddListener(SetDisplayMode);
         }
 
         private void SetupReturnButton()
         {
-            if (returnButton != null)
-            {
-                returnButton.onClick.RemoveAllListeners();
-                returnButton.onClick.AddListener(ReturnToPreviousUI);
-            }
+            returnButton.onClick.RemoveAllListeners();
+            returnButton.onClick.AddListener(ReturnToPreviousUI);
+        }
+
+        private void UpdateResolutionLabel(int index)
+        {
+            Resolution res = _availableResolutions[index];
+            resolutionLabel.text = $"{res.width} x {res.height}";
         }
 
         private void SetResolution(int index)
         {
-            if (index < 0 || index >= _availableResolutions.Length) return;
             Resolution res = _availableResolutions[index];
             Screen.SetResolution(res.width, res.height, Screen.fullScreen);
         }
 
         private void SetDisplayMode(int index)
         {
-            switch (index)
-            {
-                case 0: Screen.fullScreen = true; break;
-                case 1: Screen.fullScreen = false; break;
-            }
+            Screen.fullScreen = (index == 0);
         }
 
+        /// <summary>
+        /// Hides the settings menu UI instead of changing scenes.
+        /// </summary>
         private void ReturnToPreviousUI()
         {
-            if (string.IsNullOrEmpty(LastSceneName)) return;
+            gameObject.SetActive(false);
 
-            if (IsInGame)
-            {
-                // Unload settings scene, return to game
-                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-                Time.timeScale = 1f; // resume game
-            }
-            else
-            {
-                // Reload main menu
-                SceneManager.LoadScene(LastSceneName);
-            }
+            if (Time.timeScale == 0f)
+                Time.timeScale = 1f;
         }
 
-        public static void SetLastScene(string sceneName, bool isInGame)
+        /// <summary>
+        /// Ensure a UI element is selected so controller navigation works immediately.
+        /// </summary>
+        private void SetInitialSelection()
         {
-            LastSceneName = sceneName;
-            IsInGame = isInGame;
+            if (EventSystem.current != null)
+            {
+                GameObject target = null;
+
+                if (firstSelected != null)
+                    target = firstSelected.gameObject;
+                else if (resolutionSlider != null)
+                    target = resolutionSlider.gameObject;
+                else if (displayModeDropdown != null)
+                    target = displayModeDropdown.gameObject;
+                else if (returnButton != null)
+                    target = returnButton.gameObject;
+
+                if (target != null)
+                    EventSystem.current.SetSelectedGameObject(target);
+            }
         }
     }
 }
-
