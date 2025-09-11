@@ -31,6 +31,14 @@ namespace FishingGame.Reeling
         private float _chargePower = 0;
         private float _maxCharge = 10;
 
+        private int _chanceToCatchFishThisTick = 1;
+        private int _maxChanceToCatchFish = 10;
+        private bool _isStageOne = false;
+
+        [SerializeField]
+        [Tooltip("The amount of seconds to wait inbetween a chance roll in stage 1 of fishing")]
+        private int stageOneCycleSecondsToWait;
+
         [SerializeField]
         [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
         private ReelingMaster reelingMasterScript;
@@ -70,6 +78,14 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("Max amount of distance a cast can be")]
         private float fishingRange;
+
+        [SerializeField]
+        [Tooltip("The slider that is used for catching fish")]
+        private UnityEngine.UI.Slider wiggleBar;
+
+        [SerializeField]
+        [Tooltip("The button that is used for shaking")]
+        private UnityEngine.UI.Button shakeButton;
 
         private InputAction _castAction;
         private InputAction _reelAction;
@@ -119,6 +135,17 @@ namespace FishingGame.Reeling
         }
 
         #region Public Methods
+
+        /// <summary>
+        /// Sets appropreate values for Stage one of fishing and then runs the required functions
+        /// </summary>
+        public void BeginStageOne()
+        {
+            _isStageOne = true;
+
+            DecideButtonOrSlider();
+            StartCoroutine(StageOneCycle());
+        }
 
         /// <summary>
         /// A public function that calls the private enable fish perspective function with a true value
@@ -171,6 +198,21 @@ namespace FishingGame.Reeling
             }
         }
 
+        public void ButtonClicked()
+        {
+            IncreaseChanceToCatch();
+            DecideButtonOrSlider();
+        }
+
+        public void SliderDragged()
+        {
+            if (wiggleBar.value == wiggleBar.maxValue)
+            {
+                IncreaseChanceToCatch();
+                DecideButtonOrSlider();
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -191,6 +233,8 @@ namespace FishingGame.Reeling
             Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
             SetAimPoint(aimLocation);
         }
+
+        #region MouseControlFunctions
 
         /// <summary>
         /// When using the left click the line should cast if it is currently being charged
@@ -232,6 +276,8 @@ namespace FishingGame.Reeling
         {
             ResetCharge();
         }
+
+        #endregion
 
         /// <summary>
         /// Makes the throw line animation play
@@ -279,8 +325,6 @@ namespace FishingGame.Reeling
             rodBobber.SetActive(false);
         }
 
-        
-
         /// <summary>
         /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
         /// </summary>
@@ -298,6 +342,70 @@ namespace FishingGame.Reeling
             {
                 rodBobber.transform.position = hit.point;
             }
+        }
+
+        private void CompleteStageOne()
+        {
+            _isStageOne = false;
+            _chanceToCatchFishThisTick = 1;
+            shakeButton.gameObject.SetActive(false);
+            wiggleBar.gameObject.SetActive(false);
+
+            fishingHook.PullBackHook();
+
+            
+        }
+
+        private void IncreaseChanceToCatch()
+        {
+            if (_isStageOne)
+            {
+                Mathf.Clamp(_chanceToCatchFishThisTick += 1, 0, _maxChanceToCatchFish);
+            }
+        }
+
+        private void AttemptToCatch()
+        {
+            if (_isStageOne)
+            {
+                int rolledNumber = Random.Range(0, _maxChanceToCatchFish + 1);
+
+                if (_chanceToCatchFishThisTick > rolledNumber)
+                {
+                    CompleteStageOne();
+                }
+                else
+                {
+                    StartCoroutine(StageOneCycle());
+                }
+            }
+        }
+
+        private void DecideButtonOrSlider()
+        {
+            shakeButton.gameObject.SetActive(false);
+            wiggleBar.gameObject.SetActive(false);
+
+            int rolledNumber = Random.Range(1, 3);
+            float randomX = Random.Range(0, Screen.width);
+            float randomY = Random.Range(0, Screen.height);
+
+            if (rolledNumber == 2)
+            {
+                shakeButton.transform.position = new Vector3(randomX, randomY, 0);
+                shakeButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                wiggleBar.transform.position = new Vector3(randomX, randomY, 0);
+                wiggleBar.gameObject.SetActive(true);
+            }
+        }
+
+        private IEnumerator StageOneCycle()
+        {
+            yield return new WaitForSeconds(stageOneCycleSecondsToWait);
+            AttemptToCatch();
         }
     }
 }
