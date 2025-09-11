@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace FishingGame.MainMenu
@@ -32,6 +33,7 @@ namespace FishingGame.MainMenu
                 settingsPanel.SetActive(false);
                 mainMenuPanel.SetActive(true);
             }
+            EventSystem.current.SetSelectedGameObject(mainMenuPanel.transform.GetChild(0).gameObject);
         }
 
         public void OnQuitGame()
