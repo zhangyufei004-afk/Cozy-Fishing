@@ -455,7 +455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2090314708269771150, guid: 60458c007520b41439d2d74cf2e73694, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2329252969662323297, guid: 60458c007520b41439d2d74cf2e73694, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -511,7 +511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2416514966788143832, guid: 60458c007520b41439d2d74cf2e73694, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2641222573179443901, guid: 60458c007520b41439d2d74cf2e73694, type: 3}
       propertyPath: resolutionScrollbar
@@ -763,7 +763,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7869821015732008575, guid: 60458c007520b41439d2d74cf2e73694, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1340,7 +1340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1246592036
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1815,6 +1815,7 @@ MonoBehaviour:
   resolutionLabel: {fileID: 484127076}
   displayModeDropdown: {fileID: 582862567}
   returnButton: {fileID: 1186519999}
+  firstSelected: {fileID: 0}
 --- !u!114 &1901522722 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 909673429313662532, guid: 60458c007520b41439d2d74cf2e73694, type: 3}
