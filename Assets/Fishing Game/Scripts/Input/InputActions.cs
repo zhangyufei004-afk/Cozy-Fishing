@@ -109,6 +109,24 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""fc876c3a-8eb2-4b88-8263-cb3ab7ffa03d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MousePress"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ac99612-9dcb-49ce-ae74-5500179d8d6c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -472,6 +490,50 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Cast"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c4d3720-8881-47c4-918b-8addd57d02d0"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86cf6a94-2709-48e6-8453-4d624d7a5011"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""679c2fc2-842f-4e15-922a-044e56d4bec7"",
+                    ""path"": ""<Mouse>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MousePress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c38df11-5ac4-4090-a356-c0e877963e6b"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""MousePress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1269,6 +1331,8 @@ namespace FishingGame.Input
             m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
             m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
+            m_Player_MouseDelta = m_Player.FindAction("MouseDelta", throwIfNotFound: true);
+            m_Player_MousePress = m_Player.FindAction("MousePress", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1361,6 +1425,8 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_Pause;
         private readonly InputAction m_Player_Cast;
         private readonly InputAction m_Player_ToggleQuestLog;
+        private readonly InputAction m_Player_MouseDelta;
+        private readonly InputAction m_Player_MousePress;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -1374,6 +1440,8 @@ namespace FishingGame.Input
             public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputAction @Cast => m_Wrapper.m_Player_Cast;
             public InputAction @ToggleQuestLog => m_Wrapper.m_Player_ToggleQuestLog;
+            public InputAction @MouseDelta => m_Wrapper.m_Player_MouseDelta;
+            public InputAction @MousePress => m_Wrapper.m_Player_MousePress;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1410,6 +1478,12 @@ namespace FishingGame.Input
                 @ToggleQuestLog.started += instance.OnToggleQuestLog;
                 @ToggleQuestLog.performed += instance.OnToggleQuestLog;
                 @ToggleQuestLog.canceled += instance.OnToggleQuestLog;
+                @MouseDelta.started += instance.OnMouseDelta;
+                @MouseDelta.performed += instance.OnMouseDelta;
+                @MouseDelta.canceled += instance.OnMouseDelta;
+                @MousePress.started += instance.OnMousePress;
+                @MousePress.performed += instance.OnMousePress;
+                @MousePress.canceled += instance.OnMousePress;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1441,6 +1515,12 @@ namespace FishingGame.Input
                 @ToggleQuestLog.started -= instance.OnToggleQuestLog;
                 @ToggleQuestLog.performed -= instance.OnToggleQuestLog;
                 @ToggleQuestLog.canceled -= instance.OnToggleQuestLog;
+                @MouseDelta.started -= instance.OnMouseDelta;
+                @MouseDelta.performed -= instance.OnMouseDelta;
+                @MouseDelta.canceled -= instance.OnMouseDelta;
+                @MousePress.started -= instance.OnMousePress;
+                @MousePress.performed -= instance.OnMousePress;
+                @MousePress.canceled -= instance.OnMousePress;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1664,6 +1744,8 @@ namespace FishingGame.Input
             void OnPause(InputAction.CallbackContext context);
             void OnCast(InputAction.CallbackContext context);
             void OnToggleQuestLog(InputAction.CallbackContext context);
+            void OnMouseDelta(InputAction.CallbackContext context);
+            void OnMousePress(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
