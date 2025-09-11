@@ -326,15 +326,13 @@ namespace FishingGame.Reeling
                 }
 
                 inventoryScript.AddItem(_currentlyReelingFish);
-                GameManager.Instance.GameEvents.FishCaught();
+                GameManager.Instance.GameEvents.FishCaught(_currentlyReelingFish);
                 DisplayFishingResult(_currentlyReelingFish, true);
 
                 _currentlyReelingFish = null;
                 StartCoroutine(HideUIAfterCatch(2));
             }
         }
-
-        
 
         /// <summary>
         /// Hides the ui shown after completiting a reel

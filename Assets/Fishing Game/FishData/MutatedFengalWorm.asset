@@ -15,7 +15,7 @@ MonoBehaviour:
   persistentID: 0
   Texture: {fileID: 21300000, guid: 3032385d02f31f642b7760451236371a, type: 3}
   Id: 1
-  MinMaxLength: {x: 0.05, y: 0.2}
+  MinMaxWeight: {x: 0, y: 0}
   SpeciesName: Mutated Fengal Worm
   FishCatchDifficulty: 3
   FishBio: 'Fengal worms don''t usually swim well, but when alchemists keep dumping
@@ -23,4 +23,5 @@ MonoBehaviour:
     look edible they are a suprising delicacy to some. Typically found in smaller
     warm island lakes. '
   LocationsFound: 02000000
-  TimeOfDayFound: 'Most active at night but still active during the day '
+  TimesFound: 0000000002000000
+  IsInvasive: 0

@@ -1,3 +1,4 @@
+using FishingGame.GameTime;
 using FishingGame.SaveGame;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace FishingGame.FishSystem
         public int FishCatchDifficulty;
         public string FishBio;
         public List<EFishingLocation> LocationsFound;
-        public string TimeOfDayFound;
+        public List<ETimeOfDay> TimesFound;
         public bool IsInvasive;
 
         internal FishScriptableObject(int persistentID) : base(persistentID)
