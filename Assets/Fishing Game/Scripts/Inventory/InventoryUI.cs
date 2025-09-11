@@ -20,6 +20,7 @@ namespace FishingGame.UI.Inventory
         [SerializeField] private GameObject fishInventoryPanel;
         [SerializeField] private GameObject fishlogPanel;
         [SerializeField] private TMP_Dropdown panelDropdown;
+        [SerializeField] private GameObject fishIndividualScreen;
 
         private readonly List<GameObject> _currentFishCards = new List<GameObject>();
 
@@ -65,13 +66,16 @@ namespace FishingGame.UI.Inventory
         {
             fishInventoryPanel.SetActive(true);
             fishlogPanel.SetActive(false);
+            fishIndividualScreen.SetActive(false);
         }
 
         private void ShowFishlog()
         {
             fishInventoryPanel.SetActive(false);
             fishlogPanel.SetActive(true);
+            fishIndividualScreen.SetActive(false);
         }
+
 
         /// <summary>
         /// Adds a fish to the inventory UI as a new card.
@@ -92,7 +96,6 @@ namespace FishingGame.UI.Inventory
 
             image.sprite = fish.GetFishBase().Texture;
             nameText.text = fish.GetFishBase().SpeciesName;
-            lengthText.text = $"{fish.GetLength():0.0} cm";
             weightText.text = $"{fish.GetWeight():0.00} kg";
             caughtTimeText.text = fish.GetCaughtTime().ToString();
             locationText.text = fish.GetCaughtLocation();

@@ -93,8 +93,7 @@ namespace FishingGame.Reeling
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
                     _headingToFishSpot = false;
-                    waterSplash.Play();
-                    waterSound.Play();
+                    PullBackHook();
                 }
             }
             if (_headingBackToHook)
@@ -144,7 +143,7 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Checks if the hook is able to be pulled back
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if the hook is out and can be returned, else returns false</returns>
         public bool ShouldTravelBack()
         {
             if (HookIsOut == true && _headingToFishSpot == false && reelingMaster.IsFishing == false)
@@ -164,7 +163,6 @@ namespace FishingGame.Reeling
             if (_collidingFish.Count > 0 || _collidingPool != null)
             {
                 ReactToFishOnHook();
-
                 ClearCollidingFishAndPool();
             }
             else
@@ -176,6 +174,27 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Sets variables to allow hook to head to target location
+        /// </summary>
+        /// <param name="targetLocation">Location to move to</param>
+        public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
+        {
+            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
+
+            _fishingLocation = newPosition;
+            _headingToFishSpot = true;
+        }
+
+        /// <summary>
+        /// Clears the colliding object variables from this class
+        /// </summary>
+        public void ClearCollidingFishAndPool()
+        {
+            _collidingPool = null;
+            _collidingFish.Clear();
+        }
+
+        /// <summary>
         /// Sets variables to allow hook to head back to its original spot
         /// </summary>
         private void SetupHookTravelBack()
@@ -184,28 +203,10 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Sets variables to allow hook to head to target location
-        /// </summary>
-        /// /// <param name="targetLocation">Location to move to</param>
-        public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
-        {
-            _fishingLocation = targetLocation;
-            _headingToFishSpot = true;
-        }
-
-        /// <summary>
-        /// Clears the colliding object variables from this class
-        /// </summary>
-        private void ClearCollidingFishAndPool()
-        {
-            _collidingPool = null;
-            _collidingFish.Clear();
-        }
-
-        /// <summary>
         /// Checks to see if gameobject tag is a fish, returns true if so false otherwise
         /// </summary>
         /// <param name="objectToCheck">Game object to check</param>
+        /// <returns>Returns true if the object passed through has the fish tag, otherwise false</returns>
         private bool CheckIfFish(GameObject objectToCheck)
         {
             if (objectToCheck.CompareTag("Fish")) { return true; }
@@ -216,6 +217,7 @@ namespace FishingGame.Reeling
         /// Checks the object to see if it contains the FishingPool script, if so returns true, else returns false
         /// </summary>
         /// <param name="objectToCheck">Game object to check</param>
+        /// <returns>Returns true if the object passed through has the fishing pool script, otherwise false</returns>
         private bool CheckIfPool(GameObject objectToCheck)
         {
             if (objectToCheck.GetComponent<FishingPool>()) { return true; }
@@ -239,11 +241,13 @@ namespace FishingGame.Reeling
             }
             else if (_collidingPool != null)
             {
+                waterSplash.Play();
+                waterSound.Play();
                 CaughtFish(_collidingPool);
             }
         }
 
-        /// <summary>
+        /// <summary>s
         /// Gets the data needed from the fish, begins the reelingmaster minigame script
         /// </summary>
         /// /// <param name="fishCaught">The fish that has been caught</param>
@@ -259,8 +263,17 @@ namespace FishingGame.Reeling
         /// <param name="fishingPool">The pool the hook has found</param>
         private void CaughtFish(FishingPool fishingPool)
         {
+            if (fishingPool.IsEmpty())
+            {
+                reelingMaster.CaughtNothing(fishingPool);
+                return;
+            }
+
             Fish randomPoolFish = fishingPool.DetermineFishCaught();
             GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
+
+            ClearCollidingFishAndPool();
+            HookIsOut = false;
 
             reelingMaster.BeginCatch(randomPoolFish, fishModel, fishingPool);
         }
@@ -269,10 +282,9 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Resets the position of the hook so it is no longer colliding with fishing objects
         /// </summary>
-        public void ResetHookSpot()
+        private void ResetHookSpot()
         {
             // TODO: This need to be physics logic soon
-          //  gameObject.transform.localPosition = hookResetSpot;
             HookIsOut = false;
             reelingMaster.DisableControls(false);
         }
