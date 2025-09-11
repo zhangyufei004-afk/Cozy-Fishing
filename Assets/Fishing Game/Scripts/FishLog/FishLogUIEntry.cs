@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,11 @@ namespace FishingGame.FishLog
         [SerializeField] private Image fishImage;
         [SerializeField] private FishScriptableObject fishData;
 
+        [Tooltip("The parent of this object")]
+        [SerializeField] private FishLogUI logUIMaster;
+
+        
+
         /// <summary>
         /// Fish data corresponding to the entry
         /// </summary>
@@ -24,6 +30,14 @@ namespace FishingGame.FishLog
         public void MarkAsCaught(bool caught)
         {
             fishImage.color = caught ? Color.white : Color.black;
+        }
+
+        /// <summary>
+        /// Run when this UI element is pressed, this will cause the fish log UI to display the clicked fish
+        /// </summary>
+        public void OnClick()
+        {
+            logUIMaster.FishEntryClicked(GetFishData());
         }
     }
 }

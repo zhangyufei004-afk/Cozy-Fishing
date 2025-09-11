@@ -26,7 +26,7 @@ namespace FishingGame.Inventory
             {
                 Fish newFish = new Fish(
                     _testFishScriptableObjects[_testIndex], 
-                    TimeOfDay.Morning, 
+                    ETimeOfDay.Morning, 
                     "Lake"
                 );
                 _inventorySystem.AddItem(newFish);

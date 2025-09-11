@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
   m_Name: Pink Glubfish
   m_EditorClassIdentifier: 
+  persistentID: 0
   Texture: {fileID: 21300000, guid: aea55274f0471474ebda94119bbb6651, type: 3}
   Id: 4
-  MinMaxLength: {x: 3, y: 4}
-  MinMaxSizeKg: {x: 3, y: 4}
+  MinMaxWeight: {x: 2, y: 5}
   SpeciesName: Pink Glubfish
   FishCatchDifficulty: 3
   FishBio: A strong tail lets this fish swim up rivers with ease. Its pink scales
     are often used to create a dye, leading to mass harvesting in the past, leaving
     its population scarce in most areas.
-  LocationsFound: River
-  TimeOfDayFound: Morning
+  LocationsFound: 0300000002000000
+  TimesFound: 010000000200000003000000
+  IsInvasive: 0

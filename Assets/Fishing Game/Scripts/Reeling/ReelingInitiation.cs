@@ -91,15 +91,14 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (_reelAction.WasPressedThisFrame())
-            {
-                LeftClick();
-            }
-
-            // TODO: THis can likely be done better and should be changed once this is setup to use new input system
             if (fishingHook.HookIsOut == true)
             {
                 return;
+            }
+
+            if (_reelAction.WasPressedThisFrame())
+            {
+                LeftClick();
             }
 
             if (_castAction.IsPressed())
@@ -117,6 +116,45 @@ namespace FishingGame.Reeling
                 RightClickReleased();
             }
         }
+
+        #region Public Methods
+
+        /// <summary>
+        /// A public function that calls the private enable fish perspective function with a true value
+        /// </summary>
+        public void InitiateFishingPerspective()
+        {
+            ShouldEnableFishPerspective(true);
+        }
+
+        /// <summary>
+        /// Creates a 3D fish model for reeling vizualization and then returns it
+        /// </summary>
+        /// <returns>Returns the 3D fish model that has been created</returns>
+        public GameObject CreateAndReturn3DFishModel()
+        {
+            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+            return fishModel;
+        }
+
+        /// <summary>
+        /// This is a public function that enables the camera that tracks the fish during reeling
+        /// This camera follows a hook gameobject that will always be ontop of the fish
+        /// </summary>
+        /// <param name="enable">True if you want to enable fish perspective camera, otherwise false</param>
+        public void ShouldEnableFishPerspective(bool enable)
+        {
+            if (enable)
+            {
+                fishCamera.gameObject.SetActive(true);
+            }
+            else
+            {
+                fishCamera.gameObject.SetActive(false);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Holding down right click charges the cast line of the rod.
@@ -148,10 +186,6 @@ namespace FishingGame.Reeling
             {
                 SetThrowAnimation();
                 ResetCharge();
-            }  
-            else if (fishingHook.ShouldTravelBack())
-            {
-                fishingHook.PullBackHook();
             }
         }
 
@@ -204,23 +238,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// A public function that calls the private enable fish perspective function with a true value
-        /// </summary>
-        public void InitiateFishingPerspective()
-        {
-            ShouldEnableFishPerspective(true);
-        }
-
-        /// <summary>
-        /// Creates a 3D fish model for reeling vizualization and then returns it
-        /// </summary>
-        public GameObject CreateAndReturn3DFishModel()
-        {
-            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
-            return fishModel;
-        }
-
-        /// <summary>
         /// Setsup the variable for a cast being started
         /// </summary>
         private void BeginCharge()
@@ -244,22 +261,7 @@ namespace FishingGame.Reeling
             rodBobber.SetActive(false);
         }
 
-        /// <summary>
-        /// This is a public function that enables the camera that tracks the fish during reeling
-        /// This camera follows a hook gameobject that will always be ontop of the fish
-        /// </summary>
-        /// <param name="enable">True if you want to enable fish perspective camera, otherwise false</param>
-        public void ShouldEnableFishPerspective(bool enable)
-        {
-            if (enable) 
-            {
-                fishCamera.gameObject.SetActive(true);
-            }
-            else 
-            { 
-                fishCamera.gameObject.SetActive(false);
-            }
-        }
+        
 
         /// <summary>
         /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
