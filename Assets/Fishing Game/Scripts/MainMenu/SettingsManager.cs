@@ -103,9 +103,6 @@ namespace FishingGame.UI
         private void ReturnToPreviousUI()
         {
             gameObject.SetActive(false);
-
-            if (Time.timeScale == 0f)
-                Time.timeScale = 1f;
         }
 
         /// <summary>

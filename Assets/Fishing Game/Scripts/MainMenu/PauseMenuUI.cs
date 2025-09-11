@@ -67,7 +67,36 @@ namespace FishingGame.MainMenu
             Application.Quit();
 #endif
         }
+        
+        /// <summary>
+        /// Switch to another scene. 
+        /// </summary>
+        /// <param name="sceneName">The scene name to switch to.</param>
+        public void JumpToScene(string sceneName)
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(sceneName);
+        }
 
+        /// <summary>
+        /// Open the settings menu from the pause menu.
+        /// </summary>
+        public void OpenSettings()
+        {
+            pauseMenuUI.SetActive(false);
+            settingsMenuUI.SetActive(true);
+        }
+
+        /// <summary>
+        /// Close the settings menu from the pause menu. 
+        /// </summary>
+        public void CloseSettings()
+        {
+            settingsMenuUI.SetActive(false);
+            pauseMenuUI.SetActive(true);
+            SetResumeButtonSelected();
+        }
+        
         private void SetResumeButtonSelected()
         {
             if (pauseMenuUI.transform.childCount > 0)
@@ -79,24 +108,6 @@ namespace FishingGame.MainMenu
         private void ResetEventSystemSelection()
         {
             EventSystem.current.SetSelectedGameObject(null);
-        }
-
-        public void JumpToScene(string sceneName)
-        {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(sceneName);
-        }
-
-        public void OpenSettings()
-        {
-            pauseMenuUI.SetActive(false);
-            settingsMenuUI.SetActive(true);
-        }
-
-        public void CloseSettings()
-        {
-            settingsMenuUI.SetActive(false);
-            pauseMenuUI.SetActive(true);
         }
     }
 }
