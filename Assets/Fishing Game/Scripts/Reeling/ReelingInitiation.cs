@@ -114,11 +114,6 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            if (_reelAction.WasPressedThisFrame())
-            {
-                LeftClick();
-            }
-
             if (_castAction.IsPressed())
             {
                 RightClickHeld();
@@ -261,20 +256,6 @@ namespace FishingGame.Reeling
         #region MouseControlFunctions
 
         /// <summary>
-        /// When using the left click the line should cast if it is currently being charged
-        /// otherwise currently do nothing
-        /// If currently charged this will throw the fish line and then reset the charge
-        /// </summary>
-        private void LeftClick()
-        {
-            if (_isCharging == true)
-            {
-                SetThrowAnimation();
-                ResetCharge();
-            }
-        }
-
-        /// <summary>
         /// Using right click will begin a charge if there is not one ongoing
         /// </summary>
         private void RightClickUsed()
@@ -294,10 +275,14 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Releasing right click will reset the current charge
+        /// Releasing right click will reset the current charge and throw the rod
         /// </summary>
         private void RightClickReleased()
         {
+            if (_isCharging == true)
+            {
+                SetThrowAnimation();
+            }
             ResetCharge();
         }
 
