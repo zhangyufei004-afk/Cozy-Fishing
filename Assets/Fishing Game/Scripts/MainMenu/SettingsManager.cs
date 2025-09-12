@@ -18,7 +18,6 @@ namespace FishingGame.UI
         [SerializeField] private Slider resolutionSlider;
         [SerializeField] private TMP_Text resolutionLabel;
         [SerializeField] private TMP_Dropdown displayModeDropdown;
-        [SerializeField] private Button returnButton;
 
         [Header("Controller Navigation")]
         [SerializeField] private Selectable firstSelected;
@@ -29,7 +28,6 @@ namespace FishingGame.UI
         {
             SetupResolutions();
             SetupDisplayMode();
-            SetupReturnButton();
             SetInitialSelection();
         }
 
@@ -74,12 +72,6 @@ namespace FishingGame.UI
             displayModeDropdown.onValueChanged.AddListener(SetDisplayMode);
         }
 
-        private void SetupReturnButton()
-        {
-            returnButton.onClick.RemoveAllListeners();
-            returnButton.onClick.AddListener(ReturnToPreviousUI);
-        }
-
         private void UpdateResolutionLabel(int index)
         {
             Resolution res = _availableResolutions[index];
@@ -98,14 +90,6 @@ namespace FishingGame.UI
         }
 
         /// <summary>
-        /// Hides the settings menu UI instead of changing scenes.
-        /// </summary>
-        private void ReturnToPreviousUI()
-        {
-            gameObject.SetActive(false);
-        }
-
-        /// <summary>
         /// Ensure a UI element is selected so controller navigation works immediately.
         /// </summary>
         private void SetInitialSelection()
@@ -120,8 +104,6 @@ namespace FishingGame.UI
                     target = resolutionSlider.gameObject;
                 else if (displayModeDropdown != null)
                     target = displayModeDropdown.gameObject;
-                else if (returnButton != null)
-                    target = returnButton.gameObject;
 
                 if (target != null)
                     EventSystem.current.SetSelectedGameObject(target);

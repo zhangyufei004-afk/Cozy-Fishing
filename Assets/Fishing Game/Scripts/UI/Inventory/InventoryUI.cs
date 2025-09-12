@@ -17,65 +17,18 @@ namespace FishingGame.UI.Inventory
     {
         [SerializeField] private Transform fishListContainer;
         [SerializeField] private GameObject fishCardPrefab;
-        [SerializeField] private GameObject fishInventoryPanel;
-        [SerializeField] private GameObject fishlogPanel;
-        [SerializeField] private TMP_Dropdown panelDropdown;
-        [SerializeField] private GameObject fishIndividualScreen;
 
         private readonly List<GameObject> _currentFishCards = new List<GameObject>();
 
-        // Inventory panel GameObject (assigned in inspector or initialized on Start)
-        private GameObject _inventoryPanel;
-
-        private void Awake()
-        {
-            _inventoryPanel = gameObject;
-        }
-
         private void Start()
         {
-            ShowFishInventory();
-            panelDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
             GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
-        }
-
-        private void OnEnable()
-        {
-            EventSystem.current.SetSelectedGameObject(panelDropdown.gameObject);
         }
 
         private void OnDisable()
         {
             EventSystem.current.SetSelectedGameObject(null);
         }
-
-        private void OnDropdownValueChanged(int index)
-        {
-            switch (index)
-            {
-                case 0:
-                    ShowFishInventory();
-                    break;
-                case 1:
-                    ShowFishlog();
-                    break;
-            }
-        }
-
-        private void ShowFishInventory()
-        {
-            fishInventoryPanel.SetActive(true);
-            fishlogPanel.SetActive(false);
-            fishIndividualScreen.SetActive(false);
-        }
-
-        private void ShowFishlog()
-        {
-            fishInventoryPanel.SetActive(false);
-            fishlogPanel.SetActive(true);
-            fishIndividualScreen.SetActive(false);
-        }
-
 
         /// <summary>
         /// Adds a fish to the inventory UI as a new card.
@@ -87,7 +40,7 @@ namespace FishingGame.UI.Inventory
             GameObject card = Instantiate(fishCardPrefab, fishListContainer);
             _currentFishCards.Add(card);
 
-            Image image = card.transform.Find("FishImage").GetComponent<Image>();
+            Image image = card.transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
             TextMeshProUGUI nameText = card.transform.Find("FishName").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI lengthText = card.transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI weightText = card.transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
