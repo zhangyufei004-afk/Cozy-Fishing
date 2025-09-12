@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FishingGame.GameTime;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -11,14 +12,17 @@ namespace FishingGame.AI.NPC.Nodes
     {
         private readonly Transform _npcTransform;
         private Vector3 _currentDestinationWorld;
+        private InGameTime _gameTime;
 
         public CheckDestination(
             Transform npcTransform, 
             Vector3 workplaceLocation,
             Vector3 homeLocation,
-            Vector3 hobbyLocation) 
+            Vector3 hobbyLocation,
+            InGameTime gameTime) 
         {
             _npcTransform = npcTransform;
+            _gameTime = gameTime;
             
             SetData("Work", workplaceLocation);
             SetData("Home", homeLocation);
@@ -27,7 +31,6 @@ namespace FishingGame.AI.NPC.Nodes
 
         public override ETreeNodeState RunNode()
         {
-            
             // TODO: IMPLEMENT TIMES FOR MOVING TO DIFFERENT DESTINATIONS
             
             
