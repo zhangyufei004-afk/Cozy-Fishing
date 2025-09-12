@@ -20,11 +20,15 @@ namespace FishingGame.GameTime
     /// This class tracks the current time of the day.
     /// It tracks these as both a float value and an enum representing the state of the day
     /// </summary>
-    public class IngameTime : MonoBehaviour
+    public class InGameTime : MonoBehaviour
     {
         [Tooltip("Tracks the current time of day as a float")]
         public float CurrentTimeOfDay { get; private set; }
 
+        [Header("Time Properties")]
+        [Tooltip("The length of day in game as seconds.")]
+        [SerializeField] private float secondsPerDay = 1440f;
+        
         [SerializeField]
         [Tooltip("The time period that the game ewill start in")]
         private ETimeOfDay initialStateOfDay;
@@ -32,14 +36,14 @@ namespace FishingGame.GameTime
         [SerializeField]
         [Tooltip("A tweakable value that scales how fast game time is calculated")]
         private int gameSpeed = 1;
-
+        
         private bool _timeActive = true;
-        private float _secondsPerDay = 1440f;
+        
         private float _elapsedTimeInCurrentState = 0f;
         private float _maxSecondsPerState;
         private ETimeOfDay _timeAsState;
 
-        // UI
+        [Header("UI Elements")]
         [SerializeField]
         [Tooltip("The text component of the time UI")]
         private TextMeshProUGUI uiText;
@@ -47,13 +51,11 @@ namespace FishingGame.GameTime
         [SerializeField]
         [Tooltip("The UI parent")]
         private GameObject gameTimeUI;
-
-        // 24 minutes = 1 in game day
-
+        
         private void OnEnable()
         {
             int numberOfMembers = Enum.GetNames(typeof(ETimeOfDay)).Length;
-            _maxSecondsPerState = _secondsPerDay / numberOfMembers;
+            _maxSecondsPerState = secondsPerDay / numberOfMembers;
 
             SetInitialTimeState();
             UpdateUITImer();
@@ -112,7 +114,7 @@ namespace FishingGame.GameTime
         /// <returns>True if the day has passed, false otherwise</returns>
         private bool CheckIfDayPassed()
         {
-            if (CurrentTimeOfDay >= _secondsPerDay) { return true; }
+            if (CurrentTimeOfDay >= secondsPerDay) { return true; }
             else { return false; }
         }
 

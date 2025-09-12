@@ -22,7 +22,7 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("Reference to the gametime script running")]
-        private IngameTime timeScript;
+        private InGameTime timeScript;
 
         [SerializeField]
         [Tooltip("What type of location is this fishing area")]
