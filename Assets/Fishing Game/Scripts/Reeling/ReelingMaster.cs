@@ -212,6 +212,7 @@ namespace FishingGame.Reeling
         public void DisableControls(bool isDisabled)
         {
             characterController.ToggleMovement(!isDisabled);
+            initiationScript.AreReelingControlsActive(!isDisabled);
         }
 
         #endregion

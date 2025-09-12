@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,11 +30,13 @@ namespace FishingGame.Reeling
         private bool _allowControls = true;
         private bool _isCharging = false;
         private float _chargePower = 0;
-        private float _maxCharge = 10;
+        private float _maxCharge = 8;
+        private bool _reverseDirection = false;
 
         private int _chanceToCatchFishThisTick = 1;
         private int _maxChanceToCatchFish = 10;
         private bool _isStageOne = false;
+        private UnityEngine.UI.Button _activeButton;
 
         [SerializeField]
         [Tooltip("The amount of seconds to wait inbetween a chance roll in stage 1 of fishing")]
@@ -85,7 +88,7 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("The button that is clicked when the fish is ready to be caught")]
-        private UnityEngine.UI.Button catchFishButton;
+        private List<UnityEngine.UI.Button> catchFishButtons;
 
         private InputAction _castAction;
         private InputAction _reelAction;
@@ -140,9 +143,14 @@ namespace FishingGame.Reeling
         public void BeginStageOne()
         {
             _isStageOne = true;
-            catchFishButton.interactable = false;
-            catchFishButton.gameObject.SetActive(true);
-            catchFishButton.image.color = Color.grey;
+
+            foreach (var button in catchFishButtons)
+            {
+                button.interactable = false;
+                button.gameObject.SetActive(true);
+                button.image.color = Color.grey;
+            }
+            
 
             StartCoroutine(StageOneCycle());
         }
@@ -201,8 +209,12 @@ namespace FishingGame.Reeling
         public void ButtonClicked()
         {
             _isStageOne = false;
-            catchFishButton.gameObject.SetActive(false);
             fishingHook.PullBackHook();
+
+            foreach (var button in catchFishButtons)
+            {
+                button.gameObject.SetActive(false);
+            }
         }
 
         #endregion
@@ -217,13 +229,33 @@ namespace FishingGame.Reeling
             _aimDirection = characterModel.transform.forward;
             _aimStartPoint = characterParent.transform.position;
 
-            _chargePower += Time.deltaTime * chargeScalar;
-            _chargePower = Mathf.Min(_chargePower, _maxCharge);
 
+
+            if (!_reverseDirection)
+            {
+                _chargePower += Time.deltaTime * chargeScalar;
+                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
+
+                if (_chargePower == _maxCharge)
+                {
+                    _reverseDirection = true;
+                }
+            }
+            else
+            {
+                _chargePower -= Time.deltaTime * chargeScalar;
+                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
+                if (_chargePower == 0)
+                {
+                    _reverseDirection = false;
+                }
+            }
+            
             chargeSlider.value = _chargePower;
-
             Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
             SetAimPoint(aimLocation);
+
+            
         }
 
         #region MouseControlFunctions
@@ -303,6 +335,7 @@ namespace FishingGame.Reeling
             _chargePower = 0;
             _isCharging = true;
             rodBobber.SetActive(true);
+            _reverseDirection = false;
         }
 
         /// <summary>
@@ -338,9 +371,14 @@ namespace FishingGame.Reeling
 
         private void SetCatchButtonClickable()
         {
+            int randomIndex = Random.Range(0, catchFishButtons.Count);
+
+            var button = catchFishButtons[randomIndex];
+            _activeButton = button;
+
             _chanceToCatchFishThisTick = 1;
-            catchFishButton.interactable = true;
-            catchFishButton.image.color = Color.green;
+            _activeButton.interactable = true;
+            _activeButton.image.color = Color.green;
             StartCoroutine(CatchWindow());
         }
 
@@ -382,9 +420,9 @@ namespace FishingGame.Reeling
 
             if (_isStageOne)
             {
-                catchFishButton.interactable = false;
-                catchFishButton.gameObject.SetActive(true);
-                catchFishButton.image.color = Color.grey;
+                _activeButton.interactable = false;
+                _activeButton.gameObject.SetActive(true);
+                _activeButton.image.color = Color.grey;
                 BeginStageOne();
             }
         }

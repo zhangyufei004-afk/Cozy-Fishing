@@ -93,9 +93,16 @@ namespace FishingGame.Reeling
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
                     _headingToFishSpot = false;
-                    waterSplash.Play();
-                    waterSound.Play();
-                    initiationScript.BeginStageOne();
+                    if (CheckIfColliding())
+                    {
+                        waterSplash.Play();
+                        waterSound.Play();
+                        initiationScript.BeginStageOne();
+                    }
+                    else
+                    {
+                        PullBackHook();
+                    }
                 }
             }
             if (_headingBackToHook)
@@ -162,7 +169,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void PullBackHook()
         {
-            if (_collidingFish.Count > 0 || _collidingPool != null)
+            if (CheckIfColliding())
             {
                 ReactToFishOnHook();
                 ClearCollidingFishAndPool();
@@ -287,6 +294,18 @@ namespace FishingGame.Reeling
             // TODO: This need to be physics logic soon
             HookIsOut = false;
             reelingMaster.DisableControls(false);
+        }
+
+        private bool CheckIfColliding()
+        {
+            if (_collidingFish.Count > 0 || _collidingPool != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
