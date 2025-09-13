@@ -24,6 +24,7 @@ namespace FishingGame.GameTime
     {
         [Tooltip("Tracks the current time of day as a float")]
         public float CurrentTimeOfDay { get; private set; }
+        public float DayLength => secondsPerDay;
 
         [Header("Time Properties")]
         [Tooltip("The length of day in game as seconds.")]
