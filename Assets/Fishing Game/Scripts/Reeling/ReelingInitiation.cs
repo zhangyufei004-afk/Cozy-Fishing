@@ -27,7 +27,6 @@ namespace FishingGame.Reeling
         private Vector3 _aimStartPoint;
         private Vector3 _aimDirection;
 
-        private UnityEngine.UI.Button _currentButton;
         private bool _allowControls = true;
         private bool _isCharging = false;
         private float _chargePower = 0;
@@ -36,15 +35,18 @@ namespace FishingGame.Reeling
 
         private int _buttonsClicked = 0;
         private List<UnityEngine.UI.Button> _activeButtons;
-        private int _chanceToCatchFishThisTick = 1;
-        private int _maxChanceToCatchFish = 10;
         private bool _isStageOne = false;
         private UnityEngine.UI.Button _activeButton;
         private int _stageOneDifficulty = 0;
+        private int _catchSecondsToWait;
 
         [SerializeField]
-        [Tooltip("The amount of seconds to wait inbetween a chance roll in stage 1 of fishing")]
-        private int stageOneCycleSecondsToWait;
+        [Tooltip("The max amount of seconds a player would have to wait for a catch")]
+        private int maxFishWaitTime;
+
+        [SerializeField]
+        [Tooltip("The min amount of seconds a player would have to wait for a catch")]
+        private int minFishWaitTime;
 
         [SerializeField]
         [Tooltip("How many seconds the fish button is clickable for")]
@@ -150,6 +152,7 @@ namespace FishingGame.Reeling
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
             _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 0, catchFishButtons.Count);
+            _catchSecondsToWait = Random.Range(minFishWaitTime, maxFishWaitTime);
 
             for (int i = 0; i < _stageOneDifficulty; i++)
             {
@@ -222,12 +225,13 @@ namespace FishingGame.Reeling
         public void ButtonClicked()
         {
             _buttonsClicked += 1;
-            _activeButtons.Remove(_currentButton);
+            _activeButtons.Remove(_activeButton);
             _activeButton.gameObject.SetActive(false);
 
             if (_buttonsClicked == _stageOneDifficulty) 
             {
                 _isStageOne = false;
+                StopAllCoroutines();
                 fishingHook.AttempToFishFromCurrentLocation(); 
             }
             else { SetCatchButtonClickable(); }
@@ -238,6 +242,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void CancelStageOne()
         {
+            StopAllCoroutines();
             foreach (var button in catchFishButtons)
             {
                 button.gameObject.SetActive(false);
@@ -395,26 +400,13 @@ namespace FishingGame.Reeling
         private void SetCatchButtonClickable()
         {
             int randomIndex = Random.Range(0, _activeButtons.Count);
-            Debug.Log(_activeButtons.Count);
 
             var button = _activeButtons[randomIndex];
             _activeButton = button;
 
-            _chanceToCatchFishThisTick = 1;
             _activeButton.interactable = true;
             _activeButton.image.color = Color.green;
             StartCoroutine(CatchWindow());
-        }
-
-        /// <summary>
-        /// Increases the likleyness of a button being enabled during the next timer tick
-        /// </summary>
-        private void IncreaseChanceToCatch()
-        {
-            if (_isStageOne)
-            {
-                Mathf.Clamp(_chanceToCatchFishThisTick += 1, 0, _maxChanceToCatchFish);
-            }
         }
 
         /// <summary>
@@ -423,32 +415,22 @@ namespace FishingGame.Reeling
         /// If the roll is not high enough the chance for the next roll to be high enough is increased and the timer until this method is called again
         /// is restarted
         /// </summary>
-        private void AttemptToCatch()
+        private void BeginFishing()
         {
             if (_isStageOne)
             {
-                int rolledNumber = Random.Range(0, _maxChanceToCatchFish + 1);
-
-                if (_chanceToCatchFishThisTick > rolledNumber)
-                {
-                    SetCatchButtonClickable();
-                }
-                else
-                {
-                    IncreaseChanceToCatch();
-                    StartCoroutine(StageOneCycle());
-                }
+                SetCatchButtonClickable();
             }
         }
 
         /// <summary>
-        /// Will run attempttocatch after variable stageOneCycleSecondsToWait seconds
+        /// Will run BeginFishing after variable stageOneCycleSecondsToWait seconds
         /// </summary>
-        /// <returns>When timer is finished AttemptToCatch() is run</returns>
+        /// <returns>When timer is finished BeginFishing() is run</returns>
         private IEnumerator StageOneCycle()
         {
-            yield return new WaitForSeconds(stageOneCycleSecondsToWait);
-            AttemptToCatch();
+            yield return new WaitForSeconds(_catchSecondsToWait);
+            BeginFishing();
         }
 
         /// <summary>
