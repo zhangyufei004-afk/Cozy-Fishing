@@ -202,6 +202,11 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// This is run through a button
+        /// It will hide the UI buttons for stage one and will cause the minigame portion
+        /// of reeling to start
+        /// </summary>
         public void ButtonClicked()
         {
             _isStageOne = false;
@@ -213,6 +218,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// This can be called to cancel stage one of fishing, hiding the ui and restoring player controls
+        /// </summary>
         public void CancelStageOne()
         {
             foreach (var button in catchFishButtons)
@@ -366,6 +374,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Sets a random button to be clickable to complete stage 1
+        /// </summary>
         private void SetCatchButtonClickable()
         {
             int randomIndex = Random.Range(0, catchFishButtons.Count);
@@ -379,6 +390,9 @@ namespace FishingGame.Reeling
             StartCoroutine(CatchWindow());
         }
 
+        /// <summary>
+        /// Increases the likleyness of a button being enabled during the next timer tick
+        /// </summary>
         private void IncreaseChanceToCatch()
         {
             if (_isStageOne)
@@ -387,6 +401,12 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// If currently in stageone this will roll a random value, if the random value is high enough the player will be prompted
+        /// to select a clickable random button.
+        /// If the roll is not high enough the chance for the next roll to be high enough is increased and the timer until this method is called again
+        /// is restarted
+        /// </summary>
         private void AttemptToCatch()
         {
             if (_isStageOne)
@@ -405,12 +425,23 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Will run attempttocatch after variable stageOneCycleSecondsToWait seconds
+        /// </summary>
+        /// <returns>When timer is finished AttemptToCatch() is run</returns>
         private IEnumerator StageOneCycle()
         {
             yield return new WaitForSeconds(stageOneCycleSecondsToWait);
             AttemptToCatch();
         }
 
+        /// <summary>
+        /// A timer that controls how long a stage one button is clickable for
+        /// If the timer is exceeded and the player hasn't completed stage one
+        /// all buttons reset and stage one is restarted as the player was too slow to click
+        /// Seconds used in this is based on the variable buttonClickWindowTime
+        /// </summary>
+        /// <returns>Resets stage one and stops buttons being clickable if player has taken too long</returns>
         private IEnumerator CatchWindow()
         {
             yield return new WaitForSeconds(buttonClickWindowTime);

@@ -218,6 +218,10 @@ namespace FishingGame.Reeling
             initiationScript.AreReelingControlsActive(!isDisabled);
         }
 
+        /// <summary>
+        /// Run by a button, this will cancel fishing
+        /// Does this differently based on fishing is in stage one or the minigame section
+        /// </summary>
         public void CancelFishing()
         {
             SetCancelButtonVisibilty(false);
@@ -232,6 +236,10 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Sets the cancel button to be visible if parameter is true, otherwise nonvisible
+        /// </summary>
+        /// <param name="isVisible">If true the button will be visisble, otherwise it will be hidden</param>
         public void SetCancelButtonVisibilty(bool isVisible)
         {
             cancelButton.gameObject.SetActive(isVisible);
