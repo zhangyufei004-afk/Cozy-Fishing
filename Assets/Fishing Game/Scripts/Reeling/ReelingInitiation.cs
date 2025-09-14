@@ -138,6 +138,7 @@ namespace FishingGame.Reeling
         public void BeginStageOne()
         {
             _isStageOne = true;
+            reelingMasterScript.SetCancelButtonVisibilty(true);
 
             foreach (var button in catchFishButtons)
             {
@@ -204,12 +205,23 @@ namespace FishingGame.Reeling
         public void ButtonClicked()
         {
             _isStageOne = false;
-            fishingHook.PullBackHook();
+            fishingHook.AttempToFishFromCurrentLocation();
 
             foreach (var button in catchFishButtons)
             {
                 button.gameObject.SetActive(false);
             }
+        }
+
+        public void CancelStageOne()
+        {
+            foreach (var button in catchFishButtons)
+            {
+                button.gameObject.SetActive(false);
+            }
+
+            _isStageOne = false;
+            fishingHook.PullBackHook();
         }
 
         #endregion

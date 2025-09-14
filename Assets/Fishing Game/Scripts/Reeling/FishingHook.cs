@@ -1,6 +1,7 @@
 using FishingGame.FishSystem;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -163,11 +164,10 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// This public function is called when the right click is used while the hook has been cast
-        /// It runs the ResetHookSpot function, runs the logic to react to whatever is currently caught
-        /// and then clears the colliding object variables from this class.
+        /// Use this method to attempt to fish from where the fishing rods hook currently is
+        /// If valid spot is colliding the hook will return and print a debug log
         /// </summary>
-        public void PullBackHook()
+        public void AttempToFishFromCurrentLocation()
         {
             if (CheckIfColliding())
             {
@@ -176,10 +176,19 @@ namespace FishingGame.Reeling
             }
             else
             {
-                SetupHookTravelBack();
-                ResetHookSpot();
-                reelingMaster.DisableControls(false);
+                Debug.Log("Hook was not colliding with an object with a fishing pool script");
+                PullBackHook();
             }
+        }
+
+        /// <summary>
+        /// Pulls the fishing hook back and reenables controls
+        /// </summary>
+        public void PullBackHook()
+        {
+            SetupHookTravelBack();
+            ResetHookSpot();
+            reelingMaster.DisableControls(false);
         }
 
         /// <summary>

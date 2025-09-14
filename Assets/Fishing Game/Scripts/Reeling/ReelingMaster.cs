@@ -71,6 +71,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The timer UI element contained in ReelingUI.")]
         private GameObject timerObject;
+
+        [SerializeField]
+        [Tooltip("The UI button that allows the player to exit from fishing")]
+        private Button cancelButton;
         #endregion
 
         #region Public Methods
@@ -199,7 +203,6 @@ namespace FishingGame.Reeling
 
             fishingFinishedText.text = textToDisplay;
             fishingFinishedText.gameObject.SetActive(true);
-            fishingHook.ClearCollidingFishAndPool();
             fishingHook.PullBackHook();
             StartCoroutine(HideUIAfterCatch(2));
         }
@@ -214,6 +217,26 @@ namespace FishingGame.Reeling
             characterController.ToggleMovement(!isDisabled);
             initiationScript.AreReelingControlsActive(!isDisabled);
         }
+
+        public void CancelFishing()
+        {
+            SetCancelButtonVisibilty(false);
+
+            if (IsFishing == true)
+            {
+                _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
+            }
+            else
+            {
+                initiationScript.CancelStageOne();
+            }
+        }
+
+        public void SetCancelButtonVisibilty(bool isVisible)
+        {
+            cancelButton.gameObject.SetActive(isVisible);
+        }
+
 
         #endregion
 
@@ -302,6 +325,7 @@ namespace FishingGame.Reeling
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
             fishingHook.PullBackHook();
+            SetCancelButtonVisibilty(false);
 
 
             Destroy(_currentFish3DObject);
