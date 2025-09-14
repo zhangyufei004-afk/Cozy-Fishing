@@ -212,6 +212,19 @@ namespace FishingGame.Reeling
             _collidingFish.Clear();
         }
 
+        public FishingPool GetPoolCurrentlyTouching()
+        {
+            if (_collidingPool != null)
+            {
+                return _collidingPool;
+            }
+            else
+            {
+                throw new NullReferenceException("Colliding pool == to NULL");
+            }
+            
+        }
+
         /// <summary>
         /// Sets variables to allow hook to head back to its original spot
         /// </summary>

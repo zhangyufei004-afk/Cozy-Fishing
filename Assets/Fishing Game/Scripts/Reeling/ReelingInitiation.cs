@@ -27,16 +27,20 @@ namespace FishingGame.Reeling
         private Vector3 _aimStartPoint;
         private Vector3 _aimDirection;
 
+        private UnityEngine.UI.Button _currentButton;
         private bool _allowControls = true;
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 8;
         private bool _reverseDirection = false;
 
+        private int _buttonsClicked = 0;
+        private List<UnityEngine.UI.Button> _activeButtons;
         private int _chanceToCatchFishThisTick = 1;
         private int _maxChanceToCatchFish = 10;
         private bool _isStageOne = false;
         private UnityEngine.UI.Button _activeButton;
+        private int _stageOneDifficulty = 0;
 
         [SerializeField]
         [Tooltip("The amount of seconds to wait inbetween a chance roll in stage 1 of fishing")]
@@ -99,6 +103,7 @@ namespace FishingGame.Reeling
         {
             chargeSlider.maxValue = _maxCharge;
             fishCamera.gameObject.SetActive(false);
+            _activeButtons = new List<UnityEngine.UI.Button>();
 
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
@@ -138,13 +143,20 @@ namespace FishingGame.Reeling
         public void BeginStageOne()
         {
             _isStageOne = true;
+            _activeButtons.Clear();
+            _buttonsClicked = 0;
             reelingMasterScript.SetCancelButtonVisibilty(true);
+            FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
+            _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
-            foreach (var button in catchFishButtons)
+            _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 0, catchFishButtons.Count);
+
+            for (int i = 0; i < _stageOneDifficulty; i++)
             {
-                button.interactable = false;
-                button.gameObject.SetActive(true);
-                button.image.color = Color.grey;
+                _activeButtons.Add(catchFishButtons[i]);
+                _activeButtons[i].interactable = false;
+                _activeButtons[i].gameObject.SetActive(true);
+                _activeButtons[i].image.color = Color.grey;
             }
             
 
@@ -209,13 +221,16 @@ namespace FishingGame.Reeling
         /// </summary>
         public void ButtonClicked()
         {
-            _isStageOne = false;
-            fishingHook.AttempToFishFromCurrentLocation();
+            _buttonsClicked += 1;
+            _activeButtons.Remove(_currentButton);
+            _activeButton.gameObject.SetActive(false);
 
-            foreach (var button in catchFishButtons)
+            if (_buttonsClicked == _stageOneDifficulty) 
             {
-                button.gameObject.SetActive(false);
+                _isStageOne = false;
+                fishingHook.AttempToFishFromCurrentLocation(); 
             }
+            else { SetCatchButtonClickable(); }
         }
 
         /// <summary>
@@ -379,9 +394,10 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetCatchButtonClickable()
         {
-            int randomIndex = Random.Range(0, catchFishButtons.Count);
+            int randomIndex = Random.Range(0, _activeButtons.Count);
+            Debug.Log(_activeButtons.Count);
 
-            var button = catchFishButtons[randomIndex];
+            var button = _activeButtons[randomIndex];
             _activeButton = button;
 
             _chanceToCatchFishThisTick = 1;

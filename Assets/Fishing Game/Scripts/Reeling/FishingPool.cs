@@ -164,6 +164,11 @@ namespace FishingGame.Reeling
             overrideFishList.Add(fishToAdd);
         }
 
+        public int GetADifficultyInRange()
+        {
+            return Random.Range(lowestFishDifficulty, highestFishDifficulty);
+        }
+
         /// <summary>
         /// Currently empty, this will contain logic for what to do upon becoming empty
         /// TODO: Add event here so the emptying of a pool can be tied to a quest
