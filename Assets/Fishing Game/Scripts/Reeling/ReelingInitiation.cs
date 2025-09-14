@@ -39,6 +39,7 @@ namespace FishingGame.Reeling
         private UnityEngine.UI.Button _activeButton;
         private int _stageOneDifficulty = 0;
         private int _catchSecondsToWait;
+        private float _buttonClickWindowTime;
 
         [SerializeField]
         [Tooltip("The max amount of seconds a player would have to wait for a catch")]
@@ -47,10 +48,6 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The min amount of seconds a player would have to wait for a catch")]
         private int minFishWaitTime;
-
-        [SerializeField]
-        [Tooltip("How many seconds the fish button is clickable for")]
-        private int buttonClickWindowTime;
 
         [SerializeField]
         [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
@@ -97,7 +94,6 @@ namespace FishingGame.Reeling
         private List<UnityEngine.UI.Button> catchFishButtons;
 
         private InputAction _castAction;
-        private InputAction _reelAction;
         private Vector3 _targetLocation;
         #endregion
 
@@ -111,7 +107,6 @@ namespace FishingGame.Reeling
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Cast");
-            _reelAction = playerActionMap.FindAction("Reel");
         }
 
         public void Update()
@@ -151,6 +146,8 @@ namespace FishingGame.Reeling
             FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
+            _buttonClickWindowTime = _stageOneDifficulty;
+
             _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 0, catchFishButtons.Count);
             _catchSecondsToWait = Random.Range(minFishWaitTime, maxFishWaitTime);
 
@@ -161,7 +158,6 @@ namespace FishingGame.Reeling
                 _activeButtons[i].gameObject.SetActive(true);
                 _activeButtons[i].image.color = Color.grey;
             }
-            
 
             StartCoroutine(StageOneCycle());
         }
@@ -442,7 +438,7 @@ namespace FishingGame.Reeling
         /// <returns>Resets stage one and stops buttons being clickable if player has taken too long</returns>
         private IEnumerator CatchWindow()
         {
-            yield return new WaitForSeconds(buttonClickWindowTime);
+            yield return new WaitForSeconds(_buttonClickWindowTime);
 
             if (_isStageOne)
             {
