@@ -317,7 +317,7 @@ namespace FishingGame.Reeling
             HookIsOut = false;
             reelingMaster.DisableControls(false);
         }
-
+        
         private bool CheckIfColliding()
         {
             if (_collidingFish.Count > 0 || _collidingPool != null)

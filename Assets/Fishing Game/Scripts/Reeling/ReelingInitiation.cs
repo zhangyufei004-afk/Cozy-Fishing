@@ -37,6 +37,7 @@ namespace FishingGame.Reeling
         private bool _reverseDirection = false;
         private UnityEngine.UI.Image currentTravelToTarget;
 
+        private bool _fishShouldMove = false;
         private int _numbersPressed = 0;
         private Dictionary<UnityEngine.UI.Image, int> _activeNumbers;
         private bool _isStageOne = false;
@@ -142,7 +143,7 @@ namespace FishingGame.Reeling
                 }
             }
 
-            if (_isStageOne)
+            if (_fishShouldMove)
             {
                 MoveFishToTarget();
             }
@@ -226,7 +227,7 @@ namespace FishingGame.Reeling
             GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
             return fishModel;
         }
-
+        
         /// <summary>
         /// This is a public function that enables the camera that tracks the fish during reeling
         /// This camera follows a hook gameobject that will always be ontop of the fish
@@ -274,12 +275,19 @@ namespace FishingGame.Reeling
 
             if (_numbersPressed == 1)
             {
+                currentTravelToTarget = _activeNumber;
                 fishImage.gameObject.SetActive(true);
                 fishImage.transform.position = _activeNumber.transform.position;
             }
             else
             {
+                if (fishImage.transform.position != currentTravelToTarget.transform.position)
+                {
+                    fishImage.transform.position = currentTravelToTarget.transform.position;
+                }
+
                 currentTravelToTarget = _activeNumber;
+                _fishShouldMove = true;
             }
 
 
@@ -288,7 +296,8 @@ namespace FishingGame.Reeling
                 _isStageOne = false;
                 _activeNumber = null;
                 StopAllCoroutines();
-                fishingHook.AttempToFishFromCurrentLocation();
+                StartCoroutine(WaitToReachHook());
+
             }
             else { SetNumberPressable(); }
         }
@@ -299,6 +308,7 @@ namespace FishingGame.Reeling
         public void CancelStageOne()
         {
             StopAllCoroutines();
+            _fishShouldMove = false;
             _activeNumber = null;
             foreach (var button in catchFishButtons)
             {
@@ -501,7 +511,7 @@ namespace FishingGame.Reeling
         /// <returns>Resets stage one and stops buttons being clickable if player has taken too long</returns>
         private IEnumerator CatchWindow()
         {
-            yield return new WaitForSeconds(_timeToPressNumbers);
+            yield return new WaitForSeconds(100f);
 
             if (_isStageOne)
             {
@@ -511,12 +521,32 @@ namespace FishingGame.Reeling
             }
         }
 
+        private IEnumerator WaitToReachHook()
+        {
+            
+            yield return new WaitForSeconds(1f);
+            currentTravelToTarget = hookImage;
+            yield return new WaitForSeconds(1f);
+            if (_fishShouldMove)
+            {
+                FishAtHook();
+            }
+        }
+
         private void MoveFishToTarget()
         {
             if (currentTravelToTarget.transform.position != fishImage.transform.position)
             {
                 fishImage.transform.position = Vector3.MoveTowards(fishImage.transform.position, currentTravelToTarget.transform.position, uiFishMoveSpeedScalar * Time.deltaTime);
             }
+        }
+        
+        private void FishAtHook()
+        {
+            _fishShouldMove = false;
+            fishImage.gameObject.SetActive(false);
+            hookImage.gameObject.SetActive(false);
+            fishingHook.AttempToFishFromCurrentLocation();
         }
     }
 }

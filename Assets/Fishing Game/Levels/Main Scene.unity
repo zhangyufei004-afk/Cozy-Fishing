@@ -1281,7 +1281,7 @@ MonoBehaviour:
   fishImage: {fileID: 567819350}
   normalStageOneSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   hookImage: {fileID: 647280095}
-  uiFishMoveSpeedScalar: 500
+  uiFishMoveSpeedScalar: 1200
 --- !u!1 &219850016
 GameObject:
   m_ObjectHideFlags: 0
