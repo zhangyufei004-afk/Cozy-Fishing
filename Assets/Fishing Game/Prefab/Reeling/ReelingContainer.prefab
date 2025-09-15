@@ -46,23 +46,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelingMaster: {fileID: 6051403347699497060}
   sliderCanvas: {fileID: 0}
+  _catchBoxVelocity: 0
   _fishMoveGoal: {x: 0, y: 0, z: 0}
   catchIncreaseAmount: 25
   catchDecreaseAmount: -10
-  boxSpeedScalar: 120
+  boxSpeedScalar: 3
   progressSlider: {fileID: 0}
   uiCatchBoxScript: {fileID: 0}
   catchBox: {fileID: 0}
   middleBarPoint: 23.3
-  fightBackSpeed: -15
+  fightBackSpeed: -2
+  catchBoxMaxReverseSpeed: -2
+  catchBoxForwardMaxSpeed: 10
   fishImage: {fileID: 0}
-  fishMoveMin: -300
-  fishMoveMax: 300
+  defaultSpeed: 40
   fishMaxYCord: 297.6
   fishMinYCord: -297.3
   catchBoxMaxXCord: 292
   catchBoxMinXCord: -291.4
-  timerText: {fileID: 0}
+  rightArrow: {fileID: 0}
 --- !u!1 &2680999012508629255
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,9 +264,8 @@ MonoBehaviour:
   miniGameTypes:
   - {fileID: 2680999012508629255}
   - {fileID: 313023259972732001}
-  - {fileID: 4518172318511371622}
   characterController: {fileID: 0}
   caughtFishImage: {fileID: 0}
   fishingFinishedText: {fileID: 0}
   timerObject: {fileID: 0}
-  _inventoryUI: {fileID: 0}
+  cancelButton: {fileID: 0}

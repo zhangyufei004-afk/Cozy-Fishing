@@ -49,8 +49,12 @@ namespace FishingGame.Reeling
         private UnityEngine.UI.Image fishImage;
 
         [SerializeField]
-        [Tooltip("The sprite used by the final number to be pressed in stage one")]
+        [Tooltip("The hook UI image element")]
         private UnityEngine.UI.Image hookImage;
+
+        [SerializeField]
+        [Tooltip("A image that is the child of the hookimage variable")]
+        private UnityEngine.UI.Image hookPoint;
 
         [SerializeField]
         [Tooltip("The scalar for how fast the UI fish moves")]
@@ -70,10 +74,14 @@ namespace FishingGame.Reeling
         [Tooltip("The min amount of seconds a player would have to wait for a catch")]
         private int minFishWaitTime;
 
+        [SerializeField]
+        [Tooltip("The particle effect played over the UI when a button is correctly pressed")]
+        private ParticleSystem splashEffect;
+
         private UnityEngine.UI.Image _activeNumber;
         private Dictionary<UnityEngine.UI.Image, int> _activeNumbers;
         private UnityEngine.UI.Image currentTravelToTarget;
-       
+
         private bool _fishShouldMove = false;
         private bool _isStageOne = false;
         private int _stageOneDifficulty = 0;
@@ -568,7 +576,7 @@ namespace FishingGame.Reeling
         {
 
             yield return new WaitForSeconds(1f);
-            currentTravelToTarget = hookImage;
+            currentTravelToTarget = hookPoint;
             yield return new WaitForSeconds(1f);
             if (_fishShouldMove)
             {
