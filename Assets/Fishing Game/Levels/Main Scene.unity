@@ -3630,7 +3630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a57e41fae5ce4469d2da19ca4067f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questGiver: {fileID: 615717697}
+  npcName: 
 --- !u!1 &661655711
 GameObject:
   m_ObjectHideFlags: 0
@@ -9211,6 +9211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552b72375dc4173418709e82d9dbc458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondsPerDay: 1440
   initialStateOfDay: 2
   gameSpeed: 1
   uiText: {fileID: 1473637882}
