@@ -20,31 +20,47 @@ namespace FishingGame.Reeling
     public class ReelingInitiation : MonoBehaviour
     {
         #region Private Fields
+        [Header("Reeling Scripts")]
 
         [SerializeField]
-        private GameObject characterParent;
+        [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
+        private ReelingMaster reelingMasterScript;
 
-        [SerializeField] 
-        private GameObject characterModel;
+        [SerializeField]
+        [Tooltip("Contains logic for detecting if a fish or pool is touching the hook, gameobject is attatched to the fishing rod")]
+        private FishingHook fishingHook;
 
-        private Vector3 _aimStartPoint;
-        private Vector3 _aimDirection;
+        [Header("ReelingUIElements")]
 
-        private bool _allowControls = true;
-        private bool _isCharging = false;
-        private float _chargePower = 0;
-        private float _maxCharge = 8;
-        private bool _reverseDirection = false;
-        private UnityEngine.UI.Image currentTravelToTarget;
+        [SerializeField]
+        [Tooltip("Scales how fast the cast bar is charged when holding right click")]
+        private float chargeScalar;
 
-        private bool _fishShouldMove = false;
-        private int _numbersPressed = 0;
-        private Dictionary<UnityEngine.UI.Image, int> _activeNumbers;
-        private bool _isStageOne = false;
-        private UnityEngine.UI.Image _activeNumber;
-        private int _stageOneDifficulty = 0;
-        private int _catchSecondsToWait;
-        private float _timeToPressNumbers;
+        [SerializeField]
+        [Tooltip("Slider for how much charge the cast bar has for reeling")]
+        private UnityEngine.UI.Slider chargeSlider;
+
+        [SerializeField]
+        [Tooltip("The button that is clicked when the fish is ready to be caught")]
+        private List<UnityEngine.UI.Image> catchFishButtons;
+
+        [SerializeField]
+        [Tooltip("The fish iamge that follows the path the player goes")]
+        private UnityEngine.UI.Image fishImage;
+
+        [SerializeField]
+        [Tooltip("The sprite used by the final number to be pressed in stage one")]
+        private UnityEngine.UI.Image hookImage;
+
+        [SerializeField]
+        [Tooltip("The scalar for how fast the UI fish moves")]
+        private float uiFishMoveSpeedScalar;
+
+        [SerializeField]
+        [Tooltip("The default sprite for stageone images")]
+        private Sprite normalStageOneSprite;
+
+        [Header("Stageone MiniGame variables")]
 
         [SerializeField]
         [Tooltip("The max amount of seconds a player would have to wait for a catch")]
@@ -54,9 +70,50 @@ namespace FishingGame.Reeling
         [Tooltip("The min amount of seconds a player would have to wait for a catch")]
         private int minFishWaitTime;
 
+        private UnityEngine.UI.Image _activeNumber;
+        private Dictionary<UnityEngine.UI.Image, int> _activeNumbers;
+        private UnityEngine.UI.Image currentTravelToTarget;
+       
+        private bool _fishShouldMove = false;
+        private bool _isStageOne = false;
+        private int _stageOneDifficulty = 0;
+        private int _catchSecondsToWait;
+        private int _numbersPressed = 0;
+        private float _timeToPressNumbers;
+
+        private InputAction _numberAction;
+
+        [Header("Aiming and Charging cast")]
+
         [SerializeField]
-        [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
-        private ReelingMaster reelingMasterScript;
+        [Tooltip("The characters parent, this is used for position")]
+        private GameObject characterParent;
+
+        [SerializeField]
+        [Tooltip("The character model this is used for rotation")]
+        private GameObject characterModel;
+
+        [SerializeField]
+        [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
+        private GameObject rodBobber;
+
+        [SerializeField]
+        [Tooltip("Max amount of distance a cast can be")]
+        private float fishingRange;
+
+        private bool _reverseDirection = false;
+        private bool _allowControls = true;
+        private bool _isCharging = false;
+        private float _chargePower = 0;
+        private float _maxCharge = 8;
+
+        private Vector3 _targetLocation;
+        private Vector3 _aimStartPoint;
+        private Vector3 _aimDirection;
+
+        private InputAction _castAction;
+
+        [Header("Misc")]
 
         [SerializeField]
         [Tooltip("Reference to the fish camera this is attatched to the hook")]
@@ -71,52 +128,9 @@ namespace FishingGame.Reeling
         private Animator characterAnimator;
 
         [SerializeField]
-        [Tooltip("Scales how fast the cast bar is charged when holding right click")]
-        private float chargeScalar;
-
-        [SerializeField]
-        [Tooltip("Slider for how much charge the cast bar has for reeling")]
-        private UnityEngine.UI.Slider chargeSlider;
-
-        [SerializeField]
-        [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
-        private GameObject rodBobber;
-
-        [SerializeField]
-        [Tooltip("Contains logic for detecting if a fish or pool is touching the hook, gameobject is attatched to the fishing rod")]
-        private FishingHook fishingHook;
-
-        [SerializeField]
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
-
-        [SerializeField]
-        [Tooltip("Max amount of distance a cast can be")]
-        private float fishingRange;
-
-        [SerializeField]
-        [Tooltip("The button that is clicked when the fish is ready to be caught")]
-        private List<UnityEngine.UI.Image> catchFishButtons;
-
-        [SerializeField]
-        [Tooltip("The fish iamge that follows the path the player goes")]
-        private UnityEngine.UI.Image fishImage;
-
-        [SerializeField]
-        [Tooltip("The default sprite for stageone images")]
-        private Sprite normalStageOneSprite;
-
-        [SerializeField]
-        [Tooltip("The sprite used by the final number to be pressed in stage one")]
-        private UnityEngine.UI.Image hookImage;
-
-        [SerializeField]
-        [Tooltip("The scalar for how fast the UI fish moves")]
-        private float uiFishMoveSpeedScalar;
-
-        private InputAction _castAction;
-        private InputAction _numberAction;
-        private Vector3 _targetLocation;
+        
         #endregion
 
         public void OnEnable()
@@ -205,8 +219,6 @@ namespace FishingGame.Reeling
                 button.Key.sprite = normalStageOneSprite;
             }
 
-
-
             StartCoroutine(StageOneCycle());
         }
 
@@ -262,6 +274,169 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// This can be called to cancel stage one of fishing, hiding the ui and restoring player controls
+        /// </summary>
+        public void CancelStageOne()
+        {
+            StopAllCoroutines();
+            _fishShouldMove = false;
+            _activeNumber = null;
+            foreach (var button in catchFishButtons)
+            {
+                button.gameObject.SetActive(false);
+            }
+
+            _isStageOne = false;
+            fishImage.gameObject.SetActive(false);
+            hookImage.gameObject.SetActive(false);
+            fishingHook.PullBackHook();
+        }
+
+        #endregion
+
+        #region Charging_and_throwing_line
+
+        /// <summary>
+        /// Setsup the variable for a cast being started
+        /// </summary>
+        private void BeginCharge()
+        {
+            chargeSlider.gameObject.SetActive(true);
+            chargeSlider.value = 0;
+            _chargePower = 0;
+            _isCharging = true;
+            rodBobber.SetActive(true);
+            _reverseDirection = false;
+        }
+
+        /// <summary>
+        /// Resets the variables when a cast is cancelled or completed
+        /// </summary>
+        private void ResetCharge()
+        {
+            chargeSlider.gameObject.SetActive(false);
+            _isCharging = false;
+            chargeSlider.value = 0;
+            _chargePower = 0;
+            rodBobber.SetActive(false);
+        }
+
+        /// <summary>
+        /// Holding down right click charges the cast line of the rod.
+        /// This will update the ui element representing the charge
+        /// and also show the tragectory line if the player were to release
+        /// </summary>
+        private void ChargeLine()
+        {
+            _aimDirection = characterModel.transform.forward;
+            _aimStartPoint = characterParent.transform.position;
+
+            if (!_reverseDirection)
+            {
+                _chargePower += Time.deltaTime * chargeScalar;
+                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
+
+                if (_chargePower == _maxCharge)
+                {
+                    _reverseDirection = true;
+                }
+            }
+            else
+            {
+                _chargePower -= Time.deltaTime * chargeScalar;
+                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
+                if (_chargePower == 0)
+                {
+                    _reverseDirection = false;
+                }
+            }
+            
+            chargeSlider.value = _chargePower;
+            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
+            SetAimPoint(aimLocation);
+        }
+
+        /// <summary>
+        /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
+        /// </summary>
+        /// <param name="locationToUse"> The location that will be raycasted from</param>
+        private void SetAimPoint(Vector3 locationToUse)
+        {
+            RaycastHit hit;
+            float maxDistance = fishingRange;
+            LayerMask whatToHit = 1;
+
+            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
+
+
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
+            {
+                rodBobber.transform.position = hit.point;
+            }
+        }
+
+        /// <summary>
+        /// Makes the throw line animation play
+        /// </summary>
+        private void SetThrowAnimation()
+        {
+            _targetLocation = rodBobber.transform.position;
+            characterAnimator.SetTrigger("ThrowTrigger");
+            reelingMasterScript.DisableControls(true);
+            AreReelingControlsActive(false);
+        }
+
+        /// <summary>
+        /// Throws the fishing line at the location shown by the bobber
+        /// This is run through an animation event
+        /// </summary>
+        private void ThrowLine()
+        {
+            fishingHook.HookIsOut = true;
+
+            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
+        }
+
+        #endregion
+
+        #region MouseControlFunctions
+
+        /// <summary>
+        /// Using right click will begin a charge if there is not one ongoing
+        /// </summary>
+        private void RightClickUsed()
+        {
+            if (_isCharging != true)
+            {
+                BeginCharge();
+            }
+        }
+
+        /// <summary>
+        /// Holding the right mouse button will continiously charge the line
+        /// </summary>
+        private void RightClickHeld()
+        {
+            ChargeLine();
+        }
+
+        /// <summary>
+        /// Releasing right click will reset the current charge and throw the rod
+        /// </summary>
+        private void RightClickReleased()
+        {
+            if (_isCharging == true)
+            {
+                SetThrowAnimation();
+            }
+            ResetCharge();
+        }
+
+        #endregion
+
+        #region StageoneReelingGame
+
+        /// <summary>
         /// Keeps track of the number of buttons that have been correctly inputed,
         /// If enough numbers have been pressed, sets the next fishing stage
         /// Removes number from UI
@@ -303,167 +478,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// This can be called to cancel stage one of fishing, hiding the ui and restoring player controls
-        /// </summary>
-        public void CancelStageOne()
-        {
-            StopAllCoroutines();
-            _fishShouldMove = false;
-            _activeNumber = null;
-            foreach (var button in catchFishButtons)
-            {
-                button.gameObject.SetActive(false);
-            }
-
-            _isStageOne = false;
-            fishImage.gameObject.SetActive(false);
-            hookImage.gameObject.SetActive(false);
-            fishingHook.PullBackHook();
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Holding down right click charges the cast line of the rod.
-        /// This will update the ui element representing the charge
-        /// and also show the tragectory line if the player were to release
-        /// </summary>
-        private void ChargeLine()
-        {
-            _aimDirection = characterModel.transform.forward;
-            _aimStartPoint = characterParent.transform.position;
-
-
-
-            if (!_reverseDirection)
-            {
-                _chargePower += Time.deltaTime * chargeScalar;
-                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
-
-                if (_chargePower == _maxCharge)
-                {
-                    _reverseDirection = true;
-                }
-            }
-            else
-            {
-                _chargePower -= Time.deltaTime * chargeScalar;
-                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
-                if (_chargePower == 0)
-                {
-                    _reverseDirection = false;
-                }
-            }
-            
-            chargeSlider.value = _chargePower;
-            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
-            SetAimPoint(aimLocation);
-
-            
-        }
-
-        #region MouseControlFunctions
-
-        /// <summary>
-        /// Using right click will begin a charge if there is not one ongoing
-        /// </summary>
-        private void RightClickUsed()
-        {
-            if (_isCharging != true)
-            {
-                BeginCharge();
-            }
-        }
-
-        /// <summary>
-        /// Holding the right mouse button will continiously charge the line
-        /// </summary>
-        private void RightClickHeld()
-        {
-            ChargeLine();
-        }
-
-        /// <summary>
-        /// Releasing right click will reset the current charge and throw the rod
-        /// </summary>
-        private void RightClickReleased()
-        {
-            if (_isCharging == true)
-            {
-                SetThrowAnimation();
-            }
-            ResetCharge();
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Makes the throw line animation play
-        /// </summary>
-        private void SetThrowAnimation()
-        {
-            _targetLocation = rodBobber.transform.position;
-            characterAnimator.SetTrigger("ThrowTrigger");
-            reelingMasterScript.DisableControls(true);
-            AreReelingControlsActive(false);
-        }
-
-        /// <summary>
-        /// Throws the fishing line at the location shown by the bobber
-        /// This is run through an animation event
-        /// </summary>
-        private void ThrowLine()
-        {
-            fishingHook.HookIsOut = true;
-
-            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
-        }
-
-        /// <summary>
-        /// Setsup the variable for a cast being started
-        /// </summary>
-        private void BeginCharge()
-        {
-            chargeSlider.gameObject.SetActive(true);
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            _isCharging = true;
-            rodBobber.SetActive(true);
-            _reverseDirection = false;
-        }
-
-        /// <summary>
-        /// Resets the variables when a cast is cancelled or completed
-        /// </summary>
-        private void ResetCharge()
-        {
-            chargeSlider.gameObject.SetActive(false);
-            _isCharging = false;
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            rodBobber.SetActive(false);
-        }
-
-        /// <summary>
-        /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
-        /// </summary>
-        /// <param name="locationToUse"> The location that will be raycasted from</param>
-        private void SetAimPoint(Vector3 locationToUse)
-        {
-            RaycastHit hit;
-            float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
-
-            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
-
-
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
-            {
-                rodBobber.transform.position = hit.point;
-            }
-        }
-
-        /// <summary>
         /// Sets a random button to be clickable to complete stage 1
         /// </summary>
         private void SetNumberPressable()
@@ -490,6 +504,29 @@ namespace FishingGame.Reeling
             {
                 SetNumberPressable();
             }
+        }
+
+        /// <summary>
+        /// Moves fish UI image towards the current travel target unless the fish is already there
+        /// </summary>
+        private void MoveFishToTarget()
+        {
+            if (currentTravelToTarget.transform.position != fishImage.transform.position)
+            {
+                fishImage.transform.position = Vector3.MoveTowards(fishImage.transform.position, currentTravelToTarget.transform.position, uiFishMoveSpeedScalar * Time.deltaTime);
+            }
+        }
+        
+        /// <summary>
+        /// Run when the fish should be at the hook, will cause the gameobjects to dissapear visually
+        /// and begin the minigame portion of reeling
+        /// </summary>
+        private void FishAtHook()
+        {
+            _fishShouldMove = false;
+            fishImage.gameObject.SetActive(false);
+            hookImage.gameObject.SetActive(false);
+            fishingHook.AttempToFishFromCurrentLocation();
         }
 
         /// <summary>
@@ -521,9 +558,15 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// A short 2 second timer split into two parts
+        /// After 1 second the current travel to target changes to the hook image
+        /// After 1 more second the game will transition into the minigame portion fo reeling
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator WaitToReachHook()
         {
-            
+
             yield return new WaitForSeconds(1f);
             currentTravelToTarget = hookImage;
             yield return new WaitForSeconds(1f);
@@ -533,20 +576,8 @@ namespace FishingGame.Reeling
             }
         }
 
-        private void MoveFishToTarget()
-        {
-            if (currentTravelToTarget.transform.position != fishImage.transform.position)
-            {
-                fishImage.transform.position = Vector3.MoveTowards(fishImage.transform.position, currentTravelToTarget.transform.position, uiFishMoveSpeedScalar * Time.deltaTime);
-            }
-        }
-        
-        private void FishAtHook()
-        {
-            _fishShouldMove = false;
-            fishImage.gameObject.SetActive(false);
-            hookImage.gameObject.SetActive(false);
-            fishingHook.AttempToFishFromCurrentLocation();
-        }
+        #endregion
     }
+
+
 }
