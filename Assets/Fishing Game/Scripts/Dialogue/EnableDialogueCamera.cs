@@ -1,5 +1,6 @@
 using System;
-using FishingGame.NPC;
+using FishingGame.AI.NPC;
+using FishingGame.GameManagement;
 using FishingGame.Player;
 using UnityEngine;
 
@@ -12,16 +13,14 @@ namespace FishingGame.Dialogue
     /// </summary>
     public class EnableDialogueCamera : MonoBehaviour
     {
-        [SerializeField] private QuestGiver questGiver;
-        
+        [SerializeField] private string npcName;
         PlayerCameraController _playerCameraController;
         
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                _playerCameraController = other.GetComponent<PlayerCameraController>();
-                _playerCameraController.SetInDialogueRange(true, questGiver);
+                GameManager.Instance.GameEvents.WithinDialogueRange(true, npcName);
             }
         }
 #if UNITY_EDITOR
@@ -30,8 +29,8 @@ namespace FishingGame.Dialogue
         {
             if (other.CompareTag("Player"))
             {
-                _playerCameraController.SwitchToTopDownCamera();
-                _playerCameraController = null;
+                GameManager.Instance.GameEvents.WithinDialogueRange(false, npcName);
+                GameManager.Instance.GameEvents.NPCInteraction(false, npcName);
             }
         }
 #endif

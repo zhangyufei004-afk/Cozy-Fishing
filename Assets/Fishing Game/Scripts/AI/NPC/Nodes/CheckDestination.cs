@@ -12,10 +12,10 @@ namespace FishingGame.AI.NPC.Nodes
     {
         private readonly Transform _npcTransform;
         private Vector3 _currentDestinationWorld;
-        private InGameTime _gameTime;
-        private float _workTime;
-        private float _hobbyTime;
-        private float _homeTime;
+        private readonly InGameTime _gameTime;
+        private readonly float _workTime;
+        private readonly float _hobbyTime;
+        private readonly float _homeTime;
 
         public CheckDestination(
             Transform npcTransform, 
@@ -48,27 +48,39 @@ namespace FishingGame.AI.NPC.Nodes
             // Check for moving to Work
             float workTime = _workTime * dayLength;
             Vector3 workLocation = (Vector3)GetData("Work");
-            if (currentTime > workTime && Vector3.Distance(_npcTransform.position, workLocation) > 0.1f)
+            
+            if (currentTime > workTime 
+                && Vector3.Distance(_npcTransform.position, workLocation) > 0.1f 
+                && _currentDestinationWorld != workLocation)
             {
                 SetData("Destination", workLocation);
+                _currentDestinationWorld = workLocation;
                 return ETreeNodeState.Success;
             }
             
             // Check for moving to Hobby
             float hobbyTime = _hobbyTime * dayLength;
             Vector3 hobbyLocation = (Vector3)GetData("Hobby");
-            if (currentTime > hobbyTime && Vector3.Distance(_npcTransform.position, hobbyLocation) > 0.1f)
+            
+            if (currentTime > hobbyTime 
+                && Vector3.Distance(_npcTransform.position, hobbyLocation) > 0.1f 
+                && _currentDestinationWorld != hobbyLocation)
             {
                 SetData("Destination", hobbyLocation);
+                _currentDestinationWorld = hobbyLocation;
                 return ETreeNodeState.Success;
             }
             
             // Check for moving to Home
             float homeTime = _homeTime * dayLength;
             Vector3 homeLocation = (Vector3)GetData("Home");
-            if (currentTime > homeTime && Vector3.Distance(_npcTransform.position, homeLocation) > 0.1f)
+            
+            if (currentTime > homeTime 
+                && Vector3.Distance(_npcTransform.position, homeLocation) > 0.1f
+                && _currentDestinationWorld != homeLocation)
             {
                 SetData("Destination", homeLocation);
+                _currentDestinationWorld = homeLocation;
                 return ETreeNodeState.Success;
             }
             

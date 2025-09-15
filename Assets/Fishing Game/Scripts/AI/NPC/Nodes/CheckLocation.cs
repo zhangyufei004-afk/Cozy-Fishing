@@ -2,6 +2,10 @@
 
 namespace FishingGame.AI.NPC.Nodes
 {
+    /// <summary>
+    /// Check Location Class. Extends Tree Node. Checks the distance to the current destination world position
+    /// and if we are at the destination position (i.e. we have arrived, or are arriving) returns successful.
+    /// </summary>
     public class CheckLocation : TreeNode
     {
         private readonly Vector3 _targetLocation;

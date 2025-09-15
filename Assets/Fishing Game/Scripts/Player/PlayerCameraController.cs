@@ -1,3 +1,4 @@
+using FishingGame.AI.NPC;
 using FishingGame.GameManagement;
 using FishingGame.NPC;
 using Unity.Cinemachine;
@@ -17,7 +18,7 @@ namespace FishingGame.Player
         [SerializeField] private CinemachineCamera grappleCamera;
 
         private bool _isInDialogueRange;
-        private QuestGiver _questGiver;
+        private string _npcName;
         
         /// <summary>
         /// Switches from the current camera back to the top-down camera. 
@@ -34,11 +35,15 @@ namespace FishingGame.Player
         /// Sets the in range of NPC with dialogue boolen.
         /// </summary>
         /// <param name="isInDialogueRange">Whether we are in range of an NPC.</param>
-        /// <param name="questGiver">The quest giver NPC we are close to.</param>
-        public void SetInDialogueRange(bool isInDialogueRange, QuestGiver questGiver)
+        /// <param name="npcName">The name of the NPC we are close to.</param>
+        public void SetInDialogueRange(bool isInDialogueRange, string npcName)
         {
-            _isInDialogueRange = isInDialogueRange;
-            _questGiver = questGiver;
+            _isInDialogueRange = isInDialogueRange; 
+            _npcName = npcName;
+            if (!isInDialogueRange)
+            {
+                SwitchToTopDownCamera();
+            }
         }
 
         private void OnEnable()
@@ -48,6 +53,7 @@ namespace FishingGame.Player
             playerActionMap.Enable();
             playerActionMap.FindAction("Interact").started += SwitchToDialogueCamera;
             GameManager.Instance.GameEvents.OnToggleDialogueCamera += ToggleDialogueCamera;
+            GameManager.Instance.GameEvents.OnWithinDialogueRange += SetInDialogueRange;
         }
 
         private void SwitchToDialogueCamera(InputAction.CallbackContext context)
@@ -57,7 +63,7 @@ namespace FishingGame.Player
             {
                 dialogCamera.gameObject.SetActive(switchToCamera);
                 GameManager.Instance.GameEvents.TogglePlayerMovement(false);
-                _questGiver.InteractWithNPC();
+                GameManager.Instance.GameEvents.NPCInteraction(true, _npcName);
             }
         }
 
