@@ -35,10 +35,10 @@ namespace FishingGame.Reeling
         private float _chargePower = 0;
         private float _maxCharge = 8;
         private bool _reverseDirection = false;
+        private UnityEngine.UI.Image currentTravelToTarget;
 
         private int _numbersPressed = 0;
         private Dictionary<UnityEngine.UI.Image, int> _activeNumbers;
-        private List<UnityEngine.UI.Image> _availableButtons;
         private bool _isStageOne = false;
         private UnityEngine.UI.Image _activeNumber;
         private int _stageOneDifficulty = 0;
@@ -97,6 +97,22 @@ namespace FishingGame.Reeling
         [Tooltip("The button that is clicked when the fish is ready to be caught")]
         private List<UnityEngine.UI.Image> catchFishButtons;
 
+        [SerializeField]
+        [Tooltip("The fish iamge that follows the path the player goes")]
+        private UnityEngine.UI.Image fishImage;
+
+        [SerializeField]
+        [Tooltip("The default sprite for stageone images")]
+        private Sprite normalStageOneSprite;
+
+        [SerializeField]
+        [Tooltip("The sprite used by the final number to be pressed in stage one")]
+        private UnityEngine.UI.Image hookImage;
+
+        [SerializeField]
+        [Tooltip("The scalar for how fast the UI fish moves")]
+        private float uiFishMoveSpeedScalar;
+
         private InputAction _castAction;
         private InputAction _numberAction;
         private Vector3 _targetLocation;
@@ -126,6 +142,10 @@ namespace FishingGame.Reeling
                 }
             }
 
+            if (_isStageOne)
+            {
+                MoveFishToTarget();
+            }
 
             if (fishingHook.HookIsOut == true || _allowControls == false)
             {
@@ -156,6 +176,8 @@ namespace FishingGame.Reeling
         public void BeginStageOne()
         {
             _isStageOne = true;
+            fishImage.gameObject.SetActive(false);
+            hookImage.gameObject.SetActive(true);
             _activeNumbers.Clear();
             _numbersPressed = 0;
             reelingMasterScript.SetCancelButtonVisibilty(true);
@@ -179,7 +201,10 @@ namespace FishingGame.Reeling
                 buttonText.text = button.Value.ToString();
                 button.Key.gameObject.SetActive(true);
                 button.Key.color = Color.grey;
+                button.Key.sprite = normalStageOneSprite;
             }
+
+
 
             StartCoroutine(StageOneCycle());
         }
@@ -247,12 +272,23 @@ namespace FishingGame.Reeling
             _activeNumbers.Remove(_activeNumber);
             _activeNumber.gameObject.SetActive(false);
 
-            if (_numbersPressed == _stageOneDifficulty) 
+            if (_numbersPressed == 1)
+            {
+                fishImage.gameObject.SetActive(true);
+                fishImage.transform.position = _activeNumber.transform.position;
+            }
+            else
+            {
+                currentTravelToTarget = _activeNumber;
+            }
+
+
+            if (_numbersPressed == _stageOneDifficulty)
             {
                 _isStageOne = false;
                 _activeNumber = null;
                 StopAllCoroutines();
-                fishingHook.AttempToFishFromCurrentLocation(); 
+                fishingHook.AttempToFishFromCurrentLocation();
             }
             else { SetNumberPressable(); }
         }
@@ -270,6 +306,8 @@ namespace FishingGame.Reeling
             }
 
             _isStageOne = false;
+            fishImage.gameObject.SetActive(false);
+            hookImage.gameObject.SetActive(false);
             fishingHook.PullBackHook();
         }
 
@@ -470,6 +508,14 @@ namespace FishingGame.Reeling
                 _activeNumber.gameObject.SetActive(true);
                 _activeNumber.color = Color.grey;
                 BeginStageOne();
+            }
+        }
+
+        private void MoveFishToTarget()
+        {
+            if (currentTravelToTarget.transform.position != fishImage.transform.position)
+            {
+                fishImage.transform.position = Vector3.MoveTowards(fishImage.transform.position, currentTravelToTarget.transform.position, uiFishMoveSpeedScalar * Time.deltaTime);
             }
         }
     }
