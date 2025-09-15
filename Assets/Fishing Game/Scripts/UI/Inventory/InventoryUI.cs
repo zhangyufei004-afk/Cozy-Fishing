@@ -49,7 +49,7 @@ namespace FishingGame.UI.Inventory
 
             image.sprite = fish.GetFishBase().Texture;
             nameText.text = fish.GetFishBase().SpeciesName;
-            weightText.text = $"{fish.GetWeight():0.00} kg";
+            weightText.text = $"{fish.GetWeight():0.00}kg";
             caughtTimeText.text = fish.GetCaughtTime().ToString();
             locationText.text = fish.GetCaughtLocation();
         }
