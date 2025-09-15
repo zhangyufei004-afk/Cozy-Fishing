@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,13 +36,14 @@ namespace FishingGame.Reeling
         private float _maxCharge = 8;
         private bool _reverseDirection = false;
 
-        private int _buttonsClicked = 0;
-        private List<UnityEngine.UI.Button> _activeButtons;
+        private int _numbersPressed = 0;
+        private Dictionary<UnityEngine.UI.Image, int> _activeNumbers;
+        private List<UnityEngine.UI.Image> _availableButtons;
         private bool _isStageOne = false;
-        private UnityEngine.UI.Button _activeButton;
+        private UnityEngine.UI.Image _activeNumber;
         private int _stageOneDifficulty = 0;
         private int _catchSecondsToWait;
-        private float _buttonClickWindowTime;
+        private float _timeToPressNumbers;
 
         [SerializeField]
         [Tooltip("The max amount of seconds a player would have to wait for a catch")]
@@ -91,9 +95,10 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("The button that is clicked when the fish is ready to be caught")]
-        private List<UnityEngine.UI.Button> catchFishButtons;
+        private List<UnityEngine.UI.Image> catchFishButtons;
 
         private InputAction _castAction;
+        private InputAction _numberAction;
         private Vector3 _targetLocation;
         #endregion
 
@@ -101,16 +106,27 @@ namespace FishingGame.Reeling
         {
             chargeSlider.maxValue = _maxCharge;
             fishCamera.gameObject.SetActive(false);
-            _activeButtons = new List<UnityEngine.UI.Button>();
+            _activeNumbers = new Dictionary<UnityEngine.UI.Image, int>();
 
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
+            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Cast");
+            _numberAction = uiActionMap.FindAction("NumberKeys");
         }
 
         public void Update()
         {
+            if (_numberAction.WasPressedThisFrame() && _activeNumber != null)
+            {
+                if (_numberAction.ReadValue<float>() == _activeNumbers[_activeNumber])
+                {
+                    CorrectNumberPress();
+                }
+            }
+
+
             if (fishingHook.HookIsOut == true || _allowControls == false)
             {
                 return;
@@ -140,23 +156,29 @@ namespace FishingGame.Reeling
         public void BeginStageOne()
         {
             _isStageOne = true;
-            _activeButtons.Clear();
-            _buttonsClicked = 0;
+            _activeNumbers.Clear();
+            _numbersPressed = 0;
             reelingMasterScript.SetCancelButtonVisibilty(true);
             FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
-            _buttonClickWindowTime = _stageOneDifficulty;
+            _timeToPressNumbers = _stageOneDifficulty;
 
             _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 0, catchFishButtons.Count);
-            _catchSecondsToWait = Random.Range(minFishWaitTime, maxFishWaitTime);
+            _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
 
             for (int i = 0; i < _stageOneDifficulty; i++)
             {
-                _activeButtons.Add(catchFishButtons[i]);
-                _activeButtons[i].interactable = false;
-                _activeButtons[i].gameObject.SetActive(true);
-                _activeButtons[i].image.color = Color.grey;
+                int numberToPress = UnityEngine.Random.Range(0, 9);
+                _activeNumbers.Add(catchFishButtons[i], numberToPress);
+            }
+
+            foreach (var button in _activeNumbers)
+            {
+                TextMeshProUGUI buttonText = button.Key.GetComponentInChildren<TextMeshProUGUI>();
+                buttonText.text = button.Value.ToString();
+                button.Key.gameObject.SetActive(true);
+                button.Key.color = Color.grey;
             }
 
             StartCoroutine(StageOneCycle());
@@ -214,23 +236,25 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// This is run through a button
-        /// It will hide the UI buttons for stage one and will cause the minigame portion
-        /// of reeling to start
+        /// Keeps track of the number of buttons that have been correctly inputed,
+        /// If enough numbers have been pressed, sets the next fishing stage
+        /// Removes number from UI
+        /// Calls for next number
         /// </summary>
-        public void ButtonClicked()
+        private void CorrectNumberPress()
         {
-            _buttonsClicked += 1;
-            _activeButtons.Remove(_activeButton);
-            _activeButton.gameObject.SetActive(false);
+            _numbersPressed += 1;
+            _activeNumbers.Remove(_activeNumber);
+            _activeNumber.gameObject.SetActive(false);
 
-            if (_buttonsClicked == _stageOneDifficulty) 
+            if (_numbersPressed == _stageOneDifficulty) 
             {
                 _isStageOne = false;
+                _activeNumber = null;
                 StopAllCoroutines();
                 fishingHook.AttempToFishFromCurrentLocation(); 
             }
-            else { SetCatchButtonClickable(); }
+            else { SetNumberPressable(); }
         }
 
         /// <summary>
@@ -239,6 +263,7 @@ namespace FishingGame.Reeling
         public void CancelStageOne()
         {
             StopAllCoroutines();
+            _activeNumber = null;
             foreach (var button in catchFishButtons)
             {
                 button.gameObject.SetActive(false);
@@ -393,15 +418,15 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Sets a random button to be clickable to complete stage 1
         /// </summary>
-        private void SetCatchButtonClickable()
+        private void SetNumberPressable()
         {
-            int randomIndex = Random.Range(0, _activeButtons.Count);
+            UnityEngine.UI.Image[] keys = _activeNumbers.Keys.ToArray();
 
-            var button = _activeButtons[randomIndex];
-            _activeButton = button;
+            int randomIndex = UnityEngine.Random.Range(0, _activeNumbers.Count);
+            var button = keys[randomIndex];
+            _activeNumber = button;
 
-            _activeButton.interactable = true;
-            _activeButton.image.color = Color.green;
+            _activeNumber.color = Color.green;
             StartCoroutine(CatchWindow());
         }
 
@@ -415,7 +440,7 @@ namespace FishingGame.Reeling
         {
             if (_isStageOne)
             {
-                SetCatchButtonClickable();
+                SetNumberPressable();
             }
         }
 
@@ -438,13 +463,12 @@ namespace FishingGame.Reeling
         /// <returns>Resets stage one and stops buttons being clickable if player has taken too long</returns>
         private IEnumerator CatchWindow()
         {
-            yield return new WaitForSeconds(_buttonClickWindowTime);
+            yield return new WaitForSeconds(_timeToPressNumbers);
 
             if (_isStageOne)
             {
-                _activeButton.interactable = false;
-                _activeButton.gameObject.SetActive(true);
-                _activeButton.image.color = Color.grey;
+                _activeNumber.gameObject.SetActive(true);
+                _activeNumber.color = Color.grey;
                 BeginStageOne();
             }
         }

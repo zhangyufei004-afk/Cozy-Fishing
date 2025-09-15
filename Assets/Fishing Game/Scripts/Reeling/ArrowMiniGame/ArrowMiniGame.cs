@@ -96,6 +96,8 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             uiActionMap.Enable();
             _directionAction = uiActionMap.FindAction("ArrowMiniGame");
+
+            
         }
 
 

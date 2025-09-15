@@ -606,6 +606,15 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NumberKeys"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a8d279a2-2a21-448c-b45c-4f6fbde9b4da"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1191,6 +1200,116 @@ namespace FishingGame.Input
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5af86fc-22bb-4dd2-bfcb-ccbe57dc7f79"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30dd1842-bc78-41fa-8a86-571209524463"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d66b8055-84aa-4e93-971d-fd56270b2882"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6110c5cb-b0f6-4354-aaab-26ee0b4b91bc"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f262b0ab-888e-497b-bbcc-acd31db6527b"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""466ec59d-5722-4bbd-ad43-38303f09c9d0"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=5)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73e2306e-9ca7-446f-8507-46517da7f2f2"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=6)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f687a7e9-7016-40a6-b58a-5a986c373bce"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=7)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a88df7ac-f3a5-42bc-9de2-fdf108f7c4c9"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=8)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90e7a08a-a717-42e8-90ff-620a10e5f2fc"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=9)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1285,6 +1404,7 @@ namespace FishingGame.Input
             m_UI_ArrowMiniGame = m_UI.FindAction("ArrowMiniGame", throwIfNotFound: true);
             m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
+            m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -1476,6 +1596,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_ArrowMiniGame;
         private readonly InputAction m_UI_RealisticStickMovement;
         private readonly InputAction m_UI_Back;
+        private readonly InputAction m_UI_NumberKeys;
         public struct UIActions
         {
             private @InputActions m_Wrapper;
@@ -1494,6 +1615,7 @@ namespace FishingGame.Input
             public InputAction @ArrowMiniGame => m_Wrapper.m_UI_ArrowMiniGame;
             public InputAction @RealisticStickMovement => m_Wrapper.m_UI_RealisticStickMovement;
             public InputAction @Back => m_Wrapper.m_UI_Back;
+            public InputAction @NumberKeys => m_Wrapper.m_UI_NumberKeys;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1545,6 +1667,9 @@ namespace FishingGame.Input
                 @Back.started += instance.OnBack;
                 @Back.performed += instance.OnBack;
                 @Back.canceled += instance.OnBack;
+                @NumberKeys.started += instance.OnNumberKeys;
+                @NumberKeys.performed += instance.OnNumberKeys;
+                @NumberKeys.canceled += instance.OnNumberKeys;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
@@ -1591,6 +1716,9 @@ namespace FishingGame.Input
                 @Back.started -= instance.OnBack;
                 @Back.performed -= instance.OnBack;
                 @Back.canceled -= instance.OnBack;
+                @NumberKeys.started -= instance.OnNumberKeys;
+                @NumberKeys.performed -= instance.OnNumberKeys;
+                @NumberKeys.canceled -= instance.OnNumberKeys;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -1681,6 +1809,7 @@ namespace FishingGame.Input
             void OnArrowMiniGame(InputAction.CallbackContext context);
             void OnRealisticStickMovement(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);
+            void OnNumberKeys(InputAction.CallbackContext context);
         }
     }
 }
