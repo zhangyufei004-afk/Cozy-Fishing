@@ -86,7 +86,7 @@ namespace FishingGame.Reeling
 
         private InputAction _directionAction;
 
-
+        private Image[] arrowSpawners;
 
         #endregion
 
@@ -96,8 +96,6 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             uiActionMap.Enable();
             _directionAction = uiActionMap.FindAction("ArrowMiniGame");
-
-            
         }
 
 
@@ -361,6 +359,11 @@ namespace FishingGame.Reeling
         public void UpdateTimer()
         {
             timerText.text = ("Time Remaining: " + Mathf.RoundToInt(_inputTimer));
+        }
+
+        private void SpawnArrow()
+        {
+            
         }
     }
 
