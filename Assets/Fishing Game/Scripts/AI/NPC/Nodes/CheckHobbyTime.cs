@@ -8,21 +8,28 @@ namespace FishingGame.AI.NPC.Nodes
     /// </summary>
     public class CheckHobbyTime : TreeNode
     {
-        private readonly float _hobbyStartTime;
-        private readonly float _hobbyEndTime;
-        private readonly InGameTime _gameTime;
+        private float _hobbyStartTime;
+        private float _hobbyEndTime;
+        private InGameTime _gameTime;
         
         public CheckHobbyTime(float hobbyStartTimeRatio, float hobbyEndTimeRatio)
+        {
+            _hobbyStartTime = hobbyStartTimeRatio;
+            _hobbyEndTime = hobbyEndTimeRatio;
+        }
+
+        public override void Initialize()
         {
             _gameTime = GetData("GameTime") as InGameTime;
 
             if (_gameTime != null)
             {
-                _hobbyStartTime = hobbyStartTimeRatio * _gameTime.DayLength;
-                _hobbyEndTime = hobbyEndTimeRatio * _gameTime.DayLength;
+                _hobbyStartTime *= _gameTime.DayLength;
+                _hobbyEndTime *= _gameTime.DayLength;
             }
+            base.Initialize();
         }
-        
+
         public override ETreeNodeState RunNode()
         {
             State = ETreeNodeState.Failure;

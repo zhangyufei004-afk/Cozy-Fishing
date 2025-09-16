@@ -17,6 +17,7 @@ namespace FishingGame.AI
         protected void Start()
         {
             _root = SetupTree();
+            _root.Initialize();
         }
 
         protected virtual void Update()

@@ -17,19 +17,18 @@ namespace FishingGame.AI
     /// Tree Node class representing a generic tree node. Tree Nodes can either be composites (like Selector, Sequence) or they can
     /// be concrete actions (leaf nodes).
     /// </summary>
-    public class TreeNode
+    public abstract class TreeNode
     {
-        public TreeNode Parent => _parent;
-        
+        public TreeNode Parent { get; protected set; }
+
         protected ETreeNodeState State;
         protected List<TreeNode> Children = new();
         
         private Dictionary<string, object> _data = new();
-        private TreeNode _parent;
         
         public TreeNode()
         {
-            _parent = null;
+            Parent = null;
         }
 
         public TreeNode(List<TreeNode> children)
@@ -46,7 +45,7 @@ namespace FishingGame.AI
         /// <param name="treeNode">The node to make the new child of this Node.</param>
         protected void Attach(TreeNode treeNode)
         {
-            treeNode._parent = this;
+            treeNode.Parent = this;
             Children.Add(treeNode);
         }
 
@@ -54,6 +53,14 @@ namespace FishingGame.AI
 
         public virtual ETreeNodeState RunPhysics() => ETreeNodeState.Failure;
 
+        public virtual void Initialize()
+        {
+            foreach (TreeNode child in Children)
+            {
+                child.Initialize();
+            }
+        }
+        
         /// <summary>
         /// Sets Data in the Data Dictionary for this node and any of its children to access. Data can be stored at any node level,
         /// though convention is to store it as close to the node that needs it, to avoid unnecessary tree traversal.

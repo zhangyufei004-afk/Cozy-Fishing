@@ -31,10 +31,6 @@ namespace FishingGame.AI.NPC.Nodes
             _workStartTimeRatio = workStartTimeRatio;
             _workEndTimeRatio = workEndTimeRatio;
             _inGameTime = gameTime;
-                
-            SetData("WorkStartTime", _workStartTimeRatio);
-            SetData("WorkEndTime", _workEndTimeRatio);
-            SetData("GameTime", _inGameTime);
             
             if (quest != null)
             { 
@@ -42,6 +38,14 @@ namespace FishingGame.AI.NPC.Nodes
                 _quest = quest;
                 
             }
+        }
+
+        public override void Initialize()
+        {
+            SetData("WorkStartTime", _workStartTimeRatio);
+            SetData("WorkEndTime", _workEndTimeRatio);
+            SetData("GameTime", _inGameTime);
+            base.Initialize();
         }
 
         public override ETreeNodeState RunNode()

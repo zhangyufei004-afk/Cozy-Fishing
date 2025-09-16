@@ -12,9 +12,9 @@ namespace FishingGame.AI.NPC.Nodes
     public class CheckQuestActive : TreeNode
     {
         private readonly IQuest _quest;
-        private readonly float _workStartTime;
-        private readonly float _workEndTime;
-        private readonly InGameTime _gameTime;
+        private float _workStartTime;
+        private float _workEndTime;
+        private InGameTime _gameTime;
         
         public CheckQuestActive([CanBeNull] IQuest quest)
         {
@@ -22,6 +22,10 @@ namespace FishingGame.AI.NPC.Nodes
             {
                 _quest = quest;
             } 
+        }
+
+        public override void Initialize()
+        {
             float workStartTimeRatio = (float)GetData("WorkStartTime");
             float workEndTimeRatio = (float)GetData("WorkEndTime");
             _gameTime = GetData("GameTime") as InGameTime;
@@ -31,6 +35,7 @@ namespace FishingGame.AI.NPC.Nodes
                 _workStartTime = _gameTime.DayLength * workStartTimeRatio;
                 _workEndTime = _gameTime.DayLength * workEndTimeRatio;
             }
+            base.Initialize();
         }
 
         public override ETreeNodeState RunNode()
