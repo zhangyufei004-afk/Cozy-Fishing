@@ -28,6 +28,8 @@ namespace FishingGame.AI.NPC
     [RequireComponent(typeof(NavMeshAgent))]
     public class EmployedNpc : BehaviourTree
     {
+        private static readonly int Speed = Animator.StringToHash("Speed");
+
         [Header("Resting Parameters")]
         [Tooltip("The home which the NPC rests at.")]
         [SerializeField] private Vector3 homePosition;
@@ -68,6 +70,10 @@ namespace FishingGame.AI.NPC
         
         [Header("UI Parameters")]
         [SerializeField] private DialogueUI dialogueUI;
+        
+        [Header("General Parameters")]
+        [SerializeField] private Animator animator;
+        [SerializeField] private NavMeshAgent agent;
         
         protected override TreeNode SetupTree()
         {
@@ -111,17 +117,23 @@ namespace FishingGame.AI.NPC
                         _hobbyPosition,
                         gameTime
                     ),
-                    new TaskMoveToDestination(GetComponent<NavMeshAgent>(), GetComponent<Animator>())
+                    new TaskMoveToDestination(agent, animator)
                 }),
                 new Sequence(new List<TreeNode>
                 {
                     new CheckLocation(_hobbyPosition, transform),
-                    new TaskCompleteHobby(hobby, GetComponent<Animator>(), transform)
+                    new TaskCompleteHobby(hobby, animator, transform)
                 }),
                 new TaskIdle(GetComponent<Animator>())
             });
             
             return rootNode;
+        }
+
+        protected override void Update()
+        {
+            animator.SetFloat(Speed, agent.velocity.magnitude);
+            base.Update();
         }
     }
 }

@@ -26,7 +26,10 @@ namespace FishingGame.AI.NPC.Nodes
 
         public override ETreeNodeState RunNode()
         {
-            _npcAnimator.SetBool(_animationBoolName, true);
+            if (_animationBoolName != "")
+            {
+                _npcAnimator.SetBool(_animationBoolName, true);
+            }
             _transform.rotation = Quaternion.Lerp(_transform.rotation, _directionToFace, Time.deltaTime);
             return ETreeNodeState.Running;
         }
