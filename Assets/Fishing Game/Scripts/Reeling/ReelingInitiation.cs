@@ -206,15 +206,14 @@ namespace FishingGame.Reeling
             reelingMasterScript.SetCancelButtonVisibilty(true);
             FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
+            _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 2, catchFishButtons.Count);
 
             _timeToPressNumbers = _stageOneDifficulty;
-
-            _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 0, catchFishButtons.Count);
             _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
 
             for (int i = 0; i < _stageOneDifficulty; i++)
             {
-                int numberToPress = UnityEngine.Random.Range(0, 9);
+                int numberToPress = UnityEngine.Random.Range(0, 10);
                 _activeNumbers.Add(catchFishButtons[i], numberToPress);
             }
 
@@ -548,6 +547,26 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Resets important variables that aren't done in BeginStageOne()
+        /// After that is done it will then call BeginStageOne to restart it
+        /// </summary>
+        private void ResetStageOne()
+        {
+            StopAllCoroutines();
+            _isStageOne = false;
+
+            foreach (var slot in catchFishButtons)
+            {
+                slot.gameObject.SetActive(false);
+            }
+            _activeNumber.gameObject.SetActive(true);
+            _activeNumber.color = Color.grey;
+            _activeNumber = null;
+
+            BeginStageOne();
+        }
+
+        /// <summary>
         /// A timer that controls how long a stage one button is clickable for
         /// If the timer is exceeded and the player hasn't completed stage one
         /// all buttons reset and stage one is restarted as the player was too slow to click
@@ -556,13 +575,11 @@ namespace FishingGame.Reeling
         /// <returns>Resets stage one and stops buttons being clickable if player has taken too long</returns>
         private IEnumerator CatchWindow()
         {
-            yield return new WaitForSeconds(100f);
+            yield return new WaitForSeconds(_timeToPressNumbers);
 
             if (_isStageOne)
             {
-                _activeNumber.gameObject.SetActive(true);
-                _activeNumber.color = Color.grey;
-                BeginStageOne();
+                ResetStageOne();
             }
         }
 
@@ -583,9 +600,6 @@ namespace FishingGame.Reeling
                 FishAtHook();
             }
         }
-
         #endregion
     }
-
-
 }
