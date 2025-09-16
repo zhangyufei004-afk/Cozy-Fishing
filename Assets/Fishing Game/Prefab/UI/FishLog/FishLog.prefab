@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Salmon
+  m_text: ???
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ba24a0175b58ffa22b82328e96c33c25, type: 2}
   m_sharedMaterial: {fileID: 3195491152340523166, guid: ba24a0175b58ffa22b82328e96c33c25, type: 2}
@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e48a6ba706ca8c04194788ae923a9ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishImage: {fileID: 0}
+  fishImage: {fileID: 8565460562065017580}
+  fishName: {fileID: 1734744700450894829}
   fishData: {fileID: 0}
   logUIMaster: {fileID: 0}

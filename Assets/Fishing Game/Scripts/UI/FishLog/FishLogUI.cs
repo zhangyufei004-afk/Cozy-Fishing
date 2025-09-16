@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.GameTime;
+using NUnit.Framework;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -23,9 +24,6 @@ namespace FishingGame.FishLog
         private Dictionary<FishScriptableObject, FishLogUIEntry> _entryDict;
 
         #region Fish info screen variables
-        [SerializeField]
-        [Tooltip("The parent of the individual fish ui elements")]
-        private GameObject individualFishParent;
 
         [SerializeField]
         [Tooltip("The image that shows what fish is being looked at")]
@@ -40,12 +38,12 @@ namespace FishingGame.FishLog
         private TextMeshProUGUI speciesBioText;
 
         [SerializeField]
-        [Tooltip("The list of location text")]
-        private List<TextMeshProUGUI> locations;
+        [Tooltip("The textbox that shows the location text")]
+        private TextMeshProUGUI location;
 
         [SerializeField]
-        [Tooltip("The list of time texts")]
-        private List<TextMeshProUGUI> timeTexts;
+        [Tooltip("The textbox that shows the time texts")]
+        private TextMeshProUGUI timeText;
 
         [SerializeField]
         [Tooltip("The text showing how many times this has been caught")]
@@ -89,52 +87,20 @@ namespace FishingGame.FishLog
         /// </summary>
         public void FishEntryClicked(FishScriptableObject fishData)
         {
-            if (!CheckIfFishHasBeenCaught(fishData)) { return; }
-
-            gameObject.SetActive(false);
-            individualFishParent.SetActive(true);
-
             fishImage.sprite = fishData.Texture;
-            speciesNameText.text = fishData.SpeciesName;
-            speciesBioText.text = fishData.FishBio;
-            
-            if (fishData.IsInvasive){ isInvasiveText.text = "Invasive Fish"; }
-            else { isInvasiveText.text = "Noninvasive Fish"; }
+            bool hasBeenCaught = CheckIfFishHasBeenCaught(fishData);
 
-            SetupLocationTexts(fishData);
-            SetupTimeTexts(fishData);
+            fishImage.color = hasBeenCaught ? Color.white : Color.black;
 
-            int fishCaughtCount = _gameManager.GetFishTimesCaught(fishData);
-            amountCaughtText.text = "Total Caught: " + fishCaughtCount;
+            speciesNameText.text = hasBeenCaught ? fishData.SpeciesName : "???";
+            speciesBioText.text = hasBeenCaught ? fishData.FishBio : "???";
+            isInvasiveText.text = hasBeenCaught ? (fishData.IsInvasive ? "Invasive: Yes" : "Invasive: No") : "Invasive: ???";
 
-            float fishBiggestCatch = _gameManager.GetBiggestCaught(fishData);
-            biggestCatchText.text = "Biggest Catch: " + fishBiggestCatch + " kg";
-        }
+            location.text = hasBeenCaught ? SetupLocationTexts(fishData) : "???";
+            timeText.text = hasBeenCaught ? SetupTimeTexts(fishData) : "???";
 
-        /// <summary>
-        /// Sets the fish Entry UI elements to be invisible 
-        /// </summary>
-        public void HideFishEntry()
-        {
-            individualFishParent.SetActive(false);
-
-            foreach (TextMeshProUGUI locationText in locations)
-            {
-                locationText.gameObject.SetActive(false);
-            }
-
-            foreach (TextMeshProUGUI timeText in timeTexts)
-            {
-                timeText.gameObject.SetActive(false);
-            }
-        }
-
-        /// <summary>
-        /// Sets the fishlogui to be active
-        /// </summary>
-        public void EnableFishLogUI()
-        {
-            gameObject.SetActive(true);
+            amountCaughtText.text = hasBeenCaught ? ("Amount Caught: " + _gameManager.GetFishTimesCaught(fishData)) : "Amount Caught: n/a";
+            biggestCatchText.text = hasBeenCaught ? ("Biggest Catch: " + _gameManager.GetBiggestCaught(fishData) + " kg") : "Biggest Caught: n/a";
         }
 
         /// <summary>
@@ -176,47 +142,39 @@ namespace FishingGame.FishLog
         }
 
         /// <summary>
-        /// Sets up the location text ui elements.
+        /// Sets up and returns the location text ui elements.
         /// </summary>
         /// <param name="fishData">The fish data that is being used</param>
-        private void SetupLocationTexts(FishScriptableObject fishData)
+        /// <returns> String with the concatenated Locations </returns>
+        private string SetupLocationTexts(FishScriptableObject fishData)
         {
             List<EFishingLocation> fishLocations = fishData.LocationsFound;
-            List<string> fishLocationsStrings = new List<string>();
+            string fishLocationsString = fishLocations[0].ToString();
 
-            for (int i = 0; i < fishLocations.Count; i++)
+            for (int i = 1; i < fishLocations.Count; i++)
             {
-                var location = fishLocations[i];
-                fishLocationsStrings.Add(location.ToString());
+                fishLocationsString += ", " + fishLocations[i].ToString();
             }
 
-            for (int i = 0; i < fishLocationsStrings.Count; i++)
-            {
-                locations[i].gameObject.SetActive(true);
-                locations[i].text = fishLocationsStrings[i];
-            }
+            return fishLocationsString;
         }
 
         /// <summary>
-        /// Sets up the time UI text elements
+        /// Sets up and returns the time UI text elements
         /// </summary>
         /// <param name="fishData">The fish data being used for the UI</param>
-        private void SetupTimeTexts(FishScriptableObject fishData)
+        /// <returns> String with the concatenated Times </returns>
+        private string SetupTimeTexts(FishScriptableObject fishData)
         {
             List<ETimeOfDay> timesFound = fishData.TimesFound;
-            List<string> fishTimesStrings = new List<string>();
+            string fishTimesString = timesFound[0].ToString();
 
-            for (int i = 0; i < timesFound.Count; i++)
+            for (int i = 1; i < timesFound.Count; i++)
             {
-                var time = timesFound[i];
-                fishTimesStrings.Add(time.ToString());
+                fishTimesString += ", " + timesFound[i].ToString();
             }
 
-            for (int i = 0; i < fishTimesStrings.Count; i++)
-            {
-                timeTexts[i].gameObject.SetActive(true);
-                timeTexts[i].text = fishTimesStrings[i];
-            }
+            return fishTimesString;
         }
     }
 }

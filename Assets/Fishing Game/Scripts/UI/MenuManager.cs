@@ -43,6 +43,7 @@ namespace FishingGame
         public void SetMenu(bool isActive)
         {
             menuObject.SetActive(isActive);
+            Time.timeScale = isActive ? 0.0f : 1.0f;
         }
     }
 }
