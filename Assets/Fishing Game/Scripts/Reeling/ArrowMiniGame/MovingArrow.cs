@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -41,6 +42,10 @@ namespace FishingGame.Reeling
         private EMovementDirection _inputedAction;
 
         private InputAction _directionAction;
+        private float _targetAlpha;
+        [SerializeField]
+        [Tooltip("The rate at which this fades out")]
+        private float fadeRate;
 
 
 
@@ -91,7 +96,6 @@ namespace FishingGame.Reeling
                         }
                     }
                 }
-                
             }
         }
 
@@ -161,17 +165,55 @@ namespace FishingGame.Reeling
             return EMovementDirection.Down;
         }
 
+        /// <summary>
+        /// Run when an arrow is sucsessfully pressed
+        /// </summary>
         private void ArrowSuccsessfullyPressed()
         {
             _isActive = false;
             ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
             masterScript.ArrowSuccsessfullyPressed(this);
+            StartFadeAway(true);
         }
 
+        /// <summary>
+        /// Run when an arrow reaches the failpoint
+        /// </summary>
         private void ArrowFailed()
         {
+            _isActive = false;
             ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
             masterScript.ArrowFailedToBePressed(this);
+        }
+
+        /// <summary>
+        /// Sets the arrow color based on if it was failed or a succsess then starts the fade away coroutine
+        /// </summary>
+        /// <param name="wasASuccsess">Input true if this arrow was pressed properly, otherwise false</param>
+        private void StartFadeAway(bool wasASuccsess)
+        {
+            if (wasASuccsess) { _arrowImage.color = Color.grey; }
+            else { _arrowImage.color = Color.red; }
+
+            StartCoroutine(FadeAway());
+        }
+
+        /// <summary>
+        /// Slowly fades away the arrow
+        /// </summary>
+        /// <returns>Arrow fades away</returns>
+        private IEnumerator FadeAway()
+        {
+            _targetAlpha = 0.1f;
+            Color currentColor = _arrowImage.color;
+            while(Mathf.Abs(currentColor.a - _targetAlpha) > 0.0001f)
+            {
+                currentColor.a = Mathf.Lerp(currentColor.a, _targetAlpha, fadeRate * Time.deltaTime);
+                _arrowImage.color = currentColor;
+                yield return null;
+            }
+
+            Destroy(gameObject);
         }
 
     }

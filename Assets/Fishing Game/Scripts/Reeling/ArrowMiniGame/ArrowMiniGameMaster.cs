@@ -199,6 +199,13 @@ namespace FishingGame.Reeling
             else { return false; }
         }
         
+        /// <summary>
+        /// Run when an arrow is pressed at the correct time
+        /// This takes the inputed arrow, removes it from the active arrow list
+        /// Modifys the progress by increasing it
+        /// It then check if the progress is high enough, and if so wins the minigame
+        /// </summary>
+        /// <param name="arrowCompleted">The arrow being modified</param>
         public void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
             AddOrRemoveActiveArrow(arrowCompleted, false);
@@ -206,6 +213,13 @@ namespace FishingGame.Reeling
             if (CheckIfEnoughProgress()) { WinMiniGame(); }
         }
 
+        /// <summary>
+        /// Run when an arrow has passed the fail point
+        /// This will Remove the arrow from active arrow list
+        /// Subtract progress
+        /// And will then check if progress is low enough for a fail
+        /// </summary>
+        /// <param name="arrowFailed"></param>
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
             AddOrRemoveActiveArrow(arrowFailed, false);
