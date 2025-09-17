@@ -1,5 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
@@ -29,16 +30,34 @@ namespace FishingGame.Reeling
         private ArrowSpawner _spawner;
 
         private bool _isActive = false;
+        private bool _canBePressed = false;
         private float _speedScalar = 1f;
+        [SerializeField]
+        private ArrowGoalPoints _goalPoint;
+        private Image _arrowImage;
+        private float _acceptanceDistance = 250f;
 
         private EMovementDirection _typeOfArrow;
+        private EMovementDirection _inputedAction;
+
+        private InputAction _directionAction;
+
 
 
         private void OnEnable()
         {
+            _arrowImage = GetComponent<Image>();
+
             int enumValueCount = System.Enum.GetValues(typeof(EMovementDirection)).Length;
             _typeOfArrow = (EMovementDirection)Random.Range(0, enumValueCount + 1);
             DetermineArrowSprite();
+
+            InputActionAsset inputActions = InputSystem.actions;
+            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
+            uiActionMap.Enable();
+            _directionAction = uiActionMap.FindAction("ArrowMiniGame");
+
+            
         }
 
         private void Update()
@@ -49,6 +68,30 @@ namespace FishingGame.Reeling
                 Vector3 newPosition = new Vector3(currentPosition.x, currentPosition.y - _speedScalar * Time.deltaTime, currentPosition.z);
 
                 transform.position = newPosition;
+
+                if (_goalPoint.CheckUIOverlap(_acceptanceDistance, gameObject))
+                {
+                    _canBePressed = true;
+                    _arrowImage.color = Color.green;
+                }
+                else
+                {
+                    _canBePressed = false;
+                    _arrowImage.color = Color.white;
+                }
+
+                if (_canBePressed)
+                {
+                    if (_directionAction.WasPressedThisFrame())
+                    {
+                        Vector2 direction = _directionAction.ReadValue<Vector2>();
+                        if (GetMovementDirection(direction) == _typeOfArrow)
+                        {
+                            ArrowSuccsessfullyPressed();
+                        }
+                    }
+                }
+                
             }
         }
 
@@ -78,6 +121,7 @@ namespace FishingGame.Reeling
         public void SetSpawner(ArrowSpawner spawner)
         {
             _spawner = spawner;
+            _goalPoint = _spawner.GetArrowGoal();
         }
 
         /// <summary>
@@ -91,18 +135,43 @@ namespace FishingGame.Reeling
             switch ( _typeOfArrow )
             {
                 case EMovementDirection.Left:
-                    GetComponent<Image>().sprite = leftArrowSprite;
+                    _arrowImage.sprite = leftArrowSprite;
                     break;
                 case EMovementDirection.Right:
-                    GetComponent<Image>().sprite = rightArrowSprite;
+                    _arrowImage.sprite = rightArrowSprite;
                     break;
                 case EMovementDirection.Up:
-                    GetComponent<Image>().sprite = upArrowSprite;
+                    _arrowImage.sprite = upArrowSprite;
                     break;
                 default:
-                    GetComponent<Image>().sprite = downArrowSprite;
+                    _arrowImage.sprite = downArrowSprite;
                     break;
             }
+        }
+
+        /// <summary>
+        /// Returns an EMovementDirection enum value based on the inputed Vector2
+        /// </summary>
+        /// /// <param name="directionValue">The Vector2 input from the action</param>
+        private EMovementDirection GetMovementDirection(Vector2 directionValue)
+        {
+            if (directionValue.x > 0) { return EMovementDirection.Right; }
+            if (directionValue.x < 0) { return EMovementDirection.Left; }
+            if (directionValue.y > 0) { return EMovementDirection.Up; }
+            return EMovementDirection.Down;
+        }
+
+        private void ArrowSuccsessfullyPressed()
+        {
+            _isActive = false;
+            ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
+            masterScript.ArrowSuccsessfullyPressed(this);
+        }
+
+        private void ArrowFailed()
+        {
+            ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
+            masterScript.ArrowFailedToBePressed(this);
         }
 
     }

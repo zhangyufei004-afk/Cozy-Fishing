@@ -1,7 +1,9 @@
 using FishingGame.FishSystem;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
@@ -22,8 +24,16 @@ namespace FishingGame.Reeling
         private List<ArrowSpawner> spawnPoints;
 
         [SerializeField]
+        [Tooltip("The UI elements that arrows must reach, the order of this list should match the order of spawnpoints, for example spawnPoins[0] should be the spawnpoint directly above arrowGoalPoints[0]")]
+        private List<ArrowGoalPoints> arrowGoalPoints;
+
+        [SerializeField]
         [Tooltip("The parent object of the ui")]
         private GameObject fishingCanvas;
+
+        [SerializeField]
+        [Tooltip("The slider that visually represents the total progress")]
+        private Slider progressSlider;
 
         [Header("Minigame Data")]
 
@@ -52,23 +62,31 @@ namespace FishingGame.Reeling
         private int maxArrowVariance;
 
         [SerializeField]
-        [Tooltip("The amount of progress needed to complete the minigame")]
-        private float maxProgress;
-
-        [SerializeField]
         [Tooltip("The absolute minimum amount of progress to be removed or added regardless of difficulty")]
         private float minProgressModify;
+
+        [SerializeField]
+        [Tooltip("The default amount of progress to add or takeaway, this is modified as time in the minigame goes on")]
+        private float defaultProgressModify;
+
+        [SerializeField]
+        [Tooltip("The default amount of progress needed to complete minigame, this is scaled based on difficulty")]
+        private float defaultProgressMax;
 
         private Fish _fishData;
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
         private int _currentArrowCount;
-        private float _progress;
-        private float _progressIncreaseAmount;
-        private float _progressDecreaseAmount;
+        private float _currentProgress;
+        private float _currentTimePassed;
+        private float _maxTimeBeforeModify;
+        private int _timeModifier;
+        private float _maxProgress;
+        private bool _gameActive = false;
 
 
         private List<MovingArrow> _activeArrows;
+        private List<MovingArrow> _arrowsAbleToBePressed;
 
         [Header("Misc")]
 
@@ -85,12 +103,18 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             uiActionMap.Enable();
             _directionAction = uiActionMap.FindAction("ArrowMiniGame");
+
+            _activeArrows = new List<MovingArrow>();
         }
 
 
         void Update()
         {
+            if (_gameActive != true) { return; }
 
+            _currentTimePassed += Time.deltaTime;
+
+            CheckTimePassed();
         }
 
         public void InitializeMiniGame(Fish fishScriptable)
@@ -99,15 +123,32 @@ namespace FishingGame.Reeling
             _fishDifficulty = _fishData.GetFishCatchDifficulty();
             fishingCanvas.SetActive(true);
 
+            ResetRuntimeVariables();
             SetDifficultyModifiers();
 
-
-
+            int i = 0;
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.InitiateSpawner(_fishDifficulty, spawnableArrow, arrowGoalPoints[i]);
+                i++;
+            }
         }
 
         public void BeginMiniGame()
         {
-            throw new System.NotImplementedException();
+            _gameActive = true;
+            
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(true);
+
+                // TEMP
+                spawner.SpawnArrow();
+            }
+
+
+
         }
 
         public void LoseMiniGame()
@@ -122,7 +163,7 @@ namespace FishingGame.Reeling
 
         private void SpawnArrow()
         {
-
+            if (HasReachedMaxArrowSpawned()) { return; }
         }
 
         /// <summary>
@@ -147,8 +188,6 @@ namespace FishingGame.Reeling
             }
         }
 
-        
-
         /// <summary>
         /// Checks if the maximum arrow count has been reached
         /// Returns true if it has otherwise false
@@ -160,10 +199,18 @@ namespace FishingGame.Reeling
             else { return false; }
         }
         
-        private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
+        public void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
             AddOrRemoveActiveArrow(arrowCompleted, false);
+            ModifyProgress(defaultProgressModify * _timeModifier);
+            if (CheckIfEnoughProgress()) { WinMiniGame(); }
+        }
 
+        public void ArrowFailedToBePressed(MovingArrow arrowFailed)
+        {
+            AddOrRemoveActiveArrow(arrowFailed, false);
+            ModifyProgress(-defaultProgressModify * _timeModifier);
+            if (CheckIfFailed()) { LoseMiniGame(); }
         }
 
         /// <summary>
@@ -174,15 +221,44 @@ namespace FishingGame.Reeling
         /// <returns>True if progress is high enough, otherwise false</returns>
         private bool CheckIfEnoughProgress()
         {
-            if (_progress == maxProgress) { return true; }
+            if (_currentProgress == _maxProgress) { return true; }
             else { return false; }
         }
 
-        private void ModifyProgress(float progressValue)
+        /// <summary>
+        /// Checks if the progress has reached 0 meaning a fail
+        /// Return true if it has, otherwise false
+        /// </summary>
+        /// <returns>True if failed minigame, otherwise false</returns>
+        private bool CheckIfFailed()
         {
-
+            if (_currentProgress == 0) { return true; }
+            else { return false; }
         }
 
+        /// <summary>
+        /// Modifys the current progress based on the inputed value
+        /// Updates the slider UI to properly reflect the progress
+        /// </summary>
+        /// <param name="progressValue"></param>
+        private void ModifyProgress(float progressValue)
+        {
+            _currentProgress += progressValue;
+            progressSlider.value = progressValue;
+        }
+
+        /// <summary>
+        /// Checks if enough time has past since the last time the time modifier was changed
+        /// If so, increases the time modified by 1
+        /// </summary>
+        private void CheckTimePassed()
+        {
+            if (_currentTimePassed >= _maxTimeBeforeModify)
+            {
+                _currentTimePassed = 0;
+                _timeModifier += 1;
+            }
+        }
         
 
         
@@ -195,7 +271,7 @@ namespace FishingGame.Reeling
         private void SetDifficultyModifiers()
         {
             SetMaxAmountOfActiveArrows();
-            SetProgressModifiers();
+            SetMaxAmountOfProgress();
         }
 
         /// <summary>
@@ -211,9 +287,26 @@ namespace FishingGame.Reeling
             _maxAmountOfActiveArrows = (_fishDifficulty * 2) + maxArrowVariance;
         }
 
-        private void SetProgressModifiers()
+        /// <summary>
+        /// Sets the max amount of progress needed to complete the minigame
+        /// This is set through multiplying the defaulmaxprogress with the fishes difficulty
+        /// Also sets the sliders max progress value
+        /// </summary>
+        private void SetMaxAmountOfProgress()
         {
+            _maxProgress = defaultProgressMax * _fishDifficulty;
+            progressSlider.maxValue = _maxProgress;
+        }
 
+        /// <summary>
+        /// Resets all variables that change as the minigame is played
+        /// </summary>
+        private void ResetRuntimeVariables()
+        {
+            _timeModifier = 0;
+            _currentProgress = 0;
+            _currentArrowCount = 0;
+            _activeArrows.Clear();
         }
 
         #endregion

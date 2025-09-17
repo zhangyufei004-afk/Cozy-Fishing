@@ -15,12 +15,13 @@ namespace FishingGame.Reeling
         private bool _isActive = false;
         private int _currentDifficultyLevel;
         private GameObject _arrowToSpawn;
+        private ArrowGoalPoints _goalPoint;
 
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            SpawnArrow();
+
         }
 
         // Update is called once per frame
@@ -34,7 +35,9 @@ namespace FishingGame.Reeling
         /// </summary>
         public void SpawnArrow()
         {
+            if (CheckIsActive() != true) { return; }
             GameObject currentArrow = Instantiate(_arrowToSpawn, gameObject.transform);
+            currentArrow.transform.parent = GetArrowGoal().gameObject.transform;
             masterScript.AddOrRemoveActiveArrow(currentArrow.GetComponent<MovingArrow>(), true);
             currentArrow.GetComponent<MovingArrow>().ActivateArrow(50);
             currentArrow.GetComponent<MovingArrow>().SetSpawner(this);
@@ -46,10 +49,12 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="difficultyLevel">The difficulty level to set</param>
         /// <param name="arrowPrefab">The arrow prefab that will be spawned</param>
-        public void InitiateSpawners(int difficultyLevel, GameObject arrowPrefab)
+        /// <param name="goalPoint">The goal point for this spawner</param>
+        public void InitiateSpawner(int difficultyLevel, GameObject arrowPrefab, ArrowGoalPoints goalPoint)
         {
             _currentDifficultyLevel = difficultyLevel;
             _arrowToSpawn = arrowPrefab;
+            _goalPoint = goalPoint;
         }
 
         /// <summary>
@@ -61,6 +66,22 @@ namespace FishingGame.Reeling
         {
             if (isActive) { _isActive = true; }
             else { _isActive = false; }
+        }
+
+        public ArrowGoalPoints GetArrowGoal()
+        { 
+            return _goalPoint;
+        }
+
+        private bool CheckIsActive()
+        {
+            if (_isActive) { return true; }
+            else { return false; }
+        }
+
+        public ArrowMiniGameMaster GetMasterScript()
+        {
+            return masterScript;
         }
     }
 }
