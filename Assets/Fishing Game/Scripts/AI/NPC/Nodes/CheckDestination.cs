@@ -49,6 +49,11 @@ namespace FishingGame.AI.NPC.Nodes
             SetData("Hobby", _hobbyLocation);
         }
 
+        /// <summary>
+        /// Executes the current Tree Node. Checks the current location against the expected locations for the current time
+        /// and return success if we are NOT at the correct location.
+        /// </summary>
+        /// <returns>ETreeNodeState.Success if we are not at the correct position, Failure otherwise.</returns>
         public override ETreeNodeState RunNode()
         {
             State = ETreeNodeState.Failure;
@@ -64,11 +69,11 @@ namespace FishingGame.AI.NPC.Nodes
             Vector3 hobbyLocation = (Vector3)GetData("Hobby");
             Vector3 homeLocation = (Vector3)GetData("Home");
 
-            if (!IsAtCorrectPosition(_npcTransform.position, workLocation, currentTime, 
+            if (IsNotAtCorrectPosition(_npcTransform.position, workLocation, currentTime, 
                     workTime, hobbyTime) 
-                || !IsAtCorrectPosition(_npcTransform.position, hobbyLocation, currentTime, 
+                || IsNotAtCorrectPosition(_npcTransform.position, hobbyLocation, currentTime, 
                     hobbyTime, homeTime) 
-                || !IsAtCorrectPosition(_npcTransform.position, homeLocation, currentTime, 
+                || IsNotAtCorrectPosition(_npcTransform.position, homeLocation, currentTime, 
                     homeTime, dayLength))
             {   // If we arent at any of the correct positions, return Success
                 State = ETreeNodeState.Success;
@@ -76,17 +81,17 @@ namespace FishingGame.AI.NPC.Nodes
             return State;
         }
 
-        private bool IsAtCorrectPosition(Vector3 currentPosition, Vector3 positionToCheckAgainst, float currentTime,
+        private bool IsNotAtCorrectPosition(Vector3 currentPosition, Vector3 positionToCheckAgainst, float currentTime,
             float minTimeToMove, float maxTimeToMove)
         {
             if (currentTime < maxTimeToMove && currentTime > minTimeToMove &&
-                Vector3.Distance(currentPosition, positionToCheckAgainst) < 0.1f && 
-                _currentDestinationWorld == positionToCheckAgainst)
+                Vector3.Distance(currentPosition, positionToCheckAgainst) > 0.1f && 
+                _currentDestinationWorld != positionToCheckAgainst)
             {   // If we are at the position and the times are correct for this position
+                SetData("Destination", positionToCheckAgainst);
+                _currentDestinationWorld = positionToCheckAgainst;
                 return true;
             }
-            SetData("Destination", positionToCheckAgainst);
-            _currentDestinationWorld = positionToCheckAgainst;
             return false;
         }
     }
