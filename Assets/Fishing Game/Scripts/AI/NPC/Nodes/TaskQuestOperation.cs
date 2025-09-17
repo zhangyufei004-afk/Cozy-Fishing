@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FishingGame.GameManagement;
 using FishingGame.NPC.UI;
 using FishingGame.QuestSystem;
 
@@ -15,19 +16,24 @@ namespace FishingGame.AI.NPC.Nodes
         private readonly DialogueUI _questDialogueUI;
         private readonly List<string> _questDialogue;
         private readonly DialogueUI.EQuestOperation _questOperation;
+        private readonly string _npcName;
         
-        public TaskQuestOperation(string questName, List<string> questDialogue, DialogueUI questDialogueUI, DialogueUI.EQuestOperation operation)
+        public TaskQuestOperation(string questName, 
+            List<string> questDialogue, 
+            DialogueUI questDialogueUI, 
+            DialogueUI.EQuestOperation operation,
+            string npcName)
         {
             _questName = questName;
             _questDialogueUI = questDialogueUI;
             _questDialogue = questDialogue;
             _questOperation = operation;
+            _npcName = npcName;
         }
 
         public override ETreeNodeState RunNode()
         {
-            _questDialogueUI.DisplayDialogue(_questDialogue, _questName, _questOperation);
-
+            _questDialogueUI.DisplayDialogue(_questDialogue, _npcName, _questName, _questOperation);
             State = ETreeNodeState.Running;
             return State;
         }

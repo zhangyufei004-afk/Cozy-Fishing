@@ -40,13 +40,13 @@ namespace FishingGame.AI.NPC
                 string stageDialogue = _questToGive.GetCurrentStageQuip();
                 List<string> dialogueList = new List<string>();
                 dialogueList.Add(stageDialogue);
-                questDialogueUI.DisplayDialogue(dialogueList);
+                // questDialogueUI.DisplayDialogue(dialogueList);
                 return;
             }
             
             if (_questToGive is not null && _questToGive.CanQuestBeMarkedComplete())
             {
-                questDialogueUI.DisplayDialogue(questEndDialogue);
+                // questDialogueUI.DisplayDialogue(questEndDialogue);
                 return;
             }
             questDialogueUI.DisplayDialogue(preQuestDialogue, questName);

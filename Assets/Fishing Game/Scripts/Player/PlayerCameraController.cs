@@ -1,4 +1,3 @@
-using FishingGame.AI.NPC;
 using FishingGame.GameManagement;
 using FishingGame.NPC;
 using Unity.Cinemachine;
@@ -58,13 +57,7 @@ namespace FishingGame.Player
 
         private void SwitchToDialogueCamera(InputAction.CallbackContext context)
         {
-            bool switchToCamera = context.ReadValueAsButton();
-            if (_isInDialogueRange)
-            {
-                dialogCamera.gameObject.SetActive(switchToCamera);
-                GameManager.Instance.GameEvents.TogglePlayerMovement(false);
-                GameManager.Instance.GameEvents.NPCInteraction(true, _npcName);
-            }
+            GameManager.Instance.GameEvents.NPCInteraction(true, _npcName);
         }
 
         private void ToggleDialogueCamera(bool enableCamera)

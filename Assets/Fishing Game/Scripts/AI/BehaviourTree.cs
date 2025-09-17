@@ -14,7 +14,7 @@ namespace FishingGame.AI
 
         #endregion
 
-        protected void Start()
+        protected virtual void Start()
         {
             _root = SetupTree();
             _root.Initialize();

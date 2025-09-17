@@ -45,15 +45,16 @@ namespace FishingGame.NPC.UI
         /// Displays the specified single line of dialogue on the screen for the player to read.
         /// </summary>
         /// <param name="dialogueLine">The line of dialogue to display to the player.</param>
+        /// <param name="initiatingNPCName">The name of the NPC who initiated this dialogue exchange.</param>
         /// <param name="questName">The name of the quest to have an operation performed on after the dialogue has been displayed. Can be null.</param>
         /// <param name="questOperation">The operation to perform on the specified quest. This operation will only be performed if questName is also specified.</param>
-        public void DisplayDialogueLine(string dialogueLine, [CanBeNull] string questName = null,
+        public void DisplayDialogueLine(string dialogueLine, string initiatingNPCName, [CanBeNull] string questName = null,
             EQuestOperation questOperation = EQuestOperation.None)
         {
             List<string> dialogueLines = new List<string> { dialogueLine };
-            DisplayDialogue(dialogueLines, questName, questOperation);
+            DisplayDialogue(dialogueLines, initiatingNPCName, questName, questOperation);
         }
-        
+
         /// <summary>
         /// Displays the specified Dialogue on the screen for the player to read.
         /// <para>
@@ -61,20 +62,25 @@ namespace FishingGame.NPC.UI
         /// </para>
         /// </summary>
         /// <param name="dialogue">The list of sentences to display</param>
+        /// <param name="initiatingNPCName">The name of the NPC who initiated this dialogue exchange.</param>
         /// <param name="questName">The quest which should be started/ended after displaying the dialogue. If not specified no Quest will be started/ended.</param>
         /// <param name="questOperation"></param>
-        public void DisplayDialogue(List<string> dialogue, [CanBeNull] string questName = null, EQuestOperation questOperation = EQuestOperation.None)
+        public void DisplayDialogue(List<string> dialogue, string initiatingNPCName, [CanBeNull] string questName = null, EQuestOperation questOperation = EQuestOperation.None)
         {
             if (!dialoguePanel.activeInHierarchy)
             {   // Only display dialogue if we aren't already
                 dialoguePanel.SetActive(true);
                 _currentDialogueIndex = 0;
-                StartCoroutine(DisplayDialogueRoutine(dialogue, questName, questOperation));
+                StartCoroutine(DisplayDialogueRoutine(dialogue, initiatingNPCName, questName, questOperation));
             }
         }
 
-        private IEnumerator DisplayDialogueRoutine(List<string> dialogue, [CanBeNull] string questName, EQuestOperation questOperation)
+        private IEnumerator DisplayDialogueRoutine(List<string> dialogue, string initiatingNPCName, [CanBeNull] string questName, EQuestOperation questOperation)
         {
+            GameManager.Instance.GameEvents.TogglePlayerMovement(false);
+            GameManager.Instance.GameEvents.ToggleDialogueCamera(true);
+            GameManager.Instance.GameEvents.ToggleNPCMovement(false, initiatingNPCName);
+
             int previousDialogueIndex = -1;
             while (_currentDialogueIndex < dialogue.Count)
             {
@@ -99,6 +105,8 @@ namespace FishingGame.NPC.UI
             }
             GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             GameManager.Instance.GameEvents.ToggleDialogueCamera(false);
+            GameManager.Instance.GameEvents.ToggleNPCMovement(true, initiatingNPCName);
+            GameManager.Instance.GameEvents.NPCInteraction(false, initiatingNPCName);
         }
 
         private void IncrementDialogueIndex(InputAction.CallbackContext context)

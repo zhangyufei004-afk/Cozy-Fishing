@@ -10,16 +10,18 @@ namespace FishingGame.AI.NPC.Nodes
     {
         private readonly string _hobbyQuip;
         private readonly DialogueUI _dialogueUI;
+        private readonly string _npcName;
         
-        public TaskHobbyQuip(string hobbyQuip, DialogueUI dialogueUI)
+        public TaskHobbyQuip(string hobbyQuip, DialogueUI dialogueUI, string npcName)
         {
             _dialogueUI = dialogueUI;
             _hobbyQuip = hobbyQuip;
+            _npcName = npcName;
         }
 
         public override ETreeNodeState RunNode()
         {
-            _dialogueUI.DisplayDialogueLine(_hobbyQuip);
+            _dialogueUI.DisplayDialogueLine(_hobbyQuip, _npcName);
             State = ETreeNodeState.Running;
             return State;
         }

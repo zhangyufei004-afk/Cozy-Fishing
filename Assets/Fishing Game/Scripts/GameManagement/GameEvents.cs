@@ -62,6 +62,12 @@ namespace FishingGame.GameManagement
 
         #endregion
 
+        #region AI Events
+
+        public event Action<bool, string> OnToggleNPCMovement;
+
+        #endregion
+
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
@@ -179,6 +185,16 @@ namespace FishingGame.GameManagement
         public void NPCInteraction(bool isCurrentlyInteracting, string npcName)
         {
             OnNPCInteraction?.Invoke(isCurrentlyInteracting, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleNPCMovement event to tell the NPC named <c>npcName</c> to disable or enable its movement.
+        /// </summary>
+        /// <param name="isMovementEnabled">Bool to represent whether the movement is enabled. True if movement is enabled, false otherwise.</param>
+        /// <param name="npcName">The name of the NPC to disable movement on.</param>
+        public void ToggleNPCMovement(bool isMovementEnabled, string npcName)
+        {
+            OnToggleNPCMovement?.Invoke(isMovementEnabled, npcName);
         }
     }
 }

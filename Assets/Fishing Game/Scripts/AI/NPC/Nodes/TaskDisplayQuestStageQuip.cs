@@ -12,16 +12,18 @@ namespace FishingGame.AI.NPC.Nodes
     {
         private readonly IQuest _quest;
         private readonly DialogueUI _questDialogueUI;
+        private readonly string _npcName;
         
-        public TaskDisplayQuestStageQuip(IQuest quest, DialogueUI questDialogueUI)
+        public TaskDisplayQuestStageQuip(IQuest quest, DialogueUI questDialogueUI, string npcName)
         {
             _quest = quest;
             _questDialogueUI = questDialogueUI;
+            _npcName = npcName;
         }
 
         public override ETreeNodeState RunNode()
         {
-            _questDialogueUI.DisplayDialogueLine(_quest.GetCurrentStageQuip());
+            _questDialogueUI.DisplayDialogueLine(_quest.GetCurrentStageQuip(), _npcName);
             State = ETreeNodeState.Running;
             return State;
         }

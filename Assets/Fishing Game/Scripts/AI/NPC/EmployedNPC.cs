@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FishingGame.AI.NPC.Nodes;
+using FishingGame.GameManagement;
 using FishingGame.GameTime;
 using FishingGame.NPC.UI;
 using FishingGame.QuestSystem;
@@ -74,6 +76,25 @@ namespace FishingGame.AI.NPC
         [Header("General Parameters")]
         [SerializeField] private Animator animator;
         [SerializeField] private NavMeshAgent agent;
+
+        private float _initialMovementSpeed;
+
+        private void Awake()
+        {
+            _initialMovementSpeed = agent.speed;
+        }
+
+        protected override void Start()
+        {
+            GameManager.Instance.GameEvents.OnToggleNPCMovement += ToggleMovement;
+            base.Start();
+        }
+
+        private void LateUpdate()
+        {
+            float speed = agent.velocity.magnitude;
+            animator.SetFloat(Speed, speed);
+        }
         
         protected override TreeNode SetupTree()
         {
@@ -89,23 +110,23 @@ namespace FishingGame.AI.NPC
                     {
                         new Sequence(new List<TreeNode>
                         {
-                            new CheckQuestGiver(quest, workTime, homeTime, gameTime),
-                            new TaskQuestOperation(questName, quest.GetPreQuestDialogue(), dialogueUI, DialogueUI.EQuestOperation.Start)
+                            new CheckQuestGiver(quest, workTime, hobbyTime, gameTime),
+                            new TaskQuestOperation(questName, quest.GetPreQuestDialogue(), dialogueUI, DialogueUI.EQuestOperation.Start, npcName)
                         }),
                         new Sequence(new List<TreeNode>
                         {
                             new CheckQuestCanBeEnded(quest),
-                            new TaskQuestOperation(questName, quest.GetQuestEndDialogue(), dialogueUI, DialogueUI.EQuestOperation.End)
+                            new TaskQuestOperation(questName, quest.GetQuestEndDialogue(), dialogueUI, DialogueUI.EQuestOperation.End, npcName)
                         }),
                         new Sequence(new List<TreeNode>
                         {
                             new CheckQuestActive(quest),
-                            new TaskDisplayQuestStageQuip(quest, dialogueUI)
+                            new TaskDisplayQuestStageQuip(quest, dialogueUI, npcName)
                         }),
                         new Sequence(new List<TreeNode>
                         {
                             new CheckHobbyTime(hobbyTime, homeTime),
-                            new TaskHobbyQuip(hobby.HobbyQuip, dialogueUI)
+                            new TaskHobbyQuip(hobby.HobbyQuip, dialogueUI, npcName)
                         })
                     })
                 }),
@@ -124,16 +145,19 @@ namespace FishingGame.AI.NPC
                     new CheckLocation(_hobbyPosition, transform),
                     new TaskCompleteHobby(hobby, animator, transform)
                 }),
-                new TaskIdle(GetComponent<Animator>())
+                new TaskIdle()
             });
             
             return rootNode;
         }
 
-        protected override void Update()
+
+        private void ToggleMovement(bool isMovementEnabled, string npcName)
         {
-            animator.SetFloat(Speed, agent.velocity.magnitude);
-            base.Update();
+            if (string.Equals(this.npcName, npcName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                agent.speed = isMovementEnabled ? _initialMovementSpeed : 0f;
+            }
         }
     }
 }
