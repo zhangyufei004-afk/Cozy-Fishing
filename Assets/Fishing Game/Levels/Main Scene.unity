@@ -169,8 +169,9 @@ MonoBehaviour:
   maxArrowVariance: 6
   minProgressModify: 5
   defaultProgressModify: 15
-  defaultProgressMax: 50
+  defaultProgressMax: 80
   maxTimeBeforeModify: 5
+  waveSpawnTime: 0.6
 --- !u!114 &29540734 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6829903095751870401, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
