@@ -10,13 +10,7 @@ using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
-    internal enum EMovementDirection
-    {
-        Left, 
-        Right, 
-        Up, 
-        Down 
-    };
+    
 
 
 

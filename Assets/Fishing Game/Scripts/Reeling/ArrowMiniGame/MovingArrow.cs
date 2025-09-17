@@ -24,6 +24,10 @@ namespace FishingGame.Reeling
         [Tooltip("The right arrow sprite")]
         private Sprite rightArrowSprite;
 
+        [Header("Minigame Data")]
+
+        private ArrowSpawner _spawner;
+
         private bool _isActive = false;
         private float _speedScalar = 1f;
 
@@ -48,17 +52,40 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Actives the arrow and sets its speed to the inputed parameter
+        /// </summary>
+        /// <param name="speedScalar">The speed to set</param>
         public void ActivateArrow(float speedScalar)
         {
             _isActive = true;
             _speedScalar = speedScalar;
         }
 
+        /// <summary>
+        /// Changes the speed of the arrow based on what is inputed
+        /// </summary>
+        /// <param name="speedScalar">The new speed to set</param>
         public void ChangeSpeed(float speedScalar)
         {
             _speedScalar = speedScalar;
         }
 
+        /// <summary>
+        /// Assigns this arrow to the spawner inputed, this should generally be the spawner that spawned this arrow
+        /// </summary>
+        /// <param name="spawner">The spawner to be assigned to</param>
+        public void SetSpawner(ArrowSpawner spawner)
+        {
+            _spawner = spawner;
+        }
+
+        /// <summary>
+        /// Runs a switch on the type of arrow enum,
+        /// will set its sprite based on that value
+        /// If the enum has been modified for some reason with no new value set
+        /// this will default to making it a downArrowSprite
+        /// </summary>
         private void DetermineArrowSprite()
         {
             switch ( _typeOfArrow )
