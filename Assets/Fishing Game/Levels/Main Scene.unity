@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b2e846e7f035a4ead6eda1de3cac88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reelingMaster: {fileID: 1189930303}
   spawnPoints:
   - {fileID: 1599957795}
   - {fileID: 1455977958}
@@ -169,6 +170,7 @@ MonoBehaviour:
   minProgressModify: 5
   defaultProgressModify: 15
   defaultProgressMax: 50
+  maxTimeBeforeModify: 5
 --- !u!114 &29540734 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6829903095751870401, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -1272,7 +1274,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1647214175}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 200
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:

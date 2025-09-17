@@ -72,6 +72,11 @@ namespace FishingGame.Reeling
             }
         }
 
+        private void OnDisable()
+        {
+            Destroy(gameObject);
+        }
+
         /// <summary>
         /// Actives the arrow and sets its speed to the inputed parameter
         /// </summary>
@@ -220,7 +225,7 @@ namespace FishingGame.Reeling
         /// Sets the arrow color based on if it was failed or a succsess then starts the fade away coroutine
         /// </summary>
         /// <param name="wasASuccsess">Input true if this arrow was pressed properly, otherwise false</param>
-        private void StartFadeAway(bool wasASuccsess)
+        public void StartFadeAway(bool wasASuccsess)
         {
             if (wasASuccsess) { _arrowImage.color = Color.grey; }
             else { _arrowImage.color = Color.red; }

@@ -1,6 +1,7 @@
 using FishingGame.FishSystem;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +19,12 @@ namespace FishingGame.Reeling
 
     public class ArrowMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
+        [Header("Major Script References")]
+
+        [SerializeField]
+        [Tooltip("Reference to the ReelingMaster script.")]
+        private ReelingMaster reelingMaster;
+
         [Header("UI elements")]
 
         [SerializeField]
@@ -155,7 +162,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void LoseMiniGame()
         {
-            throw new System.NotImplementedException();
+            DeactivateMiniGame(false);
         }
 
         /// <summary>
@@ -163,7 +170,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void WinMiniGame()
         {
-            throw new System.NotImplementedException();
+            DeactivateMiniGame(true);
         }
 
         /// <summary>
@@ -251,7 +258,7 @@ namespace FishingGame.Reeling
         /// <returns>True if progress is high enough, otherwise false</returns>
         private bool CheckIfEnoughProgress()
         {
-            if (_currentProgress == _maxProgress) { return true; }
+            if (_currentProgress >= _maxProgress) { return true; }
             else { return false; }
         }
 
@@ -262,7 +269,7 @@ namespace FishingGame.Reeling
         /// <returns>True if failed minigame, otherwise false</returns>
         private bool CheckIfFailed()
         {
-            if (_currentProgress == 0) { return true; }
+            if (_currentProgress <= 0) { return true; }
             else { return false; }
         }
 
@@ -312,6 +319,35 @@ namespace FishingGame.Reeling
             SpawnArrow();
         }
 
+        private IEnumerator UIDissapear(bool didWin)
+        {
+            yield return new WaitForSeconds(1f);
+            foreach (MovingArrow arrow in _activeArrows)
+            {
+                Destroy(arrow.gameObject);
+            }
+            _activeArrows.Clear();
+
+            fishingCanvas.SetActive(false);
+            reelingMaster.EndCurrentMiniGame(didWin);
+            StopAllCoroutines();
+        }
+
+        private void DeactivateMiniGame(bool didWin)
+        {
+            foreach (MovingArrow arrow in _activeArrows)
+            {
+                arrow.StartFadeAway(didWin);
+            }
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(false);
+            }
+
+            StartCoroutine(UIDissapear(didWin));
+        }
+
         #region Initilization_Functions
 
         /// <summary>
@@ -345,6 +381,7 @@ namespace FishingGame.Reeling
         {
             _maxProgress = defaultProgressMax * _fishDifficulty;
             progressSlider.maxValue = _maxProgress;
+            progressSlider.value = _currentProgress;
         }
 
         /// <summary>
@@ -353,8 +390,8 @@ namespace FishingGame.Reeling
         private void ResetRuntimeVariables()
         {
             _timeModifier = 0;
-            _currentProgress = 0;
             _currentArrowCount = 0;
+            _currentProgress = defaultProgressModify * 4;
             _activeArrows.Clear();
         }
 

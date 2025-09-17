@@ -65,8 +65,7 @@ namespace FishingGame.Reeling
         /// <param name="isActive">True will activate the spawned, false will turn it off</param>
         public void ActivateOrDeactivateSpawner(bool isActive)
         {
-            if (isActive) { _isActive = true; }
-            else { _isActive = false; }
+            _isActive = isActive;
         }
 
         /// <summary>
