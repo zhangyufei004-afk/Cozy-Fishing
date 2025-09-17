@@ -28,13 +28,17 @@ namespace FishingGame.Reeling
 
         [Header("Minigame Data")]
 
+        [SerializeField]
+        [Tooltip("The rate at which this fades out")]
+        private float fadeRate;
+
         private ArrowSpawner _spawner;
+        private ArrowGoalPoints _goalPoint;
 
         private bool _isActive = false;
         private bool _canBePressed = false;
         private float _speedScalar = 1f;
-        [SerializeField]
-        private ArrowGoalPoints _goalPoint;
+        
         private Image _arrowImage;
         private float _acceptanceDistance = 250f;
 
@@ -43,26 +47,19 @@ namespace FishingGame.Reeling
 
         private InputAction _directionAction;
         private float _targetAlpha;
-        [SerializeField]
-        [Tooltip("The rate at which this fades out")]
-        private float fadeRate;
-
-
 
         private void OnEnable()
         {
             _arrowImage = GetComponent<Image>();
 
             int enumValueCount = System.Enum.GetValues(typeof(EMovementDirection)).Length;
-            _typeOfArrow = (EMovementDirection)Random.Range(0, enumValueCount + 1);
+            _typeOfArrow = (EMovementDirection)Random.Range(0, enumValueCount);
             DetermineArrowSprite();
 
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             uiActionMap.Enable();
             _directionAction = uiActionMap.FindAction("ArrowMiniGame");
-
-            
         }
 
         private void Update()
@@ -70,6 +67,7 @@ namespace FishingGame.Reeling
             if (_isActive)
             {
                 MovementLogicAndChecks();
+                PressLogic();
                 CheckIfFailed();
             }
         }
@@ -122,12 +120,17 @@ namespace FishingGame.Reeling
                 case EMovementDirection.Up:
                     _arrowImage.sprite = upArrowSprite;
                     break;
-                default:
+                case EMovementDirection.Down:
                     _arrowImage.sprite = downArrowSprite;
                     break;
             }
         }
 
+        /// <summary>
+        /// Updates the location of the arrow
+        /// Checks if it is range of the goal point and if so changes its color
+        /// and updates its _canBePressed value
+        /// </summary>
         private void MovementLogicAndChecks()
         {
             Vector3 currentPosition = transform.position;
@@ -135,7 +138,7 @@ namespace FishingGame.Reeling
 
             transform.position = newPosition;
 
-            if (_goalPoint.CheckUIOverlap(_acceptanceDistance, gameObject))
+            if (_goalPoint.CheckIfObjectIsInRange(_acceptanceDistance, gameObject))
             {
                 _canBePressed = true;
                 _arrowImage.color = Color.green;
@@ -145,7 +148,14 @@ namespace FishingGame.Reeling
                 _canBePressed = false;
                 _arrowImage.color = Color.white;
             }
+        }
 
+        /// <summary>
+        /// Firstly checks if the arrow can be pressed and then checks if the input value has been pressed this frame
+        /// If so it runs the arrowsuccsessfullypressed function
+        /// </summary>
+        private void PressLogic()
+        {
             if (_canBePressed)
             {
                 if (_directionAction.WasPressedThisFrame())
@@ -159,6 +169,10 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Checks if the arrow has gone through the fail spot or not
+        /// If so runs arrowfailed
+        /// </summary>
         private void CheckIfFailed()
         {
             if (_goalPoint.CheckIfFailSpot(_acceptanceDistance, gameObject))
@@ -176,6 +190,7 @@ namespace FishingGame.Reeling
             if (directionValue.x > 0) { return EMovementDirection.Right; }
             if (directionValue.x < 0) { return EMovementDirection.Left; }
             if (directionValue.y > 0) { return EMovementDirection.Up; }
+            if (directionValue.y < 0) { return EMovementDirection.Down; }
             return EMovementDirection.Down;
         }
 

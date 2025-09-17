@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -9,10 +10,10 @@ namespace FishingGame.Reeling
 {
     internal enum EMovementDirection
     {
-        Left,
-        Right,
-        Up,
-        Down
+        Left = 0,
+        Right = 1,
+        Up = 2,
+        Down = 3
     };
 
     public class ArrowMiniGameMaster : MonoBehaviour, IReelingMinigame
@@ -58,6 +59,10 @@ namespace FishingGame.Reeling
         private float minTimeBetweenArrows;
 
         [SerializeField]
+        [Tooltip("The maximum amount of time needed inbetween arrow spawns, regardless of difficulty.")]
+        private float maxTimeBetweenArrows;
+
+        [SerializeField]
         [Tooltip("The max amount of variance in the total amount of arrows being spawned")]
         private int maxArrowVariance;
 
@@ -83,7 +88,6 @@ namespace FishingGame.Reeling
         private int _timeModifier;
         private float _maxProgress;
         private bool _gameActive = false;
-
 
         private List<MovingArrow> _activeArrows;
         private List<MovingArrow> _arrowsAbleToBePressed;
@@ -117,6 +121,10 @@ namespace FishingGame.Reeling
             CheckTimePassed();
         }
 
+        /// <summary>
+        /// Setsup all the required logic for the minigame
+        /// </summary>
+        /// <param name="fishScriptable">The data of the fish being caught</param>
         public void InitializeMiniGame(Fish fishScriptable)
         {
             _fishData = fishScriptable;
@@ -134,36 +142,50 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Activates the spawners and begins the minigame
+        /// </summary>
         public void BeginMiniGame()
         {
             _gameActive = true;
-            
 
             foreach (ArrowSpawner spawner in spawnPoints)
             {
                 spawner.ActivateOrDeactivateSpawner(true);
-
-                // TEMP
-                spawner.SpawnArrow();
             }
 
-
-
+            SpawnArrow();
         }
 
+        /// <summary>
+        /// Loses the minigame
+        /// </summary>
         public void LoseMiniGame()
         {
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Wins the minigame
+        /// </summary>
         public void WinMiniGame()
         {
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Spawns an Arrow as long as the current amount of arrows active is not greater to the maximum amount of arrows
+        /// Starts a timer for when this will next be run
+        /// </summary>
         private void SpawnArrow()
         {
             if (HasReachedMaxArrowSpawned()) { return; }
+
+            int chosenSpawner = Random.Range(0, spawnPoints.Count);
+
+            spawnPoints[chosenSpawner].SpawnArrow(mediumSpeed);
+
+            StartCoroutine(SpawnCoolDown(DetermineTimeUntilNextSpawn()));
         }
 
         /// <summary>
@@ -273,9 +295,28 @@ namespace FishingGame.Reeling
                 _timeModifier += 1;
             }
         }
-        
 
-        
+        /// <summary>
+        /// Returns a float value time between the minimum and maximum allowed time between arrows
+        /// </summary>
+        /// <returns>A time value between min and max time between values</returns>
+        private float DetermineTimeUntilNextSpawn()
+        {
+            float time = Random.Range(minTimeBetweenArrows, maxTimeBetweenArrows);
+            return time;
+        }
+
+        /// <summary>
+        /// A timer that waits for the inputed amount of seconds
+        /// Once it completes it reruns spawnarrow
+        /// </summary>
+        /// <param name="timeToWait">Seconds to wait</param>
+        /// <returns>Runs SpawnArrow() after inputed seconds</returns>
+        private IEnumerator SpawnCoolDown(float timeToWait)
+        {
+            yield return new WaitForSeconds(timeToWait);
+            SpawnArrow();
+        }
 
         #region Initilization_Functions
 

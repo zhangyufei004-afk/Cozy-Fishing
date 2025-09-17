@@ -149,8 +149,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoints:
   - {fileID: 1599957795}
+  - {fileID: 1455977958}
+  - {fileID: 157760850}
+  - {fileID: 1800906368}
   arrowGoalPoints:
   - {fileID: 1265588939}
+  - {fileID: 1951527271}
+  - {fileID: 1345452473}
+  - {fileID: 756369778}
   fishingCanvas: {fileID: 550031424}
   progressSlider: {fileID: 231543749}
   spawnableArrow: {fileID: 4431288592897344608, guid: 5282c0cd72789f44fa68d1f2c93bca3a, type: 3}
@@ -158,6 +164,7 @@ MonoBehaviour:
   mediumSpeed: 100
   fastSpeed: 150
   minTimeBetweenArrows: 0.5
+  maxTimeBetweenArrows: 3
   maxArrowVariance: 6
   minProgressModify: 5
   defaultProgressModify: 15

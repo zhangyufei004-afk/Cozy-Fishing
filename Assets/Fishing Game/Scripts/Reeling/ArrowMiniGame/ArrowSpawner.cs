@@ -33,13 +33,14 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Spawns a new arrow, runs the required functions on the new arrow for proper initilization
         /// </summary>
-        public void SpawnArrow()
+        /// <param name="speedToUse">The speed to use</param>
+        public void SpawnArrow(float speedToUse)
         {
             if (CheckIsActive() != true) { return; }
             GameObject currentArrow = Instantiate(_arrowToSpawn, gameObject.transform);
-            currentArrow.transform.parent = GetArrowGoal().gameObject.transform;
+            currentArrow.transform.SetParent(GetArrowGoal().gameObject.transform, true);
             masterScript.AddOrRemoveActiveArrow(currentArrow.GetComponent<MovingArrow>(), true);
-            currentArrow.GetComponent<MovingArrow>().ActivateArrow(50);
+            currentArrow.GetComponent<MovingArrow>().ActivateArrow(speedToUse);
             currentArrow.GetComponent<MovingArrow>().SetSpawner(this);
         }
 
@@ -68,17 +69,29 @@ namespace FishingGame.Reeling
             else { _isActive = false; }
         }
 
+        /// <summary>
+        /// Returns the goalpoint of this spawner
+        /// </summary>
+        /// <returns>The goalpoint of this spawner</returns>
         public ArrowGoalPoints GetArrowGoal()
         { 
             return _goalPoint;
         }
 
+        /// <summary>
+        /// Checks if this spawner is active. returns true if so, otherwise false
+        /// </summary>
+        /// <returns>True if spawner is active, otherwise false</returns>
         private bool CheckIsActive()
         {
             if (_isActive) { return true; }
             else { return false; }
         }
 
+        /// <summary>
+        /// Returns the masterscript for the arrow minigame
+        /// </summary>
+        /// <returns>The masterscript for the arrow minigame</returns>
         public ArrowMiniGameMaster GetMasterScript()
         {
             return masterScript;

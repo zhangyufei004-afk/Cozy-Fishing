@@ -92,5 +92,6 @@ MonoBehaviour:
   downArrowSprite: {fileID: 21300000, guid: 6663e10550e4d724d886f549267d7d3b, type: 3}
   leftArrowSprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
   rightArrowSprite: {fileID: 21300000, guid: 297585c6fed9c9e42b95e54ba2f5ebfd, type: 3}
+  ifuckedUpSprite: {fileID: 21300000, guid: d3c57d5104e0f9d4697b6b92a56bf2db, type: 3}
   _goalPoint: {fileID: 0}
   fadeRate: 2
