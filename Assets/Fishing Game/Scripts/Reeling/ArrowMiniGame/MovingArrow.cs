@@ -69,33 +69,8 @@ namespace FishingGame.Reeling
         {
             if (_isActive)
             {
-                Vector3 currentPosition = transform.position;
-                Vector3 newPosition = new Vector3(currentPosition.x, currentPosition.y - _speedScalar * Time.deltaTime, currentPosition.z);
-
-                transform.position = newPosition;
-
-                if (_goalPoint.CheckUIOverlap(_acceptanceDistance, gameObject))
-                {
-                    _canBePressed = true;
-                    _arrowImage.color = Color.green;
-                }
-                else
-                {
-                    _canBePressed = false;
-                    _arrowImage.color = Color.white;
-                }
-
-                if (_canBePressed)
-                {
-                    if (_directionAction.WasPressedThisFrame())
-                    {
-                        Vector2 direction = _directionAction.ReadValue<Vector2>();
-                        if (GetMovementDirection(direction) == _typeOfArrow)
-                        {
-                            ArrowSuccsessfullyPressed();
-                        }
-                    }
-                }
+                MovementLogicAndChecks();
+                CheckIfFailed();
             }
         }
 
@@ -153,6 +128,45 @@ namespace FishingGame.Reeling
             }
         }
 
+        private void MovementLogicAndChecks()
+        {
+            Vector3 currentPosition = transform.position;
+            Vector3 newPosition = new Vector3(currentPosition.x, currentPosition.y - _speedScalar * Time.deltaTime, currentPosition.z);
+
+            transform.position = newPosition;
+
+            if (_goalPoint.CheckUIOverlap(_acceptanceDistance, gameObject))
+            {
+                _canBePressed = true;
+                _arrowImage.color = Color.green;
+            }
+            else
+            {
+                _canBePressed = false;
+                _arrowImage.color = Color.white;
+            }
+
+            if (_canBePressed)
+            {
+                if (_directionAction.WasPressedThisFrame())
+                {
+                    Vector2 direction = _directionAction.ReadValue<Vector2>();
+                    if (GetMovementDirection(direction) == _typeOfArrow)
+                    {
+                        ArrowSuccsessfullyPressed();
+                    }
+                }
+            }
+        }
+
+        private void CheckIfFailed()
+        {
+            if (_goalPoint.CheckIfFailSpot(_acceptanceDistance, gameObject))
+            {
+                ArrowFailed();
+            }
+        }
+
         /// <summary>
         /// Returns an EMovementDirection enum value based on the inputed Vector2
         /// </summary>
@@ -182,6 +196,7 @@ namespace FishingGame.Reeling
         private void ArrowFailed()
         {
             _isActive = false;
+            StartFadeAway(false);
             ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
             masterScript.ArrowFailedToBePressed(this);
         }

@@ -16,7 +16,6 @@ namespace FishingGame.Reeling
         public bool CheckUIOverlap(float maxDifference, GameObject objectComparedTo)
         {
             float distanceFromPoint = gameObject.transform.localPosition.y - objectComparedTo.transform.localPosition.y;
-            Debug.Log(distanceFromPoint);
 
             if (distanceFromPoint < maxDifference && distanceFromPoint > -maxDifference)
             {
@@ -24,6 +23,15 @@ namespace FishingGame.Reeling
             }
             else { return false; }
         }
+
+        public bool CheckIfFailSpot(float maxDifference, GameObject objectComparedTo)
+        {
+            float distanceFromPoint = gameObject.transform.localPosition.y - objectComparedTo.transform.localPosition.y;
+
+            if (distanceFromPoint > gameObject.transform.localPosition.y + maxDifference * 3)
+            { return true; }
+            else { return false; }
+        }    
 
         public Image GetGoalPointImage()
         {
