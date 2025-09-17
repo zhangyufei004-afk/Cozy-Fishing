@@ -163,8 +163,8 @@ MonoBehaviour:
   spawnableArrow: {fileID: 4431288592897344608, guid: 5282c0cd72789f44fa68d1f2c93bca3a, type: 3}
   slowSpeed: 50
   mediumSpeed: 100
-  fastSpeed: 150
-  minTimeBetweenArrows: 0.5
+  fastSpeed: 320
+  minTimeBetweenArrows: 0.1
   maxTimeBetweenArrows: 3
   maxArrowVariance: 6
   minProgressModify: 5

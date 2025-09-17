@@ -89,6 +89,10 @@ namespace FishingGame.Reeling
         [Tooltip("The amount of time it takes for the time scaler to increase")]
         private float maxTimeBeforeModify;
 
+        [SerializeField]
+        [Tooltip("Rate of spawn during a wave")]
+        private float waveSpawnTime;
+
         private Fish _fishData;
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
@@ -97,7 +101,11 @@ namespace FishingGame.Reeling
         private float _currentTimePassed;
         private int _timeModifier;
         private float _maxProgress;
+        private int _waveArrowCount = 0;
         private bool _gameActive = false;
+        private bool _waveActive = false;
+        private int _maxRangeWaveChance = 10;
+        private int _currentWaveChance = 0;
 
         private List<MovingArrow> _activeArrows;
 
@@ -119,6 +127,11 @@ namespace FishingGame.Reeling
             _currentTimePassed += Time.deltaTime;
 
             CheckTimePassed();
+
+            if (_activeArrows.Count == 0)
+            {
+                EmergencySpawnArrow();
+            }
         }
 
         /// <summary>
@@ -184,9 +197,33 @@ namespace FishingGame.Reeling
 
             int chosenSpawner = Random.Range(0, spawnPoints.Count);
 
-            spawnPoints[chosenSpawner].SpawnArrow(mediumSpeed);
+            spawnPoints[chosenSpawner].SpawnArrow(fastSpeed);
 
-            StartCoroutine(SpawnCoolDown(DetermineTimeUntilNextSpawn()));
+            if (_waveActive)
+            {
+                _waveArrowCount++;
+                if (CheckIfWaveCountReached())
+                {
+                    _waveActive = false;
+                    StartCoroutine(SpawnCoolDown(DetermineTimeUntilNextSpawn()));
+                }
+                else
+                {
+                    StartCoroutine(SpawnCoolDown(waveSpawnTime));
+                }
+            }
+            else
+            {
+                StartCoroutine(SpawnCoolDown(DetermineTimeUntilNextSpawn()));
+                DecideIfStartWave();
+            }
+        }
+
+        private void EmergencySpawnArrow()
+        {
+            int chosenSpawner = Random.Range(0, spawnPoints.Count);
+
+            spawnPoints[chosenSpawner].SpawnArrow(fastSpeed);
         }
 
         /// <summary>
@@ -281,7 +318,7 @@ namespace FishingGame.Reeling
         private void ModifyProgress(float progressValue)
         {
             _currentProgress += progressValue;
-            progressSlider.value = progressValue;
+            progressSlider.value = _currentProgress;
         }
 
         /// <summary>
@@ -305,6 +342,23 @@ namespace FishingGame.Reeling
         {
             float time = Random.Range(minTimeBetweenArrows, maxTimeBetweenArrows);
             return time;
+        }
+
+        private void DecideIfStartWave()
+        {
+            int rolledNumber = Random.Range(0, _maxRangeWaveChance);
+
+            if (rolledNumber >= _currentWaveChance)
+            {
+                _waveActive = true;
+            }
+            else { _currentWaveChance++; }
+        }
+
+        private bool CheckIfWaveCountReached()
+        {
+            if (_waveArrowCount >= _fishDifficulty) { return true; }
+            else { return false; }
         }
 
         /// <summary>
@@ -369,7 +423,7 @@ namespace FishingGame.Reeling
         {
             int arrowSpawnRange = Random.Range(_fishDifficulty, maxArrowVariance + _fishDifficulty);
 
-            _maxAmountOfActiveArrows = (_fishDifficulty * 2) + maxArrowVariance;
+            _maxAmountOfActiveArrows = (_fishDifficulty * 2) + arrowSpawnRange;
         }
 
         /// <summary>
@@ -393,6 +447,9 @@ namespace FishingGame.Reeling
             _currentArrowCount = 0;
             _currentProgress = defaultProgressModify * 4;
             _activeArrows.Clear();
+            _waveActive = false;
+            _waveArrowCount = 0;
+            _currentWaveChance = 0;
         }
 
         #endregion
