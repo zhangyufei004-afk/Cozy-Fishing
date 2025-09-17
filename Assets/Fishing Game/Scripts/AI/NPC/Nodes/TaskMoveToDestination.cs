@@ -17,7 +17,7 @@ namespace FishingGame.AI.NPC.Nodes
 
         public override ETreeNodeState RunNode()
         {
-            _animator.SetFloat(Speed, _navMeshAgent.velocity.magnitude);
+            // _animator.SetFloat(Speed, _navMeshAgent.velocity.magnitude);
 
             if (GetData("Destination") is Vector3 destination)
             {
