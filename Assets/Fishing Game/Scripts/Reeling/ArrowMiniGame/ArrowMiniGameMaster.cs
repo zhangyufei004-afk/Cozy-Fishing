@@ -78,23 +78,21 @@ namespace FishingGame.Reeling
         [Tooltip("The default amount of progress needed to complete minigame, this is scaled based on difficulty")]
         private float defaultProgressMax;
 
+        [SerializeField]
+        [Tooltip("The amount of time it takes for the time scaler to increase")]
+        private float maxTimeBeforeModify;
+
         private Fish _fishData;
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
         private int _currentArrowCount;
         private float _currentProgress;
         private float _currentTimePassed;
-        private float _maxTimeBeforeModify;
         private int _timeModifier;
         private float _maxProgress;
         private bool _gameActive = false;
 
         private List<MovingArrow> _activeArrows;
-        private List<MovingArrow> _arrowsAbleToBePressed;
-
-        [Header("Misc")]
-
-        private InputAction _directionAction;
 
         
 
@@ -103,11 +101,6 @@ namespace FishingGame.Reeling
 
         private void OnEnable()
         {
-            InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
-            uiActionMap.Enable();
-            _directionAction = uiActionMap.FindAction("ArrowMiniGame");
-
             _activeArrows = new List<MovingArrow>();
         }
 
@@ -290,7 +283,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CheckTimePassed()
         {
-            if (_currentTimePassed >= _maxTimeBeforeModify)
+            if (_currentTimePassed >= maxTimeBeforeModify)
             {
                 _currentTimePassed = 0;
                 _timeModifier += 1;
