@@ -19,7 +19,14 @@ MonoBehaviour:
   questReward: {fileID: 0}
   questMoneyReward: 0
   isMonetaryRewardQuest: 0
+  questRewardImages: []
   questStagePrefabs:
   - {fileID: 4925909472967109011, guid: efb82dde91d74254ba44be7f5724afb8, type: 3}
   - {fileID: 2229936083515554206, guid: 72d486090f4e2274a81619817c7aa694, type: 3}
-  questRewardImages: []
+  preQuestDialogueLines:
+  - So, you want to earn some money eh?
+  - Well, fishing can be a great help.
+  - Head to the old ponds docks, you'll find some fish there.
+  postQuestDialogueLines:
+  - Nice job catching the fish!
+  - Now you can earn heaps of money.

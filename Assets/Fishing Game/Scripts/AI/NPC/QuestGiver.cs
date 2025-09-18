@@ -5,14 +5,13 @@ using FishingGame.NPC.UI;
 using FishingGame.QuestSystem;
 using UnityEngine;
 
-namespace FishingGame.NPC
+namespace FishingGame.AI.NPC
 {
     /// <summary>
     /// Class which gives out a quest to the player. The class should be placed on an NPC Gameobject, and then you can interact
-    /// with them through methods in this class.
+    /// with them through methods in this class. 
     /// </summary>
-    [Obsolete("This class will be refactored in future versions to support Inkle scripts. " +
-              "Do not rely heavily on its existing implementation.")]
+    [Obsolete("This has been deprecated. Please use the new Behaviour Tree system instead. See: EmployedNPC. This will be removed in future versions. It is currently broken.")]
     public class QuestGiver : MonoBehaviour
     {
         [Header("Quest Elements")]
@@ -41,13 +40,13 @@ namespace FishingGame.NPC
                 string stageDialogue = _questToGive.GetCurrentStageQuip();
                 List<string> dialogueList = new List<string>();
                 dialogueList.Add(stageDialogue);
-                questDialogueUI.DisplayDialogue(dialogueList);
+                // questDialogueUI.DisplayDialogue(dialogueList);
                 return;
             }
             
             if (_questToGive is not null && _questToGive.CanQuestBeMarkedComplete())
             {
-                questDialogueUI.DisplayDialogue(questEndDialogue);
+                // questDialogueUI.DisplayDialogue(questEndDialogue);
                 return;
             }
             questDialogueUI.DisplayDialogue(preQuestDialogue, questName);

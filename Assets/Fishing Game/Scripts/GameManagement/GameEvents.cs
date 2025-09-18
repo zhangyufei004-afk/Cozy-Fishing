@@ -56,9 +56,21 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnToggleDialogueCamera;
 
+        public event Action<bool, string> OnWithinDialogueRange;
+
+        public event Action<bool, string> OnNPCInteraction;
+        
         public event Action<bool> OnBecomeOccupied;
         
         public event Action<bool> OnToggleGrappleCamera;
+
+        #endregion
+
+        #region AI Events
+
+        public event Action<bool, string> OnToggleNPCMovement;
+
+
 
         #endregion
 
@@ -159,6 +171,36 @@ namespace FishingGame.GameManagement
         public void ToggleDialogueCamera(bool isCameraEnabled)
         {
             OnToggleDialogueCamera?.Invoke(isCameraEnabled);
+        }
+
+        /// <summary>
+        /// Invokes the OnWithinDialogueRange event to let the NPC <c>npcName</c> know the player is within dialogue range.
+        /// </summary>
+        /// <param name="isInRange">Is the player in range of the NPC Character for dialogue. True if they are, false otherwise.</param>
+        /// <param name="npcName">The name of the NPC we are in the dialogue range of.</param>
+        public void WithinDialogueRange(bool isInRange, string npcName)
+        {
+            OnWithinDialogueRange?.Invoke(isInRange, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnNPCInteraction event to let the NPC named <c>npcName</c> know the player is interacting with them and wants dialogue displayed.
+        /// </summary>
+        /// <param name="isCurrentlyInteracting">Is the player currently interacting with <c>npcName</c> NPC. True if they are, false if they are no longer interacting.</param>
+        /// <param name="npcName">The name of the NPC the player is interacting with.</param>
+        public void NPCInteraction(bool isCurrentlyInteracting, string npcName)
+        {
+            OnNPCInteraction?.Invoke(isCurrentlyInteracting, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleNPCMovement event to tell the NPC named <c>npcName</c> to disable or enable its movement.
+        /// </summary>
+        /// <param name="isMovementEnabled">Bool to represent whether the movement is enabled. True if movement is enabled, false otherwise.</param>
+        /// <param name="npcName">The name of the NPC to disable movement on.</param>
+        public void ToggleNPCMovement(bool isMovementEnabled, string npcName)
+        {
+            OnToggleNPCMovement?.Invoke(isMovementEnabled, npcName);
         }
 
         /// <summary>
