@@ -341,7 +341,7 @@ namespace FishingGame.Reeling
 
             Destroy(_currentFish3DObject);
 
-             
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
@@ -363,7 +363,6 @@ namespace FishingGame.Reeling
 
                 _currentlyReelingFish = null;
                 StartCoroutine(HideUIAfterCatch(2));
-                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
 
             }
         }

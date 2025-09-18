@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FishingGame.GameManagement;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -197,6 +198,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginStageOne()
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _isStageOne = true;
             fishImage.gameObject.SetActive(false);
             hookImage.gameObject.SetActive(true);
@@ -282,6 +284,8 @@ namespace FishingGame.Reeling
             fishImage.gameObject.SetActive(false);
             hookImage.gameObject.SetActive(false);
             fishingHook.PullBackHook();
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+
         }
 
         #endregion
