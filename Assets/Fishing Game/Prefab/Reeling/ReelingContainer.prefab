@@ -213,6 +213,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f3a7df1bc68ed438761a9f48ce7da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reelingMaster: {fileID: 6051403347699497060}
+  dragableScript: {fileID: 0}
+  realisticCanvas: {fileID: 0}
+  progressSlider: {fileID: 0}
+  centerPoint: {fileID: 0}
+  textDirectionHolder: {fileID: 0}
+  defaultDecayValue: 2
 --- !u!1 &5300646475322154039
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +270,7 @@ MonoBehaviour:
   miniGameTypes:
   - {fileID: 313023259972732001}
   - {fileID: 2680999012508629255}
+  - {fileID: 4518172318511371622}
   characterController: {fileID: 0}
   caughtFishImage: {fileID: 0}
   fishingFinishedText: {fileID: 0}
