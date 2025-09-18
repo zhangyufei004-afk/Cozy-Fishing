@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
+  m_Name: Doodlefin
+  m_EditorClassIdentifier: 
+  persistentID: 0
+  Texture: {fileID: 21300000, guid: 59818e25df3be8545aa8e38184b14290, type: 3}
+  Id: 8
+  MinMaxWeight: {x: 0.1, y: 0.8}
+  SpeciesName: DoodleFin
+  FishCatchDifficulty: 4
+  FishBio: While usually found in the average math students workbook, a few of these
+    fierce competitors managed to escape the school grounds and repopulate the local
+    ecosystem. These night owls developed their habits from the students that created
+    them.
+  LocationsFound: 010000000000000003000000
+  TimeOfDayFound: Evening, Night
+  IsInvasive: 0
