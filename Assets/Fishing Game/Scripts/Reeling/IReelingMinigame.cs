@@ -35,7 +35,5 @@ namespace FishingGame.Reeling
         /// Loses the minigame and tells the ReelingMaster it was a loss
         /// </summary>
         public void LoseMiniGame();
-
-        public void UpdateTimer();
     }
 }

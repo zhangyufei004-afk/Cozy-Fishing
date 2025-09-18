@@ -225,7 +225,6 @@ GameObject:
   - component: {fileID: 2355182950940953632}
   - component: {fileID: 1148033641354189641}
   - component: {fileID: 9023993033158258449}
-  - component: {fileID: -5617631259076899553}
   - component: {fileID: 2543720356035656809}
   m_Layer: 0
   m_Name: Player
@@ -248,6 +247,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4305141477973444740}
+  - {fileID: 200690339268504712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1148033641354189641
@@ -263,11 +263,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 7138077586599879889}
+  playerMesh: {fileID: 3202228334828553634}
   characterController: {fileID: 9023993033158258449}
   movementSpeed: 6
   rotationSpeed: 20
-  cameraTransform: {fileID: 0}
   animator: {fileID: 5427234292576898722}
+  brain: {fileID: 0}
+  fpsCamera: {fileID: 8129565663929180470}
+  rayLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  grappleRange: 100
+  grappleSpeed: 20
+  hasGrapple: 0
 --- !u!143 &9023993033158258449
 CharacterController:
   m_ObjectHideFlags: 0
@@ -293,31 +301,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.2, z: 0}
---- !u!114 &-5617631259076899553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5657748580216538004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50978f4899fa6b3418b355f9cdfa26f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterParent: {fileID: 5657748580216538004}
-  characterModel: {fileID: 7138077586599879889}
-  reelingMasterScript: {fileID: 0}
-  fishCamera: {fileID: 3271367095338794917}
-  mainCamera: {fileID: 0}
-  characterAnimator: {fileID: 0}
-  chargeScalar: 3
-  chargeSlider: {fileID: 0}
-  rodBobber: {fileID: 1450020752843532558}
-  fishingHook: {fileID: 826344329452521392}
-  fishModelPrefab: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9,
-    type: 3}
-  fishingRange: 0
 --- !u!114 &2543720356035656809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,8 +314,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogCamera: {fileID: 101844180539961190}
-  grappleCamera: {fileID: 0}
-  playerController: {fileID: 1148033641354189641}
+  grappleCamera: {fileID: 4424354406170906607}
+  player: {fileID: 1148033641354189641}
+  grappleTargetUI: {fileID: 0}
 --- !u!1 &7138077586599879889
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +458,164 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &8129565663929180470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 200690339268504712}
+  - component: {fileID: 4424354406170906607}
+  - component: {fileID: 6299708250999012491}
+  - component: {fileID: 2663065223170950490}
+  m_Layer: 0
+  m_Name: Grapple Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &200690339268504712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129565663929180470}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.027, y: 1.765, z: 0.128}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2355182950940953632}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4424354406170906607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129565663929180470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 1
+    m_Value: 100
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 40
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!114 &6299708250999012491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129565663929180470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d54399b04b4fa48a73e121d4937dd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReferenceFrame: 0
+  RecenterTarget: 0
+  PanAxis:
+    Value: 0
+    Center: 0
+    Range: {x: -180, y: 180}
+    Wrap: 1
+    Recentering:
+      Enabled: 0
+      Wait: 1
+      Time: 2
+    Restrictions: 0
+  TiltAxis:
+    Value: 0
+    Center: 0
+    Range: {x: -70, y: 70}
+    Wrap: 0
+    Recentering:
+      Enabled: 0
+      Wait: 1
+      Time: 2
+    Restrictions: 0
+--- !u!114 &2663065223170950490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129565663929180470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScanRecursively: 1
+  SuppressInputWhileBlending: 1
+  IgnoreTimeScale: 0
+  m_ControllerManager:
+    Controllers:
+    - Name: Look X (Pan)
+      Owner: {fileID: 6299708250999012491}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b,
+          type: 3}
+        Gain: 1
+        LegacyInput: 
+        LegacyGain: 1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0.2
+        DecelTime: 0.2
+    - Name: Look Y (Tilt)
+      Owner: {fileID: 6299708250999012491}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b,
+          type: 3}
+        Gain: -1
+        LegacyInput: 
+        LegacyGain: 1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0.2
+        DecelTime: 0.2
+  PlayerIndex: -1
+  AutoEnableInputs: 1
 --- !u!1001 &1773239563862960199
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -487,11 +629,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1435535812033081335, guid: 46455280b4b5705439be3507cceffb57,
-        type: 3}
-      propertyPath: initiationScript
-      value: 
-      objectReference: {fileID: -5617631259076899553}
     - target: {fileID: 1540000910996387684, guid: 46455280b4b5705439be3507cceffb57,
         type: 3}
       propertyPath: m_Name
@@ -570,17 +707,37 @@ PrefabInstance:
     - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.000000029616059
+      value: -0.000000086613
       objectReference: {fileID: 0}
     - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.55470026
+      value: -0.24529989
       objectReference: {fileID: 0}
     - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.039900325
+      value: 0.039899733
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.4999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.50000024
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692017794443908480, guid: 46455280b4b5705439be3507cceffb57,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.50000006
       objectReference: {fileID: 0}
     - target: {fileID: 8009133940336851425, guid: 46455280b4b5705439be3507cceffb57,
         type: 3}
@@ -622,30 +779,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1773239563862960199}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &826344329452521392 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1435535812033081335, guid: 46455280b4b5705439be3507cceffb57,
-    type: 3}
-  m_PrefabInstance: {fileID: 1773239563862960199}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7835449091446976627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bf11266ef6194a4499d8cfbfd61bfcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3271367095338794917 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3890534996660295650, guid: 46455280b4b5705439be3507cceffb57,
-    type: 3}
-  m_PrefabInstance: {fileID: 1773239563862960199}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7491399072279620297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9181999883309187726, guid: 46455280b4b5705439be3507cceffb57,
@@ -769,8 +902,65 @@ PrefabInstance:
     m_AddedGameObjects: [{targetCorrespondingSourceObject: {fileID: -8278384614202260846,
           guid: 42f083966d49643409cb4451f02195fe, type: 3}, insertIndex: -1, addedObject: {
           fileID: 472651439177434521}}]
-    m_AddedComponents: []
+    m_AddedComponents: [{targetCorrespondingSourceObject: {fileID: 919132149155446097,
+          guid: 42f083966d49643409cb4451f02195fe, type: 3}, insertIndex: -1, addedObject: {
+          fileID: 7995134455285706066}}]
   m_SourcePrefab: {fileID: 100100000, guid: 42f083966d49643409cb4451f02195fe, type: 3}
+--- !u!1 &1655799286011580002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 42f083966d49643409cb4451f02195fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1890383179275957043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7995134455285706066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655799286011580002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50978f4899fa6b3418b355f9cdfa26f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reelingMasterScript: {fileID: 0}
+  fishingHook: {fileID: 826344329452521392}
+  chargeScalar: 8
+  chargeSlider: {fileID: 0}
+  catchFishButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fishImage: {fileID: 0}
+  hookImage: {fileID: 0}
+  hookPoint: {fileID: 0}
+  uiFishMoveSpeedScalar: 1200
+  normalStageOneSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  maxFishWaitTime: 4
+  minFishWaitTime: 10
+  splashEffect: {fileID: 0}
+  characterParent: {fileID: 5657748580216538004}
+  characterModel: {fileID: 7138077586599879889}
+  rodBobber: {fileID: 1450020752843532558}
+  fishingRange: 15
+  fishCamera: {fileID: 3271367095338794917}
+  mainCamera: {fileID: 0}
+  characterAnimator: {fileID: 5427234292576898722}
+  fishModelPrefab: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9,
+    type: 3}
 --- !u!4 &1668223510653677985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8278384614202260846, guid: 42f083966d49643409cb4451f02195fe,
@@ -780,6 +970,12 @@ Transform:
 --- !u!4 &2139566069543638232 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 42f083966d49643409cb4451f02195fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1890383179275957043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3202228334828553634 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3912331512283428497, guid: 42f083966d49643409cb4451f02195fe,
     type: 3}
   m_PrefabInstance: {fileID: 1890383179275957043}
   m_PrefabAsset: {fileID: 0}

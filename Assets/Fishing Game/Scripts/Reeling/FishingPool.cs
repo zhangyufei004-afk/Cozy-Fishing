@@ -69,6 +69,13 @@ namespace FishingGame.Reeling
             List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
             List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
 
+            if (overrideFishList.Count > 0)
+            {
+                int randomFish = Random.Range(0, overrideFishList.Count);
+                Fish overRideFish = new Fish(overrideFishList[randomFish], timeCaught, locationCaught);
+                return overRideFish;
+            }
+
             if (isInfested)
             {
                 Fish evilFishData = new Fish(_infestationFish, timeCaught, locationCaught);
@@ -154,6 +161,15 @@ namespace FishingGame.Reeling
             }
 
             overrideFishList.Add(fishToAdd);
+        }
+
+        /// <summary>
+        /// Returns a difficulty in the range of this pools lowest and highest fish difficulty
+        /// </summary>
+        /// <returns>An integer value represneting a difficulty inbetween this pools lowest and highest potential difficulty</returns>
+        public int GetADifficultyInRange()
+        {
+            return Random.Range(lowestFishDifficulty, highestFishDifficulty);
         }
 
         /// <summary>

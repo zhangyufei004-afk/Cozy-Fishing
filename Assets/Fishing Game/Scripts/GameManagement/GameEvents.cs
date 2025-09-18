@@ -59,12 +59,18 @@ namespace FishingGame.GameManagement
         public event Action<bool, string> OnWithinDialogueRange;
 
         public event Action<bool, string> OnNPCInteraction;
+        
+        public event Action<bool> OnBecomeOccupied;
+        
+        public event Action<bool> OnToggleGrappleCamera;
 
         #endregion
 
         #region AI Events
 
         public event Action<bool, string> OnToggleNPCMovement;
+
+
 
         #endregion
 
@@ -195,6 +201,24 @@ namespace FishingGame.GameManagement
         public void ToggleNPCMovement(bool isMovementEnabled, string npcName)
         {
             OnToggleNPCMovement?.Invoke(isMovementEnabled, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnBecomeOccupied event with <c>isPlayerOccupied</c>. 
+        /// </summary>
+        /// <param name="isPlayerOccupied">Is the player currently occupied doing something else.</param>
+        public void SetPlayerOccupied(bool isPlayerOccupied)
+        {
+            OnBecomeOccupied?.Invoke(isPlayerOccupied);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// </summary>
+        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
+        public void ToggleGrappleCamera(bool isCameraEnabled)
+        {
+            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
         }
     }
 }

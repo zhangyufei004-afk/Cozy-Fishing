@@ -72,10 +72,9 @@ namespace FishingGame.Reeling
         [Tooltip("The timer UI element contained in ReelingUI.")]
         private GameObject timerObject;
 
-        // TODO: Remove this once not needed with new inventory setup
         [SerializeField]
-        [Tooltip("A reference to the inventory UI.")] 
-        private InventoryUI inventoryUI;
+        [Tooltip("The UI button that allows the player to exit from fishing")]
+        private Button cancelButton;
         #endregion
 
         #region Public Methods
@@ -90,6 +89,7 @@ namespace FishingGame.Reeling
         /// <param name="fish3DObject">The 3D object of the fish</param>
         public void BeginCatch(Fish fishCaught, GameObject fish3DObject)
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _currentFishPool = null;
 
             _currentFish3DObject = fish3DObject;
@@ -132,6 +132,8 @@ namespace FishingGame.Reeling
         /// <param name="fishPool">The fish pool being fished from</param>
         public void BeginCatch(Fish fishCaught, GameObject fish3DObject, FishingPool fishPool)
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+
             _currentFishPool = fishPool;
 
             _currentFish3DObject = fish3DObject;
@@ -204,7 +206,6 @@ namespace FishingGame.Reeling
 
             fishingFinishedText.text = textToDisplay;
             fishingFinishedText.gameObject.SetActive(true);
-            fishingHook.ClearCollidingFishAndPool();
             fishingHook.PullBackHook();
             StartCoroutine(HideUIAfterCatch(2));
         }
@@ -217,7 +218,36 @@ namespace FishingGame.Reeling
         public void DisableControls(bool isDisabled)
         {
             characterController.ToggleMovement(!isDisabled);
+            initiationScript.AreReelingControlsActive(!isDisabled);
         }
+
+        /// <summary>
+        /// Run by a button, this will cancel fishing
+        /// Does this differently based on fishing is in stage one or the minigame section
+        /// </summary>
+        public void CancelFishing()
+        {
+            SetCancelButtonVisibilty(false);
+
+            if (IsFishing == true)
+            {
+                _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
+            }
+            else
+            {
+                initiationScript.CancelStageOne();
+            }
+        }
+
+        /// <summary>
+        /// Sets the cancel button to be visible if parameter is true, otherwise nonvisible
+        /// </summary>
+        /// <param name="isVisible">If true the button will be visisble, otherwise it will be hidden</param>
+        public void SetCancelButtonVisibilty(bool isVisible)
+        {
+            cancelButton.gameObject.SetActive(isVisible);
+        }
+
 
         #endregion
 
@@ -302,14 +332,16 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             DisableControls(false);
+            initiationScript.AreReelingControlsActive(true);
             initiationScript.ShouldEnableFishPerspective(false);
             timerObject.SetActive(false);
             fishingHook.PullBackHook();
+            SetCancelButtonVisibilty(false);
 
 
             Destroy(_currentFish3DObject);
 
-             
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
@@ -331,6 +363,7 @@ namespace FishingGame.Reeling
 
                 _currentlyReelingFish = null;
                 StartCoroutine(HideUIAfterCatch(2));
+
             }
         }
 
