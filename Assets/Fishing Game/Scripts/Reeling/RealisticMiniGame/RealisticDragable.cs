@@ -32,7 +32,6 @@ namespace FishingGame
         private float _angleTotal;
         private float _directionChangeTracker;
         private Vector2 _lastPosition;
-
         private float _currentSpeed;
 
         [SerializeField]

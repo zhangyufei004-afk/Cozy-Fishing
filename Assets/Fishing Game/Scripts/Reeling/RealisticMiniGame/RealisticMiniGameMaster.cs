@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +28,12 @@ namespace FishingGame.Reeling
         private Slider progressSlider;
 
         [SerializeField]
-        private Image centerOfUI;
+        [Tooltip("The centerpoint of the rod in the UI")]
+        private Image centerPoint;
+
+        [SerializeField]
+        [Tooltip("The Direction indicator for what way a player needs to spin the reel")]
+        private Image textDirectionHolder;
 
         [Header("GameData")]
 
@@ -87,7 +93,7 @@ namespace FishingGame.Reeling
 
         public Image GetCentreImage()
         {
-            return centerOfUI;
+            return centerPoint;
         }
 
         private void AddToProgressSlider(float progressToAdd)
@@ -116,6 +122,18 @@ namespace FishingGame.Reeling
         {
             progressSlider.value -= progressToRemove;
             _progressValue -= progressToRemove;
+        }
+
+        private void SetTextForDirection(bool isClockwise)
+        {
+            if (isClockwise)
+            {
+                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+            }
+            else
+            {
+                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+            }
         }
 
         private bool CheckIfDragableInRightDirection()
@@ -151,6 +169,7 @@ namespace FishingGame.Reeling
             ResetGameTimeVariables();
             DifficultyScalars();
             DecideDirection();
+            SetTextForDirection(_goClockWise);
         }
 
         private void ResetGameTimeVariables()
