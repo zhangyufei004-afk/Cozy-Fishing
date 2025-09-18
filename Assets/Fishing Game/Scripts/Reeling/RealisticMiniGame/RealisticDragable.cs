@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace FishingGame
 {
@@ -16,6 +17,17 @@ namespace FishingGame
 
         private float _angleTotal;
         private Vector2 _lastPosition;
+
+        [SerializeField]
+        private Image centerOfUI;
+
+        [SerializeField]
+        [Tooltip("The lowest possible value of the accumalted angle value")]
+        private int lowestAngleTotalValue;
+
+        [SerializeField]
+        [Tooltip("The highest possible value of the accumulated angle value")]
+        private int highestAngleTotalValue;
 
 
         private void OnEnable()
@@ -35,19 +47,43 @@ namespace FishingGame
         {
             if (CheckIfMouseIsHolding())
             {
-                Vector2 mousePosition = Mouse.current.position.ReadValue();
-                _angleTotal += Vector2.SignedAngle(_lastPosition, mousePosition);
+                SetPositionToMouse();
+                Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
 
-                SetPositionToMouse(mousePosition);
+                
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    transform.parent as RectTransform,
+                    mousePosition,
+                    null,
+                    out Vector2 localMousePos
+                );
 
-                bool isClockWise = _angleTotal > 0;
-                Debug.Log(isClockWise);
+                
+                Vector2 center = ((RectTransform)centerOfUI.transform).anchoredPosition;
+                Vector2 previousDirection = (_lastPosition - center).normalized;
+                Vector2 newDirection = (localMousePos - center).normalized;
+
+                if (_lastPosition != Vector2.zero)
+                {
+                    float angleDelta = Vector2.SignedAngle(previousDirection, newDirection);
+                    _angleTotal += angleDelta;
+                    ClampAngleTotal();
+                }
+                
+                _lastPosition = localMousePos;
+                bool isClockWise = _angleTotal < 0;
+                Debug.Log($"Total Angle: {_angleTotal}, Clockwise: {isClockWise}");
             }
         }
 
-        private void SetPositionToMouse(Vector2 newMousePosition)
+        private void ClampAngleTotal()
         {
-            _lastPosition = newMousePosition;
+            _angleTotal = Mathf.Clamp(_angleTotal, lowestAngleTotalValue, highestAngleTotalValue);
+        }
+
+        private void SetPositionToMouse()
+        {
+            Vector2 newMousePosition = _realisticStickAction.ReadValue<Vector2>();
             transform.position = newMousePosition;
         }
 
