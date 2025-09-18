@@ -10,6 +10,9 @@ namespace FishingGame
     public class RealisticDragable : MonoBehaviour
     {
         private int _uILayer;
+        private int _dragAbleLayer;
+        private string _realisticTag;
+        private string _dragAbleTag;
 
         private PlayerInput _playerInput;
         private InputAction _mouseInput;
@@ -35,6 +38,10 @@ namespace FishingGame
         private void OnEnable()
         {
             _uILayer = LayerMask.NameToLayer("UI");
+            _dragAbleLayer = LayerMask.NameToLayer("Dragable");
+
+            _dragAbleTag = "DragableUI";
+            _realisticTag = "RealisticGoal";
 
 
             InputActionAsset inputAsset = InputSystem.actions;
@@ -49,6 +56,11 @@ namespace FishingGame
         {
             if (CheckIfMouseIsHolding())
             {
+                // TODO: This needs to be made much cleaner later on with it properly being a circle bounds instead of a scuffed square
+                if (CheckIfMouseIsWithinCircle(_dragAbleLayer, _dragAbleTag) != true)
+                {
+                    return;
+                }
                 SetPositionToMouse();
                 Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
 
@@ -73,9 +85,17 @@ namespace FishingGame
                     DirectionChangeLogic(angleDelta);
                 }
                 _lastPosition = localMousePos;
-                
-                Debug.Log($"Total Angle: {_angleTotal}, Clockwise: {_isClockWise}");
             }
+        }
+
+        private bool CheckIfMouseIsWithinCircle(int layerToCheck, string tagToCheck)
+        {
+            if (IsPointerOverUIElement(GetEventSystemRaycastResults(), layerToCheck, tagToCheck))
+            {
+                return true;
+            }
+            else
+            { return false; }
         }
 
         /// <summary>
@@ -122,7 +142,7 @@ namespace FishingGame
         {
             if (_mouseInput.IsPressed())
             {
-                if (IsPointerOverUIElement(GetEventSystemRaycastResults()))
+                if (IsPointerOverUIElement(GetEventSystemRaycastResults(), _uILayer, _realisticTag))
                 {
                     return true;
                 }
@@ -134,12 +154,12 @@ namespace FishingGame
         /// <summary>
         /// Returns true if raycast from mouse touches a ui element taged as "RealisticGoal"
         /// </summary>
-        private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+        private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults, int layerToCheck, string tagToCheck)
         {
             for (int index = 0; index < eventSystemRaysastResults.Count; index++)
             {
                 RaycastResult curRaysastResult = eventSystemRaysastResults[index];
-                if (curRaysastResult.gameObject.layer == _uILayer && curRaysastResult.gameObject.CompareTag("RealisticGoal"))
+                if (curRaysastResult.gameObject.layer == layerToCheck && curRaysastResult.gameObject.CompareTag(tagToCheck))
                     return true;
             }
             return false;
