@@ -178,7 +178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2495067146915306493}
-  - component: {fileID: 7358692044108832365}
+  - component: {fileID: 3942797423354837605}
   m_Layer: 0
   m_Name: RealisticMiniGame
   m_TagString: Untagged
@@ -201,7 +201,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6035613099975597251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7358692044108832365
+--- !u!114 &3942797423354837605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,21 +210,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4518172318511371622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc84f7d72f337704eb4a36ac6d4648c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 18f3a7df1bc68ed438761a9f48ce7da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reelingMaster: {fileID: 6051403347699497060}
-  realisticCanvas: {fileID: 0}
-  playerCircle: {fileID: 0}
-  goalCircle: {fileID: 0}
-  progressSlider: {fileID: 0}
-  realisticGoalChecker: {fileID: 0}
-  progressIncreaseIncrements: 10
-  animator: {fileID: 0}
-  speedChangeDelay: 2
-  maxCatchProgress: 50
-  timeLimit: 20
-  timerText: {fileID: 0}
 --- !u!1 &5300646475322154039
 GameObject:
   m_ObjectHideFlags: 0
