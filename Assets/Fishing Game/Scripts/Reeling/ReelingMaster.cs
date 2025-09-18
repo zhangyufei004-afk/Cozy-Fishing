@@ -90,6 +90,7 @@ namespace FishingGame.Reeling
         /// <param name="fish3DObject">The 3D object of the fish</param>
         public void BeginCatch(Fish fishCaught, GameObject fish3DObject)
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _currentFishPool = null;
 
             _currentFish3DObject = fish3DObject;
@@ -132,6 +133,8 @@ namespace FishingGame.Reeling
         /// <param name="fishPool">The fish pool being fished from</param>
         public void BeginCatch(Fish fishCaught, GameObject fish3DObject, FishingPool fishPool)
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+
             _currentFishPool = fishPool;
 
             _currentFish3DObject = fish3DObject;
@@ -331,6 +334,8 @@ namespace FishingGame.Reeling
 
                 _currentlyReelingFish = null;
                 StartCoroutine(HideUIAfterCatch(2));
+                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+
             }
         }
 
