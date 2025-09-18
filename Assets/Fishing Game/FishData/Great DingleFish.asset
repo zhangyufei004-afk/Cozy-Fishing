@@ -20,5 +20,5 @@ MonoBehaviour:
   FishCatchDifficulty: 3
   FishBio: ???
   LocationsFound: 0300000000000000
-  TimeOfDayFound: Any time
+  TimesFound: 0200000003000000
   IsInvasive: 0

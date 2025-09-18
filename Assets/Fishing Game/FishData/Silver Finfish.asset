@@ -23,5 +23,5 @@ MonoBehaviour:
     brings good luck if caught under the moonlight. Despite its fragile appearance,
     it is quite agile in the water. '
   LocationsFound: 0100000003000000
-  TimeOfDayFound: Night
+  TimesFound: 00000000010000000200000003000000
   IsInvasive: 0

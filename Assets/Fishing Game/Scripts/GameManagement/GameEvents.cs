@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
 
@@ -26,7 +27,7 @@ namespace FishingGame.GameManagement
     {
         #region Inventory Events
 
-        public event Action OnFishCaught;
+        public event Action<Fish> OnFishCaught;
         public event Action OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
 
@@ -55,14 +56,19 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnToggleDialogueCamera;
 
+        public event Action<bool> OnBecomeOccupied;
+        
+        public event Action<bool> OnToggleGrappleCamera;
+
         #endregion
 
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
-        public void FishCaught()
+        /// /// <param name="fishCaught">The data object of the fish being caught</param>
+        public void FishCaught(Fish fishCaught)
         {
-            OnFishCaught?.Invoke();
+            OnFishCaught?.Invoke(fishCaught);
         }
 
         /// <summary>
@@ -153,6 +159,24 @@ namespace FishingGame.GameManagement
         public void ToggleDialogueCamera(bool isCameraEnabled)
         {
             OnToggleDialogueCamera?.Invoke(isCameraEnabled);
+        }
+
+        /// <summary>
+        /// Invokes the OnBecomeOccupied event with <c>isPlayerOccupied</c>. 
+        /// </summary>
+        /// <param name="isPlayerOccupied">Is the player currently occupied doing something else.</param>
+        public void SetPlayerOccupied(bool isPlayerOccupied)
+        {
+            OnBecomeOccupied?.Invoke(isPlayerOccupied);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// </summary>
+        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
+        public void ToggleGrappleCamera(bool isCameraEnabled)
+        {
+            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
         }
     }
 }

@@ -51,6 +51,8 @@ namespace FishingGame.NPC.UI
 
         private IEnumerator DisplayDialogueRoutine(List<string> dialogue, [CanBeNull] string questNameToStart)
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+
             int previousDialogueIndex = -1;
             while (_currentDialogueIndex < dialogue.Count)
             {
@@ -67,6 +69,8 @@ namespace FishingGame.NPC.UI
             }
             GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             GameManager.Instance.GameEvents.ToggleDialogueCamera(false);
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+
         }
 
         private void IncrementDialogueIndex(InputAction.CallbackContext context)

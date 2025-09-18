@@ -120,7 +120,6 @@ namespace FishingGame.Reeling
             if (amountOfFishHeld == 0) { return true; }
             else { return false; }
         }
-
         /// <summary>
         /// Causes a pool to become infested
         /// This will find a random fish that is allowed in the level that is tagged with IsInvasive

@@ -11,10 +11,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CharacterPreview
   - Water
   - UI
-  - 
+  - Grapple Target
   - 
   - 
   - 
