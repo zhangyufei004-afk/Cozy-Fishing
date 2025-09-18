@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 8565460562065017580}
   - component: {fileID: 4743088915911596234}
   m_Layer: 5
-  m_Name: FishLog
+  m_Name: FishLogUIEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

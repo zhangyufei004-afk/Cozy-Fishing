@@ -16,7 +16,7 @@ namespace FishingGame.FishLog
         [SerializeField] private FishScriptableObject fishData;
 
         [Tooltip("The parent of this object")]
-        [SerializeField] private FishLogUI logUIMaster;
+        [SerializeField] private FishLogUI logUIController;
 
         
 
@@ -40,7 +40,7 @@ namespace FishingGame.FishLog
         /// </summary>
         public void OnClick()
         {
-            logUIMaster.FishEntryClicked(fishData);
+            logUIController.FishEntryClicked(fishData);
         }
     }
 }

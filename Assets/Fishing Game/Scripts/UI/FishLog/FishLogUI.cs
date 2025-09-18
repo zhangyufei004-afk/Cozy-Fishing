@@ -83,8 +83,9 @@ namespace FishingGame.FishLog
         }
 
         /// <summary>
-        /// Enables and disables required UI elements to change the display to show whatever fish was clicked
+        /// Updates Log Info display to show whatever fish was clicked
         /// </summary>
+        /// <param name="fishData">The fish type clicked</param>
         public void FishEntryClicked(FishScriptableObject fishData)
         {
             fishImage.sprite = fishData.Texture;

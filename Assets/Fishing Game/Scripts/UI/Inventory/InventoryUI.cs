@@ -18,6 +18,14 @@ namespace FishingGame.UI.Inventory
         [SerializeField] private Transform fishListContainer;
         [SerializeField] private GameObject fishCardPrefab;
 
+        [Header("Inventory Display References")]
+        [SerializeField] [Tooltip("The image that shows what fish is being looked at")] private Image fishImage;
+        [SerializeField] [Tooltip("The textbox that says the species name")]  private TextMeshProUGUI speciesNameText;
+        [SerializeField] [Tooltip("The textbox that says the weight")] private TextMeshProUGUI weight;
+        [SerializeField] [Tooltip("The textbox that shows the location text")] private TextMeshProUGUI location;
+        [SerializeField] [Tooltip("The textbox that shows the time text")] private TextMeshProUGUI timeText;
+
+
         private readonly List<GameObject> _currentFishCards = new List<GameObject>();
 
         private void Start()
@@ -27,31 +35,27 @@ namespace FishingGame.UI.Inventory
 
         private void OnDisable()
         {
-            EventSystem.current.SetSelectedGameObject(null);
+            if (EventSystem.current)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
         }
 
         /// <summary>
         /// Adds a fish to the inventory UI as a new card.
         /// </summary>
         /// <param name="fish">Fish object to be displayed.</param>
-        // TODO: REFACTOR FOR EFFICIENCY
         public void AddFishToUI(Fish fish)
         {
             GameObject card = Instantiate(fishCardPrefab, fishListContainer);
+            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
+            if (inventoryUIEntry)
+            {
+                inventoryUIEntry.SetFish(fish);
+                inventoryUIEntry.SetController(this);
+                inventoryUIEntry.UpdateVisuals();
+            }
             _currentFishCards.Add(card);
-
-            Image image = card.transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
-            TextMeshProUGUI nameText = card.transform.Find("FishName").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI lengthText = card.transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI weightText = card.transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI caughtTimeText = card.transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI locationText = card.transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
-
-            image.sprite = fish.GetFishBase().Texture;
-            nameText.text = fish.GetFishBase().SpeciesName;
-            weightText.text = $"{fish.GetWeight():0.00}kg";
-            caughtTimeText.text = fish.GetCaughtTime().ToString();
-            locationText.text = fish.GetCaughtLocation();
         }
 
         /// <summary>
@@ -95,6 +99,19 @@ namespace FishingGame.UI.Inventory
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates Inventory Info display to show whatever fish was clicked
+        /// </summary>
+        /// <param name="fish">The fish clicked</param>
+        public void FishEntryClicked(Fish fish)
+        {
+            if (fishImage) fishImage.sprite = fish.GetTexture();
+            if (speciesNameText) speciesNameText.text = fish.GetSpeciesName();
+            if (weight) weight.text = fish.GetWeight() + "kg";
+            if (location) location.text = fish.GetCaughtLocation();
+            if (timeText) timeText.text = fish.GetCaughtTime().ToString();
         }
     }
 }
