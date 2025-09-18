@@ -8912,9 +8912,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 29540734}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: maxFishWaitTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: minFishWaitTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: reelingMasterScript
       value: 
       objectReference: {fileID: 1189930303}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: normalStageOneSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5d2560d44ce7b3d47a318f197a8d861e, type: 3}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: 'catchFishButtons.Array.data[0]'
       value: 
