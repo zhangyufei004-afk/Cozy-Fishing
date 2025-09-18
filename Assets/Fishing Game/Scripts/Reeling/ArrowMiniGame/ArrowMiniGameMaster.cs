@@ -548,7 +548,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetRuntimeVariables()
         {
-            _timeModifier = 0;
+            _timeModifier = 1;
             _currentArrowCount = 0;
             _currentProgress = defaultProgressModify * 4;
             _activeArrows.Clear();
