@@ -1,5 +1,6 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +12,11 @@ namespace FishingGame.FishLog
     public class FishLogUIEntry : MonoBehaviour
     {
         [SerializeField] private Image fishImage;
+        [SerializeField] private TMP_Text fishName;
         [SerializeField] private FishScriptableObject fishData;
 
         [Tooltip("The parent of this object")]
-        [SerializeField] private FishLogUI logUIMaster;
+        [SerializeField] private FishLogUI logUIController;
 
         
 
@@ -30,6 +32,7 @@ namespace FishingGame.FishLog
         public void MarkAsCaught(bool caught)
         {
             fishImage.color = caught ? Color.white : Color.black;
+            fishName.text = caught ? fishData.SpeciesName : "???";
         }
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace FishingGame.FishLog
         /// </summary>
         public void OnClick()
         {
-            logUIMaster.FishEntryClicked(GetFishData());
+            logUIController.FishEntryClicked(fishData);
         }
     }
 }

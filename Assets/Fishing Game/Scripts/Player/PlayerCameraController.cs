@@ -40,7 +40,7 @@ namespace FishingGame.Player
             GameManager.Instance.GameEvents.OnBecomeOccupied += isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
             GameManager.Instance.GameEvents.OnWithinDialogueRange += SetInDialogueRange;
 
-
+            _npcName = "";
         }
         
         /// <summary>
