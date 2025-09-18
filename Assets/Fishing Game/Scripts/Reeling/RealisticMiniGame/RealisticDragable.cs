@@ -70,17 +70,22 @@ namespace FishingGame
                     float angleDelta = Vector2.SignedAngle(previousDirection, newDirection);
                     _angleTotal += angleDelta;
                     _isClockWise = _angleTotal < 0;
-                    CheckForDirectionChange(angleDelta);
+                    DirectionChangeLogic(angleDelta);
                 }
-
-                
                 _lastPosition = localMousePos;
                 
                 Debug.Log($"Total Angle: {_angleTotal}, Clockwise: {_isClockWise}");
             }
         }
 
-        private void CheckForDirectionChange(float valueToAddToTotal)
+        /// <summary>
+        /// This function can be called to check if the direction the player is spinning in has just changed
+        /// This allows the _angleTotal value to continuely build up and be used to track how fast the player is spinning
+        /// Then if the player suddenly changed direction this function will kick in and reset the total amount of angle that had
+        /// accumulated.
+        /// </summary>
+        /// <param name="valueToAddToTotal">The angle amount being added</param>
+        private void DirectionChangeLogic(float valueToAddToTotal)
         {
             _directionChangeTracker += valueToAddToTotal;
             ClampAngleTotal();
