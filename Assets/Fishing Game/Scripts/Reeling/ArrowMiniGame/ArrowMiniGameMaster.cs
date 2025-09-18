@@ -9,14 +9,14 @@ using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
-    internal enum EMovementDirection
+     internal enum EMovementDirection
     {
         Left = 0,
         Right = 1,
         Up = 2,
         Down = 3
     };
-
+    
     public class ArrowMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
         [Header("Major Script References")]
@@ -107,16 +107,22 @@ namespace FishingGame.Reeling
         private int _maxRangeWaveChance = 10;
         private int _currentWaveChance = 0;
 
+        private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
-
-        
-
-        
-
+        private List<MovingArrow> _arrowsToRemove;
+        private InputAction _directionAction;
+        private EMovementDirection _arrowType;
 
         private void OnEnable()
         {
             _activeArrows = new List<MovingArrow>();
+            _arrowsAvailableToBePressed = new List<MovingArrow>();
+            _arrowsToRemove = new List<MovingArrow>();
+
+            InputActionAsset inputActions = InputSystem.actions;
+            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
+            uiActionMap.Enable();
+            _directionAction = uiActionMap.FindAction("ArrowMiniGame");
         }
 
 
@@ -126,7 +132,10 @@ namespace FishingGame.Reeling
 
             _currentTimePassed += Time.deltaTime;
 
+            InputCheck();
             CheckTimePassed();
+
+
 
             if (_activeArrows.Count == 0)
             {
@@ -184,6 +193,84 @@ namespace FishingGame.Reeling
         public void WinMiniGame()
         {
             DeactivateMiniGame(true);
+        }
+
+        public void AddArrowToPressList(MovingArrow arrowToAdd)
+        {
+            _arrowsAvailableToBePressed.Add(arrowToAdd);
+        }
+
+        public void RemoveArrowFromPressList(MovingArrow arrowToRemove)
+        {
+            _arrowsAvailableToBePressed.Remove(arrowToRemove);
+        }
+
+        public bool DoesThisContainArrow(MovingArrow arrowToCheck)
+        {
+            if (_arrowsAvailableToBePressed.Contains(arrowToCheck) == true)
+            {
+                return true;
+            }
+            else { return false; }
+        }
+
+        private void InputCheck()
+        {
+            if (_directionAction.WasPressedThisFrame())
+            {
+                Vector2 direction = _directionAction.ReadValue<Vector2>();
+                if (CheckIfThereAreArrowsPressable())
+                {
+                    foreach (MovingArrow arrow in _arrowsAvailableToBePressed)
+                    {
+                        int directionAsInt = arrow.GetDirectionEnumAsInt();
+                        _arrowType = (EMovementDirection)directionAsInt;
+
+                        if (GetMovementDirection(direction) == _arrowType)
+                        {
+                            _arrowsToRemove.Add(arrow);
+                        }
+                    }
+                    foreach (MovingArrow arrow in _arrowsToRemove)
+                    {
+                        ArrowSuccsessfullyPressed(arrow);
+                        RemoveArrowFromPressList(arrow);
+                        arrow.DeactivateArrow();
+                        arrow.StartFadeAway(true);
+                    }
+                    _arrowsToRemove.Clear();
+                }
+                else
+                {
+                    ArrowSpawner spawnerToPunish = null;
+                    foreach (ArrowSpawner spawner in spawnPoints)
+                    {
+                        int directionAsInt = spawner.GetSpawnerTypeAsInt();
+                        _arrowType = (EMovementDirection)directionAsInt;
+
+                        if (GetMovementDirection(direction) == _arrowType)
+                        {
+                            spawnerToPunish = spawner;
+                            break;
+                        }
+                    }
+
+                    spawnerToPunish.PunishPoorPress();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns an EMovementDirection enum value based on the inputed Vector2
+        /// </summary>
+        /// /// <param name="directionValue">The Vector2 input from the action</param>
+        private EMovementDirection GetMovementDirection(Vector2 directionValue)
+        {
+            if (directionValue.x > 0) { return EMovementDirection.Right; }
+            if (directionValue.x < 0) { return EMovementDirection.Left; }
+            if (directionValue.y > 0) { return EMovementDirection.Up; }
+            if (directionValue.y < 0) { return EMovementDirection.Down; }
+            return EMovementDirection.Down;
         }
 
         /// <summary>
@@ -361,6 +448,20 @@ namespace FishingGame.Reeling
             else { return false; }
         }
 
+        private bool CheckIfThereAreArrowsPressable()
+        {
+            if (_arrowsAvailableToBePressed.Count != 0)
+            {
+                return true;
+            }
+            else { return false; }
+        }
+
+        private EMovementDirection GetArrowType(EMovementDirection arrowType)
+        {
+            return arrowType;
+        }
+
         /// <summary>
         /// A timer that waits for the inputed amount of seconds
         /// Once it completes it reruns spawnarrow
@@ -389,6 +490,8 @@ namespace FishingGame.Reeling
 
         private void DeactivateMiniGame(bool didWin)
         {
+            _gameActive = false;
+
             foreach (MovingArrow arrow in _activeArrows)
             {
                 arrow.StartFadeAway(didWin);
@@ -401,6 +504,8 @@ namespace FishingGame.Reeling
 
             StartCoroutine(UIDissapear(didWin));
         }
+
+        
 
         #region Initilization_Functions
 
@@ -450,6 +555,8 @@ namespace FishingGame.Reeling
             _waveActive = false;
             _waveArrowCount = 0;
             _currentWaveChance = 0;
+            _arrowsToRemove.Clear();
+            _arrowsAvailableToBePressed.Clear();
         }
 
         #endregion

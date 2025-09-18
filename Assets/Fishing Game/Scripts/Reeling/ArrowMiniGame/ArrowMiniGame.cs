@@ -10,10 +10,6 @@ using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
-    
-
-
-
     /// <summary>
     /// ArrowMiniGame uses the IReelingMinigame interface
     /// The arrowminigame involves showing a randomized set of arrows

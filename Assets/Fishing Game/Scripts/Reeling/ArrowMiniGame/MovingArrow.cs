@@ -37,29 +37,18 @@ namespace FishingGame.Reeling
 
         private bool _isActive = false;
         private bool _canBePressed = false;
+        private bool _closestArrow = false;
         private float _speedScalar = 1f;
         
         private Image _arrowImage;
         private float _acceptanceDistance = 250f;
 
         private EMovementDirection _typeOfArrow;
-        private EMovementDirection _inputedAction;
-
-        private InputAction _directionAction;
         private float _targetAlpha;
 
         private void OnEnable()
         {
             _arrowImage = GetComponent<Image>();
-
-            int enumValueCount = System.Enum.GetValues(typeof(EMovementDirection)).Length;
-            _typeOfArrow = (EMovementDirection)Random.Range(0, enumValueCount);
-            DetermineArrowSprite();
-
-            InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
-            uiActionMap.Enable();
-            _directionAction = uiActionMap.FindAction("ArrowMiniGame");
         }
 
         private void Update()
@@ -67,7 +56,6 @@ namespace FishingGame.Reeling
             if (_isActive)
             {
                 MovementLogicAndChecks();
-                PressLogic();
                 CheckIfFailed();
             }
         }
@@ -75,6 +63,12 @@ namespace FishingGame.Reeling
         private void OnDisable()
         {
             Destroy(gameObject);
+        }
+
+        public void SetTypeOfArrow(int typeOfArrowAsInt)
+        {
+            _typeOfArrow = (EMovementDirection)typeOfArrowAsInt;
+            DetermineArrowSprite();
         }
 
         /// <summary>
@@ -85,6 +79,11 @@ namespace FishingGame.Reeling
         {
             _isActive = true;
             _speedScalar = speedScalar;
+        }
+
+        public void DeactivateArrow()
+        {
+            _isActive = false;
         }
 
         /// <summary>
@@ -104,6 +103,11 @@ namespace FishingGame.Reeling
         {
             _spawner = spawner;
             _goalPoint = _spawner.GetArrowGoal();
+        }
+
+        public int GetDirectionEnumAsInt()
+        {
+            return (int)_typeOfArrow;
         }
 
         /// <summary>
@@ -147,30 +151,13 @@ namespace FishingGame.Reeling
             {
                 _canBePressed = true;
                 _arrowImage.color = Color.green;
+                if (_spawner.GetMasterScript().DoesThisContainArrow(this) == false) { _spawner.GetMasterScript().AddArrowToPressList(this); }
             }
             else
             {
                 _canBePressed = false;
                 _arrowImage.color = Color.white;
-            }
-        }
-
-        /// <summary>
-        /// Firstly checks if the arrow can be pressed and then checks if the input value has been pressed this frame
-        /// If so it runs the arrowsuccsessfullypressed function
-        /// </summary>
-        private void PressLogic()
-        {
-            if (_canBePressed)
-            {
-                if (_directionAction.WasPressedThisFrame())
-                {
-                    Vector2 direction = _directionAction.ReadValue<Vector2>();
-                    if (GetMovementDirection(direction) == _typeOfArrow)
-                    {
-                        ArrowSuccsessfullyPressed();
-                    }
-                }
+                if (_spawner.GetMasterScript().DoesThisContainArrow(this) == true) { _spawner.GetMasterScript().RemoveArrowFromPressList(this); }
             }
         }
 
@@ -187,35 +174,12 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Returns an EMovementDirection enum value based on the inputed Vector2
-        /// </summary>
-        /// /// <param name="directionValue">The Vector2 input from the action</param>
-        private EMovementDirection GetMovementDirection(Vector2 directionValue)
-        {
-            if (directionValue.x > 0) { return EMovementDirection.Right; }
-            if (directionValue.x < 0) { return EMovementDirection.Left; }
-            if (directionValue.y > 0) { return EMovementDirection.Up; }
-            if (directionValue.y < 0) { return EMovementDirection.Down; }
-            return EMovementDirection.Down;
-        }
-
-        /// <summary>
-        /// Run when an arrow is sucsessfully pressed
-        /// </summary>
-        private void ArrowSuccsessfullyPressed()
-        {
-            _isActive = false;
-            ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
-            masterScript.ArrowSuccsessfullyPressed(this);
-            StartFadeAway(true);
-        }
-
-        /// <summary>
         /// Run when an arrow reaches the failpoint
         /// </summary>
-        private void ArrowFailed()
+        public void ArrowFailed()
         {
             _isActive = false;
+            _spawner.GetMasterScript().RemoveArrowFromPressList(this);
             StartFadeAway(false);
             ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
             masterScript.ArrowFailedToBePressed(this);
@@ -227,6 +191,7 @@ namespace FishingGame.Reeling
         /// <param name="wasASuccsess">Input true if this arrow was pressed properly, otherwise false</param>
         public void StartFadeAway(bool wasASuccsess)
         {
+            _spawner.RemoveActiveArrow(this);
             if (wasASuccsess) { _arrowImage.color = Color.grey; }
             else { _arrowImage.color = Color.red; }
 

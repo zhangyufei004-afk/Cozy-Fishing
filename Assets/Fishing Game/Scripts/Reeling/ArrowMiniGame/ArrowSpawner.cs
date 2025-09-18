@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using UnityEditor;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace FishingGame.Reeling
 {
@@ -12,16 +13,22 @@ namespace FishingGame.Reeling
         [Tooltip("The MinigameMasterScript")]
         private ArrowMiniGameMaster masterScript;
 
+        [SerializeField]
+        [Tooltip("The type of arrow this should spawn")]
+        private EMovementDirection arrowType;
+
+
+
         private bool _isActive = false;
         private int _currentDifficultyLevel;
         private GameObject _arrowToSpawn;
         private ArrowGoalPoints _goalPoint;
+        private List<MovingArrow> _activeArrows;
 
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void OnEnable()
         {
-
+            _activeArrows = new List<MovingArrow>();
         }
 
         // Update is called once per frame
@@ -38,10 +45,12 @@ namespace FishingGame.Reeling
         {
             if (CheckIsActive() != true) { return; }
             GameObject currentArrow = Instantiate(_arrowToSpawn, gameObject.transform);
+            currentArrow.GetComponent<MovingArrow>().SetTypeOfArrow((int)arrowType);
             currentArrow.transform.SetParent(GetArrowGoal().gameObject.transform, true);
             masterScript.AddOrRemoveActiveArrow(currentArrow.GetComponent<MovingArrow>(), true);
             currentArrow.GetComponent<MovingArrow>().ActivateArrow(speedToUse);
             currentArrow.GetComponent<MovingArrow>().SetSpawner(this);
+            _activeArrows.Add(currentArrow.GetComponent<MovingArrow>());
         }
 
         /// <summary>
@@ -68,6 +77,19 @@ namespace FishingGame.Reeling
             _isActive = isActive;
         }
 
+        public void PunishPoorPress()
+        {
+            if (_activeArrows.Count != 0)
+            {
+                _activeArrows[0].ArrowFailed();
+            }
+        }
+
+        public void RemoveActiveArrow(MovingArrow arrowToRemove)
+        {
+            _activeArrows.Remove(arrowToRemove);
+        }
+
         /// <summary>
         /// Returns the goalpoint of this spawner
         /// </summary>
@@ -75,6 +97,11 @@ namespace FishingGame.Reeling
         public ArrowGoalPoints GetArrowGoal()
         { 
             return _goalPoint;
+        }
+
+        public int GetSpawnerTypeAsInt()
+        {
+            return (int)arrowType;
         }
 
         /// <summary>
@@ -86,6 +113,8 @@ namespace FishingGame.Reeling
             if (_isActive) { return true; }
             else { return false; }
         }
+
+        
 
         /// <summary>
         /// Returns the masterscript for the arrow minigame
