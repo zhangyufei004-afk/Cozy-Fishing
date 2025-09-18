@@ -15,7 +15,9 @@ namespace FishingGame
         private InputAction _mouseInput;
         private InputAction _realisticStickAction;
 
+        private bool _isClockWise;
         private float _angleTotal;
+        private float _directionChangeTracker;
         private Vector2 _lastPosition;
 
         [SerializeField]
@@ -67,18 +69,42 @@ namespace FishingGame
                 {
                     float angleDelta = Vector2.SignedAngle(previousDirection, newDirection);
                     _angleTotal += angleDelta;
-                    ClampAngleTotal();
+                    _isClockWise = _angleTotal < 0;
+                    CheckForDirectionChange(angleDelta);
                 }
+
                 
                 _lastPosition = localMousePos;
-                bool isClockWise = _angleTotal < 0;
-                Debug.Log($"Total Angle: {_angleTotal}, Clockwise: {isClockWise}");
+                
+                Debug.Log($"Total Angle: {_angleTotal}, Clockwise: {_isClockWise}");
+            }
+        }
+
+        private void CheckForDirectionChange(float valueToAddToTotal)
+        {
+            _directionChangeTracker += valueToAddToTotal;
+            ClampAngleTotal();
+            if (_isClockWise)
+            {
+                if (_directionChangeTracker > 0)
+                {
+                    _angleTotal = 0;
+                    return;
+                }
+            }
+            else
+            {
+                if (_directionChangeTracker < 0)
+                {
+                    _angleTotal = 0;
+                    return;
+                }
             }
         }
 
         private void ClampAngleTotal()
         {
-            _angleTotal = Mathf.Clamp(_angleTotal, lowestAngleTotalValue, highestAngleTotalValue);
+            _directionChangeTracker = Mathf.Clamp(_directionChangeTracker, lowestAngleTotalValue, highestAngleTotalValue);
         }
 
         private void SetPositionToMouse()
