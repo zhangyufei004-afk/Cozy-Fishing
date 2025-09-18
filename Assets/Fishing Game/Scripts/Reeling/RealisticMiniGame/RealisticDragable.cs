@@ -1,3 +1,4 @@
+using FishingGame.Reeling;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,6 +10,14 @@ namespace FishingGame
 {
     public class RealisticDragable : MonoBehaviour
     {
+        [Header("Script refrences")]
+
+        [SerializeField]
+        [Tooltip("The master script for this minigame")]
+        private RealisticMiniGameMaster minigameMaster;
+
+        private Image _centerImage;
+
         private int _uILayer;
         private int _dragAbleLayer;
         private string _realisticTag;
@@ -19,12 +28,12 @@ namespace FishingGame
         private InputAction _realisticStickAction;
 
         private bool _isClockWise;
+        private bool _isMoving;
         private float _angleTotal;
         private float _directionChangeTracker;
         private Vector2 _lastPosition;
 
-        [SerializeField]
-        private Image centerOfUI;
+        private float _currentSpeed;
 
         [SerializeField]
         [Tooltip("The lowest possible value of the accumalted angle value")]
@@ -43,6 +52,8 @@ namespace FishingGame
             _dragAbleTag = "DragableUI";
             _realisticTag = "RealisticGoal";
 
+            _centerImage = minigameMaster.GetCentreImage();
+
 
             InputActionAsset inputAsset = InputSystem.actions;
             InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
@@ -59,8 +70,11 @@ namespace FishingGame
                 // TODO: This needs to be made much cleaner later on with it properly being a circle bounds instead of a scuffed square
                 if (CheckIfMouseIsWithinCircle(_dragAbleLayer, _dragAbleTag) != true)
                 {
+                    _currentSpeed = 0;
+                    _isMoving = false;
                     return;
                 }
+                _isMoving = true;
                 SetPositionToMouse();
                 Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
 
@@ -73,19 +87,36 @@ namespace FishingGame
                 );
 
                 
-                Vector2 center = ((RectTransform)centerOfUI.transform).anchoredPosition;
+                Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
                 Vector2 previousDirection = (_lastPosition - center).normalized;
                 Vector2 newDirection = (localMousePos - center).normalized;
 
                 if (_lastPosition != Vector2.zero)
                 {
-                    float angleDelta = Vector2.SignedAngle(previousDirection, newDirection);
-                    _angleTotal += angleDelta;
+                    _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
+                    _angleTotal += _currentSpeed;
                     _isClockWise = _angleTotal < 0;
-                    DirectionChangeLogic(angleDelta);
+                    DirectionChangeLogic(_currentSpeed);
                 }
                 _lastPosition = localMousePos;
+                
             }
+            else { _isMoving = false; }
+        }
+
+        public bool GetCurrentDirection()
+        {
+            return _isClockWise;
+        }
+
+        public bool GetIsMovingValue()
+        {
+            return _isMoving;
+        }
+
+        public float GetSpeed()
+        {
+            return _currentSpeed;
         }
 
         private bool CheckIfMouseIsWithinCircle(int layerToCheck, string tagToCheck)
