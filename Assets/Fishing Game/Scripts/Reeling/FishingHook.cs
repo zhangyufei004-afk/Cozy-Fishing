@@ -1,6 +1,7 @@
 using FishingGame.FishSystem;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -93,7 +94,16 @@ namespace FishingGame.Reeling
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
                     _headingToFishSpot = false;
-                    PullBackHook();
+                    if (CheckIfColliding())
+                    {
+                        waterSplash.Play();
+                        waterSound.Play();
+                        initiationScript.BeginStageOne();
+                    }
+                    else
+                    {
+                        PullBackHook();
+                    }
                 }
             }
             if (_headingBackToHook)
@@ -154,23 +164,31 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// This public function is called when the right click is used while the hook has been cast
-        /// It runs the ResetHookSpot function, runs the logic to react to whatever is currently caught
-        /// and then clears the colliding object variables from this class.
+        /// Use this method to attempt to fish from where the fishing rods hook currently is
+        /// If valid spot is colliding the hook will return and print a debug log
         /// </summary>
-        public void PullBackHook()
+        public void AttempToFishFromCurrentLocation()
         {
-            if (_collidingFish.Count > 0 || _collidingPool != null)
+            if (CheckIfColliding())
             {
                 ReactToFishOnHook();
                 ClearCollidingFishAndPool();
             }
             else
             {
-                SetupHookTravelBack();
-                ResetHookSpot();
-                reelingMaster.DisableControls(false);
+                Debug.Log("Hook was not colliding with an object with a fishing pool script");
+                PullBackHook();
             }
+        }
+
+        /// <summary>
+        /// Pulls the fishing hook back and reenables controls
+        /// </summary>
+        public void PullBackHook()
+        {
+            SetupHookTravelBack();
+            ResetHookSpot();
+            reelingMaster.DisableControls(false);
         }
 
         /// <summary>
@@ -192,6 +210,24 @@ namespace FishingGame.Reeling
         {
             _collidingPool = null;
             _collidingFish.Clear();
+        }
+
+        /// <summary>
+        /// Returns the pool currently colliding with this hook
+        /// </summary>
+        /// <returns>Returns the colliding pull unless it is null</returns>
+        /// <exception cref="NullReferenceException">Throws a null error if there is no colliding pool</exception>
+        public FishingPool GetPoolCurrentlyTouching()
+        {
+            if (_collidingPool != null)
+            {
+                return _collidingPool;
+            }
+            else
+            {
+                throw new NullReferenceException("Colliding pool == to NULL");
+            }
+            
         }
 
         /// <summary>
@@ -241,8 +277,6 @@ namespace FishingGame.Reeling
             }
             else if (_collidingPool != null)
             {
-                waterSplash.Play();
-                waterSound.Play();
                 CaughtFish(_collidingPool);
             }
         }
@@ -287,6 +321,18 @@ namespace FishingGame.Reeling
             // TODO: This need to be physics logic soon
             HookIsOut = false;
             reelingMaster.DisableControls(false);
+        }
+        
+        private bool CheckIfColliding()
+        {
+            if (_collidingFish.Count > 0 || _collidingPool != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
