@@ -56,6 +56,10 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnToggleDialogueCamera;
 
+        public event Action<bool> OnBecomeOccupied;
+        
+        public event Action<bool> OnToggleGrappleCamera;
+
         #endregion
 
         /// <summary>
@@ -155,6 +159,24 @@ namespace FishingGame.GameManagement
         public void ToggleDialogueCamera(bool isCameraEnabled)
         {
             OnToggleDialogueCamera?.Invoke(isCameraEnabled);
+        }
+
+        /// <summary>
+        /// Invokes the OnBecomeOccupied event with <c>isPlayerOccupied</c>. 
+        /// </summary>
+        /// <param name="isPlayerOccupied">Is the player currently occupied doing something else.</param>
+        public void SetPlayerOccupied(bool isPlayerOccupied)
+        {
+            OnBecomeOccupied?.Invoke(isPlayerOccupied);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// </summary>
+        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
+        public void ToggleGrappleCamera(bool isCameraEnabled)
+        {
+            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
         }
     }
 }
