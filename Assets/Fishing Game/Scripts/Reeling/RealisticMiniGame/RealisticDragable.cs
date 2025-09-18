@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 namespace FishingGame
 {
+    /// <summary>
+    /// This script controls the logic and behaviour behind the dragable component of the realistic minigame
+    /// It also contains a reference to the minigame master
+    /// NOTE: THIS IS A WIP, it functions but there is a lot of work to still go into this minigame
+    /// Several inefficient functions currently present to get this working in a low amount of time
+    /// </summary>
     public class RealisticDragable : MonoBehaviour
     {
         [Header("Script refrences")]
@@ -33,6 +39,7 @@ namespace FishingGame
         private float _directionChangeTracker;
         private Vector2 _lastPosition;
         private float _currentSpeed;
+        [Header("Game Data")]
 
         [SerializeField]
         [Tooltip("The lowest possible value of the accumalted angle value")]
@@ -103,30 +110,39 @@ namespace FishingGame
             else { _isMoving = false; }
         }
 
+        #region Public Functions
+
+        /// <summary>
+        /// Returns the current direction. true = clockwise false = anti-clockwise
+        /// </summary>
+        /// <returns>True = clockwise, false = anti-clockwise</returns>
         public bool GetCurrentDirection()
         {
             return _isClockWise;
         }
 
+        /// <summary>
+        /// Returns a bool that says if the dragable is currently moving or not
+        /// true = moving, false = not moving
+        /// </summary>
+        /// <returns>True if moving, false if not moving</returns>
         public bool GetIsMovingValue()
         {
             return _isMoving;
         }
 
+        /// <summary>
+        /// Returns a float value representing the current speed
+        /// </summary>
+        /// <returns>The current speed value of the dragable</returns>
         public float GetSpeed()
         {
             return _currentSpeed;
         }
 
-        private bool CheckIfMouseIsWithinCircle(int layerToCheck, string tagToCheck)
-        {
-            if (IsPointerOverUIElement(GetEventSystemRaycastResults(), layerToCheck, tagToCheck))
-            {
-                return true;
-            }
-            else
-            { return false; }
-        }
+        #endregion
+
+        #region MovementLogic
 
         /// <summary>
         /// This function can be called to check if the direction the player is spinning in has just changed
@@ -157,17 +173,45 @@ namespace FishingGame
             }
         }
 
-        private void ClampAngleTotal()
+        /// <summary>
+        /// Checks if the mouse is currently within the reeling circle, returns true if so otherwise false
+        /// Takes parameters for the layer to check and tag to check
+        /// </summary>
+        /// <param name="layerToCheck">The layer of the ui object being checked</param>
+        /// <param name="tagToCheck">The tag of the ui object being checked</param>
+        /// <returns>True if mouse is within circle otherwise false</returns>
+        private bool CheckIfMouseIsWithinCircle(int layerToCheck, string tagToCheck)
         {
-            _directionChangeTracker = Mathf.Clamp(_directionChangeTracker, lowestAngleTotalValue, highestAngleTotalValue);
+            if (IsPointerOverUIElement(GetEventSystemRaycastResults(), layerToCheck, tagToCheck))
+            {
+                return true;
+            }
+            else
+            { return false; }
         }
 
+        /// <summary>
+        /// Sets the position of the mouse to the input action
+        /// </summary>
         private void SetPositionToMouse()
         {
             Vector2 newMousePosition = _realisticStickAction.ReadValue<Vector2>();
             transform.position = newMousePosition;
         }
 
+        /// <summary>
+        /// Clamps the direction change tracker, this is so the value dosen't build up to extremly high values,
+        /// this allows the direction changing method to work
+        /// </summary>
+        private void ClampAngleTotal()
+        {
+            _directionChangeTracker = Mathf.Clamp(_directionChangeTracker, lowestAngleTotalValue, highestAngleTotalValue);
+        }
+
+        /// <summary>
+        /// Returns true if mouse is pressed and over the dragable object
+        /// </summary>
+        /// <returns>True if mouse is pressed and over the dragable object otherwise false</returns>
         private bool CheckIfMouseIsHolding()
         {
             if (_mouseInput.IsPressed())
@@ -182,8 +226,12 @@ namespace FishingGame
         }
 
         /// <summary>
-        /// Returns true if raycast from mouse touches a ui element taged as "RealisticGoal"
+        /// Returns true if raycast from mouse touches a ui element matching the layer and tag inputed
         /// </summary>
+        /// <param name="eventSystemRaysastResults">A raycast result</param>
+        /// <param name="layerToCheck">The layer that the UI object should have</param>
+        /// <param name="tagToCheck">The tag that the UI object should have</param>
+        /// <returns></returns>
         private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults, int layerToCheck, string tagToCheck)
         {
             for (int index = 0; index < eventSystemRaysastResults.Count; index++)
@@ -198,6 +246,7 @@ namespace FishingGame
         /// <summary>
         /// Gets all event system raycast results of current mouse or touch position.
         /// </summary>
+        /// <returns>The raycast results</returns>
         private static List<RaycastResult> GetEventSystemRaycastResults()
         {
             PointerEventData eventData = new PointerEventData(EventSystem.current);
@@ -206,5 +255,6 @@ namespace FishingGame
             EventSystem.current.RaycastAll(eventData, raycastResults);
             return raycastResults;
         }
+        #endregion
     }
 }
