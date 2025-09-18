@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.UI
 {
     [System.Serializable]
-    public enum TabType
+    internal enum ETabType
     {
         INVENTORY,
         FISHLOG,
@@ -11,6 +11,10 @@ namespace FishingGame
         SETTINGS
     }
 
+    /// <summary>
+    /// Controls the UI panel visibility of Tabs.
+    /// Toggles the various menus when the corresponding tab button is pressed.
+    /// </summary>
     public class TabManager : MonoBehaviour
     {
         // Private Readable Variables
@@ -21,7 +25,7 @@ namespace FishingGame
         [SerializeField] private GameObject settingsTabObject;
 
         // Private Variables
-        private TabType _currentTab = TabType.INVENTORY;
+        private ETabType _currentTab = ETabType.INVENTORY;
 
         void OnEnable()
         {
@@ -31,7 +35,7 @@ namespace FishingGame
 
         public void SetTab(int tabType)
         {
-            TabType inTabType = (TabType)tabType;
+            ETabType inTabType = (ETabType)tabType;
 
             if (_currentTab != inTabType)
             {
@@ -49,16 +53,16 @@ namespace FishingGame
 
             switch (_currentTab)
             {
-                case TabType.INVENTORY:
+                case ETabType.INVENTORY:
                     inventoryTabObject.SetActive(true);
                     break;
-                case TabType.FISHLOG:
+                case ETabType.FISHLOG:
                     fishLogTabObject.SetActive(true);
                     break;
-                case TabType.QUESTS:
+                case ETabType.QUESTS:
                     questsTabObject.SetActive(true);
                     break;
-                case TabType.SETTINGS:
+                case ETabType.SETTINGS:
                     settingsTabObject.SetActive(true);
                     break;
             }

@@ -4,18 +4,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FishingGame
+namespace FishingGame.UI.Inventory
 {
+    /// <summary>
+    /// UI Entry for displaying a fish in the Inventory.
+    /// TODO: update this to be IStorable? probably?
+    /// </summary>
     public class InventoryUIEntry : MonoBehaviour
     {
         private Fish _fish;
         private InventoryUI _inventoryUIController;
 
         // Getters / Setters
-        public Fish GetFish() => _fish;
-        public void SetFish(Fish fish) => _fish = fish;
+        public Fish Fish
+        {
+            get { return _fish; }
+            set { _fish = value; }
+        }
 
-        public void SetController(InventoryUI _inventoryUIController) => this._inventoryUIController = _inventoryUIController;
+        public InventoryUI InventoryUIController
+        {
+            set {_inventoryUIController = value; }
+        }
 
         /// <summary>
         /// Updates the visuals of the inventory entry.

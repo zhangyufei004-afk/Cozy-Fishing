@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace FishingGame
+namespace FishingGame.UI
 {
+    /// <summary>
+    /// Controls the UI panel visibility of all Menus.
+    /// Toggles the menus when the Tab key is pressed.
+    /// </summary>
     public class MenuManager : MonoBehaviour
     {
         // Private Readable Variables
@@ -13,26 +17,6 @@ namespace FishingGame
         // Private Variables
         private bool _isMenuActive = false;
         private InputAction _triggerMenuAction;
-
-        private void OnEnable()
-        {
-            _triggerMenuAction = InputSystem.actions.FindAction("Player/Inventory");
-            _triggerMenuAction.Enable();
-            _triggerMenuAction.performed += ToggleMenu;
-
-            _isMenuActive = false;
-            SetMenu(_isMenuActive);
-        }
-
-        private void OnDisable()
-        {
-            _triggerMenuAction.Disable();
-        }
-
-        private void ToggleMenu(InputAction.CallbackContext context)
-        {
-            ToggleMenu();
-        }
 
         public void ToggleMenu()
         {
@@ -53,6 +37,26 @@ namespace FishingGame
 #else
             Application.Quit();
 #endif
+        }
+
+        private void OnEnable()
+        {
+            _triggerMenuAction = InputSystem.actions.FindAction("Player/Inventory");
+            _triggerMenuAction.Enable();
+            _triggerMenuAction.performed += ToggleMenu;
+
+            _isMenuActive = false;
+            SetMenu(_isMenuActive);
+        }
+
+        private void OnDisable()
+        {
+            _triggerMenuAction.Disable();
+        }
+
+        private void ToggleMenu(InputAction.CallbackContext context)
+        {
+            ToggleMenu();
         }
     }
 }
