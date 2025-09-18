@@ -5,6 +5,12 @@ using UnityEngine.InputSystem;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// This class is used to spawn arrows for the arrow minigame
+    /// It contains references to the master script and the type of arrow it spawns
+    /// This class contains public functions that spawn an arrow tied to this spawner
+    /// It also maintains an active list of all currently active arrows it has spawned
+    /// </summary>
     public class ArrowSpawner : MonoBehaviour
     {
         [Header("Script references")]
@@ -16,8 +22,6 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The type of arrow this should spawn")]
         private EMovementDirection arrowType;
-
-
 
         private bool _isActive = false;
         private int _currentDifficultyLevel;
@@ -37,6 +41,22 @@ namespace FishingGame.Reeling
             
         }
 
+        #region PublicFunctions
+
+        /// <summary>
+        /// Sets this spawners required variables for it to function,
+        /// this should be run everytime the minigame is initiated
+        /// </summary>
+        /// <param name="difficultyLevel">The difficulty level to set</param>
+        /// <param name="arrowPrefab">The arrow prefab that will be spawned</param>
+        /// <param name="goalPoint">The goal point for this spawner</param>
+        public void InitiateSpawner(int difficultyLevel, GameObject arrowPrefab, ArrowGoalPoints goalPoint)
+        {
+            _currentDifficultyLevel = difficultyLevel;
+            _arrowToSpawn = arrowPrefab;
+            _goalPoint = goalPoint;
+        }
+
         /// <summary>
         /// Spawns a new arrow, runs the required functions on the new arrow for proper initilization
         /// </summary>
@@ -54,17 +74,16 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Sets this spawners required variables for it to function,
-        /// this should be run everytime the minigame is initiated
+        /// Run when a player has pressed a button too soon
+        /// This Function will cause the closest arrow to be flagged as a fail
+        /// and remove itself and run its arrowfailed function
         /// </summary>
-        /// <param name="difficultyLevel">The difficulty level to set</param>
-        /// <param name="arrowPrefab">The arrow prefab that will be spawned</param>
-        /// <param name="goalPoint">The goal point for this spawner</param>
-        public void InitiateSpawner(int difficultyLevel, GameObject arrowPrefab, ArrowGoalPoints goalPoint)
+        public void PunishPoorPress()
         {
-            _currentDifficultyLevel = difficultyLevel;
-            _arrowToSpawn = arrowPrefab;
-            _goalPoint = goalPoint;
+            if (_activeArrows.Count != 0)
+            {
+                _activeArrows[0].ArrowFailed();
+            }
         }
 
         /// <summary>
@@ -77,14 +96,10 @@ namespace FishingGame.Reeling
             _isActive = isActive;
         }
 
-        public void PunishPoorPress()
-        {
-            if (_activeArrows.Count != 0)
-            {
-                _activeArrows[0].ArrowFailed();
-            }
-        }
-
+        /// <summary>
+        /// Removes inputed arrow from this spawners active arrow list
+        /// </summary>
+        /// <param name="arrowToRemove">The arrow being removed</param>
         public void RemoveActiveArrow(MovingArrow arrowToRemove)
         {
             _activeArrows.Remove(arrowToRemove);
@@ -95,14 +110,31 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <returns>The goalpoint of this spawner</returns>
         public ArrowGoalPoints GetArrowGoal()
-        { 
+        {
             return _goalPoint;
         }
 
+        /// <summary>
+        /// Returns the type of arrow enum this spawner has, as an int
+        /// </summary>
+        /// <returns>The integer value of this spawners arrow enum</returns>
         public int GetSpawnerTypeAsInt()
         {
             return (int)arrowType;
         }
+
+        /// <summary>
+        /// Returns the masterscript for the arrow minigame
+        /// </summary>
+        /// <returns>The masterscript for the arrow minigame</returns>
+        public ArrowMiniGameMaster GetMasterScript()
+        {
+            return masterScript;
+        }
+
+        #endregion
+
+        #region Checks
 
         /// <summary>
         /// Checks if this spawner is active. returns true if so, otherwise false
@@ -114,15 +146,6 @@ namespace FishingGame.Reeling
             else { return false; }
         }
 
-        
-
-        /// <summary>
-        /// Returns the masterscript for the arrow minigame
-        /// </summary>
-        /// <returns>The masterscript for the arrow minigame</returns>
-        public ArrowMiniGameMaster GetMasterScript()
-        {
-            return masterScript;
-        }
+        #endregion
     }
 }

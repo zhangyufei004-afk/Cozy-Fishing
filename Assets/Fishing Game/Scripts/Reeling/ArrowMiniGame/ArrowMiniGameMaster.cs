@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// The type of direction an arrow will represent
+    /// </summary>
      internal enum EMovementDirection
     {
         Left = 0,
@@ -17,6 +20,13 @@ namespace FishingGame.Reeling
         Down = 3
     };
     
+    /// <summary>
+    /// This minigame involves arrows falling down the screen
+    /// Once an arrow reaches a specific point on the screen the player needs to press the corresponding arrow key
+    /// Failing this or pressing a key too early results in progress loss
+    /// Doing so correctly results in progress gain
+    /// This is the master script
+    /// </summary>
     public class ArrowMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
         [Header("Major Script References")]
@@ -126,7 +136,7 @@ namespace FishingGame.Reeling
         }
 
 
-        void Update()
+        private void Update()
         {
             if (_gameActive != true) { return; }
 
@@ -142,6 +152,8 @@ namespace FishingGame.Reeling
                 EmergencySpawnArrow();
             }
         }
+
+        #region Public Functions
 
         /// <summary>
         /// Setsup all the required logic for the minigame
@@ -195,30 +207,86 @@ namespace FishingGame.Reeling
             DeactivateMiniGame(true);
         }
 
+        /// <summary>
+        /// Adds or removes an arrow from the active arrow list
+        /// First parameter is the arrowtomodify the second paremeter should be true if adding
+        /// false if removing from list.
+        /// Will modifiy the currentarrowcount as well
+        /// </summary>
+        /// <param name="arrowModified">The arrow being modified</param>
+        /// <param name="addToList">True if adding to list, false if removing from list</param>
+        public void AddOrRemoveActiveArrow(MovingArrow arrowModified, bool addToList)
+        {
+            if (addToList)
+            {
+                _activeArrows.Add(arrowModified);
+                _currentArrowCount++;
+            }
+            else
+            {
+                _activeArrows.Remove(arrowModified);
+                _currentArrowCount--;
+            }
+        }
+
+        /// <summary>
+        /// Adds arrow to  the available to be pressed list
+        /// </summary>
+        /// <param name="arrowToAdd">Arrow to Add</param>
         public void AddArrowToPressList(MovingArrow arrowToAdd)
         {
             _arrowsAvailableToBePressed.Add(arrowToAdd);
         }
 
+        /// <summary>
+        /// Removes inputed arrow from the available to be pressed list
+        /// </summary>
+        /// <param name="arrowToRemove">Arrow to remove</param>
         public void RemoveArrowFromPressList(MovingArrow arrowToRemove)
         {
             _arrowsAvailableToBePressed.Remove(arrowToRemove);
         }
 
+        /// <summary>
+        /// Checks if the available to be pressed list contains inputed arrow
+        /// If so returns true otherwise false
+        /// </summary>
+        /// <param name="arrowToCheck">The arrow being checked</param>
+        /// <returns>True if the list does contain arrow, otherwise false</returns>
         public bool DoesThisContainArrow(MovingArrow arrowToCheck)
         {
-            if (_arrowsAvailableToBePressed.Contains(arrowToCheck) == true)
-            {
-                return true;
-            }
+            if (_arrowsAvailableToBePressed.Contains(arrowToCheck) == true) { return true; }
             else { return false; }
         }
 
+        /// <summary>
+        /// Run when an arrow has passed the fail point
+        /// This will Remove the arrow from active arrow list
+        /// Subtract progress
+        /// And will then check if progress is low enough for a fail
+        /// </summary>
+        /// <param name="arrowFailed"></param>
+        public void ArrowFailedToBePressed(MovingArrow arrowFailed)
+        {
+            AddOrRemoveActiveArrow(arrowFailed, false);
+            ModifyProgress(-defaultProgressModify * _timeModifier);
+            if (CheckIfFailed()) { LoseMiniGame(); }
+        }
+
+        #endregion
+
+
+        #region CoreGameTimeFunctions
+
+        /// <summary>
+        /// Contains all the logic for comparing player input to current state of arrows
+        /// </summary>
         private void InputCheck()
         {
             if (_directionAction.WasPressedThisFrame())
             {
                 Vector2 direction = _directionAction.ReadValue<Vector2>();
+                // Checks if there are pressable arrows then compares those arrows to the value pressed
                 if (CheckIfThereAreArrowsPressable())
                 {
                     foreach (MovingArrow arrow in _arrowsAvailableToBePressed)
@@ -241,6 +309,7 @@ namespace FishingGame.Reeling
                     _arrowsToRemove.Clear();
                 }
                 else
+                // In the event a key was pressed with no arrows pressable this section is run
                 {
                     ArrowSpawner spawnerToPunish = null;
                     foreach (ArrowSpawner spawner in spawnPoints)
@@ -261,16 +330,17 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Returns an EMovementDirection enum value based on the inputed Vector2
+        /// Run when an arrow is pressed at the correct time
+        /// This takes the inputed arrow, removes it from the active arrow list
+        /// Modifys the progress by increasing it
+        /// It then check if the progress is high enough, and if so wins the minigame
         /// </summary>
-        /// /// <param name="directionValue">The Vector2 input from the action</param>
-        private EMovementDirection GetMovementDirection(Vector2 directionValue)
+        /// <param name="arrowCompleted">The arrow being modified</param>
+        private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
-            if (directionValue.x > 0) { return EMovementDirection.Right; }
-            if (directionValue.x < 0) { return EMovementDirection.Left; }
-            if (directionValue.y > 0) { return EMovementDirection.Up; }
-            if (directionValue.y < 0) { return EMovementDirection.Down; }
-            return EMovementDirection.Down;
+            AddOrRemoveActiveArrow(arrowCompleted, false);
+            ModifyProgress(defaultProgressModify * _timeModifier);
+            if (CheckIfEnoughProgress()) { WinMiniGame(); }
         }
 
         /// <summary>
@@ -306,6 +376,10 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Forces spawns a new arrow, should be run if there is no active arrows
+        /// Unlike normal arrow spawning this does not start a cooldown timer
+        /// </summary>
         private void EmergencySpawnArrow()
         {
             int chosenSpawner = Random.Range(0, spawnPoints.Count);
@@ -314,25 +388,70 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Adds or removes an arrow from the active arrow list
-        /// First parameter is the arrowtomodify the second paremeter should be true if adding
-        /// false if removing from list.
-        /// Will modifiy the currentarrowcount as well
+        /// Modifys the current progress based on the inputed value
+        /// Updates the slider UI to properly reflect the progress
         /// </summary>
-        /// <param name="arrowModified">The arrow being modified</param>
-        /// <param name="addToList">True if adding to list, false if removing from list</param>
-        public void AddOrRemoveActiveArrow(MovingArrow arrowModified, bool addToList)
+        /// <param name="progressValue"></param>
+        private void ModifyProgress(float progressValue)
         {
-            if (addToList) 
-            { 
-                _activeArrows.Add(arrowModified);
-                _currentArrowCount++;
+            _currentProgress += progressValue;
+            progressSlider.value = _currentProgress;
+        }
+
+        /// <summary>
+        /// Rolls a random number between the max wave chance and 0
+        /// If that number is less than or equal to current wave chance
+        /// A wave is begun
+        /// Everytime this roll fails currentwavechance increases by 1
+        /// </summary>
+        private void DecideIfStartWave()
+        {
+            int rolledNumber = Random.Range(0, _maxRangeWaveChance);
+
+            if (rolledNumber <= _currentWaveChance)
+            {
+                _waveActive = true;
             }
-            else 
-            { 
-                _activeArrows.Remove(arrowModified);
-                _currentArrowCount--;
+            else { _currentWaveChance++; }
+        }
+
+        /// <summary>
+        /// Deactivates the minigame
+        /// Has a bool parameter that is used for changing logic based on if the minigame was won or lost
+        /// </summary>
+        /// <param name="didWin">Was the minigame won or lost, true if won, otherwise false</param>
+        private void DeactivateMiniGame(bool didWin)
+        {
+            _gameActive = false;
+
+            foreach (MovingArrow arrow in _activeArrows)
+            {
+                arrow.StartFadeAway(didWin);
             }
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(false);
+            }
+
+            StartCoroutine(UIDissapear(didWin));
+        }
+
+        #endregion
+
+        #region ChecksAndGets
+
+        /// <summary>
+        /// Returns an EMovementDirection enum value based on the inputed Vector2
+        /// </summary>
+        /// /// <param name="directionValue">The Vector2 input from the action</param>
+        private EMovementDirection GetMovementDirection(Vector2 directionValue)
+        {
+            if (directionValue.x > 0) { return EMovementDirection.Right; }
+            if (directionValue.x < 0) { return EMovementDirection.Left; }
+            if (directionValue.y > 0) { return EMovementDirection.Up; }
+            if (directionValue.y < 0) { return EMovementDirection.Down; }
+            return EMovementDirection.Down;
         }
 
         /// <summary>
@@ -344,34 +463,6 @@ namespace FishingGame.Reeling
         {
             if (_currentArrowCount == _maxAmountOfActiveArrows) { return true; }
             else { return false; }
-        }
-        
-        /// <summary>
-        /// Run when an arrow is pressed at the correct time
-        /// This takes the inputed arrow, removes it from the active arrow list
-        /// Modifys the progress by increasing it
-        /// It then check if the progress is high enough, and if so wins the minigame
-        /// </summary>
-        /// <param name="arrowCompleted">The arrow being modified</param>
-        public void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
-        {
-            AddOrRemoveActiveArrow(arrowCompleted, false);
-            ModifyProgress(defaultProgressModify * _timeModifier);
-            if (CheckIfEnoughProgress()) { WinMiniGame(); }
-        }
-
-        /// <summary>
-        /// Run when an arrow has passed the fail point
-        /// This will Remove the arrow from active arrow list
-        /// Subtract progress
-        /// And will then check if progress is low enough for a fail
-        /// </summary>
-        /// <param name="arrowFailed"></param>
-        public void ArrowFailedToBePressed(MovingArrow arrowFailed)
-        {
-            AddOrRemoveActiveArrow(arrowFailed, false);
-            ModifyProgress(-defaultProgressModify * _timeModifier);
-            if (CheckIfFailed()) { LoseMiniGame(); }
         }
 
         /// <summary>
@@ -398,17 +489,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Modifys the current progress based on the inputed value
-        /// Updates the slider UI to properly reflect the progress
-        /// </summary>
-        /// <param name="progressValue"></param>
-        private void ModifyProgress(float progressValue)
-        {
-            _currentProgress += progressValue;
-            progressSlider.value = _currentProgress;
-        }
-
-        /// <summary>
         /// Checks if enough time has past since the last time the time modifier was changed
         /// If so, increases the time modified by 1
         /// </summary>
@@ -431,36 +511,31 @@ namespace FishingGame.Reeling
             return time;
         }
 
-        private void DecideIfStartWave()
-        {
-            int rolledNumber = Random.Range(0, _maxRangeWaveChance);
-
-            if (rolledNumber >= _currentWaveChance)
-            {
-                _waveActive = true;
-            }
-            else { _currentWaveChance++; }
-        }
-
+        /// <summary>
+        /// Checks if the current amount of spawned arrows in a wave is equal to or greater than the fish difficulty
+        /// If they are  it returns true otherwise false
+        /// </summary>
+        /// <returns>True if enough arrows have spawned otherwise false</returns>
         private bool CheckIfWaveCountReached()
         {
             if (_waveArrowCount >= _fishDifficulty) { return true; }
             else { return false; }
         }
 
+        /// <summary>
+        /// Checks if there are arrows that are flagged as pressable
+        /// Returns true if so otherwise false
+        /// </summary>
+        /// <returns>True if there is atleast 1 pressable arrow otherwise false</returns>
         private bool CheckIfThereAreArrowsPressable()
         {
-            if (_arrowsAvailableToBePressed.Count != 0)
-            {
-                return true;
-            }
+            if (_arrowsAvailableToBePressed.Count != 0) { return true; }
             else { return false; }
         }
 
-        private EMovementDirection GetArrowType(EMovementDirection arrowType)
-        {
-            return arrowType;
-        }
+        #endregion
+
+        #region Timers
 
         /// <summary>
         /// A timer that waits for the inputed amount of seconds
@@ -474,6 +549,14 @@ namespace FishingGame.Reeling
             SpawnArrow();
         }
 
+        /// <summary>
+        /// This timer controls the UIDissapearing
+        /// Waits for 1 seconds then clears all UI and fully ends the minigame
+        /// Takes a bool paremeter that should be set to true if the minigame was won
+        /// otherwise false
+        /// </summary>
+        /// <param name="didWin">Was the minigame won or not</param>
+        /// <returns></returns>
         private IEnumerator UIDissapear(bool didWin)
         {
             yield return new WaitForSeconds(1f);
@@ -488,24 +571,7 @@ namespace FishingGame.Reeling
             StopAllCoroutines();
         }
 
-        private void DeactivateMiniGame(bool didWin)
-        {
-            _gameActive = false;
-
-            foreach (MovingArrow arrow in _activeArrows)
-            {
-                arrow.StartFadeAway(didWin);
-            }
-
-            foreach (ArrowSpawner spawner in spawnPoints)
-            {
-                spawner.ActivateOrDeactivateSpawner(false);
-            }
-
-            StartCoroutine(UIDissapear(didWin));
-        }
-
-        
+        #endregion
 
         #region Initilization_Functions
 

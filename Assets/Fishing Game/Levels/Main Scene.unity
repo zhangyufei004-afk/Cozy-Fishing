@@ -170,7 +170,7 @@ MonoBehaviour:
   minProgressModify: 5
   defaultProgressModify: 15
   defaultProgressMax: 80
-  maxTimeBeforeModify: 5
+  maxTimeBeforeModify: 8
   waveSpawnTime: 0.6
 --- !u!114 &29540734 stripped
 MonoBehaviour:
@@ -1183,64 +1183,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questDataObjects:
   - {fileID: 11400000, guid: c1eba32be97e2934aa297e263bdfe2a6, type: 2}
---- !u!1 &193100721 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1655799286011580002, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &193100722 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5427234292576898722, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
   m_PrefabInstance: {fileID: 2991282359923290821}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &193100724
+--- !u!114 &193100724 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+  m_PrefabInstance: {fileID: 2991282359923290821}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 193100721}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50978f4899fa6b3418b355f9cdfa26f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reelingMasterScript: {fileID: 1189930303}
-  fishingHook: {fileID: 2118617542}
-  chargeScalar: 8
-  chargeSlider: {fileID: 29540734}
-  catchFishButtons:
-  - {fileID: 589797384}
-  - {fileID: 552371752}
-  - {fileID: 2144181937}
-  - {fileID: 2002841541}
-  - {fileID: 967775997}
-  - {fileID: 1595267680}
-  - {fileID: 134110246}
-  - {fileID: 1566305470}
-  - {fileID: 762420050}
-  - {fileID: 219850018}
-  - {fileID: 966552681}
-  - {fileID: 522057964}
-  - {fileID: 1378765993}
-  - {fileID: 89533594}
-  - {fileID: 740376801}
-  fishImage: {fileID: 567819350}
-  hookImage: {fileID: 647280095}
-  hookPoint: {fileID: 1924529939}
-  uiFishMoveSpeedScalar: 1200
-  normalStageOneSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  maxFishWaitTime: 4
-  minFishWaitTime: 10
-  splashEffect: {fileID: 0}
-  characterParent: {fileID: 1109148765}
-  characterModel: {fileID: 1333355822}
-  rodBobber: {fileID: 578805915}
-  fishingRange: 15
-  fishCamera: {fileID: 1716482275}
-  mainCamera: {fileID: 1345941973}
-  characterAnimator: {fileID: 193100722}
-  fishModelPrefab: {fileID: 8140880912348761794, guid: 6b208ee05453f9c40807fdb7d7c26ed9, type: 3}
 --- !u!114 &219850018 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 659691338833150215, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -2410,11 +2368,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573031256}
   m_CullTransparentMesh: 1
---- !u!1 &578805915 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1450020752843532558, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &589797384 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3329303226876867197, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -4858,11 +4811,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105744412}
   m_CullTransparentMesh: 1
---- !u!1 &1109148765 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5657748580216538004, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1126641008
 GameObject:
   m_ObjectHideFlags: 0
@@ -5118,7 +5066,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1148033641354189641, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
   m_PrefabInstance: {fileID: 2991282359923290821}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109148765}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74d12e829c17a49499a228984564ee7a, type: 3}
@@ -5515,11 +5463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1333355822 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7138077586599879889, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1345452469 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9210594528026414697, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -6647,17 +6590,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1691787756}
   m_CullTransparentMesh: 1
---- !u!114 &1716482275 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3271367095338794917, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1720029159
 GameObject:
   m_ObjectHideFlags: 0
@@ -8959,6 +8891,90 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -4.5835453e-14
       objectReference: {fileID: 0}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: fishImage
+      value: 
+      objectReference: {fileID: 567819350}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: hookImage
+      value: 
+      objectReference: {fileID: 647280095}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: hookPoint
+      value: 
+      objectReference: {fileID: 1924529939}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1345941973}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: chargeSlider
+      value: 
+      objectReference: {fileID: 29540734}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: reelingMasterScript
+      value: 
+      objectReference: {fileID: 1189930303}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 589797384}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[1]'
+      value: 
+      objectReference: {fileID: 552371752}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2144181937}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2002841541}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[4]'
+      value: 
+      objectReference: {fileID: 967775997}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1595267680}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[6]'
+      value: 
+      objectReference: {fileID: 134110246}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[7]'
+      value: 
+      objectReference: {fileID: 1566305470}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[8]'
+      value: 
+      objectReference: {fileID: 762420050}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[9]'
+      value: 
+      objectReference: {fileID: 219850018}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[10]'
+      value: 
+      objectReference: {fileID: 966552681}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[11]'
+      value: 
+      objectReference: {fileID: 522057964}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[12]'
+      value: 
+      objectReference: {fileID: 1378765993}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[13]'
+      value: 
+      objectReference: {fileID: 89533594}
+    - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: 'catchFishButtons.Array.data[14]'
+      value: 
+      objectReference: {fileID: 740376801}
     - target: {fileID: 8389630128005159966, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -3.4847586
@@ -8979,14 +8995,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -81.2349
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -5617631259076899553, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1655799286011580002, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 193100724}
     - targetCorrespondingSourceObject: {fileID: 7835449091446976627, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118617548}
