@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// This class is used to check if arrows are close enough to this gameobject
+    /// It also checks if arrows have passed the goal and are considered to be failed
+    /// </summary>
     public class ArrowGoalPoints : MonoBehaviour
     {
         /// <summary>

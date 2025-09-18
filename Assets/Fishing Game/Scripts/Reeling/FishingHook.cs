@@ -212,6 +212,11 @@ namespace FishingGame.Reeling
             _collidingFish.Clear();
         }
 
+        /// <summary>
+        /// Returns the pool currently colliding with this hook
+        /// </summary>
+        /// <returns>Returns the colliding pull unless it is null</returns>
+        /// <exception cref="NullReferenceException">Throws a null error if there is no colliding pool</exception>
         public FishingPool GetPoolCurrentlyTouching()
         {
             if (_collidingPool != null)

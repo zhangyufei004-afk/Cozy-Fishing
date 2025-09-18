@@ -163,6 +163,10 @@ namespace FishingGame.Reeling
             overrideFishList.Add(fishToAdd);
         }
 
+        /// <summary>
+        /// Returns a difficulty in the range of this pools lowest and highest fish difficulty
+        /// </summary>
+        /// <returns>An integer value represneting a difficulty inbetween this pools lowest and highest potential difficulty</returns>
         public int GetADifficultyInRange()
         {
             return Random.Range(lowestFishDifficulty, highestFishDifficulty);
