@@ -45,5 +45,14 @@ namespace FishingGame
             menuObject.SetActive(isActive);
             Time.timeScale = isActive ? 0.0f : 1.0f;
         }
+
+        public void QuitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
     }
 }
