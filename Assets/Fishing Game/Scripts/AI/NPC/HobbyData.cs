@@ -27,10 +27,6 @@ namespace FishingGame.AI.NPC
     [CreateAssetMenu(fileName = "NewHobby", menuName = "Fishing Game/Hobby")]
     public class HobbyData : SerializableObject
     {
-        internal HobbyData(int persistentID) : base(persistentID)
-        {
-        }
-
         public Vector3 HobbyLocation => hobbyLocation;
         public string HobbyAnimationBooleanName => hobbyAnimationBooleanName;
         public Quaternion HobbyRotation => hobbyRotation;
@@ -49,5 +45,9 @@ namespace FishingGame.AI.NPC
         
         [Tooltip("The string quip to display to the player if they interact while the NPC is in the hobby.")]
         [SerializeField] private string hobbyQuip;
+        
+        internal HobbyData(int persistentID) : base(persistentID)
+        {
+        }
     }
 }

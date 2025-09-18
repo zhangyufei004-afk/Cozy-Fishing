@@ -8,9 +8,13 @@ namespace FishingGame.AI.NPC.Nodes
         {
         }
 
+        /// <summary>
+        /// Idles the character
+        /// </summary>
+        /// <returns>Running</returns>
         public override ETreeNodeState RunNode()
         {
-            return ETreeNodeState.Success;
+            return ETreeNodeState.Running;
         }
     }
 }

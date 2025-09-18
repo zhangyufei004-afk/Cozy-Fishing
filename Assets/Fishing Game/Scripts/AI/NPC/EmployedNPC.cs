@@ -96,6 +96,10 @@ namespace FishingGame.AI.NPC
             animator.SetFloat(Speed, speed);
         }
         
+        /// <summary>
+        /// Creates the Behaviour Tree by constructing all the nodes and returning the root node of the tree.
+        /// </summary>
+        /// <returns>The root node of the Tree as a TreeNode object.</returns>
         protected override TreeNode SetupTree()
         {
             _hobbyPosition = hobby.HobbyLocation;

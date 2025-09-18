@@ -38,6 +38,11 @@ namespace FishingGame.AI.NPC.Nodes
             base.Initialize();
         }
 
+        /// <summary>
+        /// Checks if there is a quest active for the player, and that it is currently work time.
+        /// NPCs only work on quests during work hours.
+        /// </summary>
+        /// <returns>Success if there is a Quest and it is Work time.</returns>
         public override ETreeNodeState RunNode()
         {
             State = ETreeNodeState.Failure;

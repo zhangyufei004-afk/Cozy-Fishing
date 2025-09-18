@@ -21,6 +21,10 @@ namespace FishingGame.AI.NPC.Nodes
             _npcName = npcName;
         }
 
+        /// <summary>
+        /// Displays the current quest stage quip.
+        /// </summary>
+        /// <returns>Running while the dialogue is displaying</returns>
         public override ETreeNodeState RunNode()
         {
             _questDialogueUI.DisplayDialogueLine(_quest.GetCurrentStageQuip(), _npcName);

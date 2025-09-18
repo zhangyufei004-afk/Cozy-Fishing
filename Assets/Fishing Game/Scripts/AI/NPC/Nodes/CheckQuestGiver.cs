@@ -48,6 +48,10 @@ namespace FishingGame.AI.NPC.Nodes
             base.Initialize();
         }
 
+        /// <summary>
+        /// Checks if this NPC is a quest giver and that it is currently work hours
+        /// </summary>
+        /// <returns>Success if the NPC is a quest giver and it is work hours, Failure otherwise</returns>
         public override ETreeNodeState RunNode()
         {
             State = ETreeNodeState.Failure;

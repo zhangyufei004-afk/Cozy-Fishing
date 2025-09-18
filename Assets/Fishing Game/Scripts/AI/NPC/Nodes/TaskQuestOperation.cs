@@ -31,6 +31,10 @@ namespace FishingGame.AI.NPC.Nodes
             _npcName = npcName;
         }
 
+        /// <summary>
+        /// Displays the specified dialogue and applies the specified operation to the Quest (Start or End)
+        /// </summary>
+        /// <returns>Running</returns>
         public override ETreeNodeState RunNode()
         {
             _questDialogueUI.DisplayDialogue(_questDialogue, _npcName, _questName, _questOperation);

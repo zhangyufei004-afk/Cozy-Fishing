@@ -21,6 +21,10 @@ namespace FishingGame.AI.NPC.Nodes
             gameManager.GameEvents.OnNPCInteraction += SetPlayerInteracting;
         }
 
+        /// <summary>
+        /// Checks whether the NPC is within dialogue range of the player and the NPC is being interacted with by the player.
+        /// </summary>
+        /// <returns>Success if interacting and in dialogue range, Failure otherwise</returns>
         public override ETreeNodeState RunNode()
         {
             if (_isInDialogueRange && _isPlayerInteracting)

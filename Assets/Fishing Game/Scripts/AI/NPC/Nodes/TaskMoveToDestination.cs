@@ -15,10 +15,12 @@ namespace FishingGame.AI.NPC.Nodes
             this._animator = animator;
         }
 
+        /// <summary>
+        /// Sets the navmesh destination to the intended destination for the time of day.
+        /// </summary>
+        /// <returns>Running if the destination was set successfully, Failure otherwise.</returns>
         public override ETreeNodeState RunNode()
         {
-            // _animator.SetFloat(Speed, _navMeshAgent.velocity.magnitude);
-
             if (GetData("Destination") is Vector3 destination)
             {
                 _navMeshAgent.SetDestination(destination);

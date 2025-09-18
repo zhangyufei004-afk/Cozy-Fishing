@@ -49,10 +49,21 @@ namespace FishingGame.AI
             Children.Add(treeNode);
         }
 
+        /// <summary>
+        /// Run the Node by executing the Nodes logic in the Update Method (every frame in Unity)
+        /// </summary>
+        /// <returns>The state of the nodes execution - Success, Failure or Running</returns>
         public virtual ETreeNodeState RunNode() => ETreeNodeState.Failure;
 
+        /// <summary>
+        /// Run the Node's Physics logic by executing in the FixedUpdate Method (every 1/60 seconds in Unity)
+        /// </summary>
+        /// <returns>The state of the nodes execution - Success, Failure or Running</returns>
         public virtual ETreeNodeState RunPhysics() => ETreeNodeState.Failure;
 
+        /// <summary>
+        /// Initializes the Node. Run after Construction of the Node to assign variables.
+        /// </summary>
         public virtual void Initialize()
         {
             foreach (TreeNode child in Children)

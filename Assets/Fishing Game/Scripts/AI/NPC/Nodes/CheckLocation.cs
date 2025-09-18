@@ -17,6 +17,10 @@ namespace FishingGame.AI.NPC.Nodes
             _agentTransform = agentTransform;
         }
 
+        /// <summary>
+        /// Checks whether the NPC is at the desired location specified during construction.
+        /// </summary>
+        /// <returns>Success if the player is at the location, otherwise Failure</returns>
         public override ETreeNodeState RunNode()
         {
             if (Vector3.Distance(_agentTransform.position, _targetLocation) < 0.1f)

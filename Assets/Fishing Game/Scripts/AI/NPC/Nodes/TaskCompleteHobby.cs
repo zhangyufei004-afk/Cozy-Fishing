@@ -24,6 +24,10 @@ namespace FishingGame.AI.NPC.Nodes
             _transform = transform;
         }
 
+        /// <summary>
+        /// Executes the Hobby by triggering the animation and rotation the player to face the correct direction.
+        /// </summary>
+        /// <returns>Running - as the hobby is executing</returns>
         public override ETreeNodeState RunNode()
         {
             if (_animationBoolName != "")

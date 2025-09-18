@@ -37,10 +37,14 @@ namespace FishingGame.AI.NPC.Nodes
             base.Initialize();
         }
 
+        /// <summary>
+        /// Checks whether the quest this NPC gave out can be marked complete.
+        /// </summary>
+        /// <returns>Success if the quest can be marked complete and its work hours, Failure otherwise.</returns>
         public override ETreeNodeState RunNode()
         {
             State = ETreeNodeState.Failure;
-            if (_quest.CanQuestBeMarkedComplete())
+            if (_quest is not null && _quest.CanQuestBeMarkedComplete())
             {   // Quests can only be worked on during work hours
                 if (_gameTime is not null)
                 {

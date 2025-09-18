@@ -19,6 +19,10 @@ namespace FishingGame.AI.NPC.Nodes
             _npcName = npcName;
         }
 
+        /// <summary>
+        /// Displays the Hobby quip dialogue for the player.
+        /// </summary>
+        /// <returns>Running as the dialogue is showing.</returns>
         public override ETreeNodeState RunNode()
         {
             _dialogueUI.DisplayDialogueLine(_hobbyQuip, _npcName);

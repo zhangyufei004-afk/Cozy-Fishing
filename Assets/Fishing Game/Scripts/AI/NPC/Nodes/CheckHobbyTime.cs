@@ -30,6 +30,10 @@ namespace FishingGame.AI.NPC.Nodes
             base.Initialize();
         }
 
+        /// <summary>
+        /// Execute the Node. Checks whether the current time is the Hobby Time.
+        /// </summary>
+        /// <returns>Success if it is Hobby Time, Failure otherwise.</returns>
         public override ETreeNodeState RunNode()
         {
             State = ETreeNodeState.Failure;
