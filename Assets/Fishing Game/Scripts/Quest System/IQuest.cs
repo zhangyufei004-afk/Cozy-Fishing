@@ -22,5 +22,7 @@ namespace FishingGame.QuestSystem
         public List<Sprite> GetRewardImages();
         public string GetCurrentStageQuip();
         public bool CanQuestBeMarkedComplete();
+        public List<string> GetPreQuestDialogue();
+        public List<string> GetQuestEndDialogue();
     }
 }

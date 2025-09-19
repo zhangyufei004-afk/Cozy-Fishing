@@ -24,14 +24,27 @@ namespace FishingGame.QuestSystem
         public List<GameObject> QuestStagePrefabs => questStagePrefabs;
         
         public List<Sprite> QuestRewardImages => questRewardImages;
+        public List<string> PreQuestDialogueLines => preQuestDialogueLines;
+        public List<string> PostQuestDialogueLines => postQuestDialogueLines;
         
+        
+        [Header("Quest Details")]
         [SerializeField] private string questName;
         [SerializeField] private string questDescription;
+        
+        [Header("Quest Rewards")]
         [SerializeField] private GameObject questReward;
         [SerializeField] private double questMoneyReward;
         [SerializeField] private bool isMonetaryRewardQuest;
-        [SerializeField] private List<GameObject> questStagePrefabs;
         [SerializeField] private List<Sprite> questRewardImages;
+
+        
+        [Header("Quest Stages")]
+        [SerializeField] private List<GameObject> questStagePrefabs;
+        
+        [Header("Quest NPC Dialogue")]
+        [SerializeField] private List<string> preQuestDialogueLines;
+        [SerializeField] private List<string> postQuestDialogueLines;
         
         /// <summary>
         /// Constructs a new Quest Data object using the specified persistentID
