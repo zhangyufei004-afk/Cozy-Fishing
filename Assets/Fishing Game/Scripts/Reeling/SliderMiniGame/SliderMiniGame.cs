@@ -1,14 +1,7 @@
 using FishingGame.FishSystem;
-using Mono.Cecil.Cil;
-using System.Collections;
-using TMPro;
-using TMPro.Examples;
-using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace FishingGame.Reeling
 {
