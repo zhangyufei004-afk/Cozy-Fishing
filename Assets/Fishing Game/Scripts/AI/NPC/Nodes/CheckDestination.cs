@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using FishingGame.GameTime;
-using UnityEditor.Experimental.GraphView;
+﻿using FishingGame.GameTime;
 using UnityEngine;
 
 namespace FishingGame.AI.NPC.Nodes
