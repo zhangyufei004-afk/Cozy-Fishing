@@ -383,6 +383,9 @@ namespace FishingGame.Reeling
             reelingMaster.EndCurrentMiniGame(false);
         }
 
+        /// <summary>
+        /// Checks if the time passed is equal to the time required for scalar, if so increase scalar by 1 and reset time passed
+        /// </summary>
         private void CheckTimePassed()
         {
             if (_timePassed >= timeRequiredForScalar)
