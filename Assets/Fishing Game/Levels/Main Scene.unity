@@ -3874,7 +3874,8 @@ MonoBehaviour:
   lowestFishDifficulty: 4
   highestFishDifficulty: 8
   isInfested: 0
-  overrideFishList: []
+  overrideFishList:
+  - {fileID: 11400000, guid: 41e32878341444e4a9469e39b26457b2, type: 2}
 --- !u!65 &888942149
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9267,6 +9268,10 @@ PrefabInstance:
       propertyPath: uiCatchBoxScript
       value: 
       objectReference: {fileID: 1088488886}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: timeRequiredForScalar
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -130,6 +130,8 @@ namespace FishingGame.Reeling
         /// <param name="progressToAdd">The amount of progress to add</param>
         private void AddToProgressSlider(float progressToAdd)
         {
+            // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
+            progressToAdd *= 3;
             if (_goClockWise)
             {
                 progressToAdd = -progressToAdd;

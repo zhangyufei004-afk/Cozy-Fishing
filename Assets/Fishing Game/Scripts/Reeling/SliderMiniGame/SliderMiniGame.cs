@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using Mono.Cecil.Cil;
 using System.Collections;
 using TMPro;
 using TMPro.Examples;
@@ -113,6 +114,13 @@ namespace FishingGame.Reeling
         [Tooltip("The right arrow UI indicator")]
         private UnityEngine.UI.Image rightArrow;
 
+        [SerializeField]
+        [Tooltip("How many seconds required to increase time scalar")]
+        private float timeRequiredForScalar;
+
+        private int _currentTimeScalar;
+        private float _timePassed;
+
         private InputAction _directionAction;
 
         #endregion
@@ -131,6 +139,10 @@ namespace FishingGame.Reeling
             {
                 return;
             }
+
+            _timePassed += Time.deltaTime;
+
+            CheckTimePassed();
 
             _timeSinceLastGoal += Time.deltaTime;
 
@@ -188,6 +200,8 @@ namespace FishingGame.Reeling
             fishImage.transform.localPosition = startLocation;
             Vector3 newFishGoal = CreateGoalLocation();
             FishSetGoal(newFishGoal);
+            _timePassed = 0f;
+            _currentTimeScalar = 1;
 
             // Scaling variables based on difficulty
             _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 40, 100);
@@ -328,7 +342,7 @@ namespace FishingGame.Reeling
         /// <param name="valueToAdd">The value for how much to change the catch bar</param>
         private void ModifyCatchProgress(float valueToAdd)
         {
-            _catchProgress += valueToAdd * Time.deltaTime;
+            _catchProgress += (valueToAdd * Time.deltaTime) * _currentTimeScalar;
             progressSlider.value = _catchProgress;
 
             if (CheckIfCatchWon())
@@ -367,6 +381,15 @@ namespace FishingGame.Reeling
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
+        }
+
+        private void CheckTimePassed()
+        {
+            if (_timePassed >= timeRequiredForScalar)
+            {
+                _currentTimeScalar += 1;
+                _timePassed = 0;
+            }
         }
 
 
