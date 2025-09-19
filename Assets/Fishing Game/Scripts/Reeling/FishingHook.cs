@@ -29,6 +29,8 @@ namespace FishingGame.Reeling
 
         #region Private Fields
 
+        [Header("Script references")]
+
         [SerializeField]
         [Tooltip("Reference to the reeling master script attatched to the reeling container.")]
         private ReelingMaster reelingMaster;
@@ -37,12 +39,11 @@ namespace FishingGame.Reeling
         [Tooltip("Reference to the reeling initation script attatched to the player.")]
         private ReelingInitiation initiationScript;
 
+        [Header("Runtime Variables")]
+
         [SerializeField]
         [Tooltip("The spot where the hook will default back to after casting. NOTE: For current implementation make sure the y is 0 or above.")]
         private Vector3 hookResetSpot;
-
-        [SerializeField]
-        private Animator rodAnimator;
 
         private bool _headingToFishSpot = false;
 
@@ -323,6 +324,10 @@ namespace FishingGame.Reeling
             reelingMaster.DisableControls(false);
         }
         
+        /// <summary>
+        /// Checks if the hook is colliding with a relevant fishing pool, returns true if so otherwise false
+        /// </summary>
+        /// <returns>True if colliding else false</returns>
         private bool CheckIfColliding()
         {
             if (_collidingFish.Count > 0 || _collidingPool != null)
