@@ -7,6 +7,7 @@ TagManager:
   - Fish
   - Cursor
   - RealisticGoal
+  - DragableUI
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Grapple Target
-  - 
+  - Dragable
   - 
   - 
   - 
