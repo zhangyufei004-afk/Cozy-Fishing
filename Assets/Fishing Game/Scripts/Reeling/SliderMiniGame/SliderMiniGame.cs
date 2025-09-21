@@ -16,27 +16,44 @@ namespace FishingGame.Reeling
     {
         #region Private Fields
 
-        private Fish _fishData;
+        [Header("Script references")]
 
         [SerializeField]
         [Tooltip("Reference to the ReelingMaster script.")]
         private ReelingMaster reelingMaster;
 
         [SerializeField]
+        [Tooltip("This is connected to the catch box (green square) of the ui")]
+        private CatchBox uiCatchBoxScript;
+
+
+
+        [Header("UI elements")]
+
+        // NOTE: All UI transform modifications in this script use Y for left to right
+        // This is because the ui image has been rotated by default
+
+        [SerializeField]
         [Tooltip("The UI gameobject that parents the UI.")]
         private GameObject sliderCanvas;
 
-        private bool _isMinigameActive = false;
-        private float _catchProgress = 50f;
-        private int _catchMax = 100;
-        private float _timeSinceLastGoal = 0f;
-        private float _maxTimeBetweenGoals = 0f;
-        private bool _isGoingLeft;
         [SerializeField]
-        private float _catchBoxVelocity = 0f;
+        [Tooltip("The slider that shows the total progress of this minigame")]
+        private UnityEngine.UI.Slider progressSlider;
 
         [SerializeField]
-        private Vector3 _fishMoveGoal = Vector3.zero;
+        [Tooltip("The fish image that the player is trying to catch")]
+        private UnityEngine.UI.Image fishImage;
+
+        [SerializeField]
+        [Tooltip("The right arrow UI indicator")]
+        private UnityEngine.UI.Image rightArrow;
+
+        [SerializeField]
+        [Tooltip("Transform of the catch box ui element")]
+        private RectTransform catchBox;
+
+        [Header("Minigame Data")]
 
         [SerializeField]
         [Tooltip("Scales how much to increase the progress by when the fish is inside of the catchbox")]
@@ -51,37 +68,12 @@ namespace FishingGame.Reeling
         private int boxSpeedScalar;
 
         [SerializeField]
-        [Tooltip("The slider that shows the total progress of this minigame")]
-        private UnityEngine.UI.Slider progressSlider;
-
-        [SerializeField]
-        [Tooltip("This is connected to the catch box (green square) of the ui")]
-        private CatchBox uiCatchBoxScript;
-
-        // NOTE: All UI transform modifications in this script use Y for left to right
-        // This is because the ui image has been rotated by default
-
-        [SerializeField]
-        [Tooltip("Transform of the catch box ui element")]
-        private RectTransform catchBox;
-
-        [SerializeField]
-        [Tooltip("The middle point of the bar.")]
-        private float middleBarPoint;
-
-        [SerializeField]
         [Tooltip("How strong the fight back force on the box is.")]
         private float fightBackSpeed;
 
         [SerializeField]
-        private float catchBoxMaxReverseSpeed;
-
-        [SerializeField]
-        private float catchBoxForwardMaxSpeed;
-
-        [SerializeField]
-        [Tooltip("The fish image that the player is trying to catch")]
-        private UnityEngine.UI.Image fishImage;
+        [Tooltip("The middle point of the bar.")]
+        private float middleBarPoint;
 
         [SerializeField]
         [Tooltip("The default speed of fish")]
@@ -104,18 +96,34 @@ namespace FishingGame.Reeling
         private float catchBoxMinXCord;
 
         [SerializeField]
-        [Tooltip("The right arrow UI indicator")]
-        private UnityEngine.UI.Image rightArrow;
-
-        [SerializeField]
         [Tooltip("How many seconds required to increase time scalar")]
         private float timeRequiredForScalar;
 
-        private int _currentTimeScalar;
+        [SerializeField]
+        [Tooltip("The max speed going left the catchbox can go")]
+        private float catchBoxMaxReverseSpeed;
+
+        [SerializeField]
+        [Tooltip("Max forward speed of the catch box")]
+        private float catchBoxForwardMaxSpeed;
+
+        private float _catchProgress = 50f;
+        private float _timeSinceLastGoal = 0f;
+        private float _maxTimeBetweenGoals = 0f;
+        private float _catchBoxVelocity = 0f;
         private float _timePassed;
+
+        private int _catchMax = 100;
+        private int _currentTimeScalar;
+
+
+        private Fish _fishData;
+        private bool _isMinigameActive = false;
+        private bool _isGoingLeft;
 
         private InputAction _directionAction;
 
+        private Vector3 _fishMoveGoal = Vector3.zero;
         #endregion
 
         private void OnEnable()
@@ -173,6 +181,7 @@ namespace FishingGame.Reeling
             }
         }
 
+        #region Public Functions
 
         /// <summary>
         /// Setups up any variable or field needed for the minigame to run
@@ -209,6 +218,32 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Sets ui elements to not be active
+        /// Tells the Reelingmaster minigame has been won
+        /// </summary>
+        public void WinMiniGame()
+        {
+            _isMinigameActive = false;
+            sliderCanvas.SetActive(false);
+            reelingMaster.EndCurrentMiniGame(true);
+        }
+
+        /// <summary>
+        /// Sets ui elements to not be active
+        /// Tells the Reelingmaster minigame has been lost
+        /// </summary>
+        public void LoseMiniGame()
+        {
+            _isMinigameActive = false;
+            sliderCanvas.SetActive(false);
+            reelingMaster.EndCurrentMiniGame(false);
+        }
+
+        #endregion
+
+        #region BoxMovement
+
+        /// <summary>
         /// This will cause the catchbox to try and fight back against the player
         /// It will run IsLeftSide to check what side it is closest to then add some acceleration in that direction
         /// TODO: Look into balancing this game mode more with feature like this, ran out of time for vertical slice
@@ -234,6 +269,9 @@ namespace FishingGame.Reeling
             _catchBoxVelocity += accelerationValue * Time.deltaTime;
         }
 
+        /// <summary>
+        /// Moves the catchbox based on current velocity
+        /// </summary>
         private void MoveCatchBox()
         {
             Vector3 currentPosition = catchBox.transform.localPosition;
@@ -242,6 +280,11 @@ namespace FishingGame.Reeling
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
             catchBox.localPosition = newPosition;
         }
+
+
+        #endregion
+
+        #region FishMovement
 
         /// <summary>
         /// Checks the time since last goal was set to determine if it has been long enough to set a new goal
@@ -328,6 +371,11 @@ namespace FishingGame.Reeling
             }
         }
 
+
+        #endregion
+
+        #region Minigame Stats
+
         /// <summary>
         /// Modifys the progress bar for this minigame
         /// Checks if the minigame has been won
@@ -344,36 +392,13 @@ namespace FishingGame.Reeling
             }
         }
 
-
         /// <summary>
         /// Returns true if _catchProgress is greater or equal to the max progress value
         /// </summary>
         private bool CheckIfCatchWon()
         {
-            if (_catchProgress >= _catchMax){ return true; }
+            if (_catchProgress >= _catchMax) { return true; }
             else { return false; }
-        }
-
-        /// <summary>
-        /// Sets ui elements to not be active
-        /// Tells the Reelingmaster minigame has been won
-        /// </summary>
-        public void WinMiniGame()
-        {
-            _isMinigameActive = false;
-            sliderCanvas.SetActive(false);
-            reelingMaster.EndCurrentMiniGame(true);
-        }
-
-        /// <summary>
-        /// Sets ui elements to not be active
-        /// Tells the Reelingmaster minigame has been lost
-        /// </summary>
-        public void LoseMiniGame()
-        {
-            _isMinigameActive = false;
-            sliderCanvas.SetActive(false);
-            reelingMaster.EndCurrentMiniGame(false);
         }
 
         /// <summary>
@@ -386,22 +411,6 @@ namespace FishingGame.Reeling
                 _currentTimeScalar += 1;
                 _timePassed = 0;
             }
-        }
-
-
-
-        #region TOBEPOTENTIALLY REMOVED
-
-        /// <summary>
-        /// Sets the catchboxes y scale to the inputed float variable
-        /// Does not change x or z scale.
-        /// </summary>
-        /// <param name="newYScale">The value for new y scale</param>
-        private void SetCatchBoxYScale(float newYScale)
-        {
-            Vector3 currentScale = catchBox.transform.localScale;
-            Vector3 newScale = new Vector3(currentScale.x, newYScale, currentScale.z);
-            catchBox.transform.localScale = newScale;
         }
 
         #endregion

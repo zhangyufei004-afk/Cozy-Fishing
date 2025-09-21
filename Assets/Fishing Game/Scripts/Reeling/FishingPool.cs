@@ -16,6 +16,8 @@ namespace FishingGame.Reeling
     {
         #region Private Properties
 
+        [Header("Pool Stats")]
+
         [SerializeField]
         [Tooltip("How much fish this began with, this changes as pool is fished from")]
         private int amountOfFishHeld;

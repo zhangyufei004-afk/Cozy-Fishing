@@ -19,23 +19,9 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
-        [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
-        public bool IsFishing { get; private set; } 
+        #region Private Variables
 
-
-        #region Private Fields
-
-        // Minigame stats and fields \\
-        private GameObject _currentMinigame;
-        private int _miniGameWinsRequired = 1;
-        private int _currentMiniGameWins;
-        private bool _hasWon = false;
-        private int _fishDifficulty;
-        private Fish _currentlyReelingFish;
-        private FishingPool _currentFishPool;
-
-        //TODO: Can combine this likely with the other fish variable once I have scriptable objects working
-        private GameObject _currentFish3DObject;
+        [Header("Script References")]
 
         [SerializeField]
         [Tooltip("A reference to the initiation script attatched to player.")]
@@ -49,16 +35,29 @@ namespace FishingGame.Reeling
         [Tooltip("A reference to the inventory system.")]
         private InventorySystem inventoryScript;
 
+        [SerializeField]
+        [Tooltip("A reference to the character controller")]
+        private PlayerController characterController;
+
+        [Header("Minigame Variables")]
+
         // Unity dosen't support making interface types a list so this is a gameobject list
         [SerializeField]
         [Tooltip("A list of all potential minigames.")]
         private List<GameObject> miniGameTypes;
 
-        //***************************\\
+        private GameObject _currentMinigame;
+        private Fish _currentlyReelingFish;
+        private FishingPool _currentFishPool;
+        private GameObject _currentFish3DObject;
 
-        [SerializeField]
-        [Tooltip("A reference to the character controller")]
-        private PlayerController characterController;
+        private int _miniGameWinsRequired = 1;
+        private int _currentMiniGameWins;
+        private int _fishDifficulty;
+
+        private bool _hasWon = false;
+
+        [Header("UI elements")]
 
         [SerializeField]
         [Tooltip("The image UI element shown if succsesfully fishing.")]
@@ -75,7 +74,13 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The UI button that allows the player to exit from fishing")]
         private Button cancelButton;
-        #endregion
+
+        [Header("Misc")]
+
+        [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
+        public bool IsFishing { get; private set; }
+
+#endregion
 
         #region Public Methods
 
@@ -276,8 +281,6 @@ namespace FishingGame.Reeling
                 SetNextMiniGame();
             }
         }
-
-
 
         /// <summary>
         /// Returns true if the fish difficulty of the current fish is above 0
