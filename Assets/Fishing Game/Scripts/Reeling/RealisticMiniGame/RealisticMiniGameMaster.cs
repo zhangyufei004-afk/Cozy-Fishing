@@ -1,5 +1,6 @@
 using FishingGame.FishSystem;
 using System;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -58,10 +59,23 @@ namespace FishingGame.Reeling
         [Tooltip("The default value for how much progress is lost per second spinning wrong way")]
         private float defaultDecayValue;
 
+        [SerializeField]
+        [Tooltip("The default value for how much progress is needed to win")]
+        private float defaultProgressMax;
+
+        [SerializeField]
+        [Tooltip("The value for how much progress needed difficulty causes")]
+        private float defaultProgressScaleValue;
+
+        [SerializeField]
+        [Tooltip("The value for how many seconds until the time scale is increased")]
+        private int timeScaleMaxSeconds;
+
         private int _fishDifficulty;
 
         
         private float _currentTimeScale;
+        private float _currentScaleTimerValue;
         private float _progressValue;
         private float _progressMaxValue;
         private float _timeSinceLastDirectionChange;
@@ -76,8 +90,8 @@ namespace FishingGame.Reeling
             if (_miniGameActive != true) { return; }
 
             // Triples the addition to timer if stop is current direction
-            if (_currentDirection == ERealisticDireciton.Stop) { _timeSinceLastDirectionChange += Time.deltaTime * 3; }
-            else { _timeSinceLastDirectionChange += Time.deltaTime; }
+            if (_currentDirection == ERealisticDireciton.Stop) { _timeSinceLastDirectionChange += (Time.deltaTime * 3) * _currentTimeScale; }
+            else { _timeSinceLastDirectionChange += Time.deltaTime * _currentTimeScale; }
             
 
             if (_timeSinceLastDirectionChange >= _directionRollTimerMax)
@@ -85,14 +99,19 @@ namespace FishingGame.Reeling
                 DecideDirection();
             }
 
+            if (_currentTimeScale >= _currentScaleTimerValue)
+            {
+                UpdateTimeScale();
+            }
+
             if (CheckIfDragableInRightDirection())
             {
                 if (_currentDirection == ERealisticDireciton.Stop)
                 {
-                    AddToProgressSlider((defaultDecayValue * 2) * Time.deltaTime);
+                    AddToProgressSlider(((defaultDecayValue * 2) * Time.deltaTime) * _currentTimeScale);
                     return;
                 }
-                float speed = dragableScript.GetSpeed() * Time.deltaTime;
+                float speed = (dragableScript.GetSpeed() * Time.deltaTime) * _currentTimeScale;
                 AddToProgressSlider(speed);
             }
             else
@@ -263,6 +282,15 @@ namespace FishingGame.Reeling
             else { return false; }
         }
 
+        /// <summary>
+        /// Increase the current timescale value by 1
+        /// </summary>
+        private void UpdateTimeScale()
+        {
+            _currentScaleTimerValue = 0;
+            _currentTimeScale += 1;
+        }
+
 
         #endregion
 
@@ -283,6 +311,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetGameTimeVariables()
         {
+            _currentTimeScale = 1.0f;
             _progressValue = 0f;
             _timeSinceLastDirectionChange = 0f;
             progressSlider.value = _progressValue;
@@ -293,9 +322,10 @@ namespace FishingGame.Reeling
         /// </summary>
         private void DifficultyScalars()
         {
-            // TODO: Add some difficulty scalars here
-            _progressMaxValue = 100;
+            _progressMaxValue = defaultProgressMax + (defaultProgressScaleValue * _fishDifficulty);
             progressSlider.maxValue = _progressMaxValue;
+            _progressValue = Mathf.Clamp(20f, _progressMaxValue / _fishDifficulty, 10000f);
+            progressSlider.value = _progressValue;
         }
 
         #endregion
