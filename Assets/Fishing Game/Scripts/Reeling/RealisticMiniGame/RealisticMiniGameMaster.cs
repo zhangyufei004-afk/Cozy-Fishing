@@ -1,10 +1,19 @@
 using FishingGame.FishSystem;
+using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
+     enum ERealisticDireciton
+    {
+        Clockwise = 0,
+        AntiClockwise,
+        Stop
+    };
+
     /// <summary>
     /// The realistic minigame simulates spinning a reel
     /// The player has to spin the reel either clockwise or anti clockwise by clicking and dragging a dragable UI image
@@ -50,18 +59,39 @@ namespace FishingGame.Reeling
         private float defaultDecayValue;
 
         private int _fishDifficulty;
+
+        
+        private float _currentTimeScale;
         private float _progressValue;
         private float _progressMaxValue;
+        private float _timeSinceLastDirectionChange;
+        private float _directionRollTimerMax = 8f;
 
-        private bool _goClockWise = false;
+
+        private ERealisticDireciton _currentDirection;
         private bool _miniGameActive = false;
 
         private void Update()
         {
             if (_miniGameActive != true) { return; }
 
-            if (CheckIfDragableInRightDirection() && dragableScript.GetIsMovingValue() != false)
+            // Triples the addition to timer if stop is current direction
+            if (_currentDirection == ERealisticDireciton.Stop) { _timeSinceLastDirectionChange += Time.deltaTime * 3; }
+            else { _timeSinceLastDirectionChange += Time.deltaTime; }
+            
+
+            if (_timeSinceLastDirectionChange >= _directionRollTimerMax)
             {
+                DecideDirection();
+            }
+
+            if (CheckIfDragableInRightDirection())
+            {
+                if (_currentDirection == ERealisticDireciton.Stop)
+                {
+                    AddToProgressSlider((defaultDecayValue * 2) * Time.deltaTime);
+                    return;
+                }
                 float speed = dragableScript.GetSpeed() * Time.deltaTime;
                 AddToProgressSlider(speed);
             }
@@ -132,10 +162,11 @@ namespace FishingGame.Reeling
         {
             // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
             progressToAdd *= 3;
-            if (_goClockWise)
+            if (_currentDirection == ERealisticDireciton.Clockwise)
             {
                 progressToAdd = -progressToAdd;
             }
+
             progressSlider.value += progressToAdd;
             _progressValue += progressToAdd;
 
@@ -168,19 +199,18 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Decides what direction player must spin in by rolling a random value between 0 and 2
-        /// Rolling a 0 = clockwise
-        /// Rolling a 1 = anti-clockwise
+        /// Decides what direction player must spin in by rolling a random value between 0 and enum value count
         /// </summary>
         private void DecideDirection()
         {
-            int rolledNumber = Random.Range(0, 2);
-            Debug.Log(rolledNumber);
-            if (rolledNumber == 0)
-            {
-                _goClockWise = true;
-            }
-            else { _goClockWise = false; }
+            Array enumValues = Enum.GetValues(typeof(ERealisticDireciton));
+            int directionSize = enumValues.Length;
+
+            int rolledNumber = UnityEngine.Random.Range(0, directionSize);
+            _currentDirection = (ERealisticDireciton)rolledNumber;
+
+            _timeSinceLastDirectionChange = 0f;
+            SetTextForDirection();
         }
 
         /// <summary>
@@ -189,15 +219,22 @@ namespace FishingGame.Reeling
         /// true = Clockwise, False = anti-clockwise
         /// </summary>
         /// <param name="isClockwise">True = clockwise, false = anti-clockwise</param>
-        private void SetTextForDirection(bool isClockwise)
+        private void SetTextForDirection()
         {
-            if (isClockwise)
+            switch (_currentDirection)
             {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
-            }
-            else
-            {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+                case ERealisticDireciton.Clockwise:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    break;
+                case ERealisticDireciton.AntiClockwise:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+                    break;
+                case ERealisticDireciton.Stop:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Stop spinning!";
+                    break;
+                default:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
             }
         }
 
@@ -207,9 +244,9 @@ namespace FishingGame.Reeling
         /// <returns>True if dragged in right direction otherwise false</returns>
         private bool CheckIfDragableInRightDirection()
         {
-            bool goingClockwise = dragableScript.GetCurrentDirection();
+            ERealisticDireciton dragableCurrentDirection = (ERealisticDireciton)dragableScript.GetCurrentDirectionAsInt();
 
-            if (goingClockwise == _goClockWise)
+            if (dragableCurrentDirection == _currentDirection)
             {
                 return true;
             }
@@ -239,7 +276,6 @@ namespace FishingGame.Reeling
             ResetGameTimeVariables();
             DifficultyScalars();
             DecideDirection();
-            SetTextForDirection(_goClockWise);
         }
 
         /// <summary>
@@ -248,6 +284,7 @@ namespace FishingGame.Reeling
         private void ResetGameTimeVariables()
         {
             _progressValue = 0f;
+            _timeSinceLastDirectionChange = 0f;
             progressSlider.value = _progressValue;
         }
 

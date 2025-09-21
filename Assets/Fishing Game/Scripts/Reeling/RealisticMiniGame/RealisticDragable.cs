@@ -1,12 +1,14 @@
 using FishingGame.Reeling;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace FishingGame
+namespace FishingGame.Reeling
 {
     /// <summary>
     /// This script controls the logic and behaviour behind the dragable component of the realistic minigame
@@ -33,7 +35,8 @@ namespace FishingGame
         private InputAction _mouseInput;
         private InputAction _realisticStickAction;
 
-        private bool _isClockWise;
+        private ERealisticDireciton _currentDirection;
+
         private bool _isMoving;
         private float _angleTotal;
         private float _directionChangeTracker;
@@ -101,24 +104,29 @@ namespace FishingGame
                 {
                     _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
                     _angleTotal += _currentSpeed;
-                    _isClockWise = _angleTotal < 0;
+                    DetermineCurrentDirection();
                     DirectionChangeLogic(_currentSpeed);
                 }
+
                 _lastPosition = localMousePos;
                 
             }
-            else { _isMoving = false; }
+            else 
+            { 
+                _isMoving = false;
+                _currentDirection = ERealisticDireciton.Stop; 
+            }
         }
 
         #region Public Functions
 
         /// <summary>
-        /// Returns the current direction. true = clockwise false = anti-clockwise
+        /// Returns the current direction enum as an int value
         /// </summary>
-        /// <returns>True = clockwise, false = anti-clockwise</returns>
-        public bool GetCurrentDirection()
+        /// <returns>Current direction enum as an int</returns>
+        public int GetCurrentDirectionAsInt()
         {
-            return _isClockWise;
+            return (int)_currentDirection;
         }
 
         /// <summary>
@@ -155,21 +163,48 @@ namespace FishingGame
         {
             _directionChangeTracker += valueToAddToTotal;
             ClampAngleTotal();
-            if (_isClockWise)
+
+            switch (_currentDirection)
             {
-                if (_directionChangeTracker > 0)
-                {
-                    _angleTotal = 0;
-                    return;
-                }
+                case ERealisticDireciton.Clockwise:
+                    if (_directionChangeTracker > 0)
+                    {
+                        _angleTotal = 0;
+                    }
+                    break;
+                case ERealisticDireciton.AntiClockwise:
+                    if (_directionChangeTracker < 0)
+                    {
+                        _angleTotal = 0;
+                    }
+                    break;
+                case ERealisticDireciton.Stop:
+                    break;
+                default:
+                    if (_directionChangeTracker > 0)
+                    {
+                        _angleTotal = 0;
+                    }
+                    throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
+            }
+        }
+
+        /// <summary>
+        /// Contains logic to figure out what direction this is currently moving in, then sets the enum value to that
+        /// </summary>
+        private void DetermineCurrentDirection()
+        {
+            if (_angleTotal < 0)
+            {
+                _currentDirection = ERealisticDireciton.Clockwise;
+            }
+            else if (_angleTotal > 0)
+            {
+                _currentDirection = ERealisticDireciton.AntiClockwise;
             }
             else
             {
-                if (_directionChangeTracker < 0)
-                {
-                    _angleTotal = 0;
-                    return;
-                }
+                _currentDirection = ERealisticDireciton.Stop;
             }
         }
 
