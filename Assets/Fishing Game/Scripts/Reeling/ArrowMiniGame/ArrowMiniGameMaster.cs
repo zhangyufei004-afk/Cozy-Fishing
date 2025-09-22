@@ -104,6 +104,7 @@ namespace FishingGame.Reeling
         private float waveSpawnTime;
 
         private Fish _fishData;
+        private GameObject _currentFish3D;
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
         private int _currentArrowCount;

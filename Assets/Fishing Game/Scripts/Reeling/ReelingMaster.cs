@@ -98,6 +98,7 @@ namespace FishingGame.Reeling
             _currentFishPool = null;
 
             _currentFish3DObject = fish3DObject;
+            _currentFish3DObject.GetComponent<Animator>().SetBool("Active", true);
 
             DisableControls(true);
 
@@ -142,6 +143,7 @@ namespace FishingGame.Reeling
             _currentFishPool = fishPool;
 
             _currentFish3DObject = fish3DObject;
+            _currentFish3DObject.GetComponent<Animator>().SetBool("Active", true);
 
             DisableControls(true);
 
@@ -253,6 +255,15 @@ namespace FishingGame.Reeling
             cancelButton.gameObject.SetActive(isVisible);
         }
 
+        /// <summary>
+        /// Returns the current 3D object representing the fish being reeled
+        /// </summary>
+        /// <returns>The 3D object of the current fish</returns>
+        public GameObject GetCurrent3DFishObject()
+        {
+            return _currentFish3DObject;
+        }
+
 
         #endregion
 
@@ -341,7 +352,7 @@ namespace FishingGame.Reeling
             fishingHook.PullBackHook();
             SetCancelButtonVisibilty(false);
 
-
+            _currentFish3DObject.GetComponent<Animator>().SetBool("Active", false);
             Destroy(_currentFish3DObject);
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);

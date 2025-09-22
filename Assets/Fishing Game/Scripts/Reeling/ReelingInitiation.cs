@@ -211,7 +211,7 @@ namespace FishingGame.Reeling
 
             _activeButton = ChooseNextActiveSlot();
             SetupNextNumber();
-            SetButtonVisible(_activeButton);
+            SetButtonVisible(_activeButton); 
 
             StartCoroutine(StageOneCycle());
         }
@@ -230,7 +230,7 @@ namespace FishingGame.Reeling
         /// <returns>Returns the 3D fish model that has been created</returns>
         public GameObject CreateAndReturn3DFishModel()
         {
-            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(0, 0, 90));
+            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(0, 90, 90));
             return fishModel;
         }
         
