@@ -230,7 +230,7 @@ namespace FishingGame.Reeling
         /// <returns>Returns the 3D fish model that has been created</returns>
         public GameObject CreateAndReturn3DFishModel()
         {
-            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(0, 0, 90));
             return fishModel;
         }
         
