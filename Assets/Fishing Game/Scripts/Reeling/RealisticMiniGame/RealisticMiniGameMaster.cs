@@ -99,7 +99,7 @@ namespace FishingGame.Reeling
                 DecideDirection();
             }
 
-            if (_currentTimeScale >= _currentScaleTimerValue)
+            if (_currentScaleTimerValue >= timeScaleMaxSeconds)
             {
                 UpdateTimeScale();
             }
