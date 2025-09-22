@@ -9206,6 +9206,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1954159873}
     - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: defaultDecayValue
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: defaultProgressMax
       value: 80
       objectReference: {fileID: 0}

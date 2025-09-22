@@ -89,6 +89,8 @@ namespace FishingGame.Reeling
         {
             if (_miniGameActive != true) { return; }
 
+            if (CheckIfLost()) { EndMiniGame(false); return; }
+
             // Triples the addition to timer if stop is current direction
             if (_currentDirection == ERealisticDireciton.Stop) { _timeSinceLastDirectionChange += (Time.deltaTime * 3) * _currentTimeScale; }
             else { _timeSinceLastDirectionChange += Time.deltaTime * _currentTimeScale; }
@@ -288,6 +290,16 @@ namespace FishingGame.Reeling
         private bool CheckIfWon()
         {
             if (_progressValue >= _progressMaxValue) { return true; }
+            else { return false; }
+        }
+
+        /// <summary>
+        /// Checks if the progress value is less than or equal to 0 if so returns true
+        /// </summary>
+        /// <returns>True if below 0 progress</returns>
+        private bool CheckIfLost()
+        {
+            if (_progressValue <= 0) { return true; }
             else { return false; }
         }
 
