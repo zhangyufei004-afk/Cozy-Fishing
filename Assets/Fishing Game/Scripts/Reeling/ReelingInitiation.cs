@@ -151,7 +151,7 @@ namespace FishingGame.Reeling
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             playerActionMap.Enable();
-            _castAction = playerActionMap.FindAction("Cast");
+            _castAction = playerActionMap.FindAction("Reel");
             _numberAction = uiActionMap.FindAction("NumberKeys");
         }
 
