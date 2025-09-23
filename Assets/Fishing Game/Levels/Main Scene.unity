@@ -433,6 +433,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1189930303}
+    - target: {fileID: 2478885456262246698, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -120.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2748560608880732659, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -90.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262184282624356546, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6189720281929895518, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -441,6 +453,10 @@ PrefabInstance:
       propertyPath: masterScript
       value: 
       objectReference: {fileID: 10457640}
+    - target: {fileID: 7319745494018167400, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7408674872728082327, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: masterScript
       value: 
@@ -453,6 +469,10 @@ PrefabInstance:
       propertyPath: masterScript
       value: 
       objectReference: {fileID: 10457640}
+    - target: {fileID: 7856801246992238433, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8132309988141412286, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: masterScript
       value: 
@@ -3906,8 +3926,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 0, z: 9.999999}
-  m_Center: {x: 0, y: 0, z: -0.0000019073486}
+  m_Size: {x: 10, y: 1.0217743, z: 9.999999}
+  m_Center: {x: 0, y: -0.51088715, z: -0.0000016348704}
 --- !u!114 &888942148
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -108,6 +108,8 @@ namespace FishingGame.Reeling
 
             if (CheckIfDragableInRightDirection())
             {
+                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
+
                 if (_currentDirection == ERealisticDireciton.Stop)
                 {
                     AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
@@ -118,6 +120,7 @@ namespace FishingGame.Reeling
             }
             else
             {
+                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
                 RemoveFromProgressSlider(defaultDecayValue * Time.deltaTime);
             }
         }
