@@ -109,7 +109,6 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            timerObject.SetActive(true);
 
             IsFishing = true;
 
@@ -154,7 +153,6 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            timerObject.SetActive(true);
 
             IsFishing = true;
 
@@ -348,7 +346,6 @@ namespace FishingGame.Reeling
             DisableControls(false);
             initiationScript.AreReelingControlsActive(true);
             initiationScript.ShouldEnableFishPerspective(false);
-            timerObject.SetActive(false);
             fishingHook.PullBackHook();
             SetCancelButtonVisibilty(false);
 

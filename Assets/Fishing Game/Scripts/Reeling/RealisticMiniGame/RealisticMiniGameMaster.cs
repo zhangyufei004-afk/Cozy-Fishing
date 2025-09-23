@@ -110,7 +110,7 @@ namespace FishingGame.Reeling
             {
                 if (_currentDirection == ERealisticDireciton.Stop)
                 {
-                    AddToProgressSlider(((defaultDecayValue * 2) * Time.deltaTime) * _currentTimeScale);
+                    AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
                     return;
                 }
                 float speed = (dragableScript.GetSpeed() * Time.deltaTime) * _currentTimeScale;
@@ -221,6 +221,17 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Sets the initial direction to either clockwise or anti clockwise
+        /// Does not have stop as an option
+        /// </summary>
+        private void SetInitialDirection()
+        {
+            int rolledNumber = UnityEngine.Random.Range(0, 2);
+            _currentDirection = (ERealisticDireciton)rolledNumber;
+            SetTextAndAnimationForDirection();
+        }
+
+        /// <summary>
         /// Decides what direction player must spin in by rolling a random value between 0 and enum value count
         /// </summary>
         private void DecideDirection()
@@ -316,7 +327,7 @@ namespace FishingGame.Reeling
         {
             ResetGameTimeVariables();
             DifficultyScalars();
-            DecideDirection();
+            SetInitialDirection();
         }
 
         /// <summary>
