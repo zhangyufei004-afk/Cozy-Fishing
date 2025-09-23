@@ -5,6 +5,7 @@ using System.Linq;
 using FishingGame.GameManagement;
 using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -42,28 +43,8 @@ namespace FishingGame.Reeling
         private UnityEngine.UI.Slider chargeSlider;
 
         [SerializeField]
-        [Tooltip("The button that is clicked when the fish is ready to be caught")]
-        private List<UnityEngine.UI.Image> catchFishButtons;
-
-        [SerializeField]
-        [Tooltip("The fish iamge that follows the path the player goes")]
-        private UnityEngine.UI.Image fishImage;
-
-        [SerializeField]
-        [Tooltip("The hook UI image element")]
-        private UnityEngine.UI.Image hookImage;
-
-        [SerializeField]
-        [Tooltip("A image that is the child of the hookimage variable")]
-        private UnityEngine.UI.Image hookPoint;
-
-        [SerializeField]
-        [Tooltip("The scalar for how fast the UI fish moves")]
-        private float uiFishMoveSpeedScalar;
-
-        [SerializeField]
-        [Tooltip("The default sprite for stageone images")]
-        private Sprite normalStageOneSprite;
+        [Tooltip("The Button that is pressed to catch fish")]
+        private UnityEngine.UI.Button catchButton;
 
         [Header("Stageone MiniGame variables")]
 
@@ -76,19 +57,22 @@ namespace FishingGame.Reeling
         private int minFishWaitTime;
 
         [SerializeField]
-        [Tooltip("The particle effect played over the UI when a button is correctly pressed")]
-        private ParticleSystem splashEffect;
+        [Tooltip("The prefab of the object that swims up to the reel")]
+        private GameObject reelSwimmerPrefab;
 
+        [SerializeField]
+        [Tooltip("Max distance the fish can be")]
+        private int maxDistance;
+
+        private int _fishDissapearTimeVisual = 1;
+        
+        private GameObject _fishSwim;
+
+        private bool _fishAtHook = false;
         private bool _gameActive = false;
-        private UnityEngine.UI.Image _activeButton;
-        private int _currentNumber;
-        private UnityEngine.UI.Image currentTravelToTarget;
-
-        private bool _fishShouldMove = false;
         private bool _isStageOne = false;
         private int _stageOneDifficulty = 0;
         private int _catchSecondsToWait;
-        private int _numbersPressed = 0;
 
         private InputAction _numberAction;
 
@@ -157,20 +141,6 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (_numberAction.WasPressedThisFrame() && _activeButton != null && _gameActive == true)
-            {
-                Debug.Log(_numberAction.ReadValue<float>());
-                if (_numberAction.ReadValue<float>() == _currentNumber)
-                {
-                    CorrectNumberPress();
-                }
-            }
-
-            if (_fishShouldMove)
-            {
-                MoveFishToTarget();
-            }
-
             if (fishingHook.HookIsOut == true || _allowControls == false)
             {
                 return;
@@ -199,22 +169,9 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginStageOne()
         {
-            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-            _isStageOne = true;
-            fishImage.gameObject.SetActive(false);
-            hookImage.gameObject.SetActive(true);
-            _numbersPressed = 0;
-            reelingMasterScript.SetCancelButtonVisibilty(true);
-            FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
-            _stageOneDifficulty = currentPool.GetADifficultyInRange();
-            _stageOneDifficulty = Mathf.Clamp(_stageOneDifficulty, 2, catchFishButtons.Count);
-            _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
-
-            _activeButton = ChooseNextActiveSlot();
-            SetupNextNumber();
-            SetButtonVisible(_activeButton); 
-
-            StartCoroutine(StageOneCycle());
+            SetupVariables();
+            
+            StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
         }
 
         /// <summary>
@@ -234,7 +191,25 @@ namespace FishingGame.Reeling
             GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(0, 90, 90));
             return fishModel;
         }
-        
+
+        public void FishAtHook()
+        {
+            _fishAtHook = true;
+            SetButtonInteractable(true);
+
+            StartCoroutine(FishCatchTimer(5));
+        }
+
+        public void FishCaught()
+        {
+            _isStageOne = false;
+            StageOneUICleanup();
+            Destroy(_fishSwim);
+            StopAllCoroutines();
+
+            fishingHook.AttempToFishFromCurrentLocation();
+        }
+
         /// <summary>
         /// This is a public function that enables the camera that tracks the fish during reeling
         /// This camera follows a hook gameobject that will always be ontop of the fish
@@ -274,19 +249,12 @@ namespace FishingGame.Reeling
         public void CancelStageOne()
         {
             StopAllCoroutines();
-            _fishShouldMove = false;
-            _activeButton = null;
-            foreach (var button in catchFishButtons)
-            {
-                button.gameObject.SetActive(false);
-            }
+            StageOneUICleanup();
+            Destroy(_fishSwim);
 
             _isStageOne = false;
-            fishImage.gameObject.SetActive(false);
-            hookImage.gameObject.SetActive(false);
             fishingHook.PullBackHook();
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-
         }
 
         #endregion
@@ -433,173 +401,86 @@ namespace FishingGame.Reeling
 
         #region StageoneReelingGame
 
-        /// <summary>
-        /// Keeps track of the number of buttons that have been correctly inputed,
-        /// If enough numbers have been pressed, sets the next fishing stage
-        /// Removes number from UI
-        /// Calls for next number
-        /// </summary>
-        private void CorrectNumberPress()
+        private void SpawnFishShadow()
         {
-            _numbersPressed += 1;
-            _activeButton.gameObject.SetActive(false);
+            _fishSwim = Instantiate(reelSwimmerPrefab, SetFishSpawnLocation(), Quaternion.Euler(90, 0, 0));
+            _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(fishingHook.transform.position, this);
+        }
 
-            if (_numbersPressed == 1)
+        private Vector3 SetFishSpawnLocation()
+        {
+            int zToAdd = UnityEngine.Random.Range(-maxDistance, maxDistance);
+            int xToAdd = UnityEngine.Random.Range(-maxDistance, maxDistance);
+
+            Vector3 currentHookLocation = fishingHook.gameObject.transform.position;
+            Vector3 trialLocation = new Vector3(currentHookLocation.x += xToAdd, currentHookLocation.y - 1, currentHookLocation.z += zToAdd);
+
+            return trialLocation;
+        }
+
+        private void FishGotAway()
+        {
+            _fishAtHook = false;
+            SetButtonInteractable(false);
+
+            _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
+            StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
+        }
+
+        private IEnumerator SpawnFishTimer(int waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            SpawnFishShadow();
+        }
+
+        private IEnumerator FishCatchTimer(int waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            if (_isStageOne == true) { FishGotAway(); }
+            
+        }
+
+        private IEnumerator DespawnFishTimer(int waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            Destroy(_fishSwim);
+            StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
+        }    
+
+        private void SetButtonInteractable(bool isInteractable)
+        {
+            if (isInteractable)
             {
-                currentTravelToTarget = _activeButton;
-                fishImage.gameObject.SetActive(true);
-                fishImage.transform.position = _activeButton.transform.position;
+                catchButton.image.color = Color.green;
+                catchButton.interactable = true;
             }
             else
             {
-                if (fishImage.transform.position != currentTravelToTarget.transform.position)
-                {
-                    fishImage.transform.position = currentTravelToTarget.transform.position;
-                }
-
-                currentTravelToTarget = _activeButton;
-                _fishShouldMove = true;
-            }
-
-            if (_numbersPressed == _stageOneDifficulty)
-            {
-                _isStageOne = false;
-                _gameActive = false;
-                _activeButton = null;
-                StopAllCoroutines();
-                StartCoroutine(WaitToReachHook());
-            }
-            else 
-            {
-                SetupNextButton();
+                catchButton.image.color = Color.grey;
+                catchButton.interactable = false;
             }
         }
 
-        /// <summary>
-        /// Runs the required functions that setup a new button and number
-        /// </summary>
-        private void SetupNextButton()
+        private void StageOneUICleanup()
         {
-            _activeButton = ChooseNextActiveSlot();
-            SetupNextNumber();
-            SetButtonVisible(_activeButton);
-            SetNumberPressable();
+            catchButton.gameObject.SetActive(false);
         }
 
-        /// <summary>
-        /// Randomly chooses the next button that will be used
-        /// </summary>
-        /// <returns>Returns the next button to be used</returns>
-        private UnityEngine.UI.Image ChooseNextActiveSlot()
+        private void SetupVariables()
         {
-            bool validNumberFound = false;
-            int slot = 0;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            _isStageOne = true;
+            FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
+            _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
-            while (validNumberFound != true)
-            {
-                slot = UnityEngine.Random.Range(0, catchFishButtons.Count());
-                if (catchFishButtons[slot] != _activeButton)
-                {
-                    validNumberFound = true;
-                }
-            }
+            reelingMasterScript.SetCancelButtonVisibilty(true);
+            catchButton.gameObject.SetActive(true);
+            SetButtonInteractable(false);
 
-            return catchFishButtons[slot];
+
+            _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
         }
 
-        /// <summary>
-        /// Sets a random button to be clickable to complete stage 1
-        /// </summary>
-        private void SetNumberPressable()
-        {
-            _activeButton.color = Color.green;
-            _gameActive = true;
-        }
-
-        /// <summary>
-        /// Sets the next number that needs to be pressed
-        /// </summary>
-        private void SetupNextNumber()
-        {
-            _currentNumber = UnityEngine.Random.Range(0, 10);
-        }
-
-        /// <summary>
-        /// Sets the inputed image to be visible and updates its text to reflect the number it requires
-        /// </summary>
-        /// <param name="buttonToModify"></param>
-        private void SetButtonVisible(UnityEngine.UI.Image buttonToModify)
-        {
-            TextMeshProUGUI buttonText = buttonToModify.GetComponentInChildren<TextMeshProUGUI>();
-            buttonText.text = _currentNumber.ToString();
-            buttonToModify.gameObject.SetActive(true);
-            buttonToModify.color = Color.grey;
-            buttonToModify.sprite = normalStageOneSprite;
-        }
-
-        /// <summary>
-        /// If currently in stageone this will roll a random value, if the random value is high enough the player will be prompted
-        /// to select a clickable random button.
-        /// If the roll is not high enough the chance for the next roll to be high enough is increased and the timer until this method is called again
-        /// is restarted
-        /// </summary>
-        private void BeginFishing()
-        {
-            if (_isStageOne)
-            {
-                SetNumberPressable();
-            }
-        }
-
-        /// <summary>
-        /// Moves fish UI image towards the current travel target unless the fish is already there
-        /// </summary>
-        private void MoveFishToTarget()
-        {
-            if (currentTravelToTarget.transform.position != fishImage.transform.position)
-            {
-                fishImage.transform.position = Vector3.MoveTowards(fishImage.transform.position, currentTravelToTarget.transform.position, uiFishMoveSpeedScalar * Time.deltaTime);
-            }
-        }
-        
-        /// <summary>
-        /// Run when the fish should be at the hook, will cause the gameobjects to dissapear visually
-        /// and begin the minigame portion of reeling
-        /// </summary>
-        private void FishAtHook()
-        {
-            _fishShouldMove = false;
-            fishImage.gameObject.SetActive(false);
-            hookImage.gameObject.SetActive(false);
-            fishingHook.AttempToFishFromCurrentLocation();
-        }
-
-        /// <summary>
-        /// Will run BeginFishing after variable stageOneCycleSecondsToWait seconds
-        /// </summary>
-        /// <returns>When timer is finished BeginFishing() is run</returns>
-        private IEnumerator StageOneCycle()
-        {
-            yield return new WaitForSeconds(_catchSecondsToWait);
-            BeginFishing();
-        }
-
-        /// <summary>
-        /// A short 2 second timer split into two parts
-        /// After 1 second the current travel to target changes to the hook image
-        /// After 1 more second the game will transition into the minigame portion fo reeling
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator WaitToReachHook()
-        {
-            yield return new WaitForSeconds(1f);
-            currentTravelToTarget = hookPoint;
-            yield return new WaitForSeconds(1f);
-            if (_fishShouldMove)
-            {
-                FishAtHook();
-            }
-        }
         #endregion
     }
 }
