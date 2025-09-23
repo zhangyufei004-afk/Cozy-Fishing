@@ -196,8 +196,8 @@ namespace FishingGame.Reeling
         public void FishAtHook()
         {
             _fishAtHook = true;
-            SetButtonInteractable(true);
 
+            SetButtonToGreen(true);
             StartCoroutine(FishCatchTimer(5));
         }
 
@@ -208,12 +208,20 @@ namespace FishingGame.Reeling
         /// </summary>
         public void FishCaught()
         {
-            _isStageOne = false;
-            StageOneUICleanup();
-            Destroy(_fishSwim);
-            StopAllCoroutines();
+            if (_fishAtHook)
+            {
+                _isStageOne = false;
+                StageOneUICleanup();
+                Destroy(_fishSwim);
+                StopAllCoroutines();
+                fishingHook.AttempToFishFromCurrentLocation();
+            }
+            else
+            {
+                CancelStageOne();
+            }
 
-            fishingHook.AttempToFishFromCurrentLocation();
+            
         }
 
         /// <summary>
@@ -440,8 +448,8 @@ namespace FishingGame.Reeling
         private void FishGotAway()
         {
             _fishAtHook = false;
-            SetButtonInteractable(false);
 
+            SetButtonToGreen(false);
             _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
             StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
         }
@@ -481,25 +489,23 @@ namespace FishingGame.Reeling
             yield return new WaitForSeconds(waitTime);
             Destroy(_fishSwim);
             StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
-        }    
+        }
 
         /// <summary>
-        /// Sets the catch button interactability based on the inputed bool
-        /// True sets it to be interactable
-        /// False does otherwise
+        /// Sets the catch button color based on the inputed bool
+        /// True sets it to be green
+        /// False does grey
         /// </summary>
-        /// <param name="isInteractable">True sets button to be interactable, false does otherwise</param>
-        private void SetButtonInteractable(bool isInteractable)
+        /// <param name="isGreen">True sets button to be green, false does grey</param>
+        private void SetButtonToGreen(bool isGreen)
         {
-            if (isInteractable)
+            if (isGreen)
             {
                 catchButton.image.color = Color.green;
-                catchButton.interactable = true;
             }
             else
             {
                 catchButton.image.color = Color.grey;
-                catchButton.interactable = false;
             }
         }
 
@@ -522,8 +528,8 @@ namespace FishingGame.Reeling
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
             reelingMasterScript.SetCancelButtonVisibilty(true);
+            SetButtonToGreen(false);
             catchButton.gameObject.SetActive(true);
-            SetButtonInteractable(false);
 
 
             _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
