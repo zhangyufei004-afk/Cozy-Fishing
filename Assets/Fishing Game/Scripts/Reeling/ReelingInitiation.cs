@@ -192,6 +192,10 @@ namespace FishingGame.Reeling
             return fishModel;
         }
 
+        /// <summary>
+        /// Run once the fish is at the hook transform
+        /// This turns the button interactable and starts a timer for how long player has
+        /// </summary>
         public void FishAtHook()
         {
             _fishAtHook = true;
@@ -200,6 +204,11 @@ namespace FishingGame.Reeling
             StartCoroutine(FishCatchTimer(5));
         }
 
+        /// <summary>
+        /// Run through a button, this signals stage one was a sucsess
+        /// It stops all current timers on this object and tell the master script
+        /// to fish
+        /// </summary>
         public void FishCaught()
         {
             _isStageOne = false;
@@ -401,12 +410,21 @@ namespace FishingGame.Reeling
 
         #region StageoneReelingGame
 
+        /// <summary>
+        /// Spawns the fish shadow object that will move up to the hook
+        /// This is a prefab that should have the StageOneSwimmer class attatched to it
+        /// </summary>
         private void SpawnFishShadow()
         {
             _fishSwim = Instantiate(reelSwimmerPrefab, SetFishSpawnLocation(), Quaternion.Euler(90, 0, 0));
             _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(fishingHook.transform.position, this);
         }
 
+        /// <summary>
+        /// Returns a vector3 that can be used for the location the fish swimmer should spawn at
+        /// This vector3 is modified with a random int for the z and x axis
+        /// </summary>
+        /// <returns>A vector3 location</returns>
         private Vector3 SetFishSpawnLocation()
         {
             int zToAdd = UnityEngine.Random.Range(-maxDistance, maxDistance);
@@ -418,6 +436,10 @@ namespace FishingGame.Reeling
             return trialLocation;
         }
 
+        /// <summary>
+        /// This is run when the catch window is not pressed before the fish escapes
+        /// It restarts the stageone cycle, makes button uninteractable and tells the fish to swim off
+        /// </summary>
         private void FishGotAway()
         {
             _fishAtHook = false;
@@ -427,12 +449,23 @@ namespace FishingGame.Reeling
             StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
         }
 
+        /// <summary>
+        /// This timer will spawn a fish shadow once completed
+        /// </summary>
+        /// <param name="waitTime">The amount of seconds to wait before spawning</param>
+        /// <returns>Spawns the fish object</returns>
         private IEnumerator SpawnFishTimer(int waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             SpawnFishShadow();
         }
 
+        /// <summary>
+        /// This timer represents howlong the player has until the fish swims off
+        /// After inputed seconds the fish will swim away
+        /// </summary>
+        /// <param name="waitTime">The amount of seconds until fish swims away</param>
+        /// <returns>The fish swims away</returns>
         private IEnumerator FishCatchTimer(int waitTime)
         {
             yield return new WaitForSeconds(waitTime);
@@ -440,6 +473,12 @@ namespace FishingGame.Reeling
             
         }
 
+        /// <summary>
+        /// This time despawns the fish after x seconds
+        /// It will then start a new spawn fish timer
+        /// </summary>
+        /// <param name="waitTime">The amount of seconds to wait before despawning</param>
+        /// <returns>Despawns the fish and starts timer for new one to spawn</returns>
         private IEnumerator DespawnFishTimer(int waitTime)
         {
             yield return new WaitForSeconds(waitTime);
@@ -447,6 +486,12 @@ namespace FishingGame.Reeling
             StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
         }    
 
+        /// <summary>
+        /// Sets the catch button interactability based on the inputed bool
+        /// True sets it to be interactable
+        /// False does otherwise
+        /// </summary>
+        /// <param name="isInteractable">True sets button to be interactable, false does otherwise</param>
         private void SetButtonInteractable(bool isInteractable)
         {
             if (isInteractable)
@@ -461,11 +506,17 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Disables stageone UI objects
+        /// </summary>
         private void StageOneUICleanup()
         {
             catchButton.gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// Sets up variables for stage one
+        /// </summary>
         private void SetupVariables()
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);

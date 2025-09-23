@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// This class is used for the stage one prefab that swims up to the hook
+    /// It contains the movement logic for that object
+    /// </summary>
     public class StageOneSwimmer : MonoBehaviour
     {
         [SerializeField]
@@ -31,6 +35,11 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Sets up required variables for this object to move to
+        /// </summary>
+        /// <param name="goalLocation">The location this object should move to</param>
+        /// <param name="initiationScript">The initiation script this can reference for when at hook</param>
         public void SetupVariables(Vector3 goalLocation, ReelingInitiation initiationScript)
         {
             _goalLocation = goalLocation;
