@@ -74,8 +74,6 @@ namespace FishingGame.Reeling
         private int _stageOneDifficulty = 0;
         private int _catchSecondsToWait;
 
-        private InputAction _numberAction;
-
         [Header("Aiming and Charging cast")]
 
         [SerializeField]
@@ -136,7 +134,6 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
-            _numberAction = uiActionMap.FindAction("NumberKeys");
         }
 
         public void Update()
@@ -463,7 +460,7 @@ namespace FishingGame.Reeling
         /// <summary>
         /// This timer represents howlong the player has until the fish swims off
         /// After inputed seconds the fish will swim away
-        /// </summary>
+        /// </summary>a
         /// <param name="waitTime">The amount of seconds until fish swims away</param>
         /// <returns>The fish swims away</returns>
         private IEnumerator FishCatchTimer(int waitTime)
