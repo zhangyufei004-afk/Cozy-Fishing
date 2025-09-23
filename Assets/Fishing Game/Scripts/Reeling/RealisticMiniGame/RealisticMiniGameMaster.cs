@@ -247,23 +247,15 @@ namespace FishingGame.Reeling
             {
                 case ERealisticDireciton.Clockwise:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
-                    _currentFish3D.GetComponent<Animator>().SetBool("Left", true);
-                    _currentFish3D.GetComponent<Animator>().SetBool("Right", false);
                     break;
                 case ERealisticDireciton.AntiClockwise:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
-                    _currentFish3D.GetComponent<Animator>().SetBool("Left", false);
-                    _currentFish3D.GetComponent<Animator>().SetBool("Right", true);
                     break;
                 case ERealisticDireciton.Stop:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Stop spinning!";
-                    _currentFish3D.GetComponent<Animator>().SetBool("Right", false);
-                    _currentFish3D.GetComponent<Animator>().SetBool("Left", false);
                     break;
                 default:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
-                    _currentFish3D.GetComponent<Animator>().SetBool("Left", true);
-                    _currentFish3D.GetComponent<Animator>().SetBool("Right", false);
                     throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
             }
         }

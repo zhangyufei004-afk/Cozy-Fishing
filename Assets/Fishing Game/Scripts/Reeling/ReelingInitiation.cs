@@ -159,6 +159,7 @@ namespace FishingGame.Reeling
         {
             if (_numberAction.WasPressedThisFrame() && _activeButton != null && _gameActive == true)
             {
+                Debug.Log(_numberAction.ReadValue<float>());
                 if (_numberAction.ReadValue<float>() == _currentNumber)
                 {
                     CorrectNumberPress();

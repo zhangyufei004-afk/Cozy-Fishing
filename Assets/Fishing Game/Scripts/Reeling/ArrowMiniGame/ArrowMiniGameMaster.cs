@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.Input;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -122,6 +123,13 @@ namespace FishingGame.Reeling
         private List<MovingArrow> _arrowsToRemove;
         private InputAction _directionAction;
         private EMovementDirection _arrowType;
+        InputActionMap uiActionMap;
+
+        private InputAction _upAction;
+        private InputAction _downAction;
+        private InputAction _leftAction;
+        private InputAction _rightAction;
+
 
         private void OnEnable()
         {
@@ -129,11 +137,16 @@ namespace FishingGame.Reeling
             _arrowsAvailableToBePressed = new List<MovingArrow>();
             _arrowsToRemove = new List<MovingArrow>();
 
-            InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
-            uiActionMap.Enable();
-            _directionAction = uiActionMap.FindAction("ArrowMiniGame");
+            InputActionAsset inputAction = InputSystem.actions;
+            uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
         }
+
+
+        private void OnDisable()
+        {
+            DisableArrowKeys();
+        }
+
 
 
         private void Update()
@@ -142,7 +155,6 @@ namespace FishingGame.Reeling
 
             _currentTimePassed += Time.deltaTime;
 
-            InputCheck();
             CheckTimePassed();
 
 
@@ -164,6 +176,7 @@ namespace FishingGame.Reeling
             _fishData = fishScriptable;
             _fishDifficulty = _fishData.GetFishCatchDifficulty();
             fishingCanvas.SetActive(true);
+            SetUpArrowKeys();
 
             ResetRuntimeVariables();
             SetDifficultyModifiers();
@@ -278,56 +291,89 @@ namespace FishingGame.Reeling
 
         #region CoreGameTimeFunctions
 
-        /// <summary>
-        /// Contains all the logic for comparing player input to current state of arrows
-        /// </summary>
-        private void InputCheck()
+        private void InputLogic(EMovementDirection inputedDirection)
         {
-            if (_directionAction.WasPressedThisFrame())
+            if (CheckIfThereAreArrowsPressable())
             {
-                Vector2 direction = _directionAction.ReadValue<Vector2>();
-                // Checks if there are pressable arrows then compares those arrows to the value pressed
-                if (CheckIfThereAreArrowsPressable())
+                foreach (MovingArrow arrow in _arrowsAvailableToBePressed)
                 {
-                    foreach (MovingArrow arrow in _arrowsAvailableToBePressed)
-                    {
-                        int directionAsInt = arrow.GetDirectionEnumAsInt();
-                        _arrowType = (EMovementDirection)directionAsInt;
+                    int directionAsInt = arrow.GetDirectionEnumAsInt();
+                    _arrowType = (EMovementDirection)directionAsInt;
 
-                        if (GetMovementDirection(direction) == _arrowType)
-                        {
-                            _arrowsToRemove.Add(arrow);
-                        }
-                    }
-                    foreach (MovingArrow arrow in _arrowsToRemove)
+                    if (inputedDirection == _arrowType)
                     {
-                        ArrowSuccsessfullyPressed(arrow);
-                        RemoveArrowFromPressList(arrow);
-                        arrow.DeactivateArrow();
-                        arrow.StartFadeAway(true);
+                        _arrowsToRemove.Add(arrow);
                     }
-                    _arrowsToRemove.Clear();
                 }
-                else
-                // In the event a key was pressed with no arrows pressable this section is run
+                foreach (MovingArrow arrow in _arrowsToRemove)
                 {
-                    ArrowSpawner spawnerToPunish = null;
-                    foreach (ArrowSpawner spawner in spawnPoints)
-                    {
-                        int directionAsInt = spawner.GetSpawnerTypeAsInt();
-                        _arrowType = (EMovementDirection)directionAsInt;
-
-                        if (GetMovementDirection(direction) == _arrowType)
-                        {
-                            spawnerToPunish = spawner;
-                            break;
-                        }
-                    }
-
-                    spawnerToPunish.PunishPoorPress();
+                    ArrowSuccsessfullyPressed(arrow);
+                    RemoveArrowFromPressList(arrow);
+                    arrow.DeactivateArrow();
+                    arrow.StartFadeAway(true);
                 }
+                _arrowsToRemove.Clear();
             }
+            else
+            // In the event a key was pressed with no arrows pressable this section is run
+            {
+                ArrowSpawner spawnerToPunish = null;
+                foreach (ArrowSpawner spawner in spawnPoints)
+                {
+                    int directionAsInt = spawner.GetSpawnerTypeAsInt();
+                    _arrowType = (EMovementDirection)directionAsInt;
+
+                    if (inputedDirection == _arrowType)
+                    {
+                        spawnerToPunish = spawner;
+                        break;
+                    }
+                }
+
+                spawnerToPunish.PunishPoorPress();
+            }
+
         }
+
+        #region IndividualActionFunctions
+        
+        /// <summary>
+        /// Logic for what to do when up is pressed
+        /// </summary>
+        /// <param name="inputAction">Context of action</param>
+        private void UpPressed(InputAction.CallbackContext inputAction)
+        {
+            InputLogic(EMovementDirection.Up);
+        }
+
+        /// <summary>
+        /// Logic for what to do when down is pressed
+        /// </summary>
+        /// <param name="inputAction">Context of action</param>
+        private void DownPressed(InputAction.CallbackContext inputAction)
+        {
+            InputLogic(EMovementDirection.Down);
+        }
+
+        /// <summary>
+        /// Logic for what to do when left is pressed
+        /// </summary>
+        /// <param name="inputAction">Context of action</param>
+        private void LeftPressed(InputAction.CallbackContext inputAction)
+        {
+            InputLogic(EMovementDirection.Left);
+        }
+
+        /// <summary>
+        /// Logic for what to do when right is pressed
+        /// </summary>
+        /// <param name="inputAction">Context of action</param>
+        private void RightPressed(InputAction.CallbackContext inputAction)
+        {
+            InputLogic(EMovementDirection.Right);
+        }
+
+        #endregion
 
         /// <summary>
         /// Run when an arrow is pressed at the correct time
@@ -423,6 +469,7 @@ namespace FishingGame.Reeling
         private void DeactivateMiniGame(bool didWin)
         {
             _gameActive = false;
+            DisableArrowKeys();
 
             foreach (MovingArrow arrow in _activeArrows)
             {
@@ -440,19 +487,6 @@ namespace FishingGame.Reeling
         #endregion
 
         #region ChecksAndGets
-
-        /// <summary>
-        /// Returns an EMovementDirection enum value based on the inputed Vector2
-        /// </summary>
-        /// /// <param name="directionValue">The Vector2 input from the action</param>
-        private EMovementDirection GetMovementDirection(Vector2 directionValue)
-        {
-            if (directionValue.x > 0) { return EMovementDirection.Right; }
-            if (directionValue.x < 0) { return EMovementDirection.Left; }
-            if (directionValue.y > 0) { return EMovementDirection.Up; }
-            if (directionValue.y < 0) { return EMovementDirection.Down; }
-            return EMovementDirection.Down;
-        }
 
         /// <summary>
         /// Checks if the maximum arrow count has been reached
@@ -574,6 +608,38 @@ namespace FishingGame.Reeling
         #endregion
 
         #region Initilization_Functions
+
+        /// <summary>
+        /// Subscribes arrow key actions to their relevant functions
+        /// </summary>
+        private void SetUpArrowKeys()
+        {
+            _upAction = uiActionMap.FindAction("Up");
+            _upAction.performed += UpPressed;
+
+            _downAction = uiActionMap.FindAction("Down");
+            _downAction.performed += DownPressed;
+
+            _rightAction = uiActionMap.FindAction("Right");
+            _rightAction.performed += RightPressed;
+
+            _leftAction = uiActionMap.FindAction("Left");
+            _leftAction.performed += LeftPressed;
+        }
+
+        /// <summary>
+        /// Unsubscribes Arrowkey actions from their relevant function
+        /// </summary>
+        private void DisableArrowKeys()
+        {
+            _upAction.performed -= UpPressed;
+
+            _downAction.performed -= DownPressed;
+
+            _rightAction.performed -= RightPressed;
+
+            _leftAction.performed -= LeftPressed;
+        }
 
         /// <summary>
         /// Runs the functions that set variables based on the current difficulty
