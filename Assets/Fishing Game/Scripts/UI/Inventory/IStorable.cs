@@ -11,7 +11,8 @@ namespace FishingGame.Inventory
         Fish,
         Rod,
         RodAttachment,
-        Money
+        Money,
+        Trash
     }
     
     /// <summary>

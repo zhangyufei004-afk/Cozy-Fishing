@@ -11,8 +11,9 @@ namespace FishingGame.FishSystem
     /// <para>Represents a runtime fish object.</para>
     /// <para>Stores dynamic data including base info, length, weight, caught time, and location.</para>
     /// </summary>
-    public class Fish : IStorable
+    public class Fish : IStorable, IFishAble
     {
+        private ECatchableType catchAbleType;
         private FishScriptableObject _fishBase;
         private string _speciesName;
         private float _weight;
@@ -29,6 +30,7 @@ namespace FishingGame.FishSystem
         /// <param name="location">Location where the fish was caught</param>
         public Fish(FishScriptableObject newFishBase, ETimeOfDay time, string location)
         {
+            catchAbleType = ECatchableType.Fish;
             _fishBase = newFishBase;
             _weight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
             // Round weight to 2 decimal places
@@ -105,6 +107,15 @@ namespace FishingGame.FishSystem
         public string GetSpeciesName()
         {
             return _speciesName;
+        }
+
+        /// <summary>
+        /// Gets the catchable type of this object
+        /// </summary>
+        /// <returns>The catchable type of this object</returns>
+        public ECatchableType GetCatchType()
+        {
+            return catchAbleType;
         }
     }
 }
