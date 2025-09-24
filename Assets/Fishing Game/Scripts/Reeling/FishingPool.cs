@@ -186,6 +186,15 @@ namespace FishingGame.Reeling
             overrideFishList.Add(fishToAdd);
         }
 
+        public void AddFishPopulation()
+        {
+            if (amountOfFishHeld + amountOfTrash <= maxAmountOfPopulation)
+            {
+                amountOfFishHeld += 1;
+            }
+            else { Debug.Log("Max amount of fish reached"); }
+        }
+
         /// <summary>
         /// Returns a difficulty in the range of this pools lowest and highest fish difficulty
         /// </summary>

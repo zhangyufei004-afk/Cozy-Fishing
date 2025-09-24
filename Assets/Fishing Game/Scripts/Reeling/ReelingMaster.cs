@@ -348,7 +348,7 @@ namespace FishingGame.Reeling
                 // Check if this was from a fishing pool
                 if (_currentFishPool != null)
                 {
-                    _currentFishPool.ObjectCaught();
+                    _currentFishPool.ObjectCaught(_currentlyReelingObject);
                 }
 
                 IStorable itemGained = (IStorable)_currentlyReelingObject;

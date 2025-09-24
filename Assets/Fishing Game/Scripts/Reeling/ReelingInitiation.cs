@@ -210,6 +210,7 @@ namespace FishingGame.Reeling
         {
             if (_fishAtHook)
             {
+                _fishAtHook = false;
                 _isStageOne = false;
                 StageOneUICleanup();
                 Destroy(_fishSwim);
@@ -265,6 +266,8 @@ namespace FishingGame.Reeling
             StopAllCoroutines();
             StageOneUICleanup();
             Destroy(_fishSwim);
+            reelingMasterScript.SetCancelButtonVisibilty(false);
+            _fishAtHook = false;
 
             _isStageOne = false;
             fishingHook.PullBackHook();
@@ -524,6 +527,7 @@ namespace FishingGame.Reeling
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _isStageOne = true;
+            _fishAtHook = false;
             FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
