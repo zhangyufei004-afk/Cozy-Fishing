@@ -118,11 +118,19 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// This is a public function that is called to reduce the amount of fish currently in the pool
+        /// This is a public function that is called to reduce the amount of fish or trash currently in the pool
         /// </summary>
-        public void FishCaught()
+        public void ObjectCaught(IFishAble objectCaught)
         {
-            amountOfFishHeld -= 1;
+            if (objectCaught.GetCatchType() == ECatchableType.Fish)
+            {
+                amountOfFishHeld -= 1;
+            }
+            else if (objectCaught.GetCatchType() == ECatchableType.Trash)
+            {
+                amountOfTrash -= 1;
+            }
+
             if (IsEmpty()) { EmptyPool(); }
         }
 
@@ -132,7 +140,7 @@ namespace FishingGame.Reeling
         /// <returns>Returns true if fishing pool is empty, otherwise false</returns>
         public bool IsEmpty()
         {
-            if (amountOfFishHeld == 0) { return true; }
+            if (amountOfFishHeld + amountOfTrash == 0) { return true; }
             else { return false; }
         }
         /// <summary>
@@ -206,6 +214,10 @@ namespace FishingGame.Reeling
             baseFishArray = fishAvailable.ToArray();
         }
 
+        /// <summary>
+        /// Creates a list of all fishable trash in this level based on the list held by the game manager
+        /// Filters that list based on pools location and difficulty
+        /// </summary>
         private void CreateTrashList()
         {
             List<TrashScriptable> potentialTrash = _gameManager.GetPossibleTrashList();

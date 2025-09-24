@@ -117,6 +117,13 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// This is run once a player succsesfully completes the initial stage of reeling
+        /// This version is run when the caught object has been decided to be a piece of trash
+        /// </summary>
+        /// <param name="trashCaught">The data of the trash caught</param>
+        /// <param name="visual3DObject">Visual 3D object of what is being reeled</param>
+        /// <param name="fishPool">The pool this was caught from</param>
         public void BeginCatchTrash(Trash trashCaught, GameObject visual3DObject, FishingPool fishPool)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
@@ -341,7 +348,7 @@ namespace FishingGame.Reeling
                 // Check if this was from a fishing pool
                 if (_currentFishPool != null)
                 {
-                    _currentFishPool.FishCaught();
+                    _currentFishPool.ObjectCaught();
                 }
 
                 IStorable itemGained = (IStorable)_currentlyReelingObject;
