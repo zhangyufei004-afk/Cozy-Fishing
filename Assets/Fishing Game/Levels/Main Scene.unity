@@ -3067,7 +3067,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Catch
+  m_text: Reel in
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3901,6 +3901,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfFishHeld: 4
+  amountOfTrash: 0
+  maxAmountOfPopulation: 0
+  populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 1
   lowestFishDifficulty: 1
@@ -3941,6 +3944,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfFishHeld: 4
+  amountOfTrash: 0
+  maxAmountOfPopulation: 0
+  populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 0
   lowestFishDifficulty: 4
@@ -3982,6 +3988,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfFishHeld: 6
+  amountOfTrash: 0
+  maxAmountOfPopulation: 0
+  populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 1
   lowestFishDifficulty: 4
@@ -4938,6 +4947,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfFishHeld: 4
+  amountOfTrash: 0
+  maxAmountOfPopulation: 0
+  populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 3
   lowestFishDifficulty: 2
@@ -6098,6 +6110,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5685c684b3a55942905202f34cef347, type: 2}
   - {fileID: 11400000, guid: 6529f9b1f800b6149a00900b303b7ee2, type: 2}
   - {fileID: 11400000, guid: 38c61f5c4474b024795d9f8314d5a9a4, type: 2}
+  potentialTrashTypes:
+  - {fileID: 11400000, guid: 250cd2d7ab7835742bcc7f40c75cdada, type: 2}
 --- !u!4 &1272523031
 Transform:
   m_ObjectHideFlags: 0
@@ -6585,6 +6599,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfFishHeld: 20
+  amountOfTrash: 30
+  maxAmountOfPopulation: 50
+  populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 0
   lowestFishDifficulty: 1
@@ -8104,6 +8121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfFishHeld: 4
+  amountOfTrash: 0
+  maxAmountOfPopulation: 0
+  populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 3
   lowestFishDifficulty: 1

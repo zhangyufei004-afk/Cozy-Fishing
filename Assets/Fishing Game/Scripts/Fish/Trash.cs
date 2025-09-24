@@ -90,7 +90,7 @@ namespace FishingGame.FishSystem
         /// <returns>The type of scriptable object</returns>
         public SerializableObject GetDataObject(out Type dataClassType)
         {
-            dataClassType = typeof(FishScriptableObject);
+            dataClassType = typeof(TrashScriptable);
             return _trashBase;
         }
 

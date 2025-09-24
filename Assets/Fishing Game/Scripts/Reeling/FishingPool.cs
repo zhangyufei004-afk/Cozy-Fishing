@@ -19,8 +19,20 @@ namespace FishingGame.Reeling
         [Header("Pool Stats")]
 
         [SerializeField]
-        [Tooltip("How much fish this began with, this changes as pool is fished from")]
+        [Tooltip("How much fish are in this pool, the higher the value the more fish")]
         private int amountOfFishHeld;
+
+        [SerializeField]
+        [Tooltip("How much trash/how polluted this pool is, the higher the value the more polluted")]
+        private int amountOfTrash;
+
+        [SerializeField]
+        [Tooltip("The max amount of fish/trash that can be in this pool")]
+        private int maxAmountOfPopulation;
+
+        [SerializeField]
+        [Tooltip("Should this pool have its fish count be able to be depleted from after fishing")]
+        private bool populationLowerable;
 
         [SerializeField]
         [Tooltip("Reference to the gametime script running")]
@@ -46,6 +58,9 @@ namespace FishingGame.Reeling
         [Tooltip("This field can be used to force the pool to spawn specific fish instead of randomized")]
         private List<FishScriptableObject> overrideFishList;
 
+        private FishScriptableObject[] baseFishArray;
+        private TrashScriptable[] baseTrashArray;
+
         // The type of fish that is spawned when the location is infested
         private FishScriptableObject _infestationFish;
 
@@ -56,6 +71,9 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             _gameManager = GameManager.Instance;
+
+            CreateFishList();
+            CreateTrashList();
         }
 
         /// <summary>
@@ -63,13 +81,10 @@ namespace FishingGame.Reeling
         /// Randomly selects a fish type based on the amount of types in the pool
         /// </summary>
         /// <returns>Returns the data of the fish being caught</returns>
-        public Fish DetermineFishCaught()
+        public IFishAble GetFishableCaught()
         {
             ETimeOfDay timeCaught = timeScript.GetTimePeriod();
             string locationCaught = gameObject.name;
-
-            List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
-            List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
 
             if (overrideFishList.Count > 0)
             {
@@ -84,24 +99,22 @@ namespace FishingGame.Reeling
                 return evilFishData;
             }
 
-            foreach (FishScriptableObject fish in potentialFish)
+            if (CatchFishOrTrash())
             {
-                if (fish.LocationsFound.Contains(fishingLocation))
-                {
-                    if (fish.FishCatchDifficulty <= highestFishDifficulty && fish.FishCatchDifficulty >= lowestFishDifficulty)
-                    {
-                        fishAvailable.Add(fish);
-                    }
-                }
+                int fishTypeAmount = baseFishArray.Length;
+                int fishCaughtIndex = Random.Range(0, fishTypeAmount);
+                FishScriptableObject fishCaught = baseFishArray[fishCaughtIndex];
+                Fish fishData = new Fish(fishCaught, timeCaught, locationCaught);
+                return fishData;
             }
-
-            int fishTypeAmount = fishAvailable.Count;
-            int fishCaughtIndex = Random.Range(0, fishTypeAmount);
-            FishScriptableObject fishCaught = fishAvailable[fishCaughtIndex];
-            
-
-            Fish fishData = new Fish(fishCaught, timeCaught, locationCaught);
-            return fishData;
+            else
+            {
+                int trashTypeAmount = baseTrashArray.Length;
+                int trashCaughtIndex = Random.Range(0, trashTypeAmount);
+                TrashScriptable trashCaught = baseTrashArray[trashCaughtIndex];
+                Trash trashData = new Trash(trashCaught, timeCaught, locationCaught);
+                return trashData;
+            }
         }
 
         /// <summary>
@@ -172,6 +185,64 @@ namespace FishingGame.Reeling
         public int GetADifficultyInRange()
         {
             return Random.Range(lowestFishDifficulty, highestFishDifficulty);
+        }
+
+        private void CreateFishList()
+        {
+            List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
+            List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
+
+            foreach (FishScriptableObject fish in potentialFish)
+            {
+                if (fish.LocationsFound.Contains(fishingLocation))
+                {
+                    if (fish.FishCatchDifficulty <= highestFishDifficulty && fish.FishCatchDifficulty >= lowestFishDifficulty)
+                    {
+                        fishAvailable.Add(fish);
+                    }
+                }
+            }
+
+            baseFishArray = fishAvailable.ToArray();
+        }
+
+        private void CreateTrashList()
+        {
+            List<TrashScriptable> potentialTrash = _gameManager.GetPossibleTrashList();
+            List<TrashScriptable> trashAvailable = new List<TrashScriptable>();
+
+            foreach (TrashScriptable trash in potentialTrash)
+            {
+                if (trash.LocationsFound.Contains(fishingLocation))
+                {
+                    if (trash.TrashDifficulty <= highestFishDifficulty && trash.TrashDifficulty >= lowestFishDifficulty)
+                    {
+                        trashAvailable.Add(trash);
+                    }
+                }
+            }
+
+            baseTrashArray = trashAvailable.ToArray();
+        }
+
+        /// <summary>
+        /// Decides if the caught object is a fish or trash
+        /// If it returns true it is a fish otherwise it returns false
+        /// meaning it is a trash object
+        /// </summary>
+        /// <returns></returns>
+        private bool CatchFishOrTrash()
+        {
+            int rolledNumber = Random.Range(0, amountOfTrash + amountOfFishHeld);
+
+            if (amountOfFishHeld >= rolledNumber)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

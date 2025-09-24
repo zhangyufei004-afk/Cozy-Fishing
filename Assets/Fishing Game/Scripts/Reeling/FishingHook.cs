@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.SaveGame;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
 using System;
@@ -269,28 +270,12 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ReactToFishOnHook()
         {
-            if (_collidingFish.Count > 0)
-            {
-                // TODO: Make this work with individual fish once individual fish have been setup
-                /*
-                CaughtFish(_collidingFish[0]);
-                */
-            }
-            else if (_collidingPool != null)
+            if (_collidingPool != null)
             {
                 CaughtFish(_collidingPool);
             }
         }
 
-        /// <summary>s
-        /// Gets the data needed from the fish, begins the reelingmaster minigame script
-        /// </summary>
-        /// /// <param name="fishCaught">The fish that has been caught</param>
-        private void CaughtFish(Fish fishCaught)
-        {
-            GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
-            reelingMaster.BeginCatch(fishCaught, fishModel);
-        }
 
         /// <summary>
         /// Gets fish data from the fishingpool and then gets the reelingmaster to begin catch with that data
@@ -304,13 +289,25 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            Fish randomPoolFish = fishingPool.DetermineFishCaught();
+            IFishAble randomPoolFish = fishingPool.GetFishableCaught();
             GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
-
-            ClearCollidingFishAndPool();
             HookIsOut = false;
 
-            reelingMaster.BeginCatch(randomPoolFish, fishModel, fishingPool);
+            if (randomPoolFish.GetCatchType() == ECatchableType.Fish)
+            {
+                Fish fishCaught = (Fish)randomPoolFish;
+
+                reelingMaster.BeginCatchFish(fishCaught, fishModel, fishingPool);
+            }
+            else if (randomPoolFish.GetCatchType() == ECatchableType.Trash)
+            {
+                Trash trashCaught = (Trash)randomPoolFish;
+
+                reelingMaster.BeginCatchTrash(trashCaught, fishModel, fishingPool);
+            }
+
+
+                ClearCollidingFishAndPool();
         }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace FishingGame.FishSystem
 {
-    [CreateAssetMenu(fileName = "NewTrash", menuName = "Fishing Game/Fish Data")]
+    [CreateAssetMenu(fileName = "NewTrash", menuName = "Fishing Game/Trash Data")]
     public class TrashScriptable : SerializableObject
     {
         public Sprite Texture;
