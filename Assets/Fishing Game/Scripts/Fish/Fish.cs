@@ -88,7 +88,7 @@ namespace FishingGame.FishSystem
         /// <summary>
         /// Gets the fish catch difficulty.
         /// </summary>
-        public int GetFishCatchDifficulty()
+        public int GetCatchDifficulty()
         {
             return _fishCatchDifficulty;
         }
@@ -104,7 +104,7 @@ namespace FishingGame.FishSystem
         /// <summary>
         /// Gets the species name
         /// </summary>
-        public string GetSpeciesName()
+        public string GetName()
         {
             return _speciesName;
         }

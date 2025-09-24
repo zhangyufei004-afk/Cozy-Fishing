@@ -47,13 +47,13 @@ namespace FishingGame.Reeling
         private List<GameObject> miniGameTypes;
 
         private GameObject _currentMinigame;
-        private Fish _currentlyReelingFish;
+        private IFishAble _currentlyReelingObject;
         private FishingPool _currentFishPool;
         private GameObject _current3DObject;
 
         private int _miniGameWinsRequired = 1;
         private int _currentMiniGameWins;
-        private int _fishDifficulty;
+        private int _catchDifficulty;
 
         private bool _hasWon = false;
 
@@ -94,7 +94,7 @@ namespace FishingGame.Reeling
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
 
-            _currentlyReelingFish = fishCaught;
+            _currentlyReelingObject = fishCaught;
             _currentFishPool = fishPool;
             _current3DObject = visual3DObject;
             _current3DObject.GetComponent<Animator>().SetBool("Active", true);
@@ -106,7 +106,7 @@ namespace FishingGame.Reeling
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
-                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
+                _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
                 SetNextMiniGame();
             }
             else
@@ -121,6 +121,7 @@ namespace FishingGame.Reeling
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
 
+            _currentlyReelingObject = trashCaught;
             _currentFishPool = fishPool;
             _current3DObject = visual3DObject;
             _current3DObject.GetComponent<Animator>().SetBool("Active", true);
@@ -129,10 +130,12 @@ namespace FishingGame.Reeling
             initiationScript.InitiateFishingPerspective();
             SetDefaultVariables();
 
+            int miniGamesRequired = Mathf.Clamp(_catchDifficulty / 2, 1, _catchDifficulty);
+
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
-                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
+                _miniGameWinsRequired = GetMiniGamesRequired(miniGamesRequired);
                 SetNextMiniGame();
             }
             else
@@ -254,7 +257,7 @@ namespace FishingGame.Reeling
             // 5/08/2025 - Brayden
             if (testNextMiniGame != _currentMinigame)
             {
-                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingFish);
+                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingObject);
                 _currentMinigame = testNextMiniGame;
                 _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
             }
@@ -270,7 +273,7 @@ namespace FishingGame.Reeling
         /// <returns>Returns true if the fish difficulty is above 0</returns>
         private bool CheckIsFishDifficult()
         {
-            if (_fishDifficulty > 0)
+            if (_catchDifficulty > 0)
             {
                 return true;
             }
@@ -329,9 +332,9 @@ namespace FishingGame.Reeling
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
-                DisplayFishingResult(_currentlyReelingFish, false);
+                DisplayFishingResult(_currentlyReelingObject, false);
                 StartCoroutine(HideUIAfterCatch(4));
-                _currentlyReelingFish = null;
+                _currentlyReelingObject = null;
             }
             else
             {
@@ -341,13 +344,17 @@ namespace FishingGame.Reeling
                     _currentFishPool.FishCaught();
                 }
 
-                inventoryScript.AddItem(_currentlyReelingFish);
-                GameManager.Instance.GameEvents.FishCaught(_currentlyReelingFish);
-                DisplayFishingResult(_currentlyReelingFish, true);
+                IStorable itemGained = (IStorable)_currentlyReelingObject;
+                if (itemGained != null)
+                {
+                    inventoryScript.AddItem(itemGained);
+                }
 
-                _currentlyReelingFish = null;
+                GameManager.Instance.GameEvents.FishCaught(_currentlyReelingObject);
+                DisplayFishingResult(_currentlyReelingObject, true);
+
+                _currentlyReelingObject = null;
                 StartCoroutine(HideUIAfterCatch(2));
-
             }
         }
 
@@ -356,7 +363,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetDefaultVariables()
         {
-            _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
+            _catchDifficulty = _currentlyReelingObject.GetCatchDifficulty();
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             IsFishing = true;
@@ -388,11 +395,11 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="fishData">The data of the fish being reeled</param>
         /// <param name="didCatch">Was the fish caught</param>
-        private void DisplayFishingResult(Fish fishData, bool didCatch)
+        private void DisplayFishingResult(IFishAble fishData, bool didCatch)
         {
             if (didCatch)
             {
-                string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetSpeciesName()}!";
+                string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetName()}!";
 
                 caughtFishImage.sprite = fishData.GetTexture();
                 fishingFinishedText.text = textToDisplay;
@@ -401,7 +408,7 @@ namespace FishingGame.Reeling
             }
             else
             {
-                string textToDisplay = $"The {fishData.GetSpeciesName()} got away!";
+                string textToDisplay = $"The {fishData.GetName()} got away!";
                 fishingFinishedText.text = textToDisplay;
                 fishingFinishedText.gameObject.SetActive(true);
             }

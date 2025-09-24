@@ -13,6 +13,14 @@ namespace FishingGame.FishSystem
 
     public interface IFishAble
     {
+        public int GetCatchDifficulty();
+
+        public String GetName();
+
+        public Sprite GetTexture();
+
+        public float GetWeight();
+
         public ECatchableType GetCatchType();
         public SerializableObject GetDataObject(out Type dataClassType);
     }

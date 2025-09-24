@@ -117,7 +117,7 @@ namespace FishingGame.Reeling
         private int _currentTimeScalar;
 
 
-        private Fish _fishData;
+        private IFishAble _reelingObjectData;
         private bool _isMinigameActive = false;
         private bool _isGoingLeft;
 
@@ -191,11 +191,11 @@ namespace FishingGame.Reeling
         /// The initial catch progress is 55, each level of difficulty reduces the initial progress by 5 i.e a difficulty of 2 will result in an initial progress of 45
         /// </summary>
         /// <param name="fishScriptable">The data of fish object being caught</param>
-        public void InitializeMiniGame(Fish fishScriptable) 
+        public void InitializeMiniGame(IFishAble fishScriptable) 
         {
-            _fishData = fishScriptable;
+            _reelingObjectData = fishScriptable;
 
-            fishImage.sprite = _fishData.GetTexture();
+            fishImage.sprite = _reelingObjectData.GetTexture();
             sliderCanvas.SetActive(true);
             _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
@@ -206,7 +206,7 @@ namespace FishingGame.Reeling
             _currentTimeScalar = 1;
 
             // Scaling variables based on difficulty
-            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetFishCatchDifficulty(), 40, 100);
+            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetCatchDifficulty(), 40, 100);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace FishingGame.Reeling
 
             if (_isGoingLeft)
             {
-                int speedValue = defaultSpeed * _fishData.GetFishCatchDifficulty();
+                int speedValue = defaultSpeed * _reelingObjectData.GetCatchDifficulty();
 
                 Vector3 currentPosition = fishImage.transform.localPosition;
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);
@@ -363,7 +363,7 @@ namespace FishingGame.Reeling
             }
             else
             {
-                int speedValue = defaultSpeed * _fishData.GetFishCatchDifficulty();
+                int speedValue = defaultSpeed * _reelingObjectData.GetCatchDifficulty();
 
                 Vector3 currentPosition = fishImage.transform.localPosition;
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);

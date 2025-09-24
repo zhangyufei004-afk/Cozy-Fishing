@@ -95,6 +95,9 @@ namespace FishingGame.UI.Inventory
                     case EItemType.Money:
                         Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
                         break;
+                    case EItemType.Trash:
+                        Debug.Log("TODO: Tried to add trash to the inventory UI, but we don't have logic for that yet");
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -108,7 +111,7 @@ namespace FishingGame.UI.Inventory
         public void FishEntryClicked(Fish fish)
         {
             if (fishImage) fishImage.sprite = fish.GetTexture();
-            if (speciesNameText) speciesNameText.text = fish.GetSpeciesName();
+            if (speciesNameText) speciesNameText.text = fish.GetName();
             if (weight) weight.text = fish.GetWeight() + "kg";
             if (location) location.text = fish.GetCaughtLocation();
             if (timeText) timeText.text = fish.GetCaughtTime().ToString();
