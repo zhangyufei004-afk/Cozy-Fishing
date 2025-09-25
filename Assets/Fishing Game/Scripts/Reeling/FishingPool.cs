@@ -58,8 +58,8 @@ namespace FishingGame.Reeling
         [Tooltip("This field can be used to force the pool to spawn specific fish instead of randomized")]
         private List<FishScriptableObject> overrideFishList;
 
-        private FishScriptableObject[] baseFishArray;
-        private TrashScriptable[] baseTrashArray;
+        private List<FishScriptableObject> baseFishList;
+        private List<TrashScriptable> baseTrashList;
 
         // The type of fish that is spawned when the location is infested
         private FishScriptableObject _infestationFish;
@@ -101,17 +101,17 @@ namespace FishingGame.Reeling
 
             if (CatchFishOrTrash())
             {
-                int fishTypeAmount = baseFishArray.Length;
+                int fishTypeAmount = baseFishList.Count;
                 int fishCaughtIndex = Random.Range(0, fishTypeAmount);
-                FishScriptableObject fishCaught = baseFishArray[fishCaughtIndex];
+                FishScriptableObject fishCaught = baseFishList[fishCaughtIndex];
                 Fish fishData = new Fish(fishCaught, timeCaught, locationCaught);
                 return fishData;
             }
             else
             {
-                int trashTypeAmount = baseTrashArray.Length;
+                int trashTypeAmount = baseTrashList.Count;
                 int trashCaughtIndex = Random.Range(0, trashTypeAmount);
-                TrashScriptable trashCaught = baseTrashArray[trashCaughtIndex];
+                TrashScriptable trashCaught = baseTrashList[trashCaughtIndex];
                 Trash trashData = new Trash(trashCaught, timeCaught, locationCaught);
                 return trashData;
             }
@@ -170,6 +170,28 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Adds a fish data object to the base fishable fish list
+        /// This means that the item added is able to be fished up from this pool
+        /// even if its typical stats dont match the pool
+        /// </summary>
+        /// <param name="fishTypeToAdd">The fish type to add</param>
+        public void AddToFishableFishList(FishScriptableObject fishTypeToAdd)
+        {
+            baseFishList.Add(fishTypeToAdd);
+        }
+
+        /// <summary>
+        /// Adds a trash data object to the base fishable trash list
+        /// This means that the item added is able to be fished up from this pool
+        /// even if its typical stats dont match the pool
+        /// </summary>
+        /// <param name="trashTypeToAdd">The trash type to add</param>
+        public void AddTrashToFishableTrashList(TrashScriptable trashTypeToAdd)
+        {
+            baseTrashList.Add(trashTypeToAdd);
+        }
+
+        /// <summary>
         /// Adds a fish to the override list.
         /// Takes a bool that tells the function wether it needs to clear the current override list or not
         /// And the fish data to add
@@ -220,7 +242,7 @@ namespace FishingGame.Reeling
                 }
             }
 
-            baseFishArray = fishAvailable.ToArray();
+            baseFishList = fishAvailable;
         }
 
         /// <summary>
@@ -243,7 +265,7 @@ namespace FishingGame.Reeling
                 }
             }
 
-            baseTrashArray = trashAvailable.ToArray();
+            baseTrashList = trashAvailable;
         }
 
         /// <summary>
