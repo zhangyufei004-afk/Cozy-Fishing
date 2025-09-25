@@ -208,6 +208,11 @@ namespace FishingGame.Reeling
             overrideFishList.Add(fishToAdd);
         }
 
+        /// <summary>
+        /// Adds 1 to the current amount of fish population
+        /// Does do not do this if the current amount of trash + fish is equal to the max amount of population
+        /// in this pool
+        /// </summary>
         public void AddFishPopulation()
         {
             if (amountOfFishHeld + amountOfTrash <= maxAmountOfPopulation)
@@ -226,6 +231,10 @@ namespace FishingGame.Reeling
             return Random.Range(lowestFishDifficulty, highestFishDifficulty);
         }
 
+        /// <summary>
+        /// Creates a list of all fishable fish in this level based on the list held by the game manager
+        /// Filters that list based on pools location and difficulty
+        /// </summary>
         private void CreateFishList()
         {
             List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();

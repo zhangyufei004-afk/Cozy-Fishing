@@ -141,13 +141,10 @@ namespace FishingGame.Reeling
             uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
         }
 
-
         private void OnDisable()
         {
             DisableArrowKeys();
         }
-
-
 
         private void Update()
         {
