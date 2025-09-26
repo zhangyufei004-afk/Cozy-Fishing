@@ -57,7 +57,10 @@ namespace FishingGame.UI.Inventory
             }
         }
 
-
+        /// <summary>
+        /// Run when the visual item is a fish
+        /// </summary>
+        /// <param name="fishUpdating">The fish data being used</param>
         private void VisualIsFish(Fish fishUpdating)
         {
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
@@ -75,6 +78,10 @@ namespace FishingGame.UI.Inventory
             locationText.text = fishUpdating.GetCaughtLocation();
         }
 
+        /// <summary>
+        /// Run when the visual item is a trash
+        /// </summary>
+        /// <param name="trashUpdating">Trash data being used</param>
         private void VisualTrash(Trash trashUpdating)
         {
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();

@@ -58,6 +58,10 @@ namespace FishingGame.UI.Inventory
             _currentItemCards.Add(card);
         }
 
+        /// <summary>
+        /// Adds a trash item to the inventory UI as a new card.
+        /// </summary>
+        /// <param name="trash">The item to be displayed</param>
         public void AddTrashToUI(Trash trash)
         {
             GameObject card = Instantiate(fishCardPrefab, fishListContainer);
@@ -148,6 +152,10 @@ namespace FishingGame.UI.Inventory
             
         }
 
+        /// <summary>
+        /// Run when a fish entry is clicked, sets the required display variables
+        /// </summary>
+        /// <param name="entryClicked">The fish that has been clicked</param>
         private void FishEntryClicked(Fish entryClicked)
         {
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
@@ -157,6 +165,10 @@ namespace FishingGame.UI.Inventory
             if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
         }
 
+        /// <summary>
+        /// Run when a trash entry is clicked, sets the required display variables
+        /// </summary>
+        /// <param name="entryClicked">The trash that has been clicked</param>
         private void TrashEntryClicked(Trash entryClicked)
         {
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
