@@ -1,5 +1,6 @@
 using System;
 using FishingGame.SaveGame;
+using UnityEngine;
 
 namespace FishingGame.Inventory
 {

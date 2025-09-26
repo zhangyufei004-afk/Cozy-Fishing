@@ -19,14 +19,14 @@ namespace FishingGame.UI.Inventory
         [SerializeField] private GameObject fishCardPrefab;
 
         [Header("Inventory Display References")]
-        [SerializeField] [Tooltip("The image that shows what fish is being looked at")] private Image fishImage;
-        [SerializeField] [Tooltip("The textbox that says the species name")]  private TextMeshProUGUI speciesNameText;
-        [SerializeField] [Tooltip("The textbox that says the weight")] private TextMeshProUGUI weight;
-        [SerializeField] [Tooltip("The textbox that shows the location text")] private TextMeshProUGUI location;
-        [SerializeField] [Tooltip("The textbox that shows the time text")] private TextMeshProUGUI timeText;
+        [SerializeField] [Tooltip("The image that shows what item is being looked at")] private Image itemImage;
+        [SerializeField] [Tooltip("The textbox that says the items name")]  private TextMeshProUGUI itemNameText;
+        [SerializeField] [Tooltip("The textbox that says the weight of the item")] private TextMeshProUGUI weight;
+        [SerializeField] [Tooltip("The textbox that shows the location this was found from")] private TextMeshProUGUI location;
+        [SerializeField] [Tooltip("The textbox that shows the time this was found")] private TextMeshProUGUI timeText;
 
 
-        private readonly List<GameObject> _currentFishCards = new List<GameObject>();
+        private readonly List<GameObject> _currentItemCards = new List<GameObject>();
 
         private void Start()
         {
@@ -51,11 +51,24 @@ namespace FishingGame.UI.Inventory
             InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
             if (inventoryUIEntry)
             {
-                inventoryUIEntry.Fish = fish;
+                inventoryUIEntry.Item = fish;
                 inventoryUIEntry.InventoryUIController = this;
                 inventoryUIEntry.UpdateVisuals();
             }
-            _currentFishCards.Add(card);
+            _currentItemCards.Add(card);
+        }
+
+        public void AddTrashToUI(Trash trash)
+        {
+            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
+            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
+            if (inventoryUIEntry)
+            {
+                inventoryUIEntry.Item = trash;
+                inventoryUIEntry.InventoryUIController = this;
+                inventoryUIEntry.UpdateVisuals();
+            }
+            _currentItemCards.Add(card);
         }
 
         /// <summary>
@@ -63,11 +76,11 @@ namespace FishingGame.UI.Inventory
         /// </summary>
         public void ClearInventoryUI()
         {
-            foreach (GameObject card in _currentFishCards)
+            foreach (GameObject card in _currentItemCards)
             {
                 Destroy(card);
             }
-            _currentFishCards.Clear();
+            _currentItemCards.Clear();
         }
 
         /// <summary>
@@ -96,7 +109,8 @@ namespace FishingGame.UI.Inventory
                         Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
                         break;
                     case EItemType.Trash:
-                        Debug.Log("TODO: Tried to add trash to the inventory UI, but we don't have logic for that yet");
+                        Trash trash = storable as Trash;
+                        AddTrashToUI(trash);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -108,13 +122,48 @@ namespace FishingGame.UI.Inventory
         /// Updates Inventory Info display to show whatever fish was clicked
         /// </summary>
         /// <param name="fish">The fish clicked</param>
-        public void FishEntryClicked(Fish fish)
+        public void InventoryEntryClicked(IStorable item)
         {
-            if (fishImage) fishImage.sprite = fish.GetTexture();
-            if (speciesNameText) speciesNameText.text = fish.GetName();
-            if (weight) weight.text = fish.GetWeight() + "kg";
-            if (location) location.text = fish.GetCaughtLocation();
-            if (timeText) timeText.text = fish.GetCaughtTime().ToString();
+            switch (item.GetItemType())
+            {
+                case EItemType.Fish:
+                    FishEntryClicked((Fish)item);
+                    break;
+                case EItemType.Rod:
+                    Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.RodAttachment:
+                    Debug.Log("TODO: Tried to add a rod attachment to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.Money:
+                    Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.Trash:
+                    TrashEntryClicked((Trash)item);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            
+        }
+
+        private void FishEntryClicked(Fish entryClicked)
+        {
+            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
+            if (itemNameText) itemNameText.text = entryClicked.GetName();
+            if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (location) location.text = entryClicked.GetCaughtLocation();
+            if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
+        }
+
+        private void TrashEntryClicked(Trash entryClicked)
+        {
+            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
+            if (itemNameText) itemNameText.text = entryClicked.GetName();
+            if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (location) location.text = entryClicked.GetCaughtLocation();
+            if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
         }
     }
 }

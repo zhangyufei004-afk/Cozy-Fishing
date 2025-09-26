@@ -1,5 +1,7 @@
 using FishingGame.FishSystem;
+using FishingGame.Inventory;
 using FishingGame.UI.Inventory;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,14 +14,14 @@ namespace FishingGame.UI.Inventory
     /// </summary>
     public class InventoryUIEntry : MonoBehaviour
     {
-        private Fish _fish;
+        private IStorable _item;
         private InventoryUI _inventoryUIController;
 
         // Getters / Setters
-        public Fish Fish
+        public IStorable Item
         {
-            get { return _fish; }
-            set { _fish = value; }
+            get { return _item; }
+            set { _item = value; }
         }
 
         public InventoryUI InventoryUIController
@@ -33,6 +35,31 @@ namespace FishingGame.UI.Inventory
         [ContextMenu("Update Visuals")]
         public void UpdateVisuals()
         {
+            switch(_item.GetItemType())
+            {
+                case EItemType.Fish:
+                    VisualIsFish((Fish)_item);
+                    break;
+                case EItemType.Rod:
+                    Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.RodAttachment:
+                    Debug.Log("TODO: Tried to add a rod attachment to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.Money:
+                    Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.Trash:
+                    VisualTrash((Trash)_item);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+
+        private void VisualIsFish(Fish fishUpdating)
+        {
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
             TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
@@ -40,12 +67,29 @@ namespace FishingGame.UI.Inventory
             TextMeshProUGUI caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
 
-            image.sprite = _fish.GetFishBase().Texture;
-            nameText.text = _fish.GetFishBase().SpeciesName;
+            image.sprite = fishUpdating.GetFishBase().Texture;
+            nameText.text = fishUpdating.GetFishBase().SpeciesName;
             // lengthText = fish.GetSize(); // missing?
-            weightText.text = $"{_fish.GetWeight():0.00}kg";
-            caughtTimeText.text = _fish.GetCaughtTime().ToString();
-            locationText.text = _fish.GetCaughtLocation();
+            weightText.text = $"{fishUpdating.GetWeight():0.00}kg";
+            caughtTimeText.text = fishUpdating.GetCaughtTime().ToString();
+            locationText.text = fishUpdating.GetCaughtLocation();
+        }
+
+        private void VisualTrash(Trash trashUpdating)
+        {
+            Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
+            TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
+
+            image.sprite = trashUpdating.GetTrashBase().Texture;
+            nameText.text = trashUpdating.GetTrashBase().TrashName;
+            // lengthText = fish.GetSize(); // missing?
+            weightText.text = $"{trashUpdating.GetWeight():0.00}kg";
+            caughtTimeText.text = trashUpdating.GetCaughtTime().ToString();
+            locationText.text = trashUpdating.GetCaughtLocation();
         }
 
         /// <summary>
@@ -53,7 +97,7 @@ namespace FishingGame.UI.Inventory
         /// </summary>
         public void OnClick()
         {
-            _inventoryUIController.FishEntryClicked(_fish);
+            _inventoryUIController.InventoryEntryClicked(_item);
         }
     }
 }
