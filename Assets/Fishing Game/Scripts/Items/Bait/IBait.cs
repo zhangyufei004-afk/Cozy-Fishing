@@ -1,6 +1,8 @@
+using FishingGame.FishSystem;
+using FishingGame.Reeling;
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.Items
 {
     public interface IBait
     {
@@ -8,7 +10,7 @@ namespace FishingGame
 
         public void UseBaitCharge();
 
-        public void BaitCatchBehaviour();
+        public FishScriptableObject BaitCatchBehaviour(ReelingInitiation initationScript);
 
         public void BaitMinigameBehaviour();
     }
