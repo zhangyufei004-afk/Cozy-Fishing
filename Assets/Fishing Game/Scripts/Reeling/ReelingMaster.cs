@@ -39,6 +39,10 @@ namespace FishingGame.Reeling
         [Tooltip("A reference to the character controller")]
         private PlayerController characterController;
 
+        [SerializeField]
+        [Tooltip("A reference to the fishing rod")]
+        private FishingRod fishingRodScript;
+
         [Header("Minigame Variables")]
 
         // Unity dosen't support making interface types a list so this is a gameobject list
@@ -206,7 +210,7 @@ namespace FishingGame.Reeling
         public void DisableControls(bool isDisabled)
         {
             characterController.ToggleMovement(!isDisabled);
-            initiationScript.AreReelingControlsActive(!isDisabled);
+            fishingRodScript.AreReelingControlsActive(!isDisabled);
         }
 
         /// <summary>
@@ -327,7 +331,7 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             DisableControls(false);
-            initiationScript.AreReelingControlsActive(true);
+            fishingRodScript.AreReelingControlsActive(true);
             initiationScript.ShouldEnableFishPerspective(false);
             fishingHook.PullBackHook();
             SetCancelButtonVisibilty(false);

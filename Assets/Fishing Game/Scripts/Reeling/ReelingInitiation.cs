@@ -32,6 +32,10 @@ namespace FishingGame.Reeling
         [Tooltip("Contains logic for detecting if a fish or pool is touching the hook, gameobject is attatched to the fishing rod")]
         private FishingHook fishingHook;
 
+        [SerializeField]
+        [Tooltip("A reference to the currently used fishing rod script")]
+        private FishingRod fishingRod;
+
         [Header("ReelingUIElements")]
 
         [SerializeField]
@@ -143,25 +147,7 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (_isBusy == true || fishingHook.HookIsOut == true || _allowControls == false)
-            {
-                return;
-            }
 
-            if (_castAction.IsPressed())
-            {
-                RightClickHeld();
-            }
-
-            if (_castAction.WasPressedThisFrame())
-            {
-                RightClickUsed();
-            }
-
-            if (_castAction.WasReleasedThisFrame())
-            {
-                RightClickReleased();
-            }
         }
 
         #region Public Methods
@@ -226,8 +212,11 @@ namespace FishingGame.Reeling
             {
                 CancelStageOne();
             }
+        }
 
-            
+        public void ThrowRodLine()
+        {
+            fishingRod.ThrowLine();
         }
 
         /// <summary>
@@ -248,22 +237,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Turns the left and right click controls for reeling off or on based on the paremeter inputed
-        /// </summary>
-        /// <param name="enable">Enables controls if set to true otherwise disables controls</param>
-        public void AreReelingControlsActive(bool enable)
-        {
-            if (enable)
-            {
-                _allowControls = true;
-            }
-            else
-            {
-                _allowControls = false;
-            }
-        }
-
-        /// <summary>
         /// This can be called to cancel stage one of fishing, hiding the ui and restoring player controls
         /// </summary>
         public void CancelStageOne()
@@ -277,146 +250,6 @@ namespace FishingGame.Reeling
             _isStageOne = false;
             fishingHook.PullBackHook();
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-        }
-
-        #endregion
-
-        #region Charging_and_throwing_line
-
-        /// <summary>
-        /// Setsup the variable for a cast being started
-        /// </summary>
-        private void BeginCharge()
-        {
-            chargeSlider.gameObject.SetActive(true);
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            _isCharging = true;
-            rodBobber.SetActive(true);
-            _reverseDirection = false;
-        }
-
-        /// <summary>
-        /// Resets the variables when a cast is cancelled or completed
-        /// </summary>
-        private void ResetCharge()
-        {
-            chargeSlider.gameObject.SetActive(false);
-            _isCharging = false;
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            rodBobber.SetActive(false);
-        }
-
-        /// <summary>
-        /// Holding down right click charges the cast line of the rod.
-        /// This will update the ui element representing the charge
-        /// and also show the tragectory line if the player were to release
-        /// </summary>
-        private void ChargeLine()
-        {
-            _aimDirection = characterModel.transform.forward;
-            _aimStartPoint = characterParent.transform.position;
-
-            if (!_reverseDirection)
-            {
-                _chargePower += Time.deltaTime * chargeScalar;
-                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
-
-                if (_chargePower == _maxCharge)
-                {
-                    _reverseDirection = true;
-                }
-            }
-            else
-            {
-                _chargePower -= Time.deltaTime * chargeScalar;
-                _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
-                if (_chargePower == 0)
-                {
-                    _reverseDirection = false;
-                }
-            }
-            
-            chargeSlider.value = _chargePower;
-            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
-            SetAimPoint(aimLocation);
-        }
-
-        /// <summary>
-        /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
-        /// </summary>
-        /// <param name="locationToUse"> The location that will be raycasted from</param>
-        private void SetAimPoint(Vector3 locationToUse)
-        {
-            RaycastHit hit;
-            float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
-
-            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
-
-
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
-            {
-                rodBobber.transform.position = hit.point;
-            }
-        }
-
-        /// <summary>
-        /// Makes the throw line animation play
-        /// </summary>
-        private void SetThrowAnimation()
-        {
-            _targetLocation = rodBobber.transform.position;
-            characterAnimator.SetTrigger("ThrowTrigger");
-            reelingMasterScript.DisableControls(true);
-            AreReelingControlsActive(false);
-        }
-
-        /// <summary>
-        /// Throws the fishing line at the location shown by the bobber
-        /// This is run through an animation event
-        /// </summary>
-        private void ThrowLine()
-        {
-            fishingHook.HookIsOut = true;
-
-            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
-        }
-
-        #endregion
-
-        #region MouseControlFunctions
-
-        /// <summary>
-        /// Using right click will begin a charge if there is not one ongoing
-        /// </summary>
-        private void RightClickUsed()
-        {
-            if (_isCharging != true)
-            {
-                BeginCharge();
-            }
-        }
-
-        /// <summary>
-        /// Holding the right mouse button will continiously charge the line
-        /// </summary>
-        private void RightClickHeld()
-        {
-            ChargeLine();
-        }
-
-        /// <summary>
-        /// Releasing right click will reset the current charge and throw the rod
-        /// </summary>
-        private void RightClickReleased()
-        {
-            if (_isCharging == true)
-            {
-                SetThrowAnimation();
-            }
-            ResetCharge();
         }
 
         #endregion
