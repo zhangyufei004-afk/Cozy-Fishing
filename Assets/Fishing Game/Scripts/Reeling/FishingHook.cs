@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
 using FishingGame.SaveGame;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
@@ -188,6 +189,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void PullBackHook()
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             SetupHookTravelBack();
             ResetHookSpot();
             reelingMaster.DisableControls(false);
