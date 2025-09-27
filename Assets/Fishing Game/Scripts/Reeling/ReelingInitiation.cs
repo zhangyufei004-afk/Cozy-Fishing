@@ -121,6 +121,8 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
+
+        private bool _isBusy = false;
         
         #endregion
 
@@ -134,11 +136,14 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
+
+            GameManager.Instance.GameEvents.OnBecomeOccupied +=
+               isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
 
         public void Update()
         {
-            if (fishingHook.HookIsOut == true || _allowControls == false)
+            if (_isBusy == true || fishingHook.HookIsOut == true || _allowControls == false)
             {
                 return;
             }

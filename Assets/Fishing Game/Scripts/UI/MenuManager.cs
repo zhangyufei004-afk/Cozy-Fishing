@@ -1,3 +1,4 @@
+using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,12 +17,26 @@ namespace FishingGame.UI
 
         // Private Variables
         private bool _isMenuActive = false;
+        private bool _isBusy = false;
         private InputAction _triggerMenuAction;
 
         public void ToggleMenu()
         {
-            _isMenuActive = !_isMenuActive;
-            SetMenu(_isMenuActive);
+            // if menu is active
+            if (_isMenuActive)
+            {
+                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                _isMenuActive = false;
+                SetMenu(_isMenuActive);
+            }
+            // if not busy
+            else if (!_isBusy)
+            {
+                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+                _isMenuActive = true;
+                SetMenu(_isMenuActive);
+            }
+            
         }
 
         public void SetMenu(bool isActive)
@@ -47,6 +62,9 @@ namespace FishingGame.UI
 
             _isMenuActive = false;
             SetMenu(_isMenuActive);
+
+            GameManager.Instance.GameEvents.OnBecomeOccupied +=
+               isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
 
         private void OnDisable()
