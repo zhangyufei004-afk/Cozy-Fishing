@@ -1,3 +1,4 @@
+using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Items;
 using UnityEngine;
@@ -68,6 +69,10 @@ namespace FishingGame.Reeling
         [Tooltip("The animator attatched to the player")]
         private Animator characterAnimator;
 
+        [SerializeField]
+        [Tooltip("Test for bait")]
+        private FishScriptableObject testFishForBait;
+
         private IBait _currentlyEquipedBait;
         private bool _isBusy = false;
 
@@ -81,7 +86,7 @@ namespace FishingGame.Reeling
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
 
-            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new NullBait(); }
+            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new FishTypeBait(testFishForBait); }
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;

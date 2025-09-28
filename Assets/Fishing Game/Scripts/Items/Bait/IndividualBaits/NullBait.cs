@@ -7,8 +7,13 @@ namespace FishingGame
 {
     public class NullBait : IBait
     {
+        FishingRod activeFishingRod;
+
+
         public void ApplyBait(FishingRod rodToApplyTo)
         {
+            activeFishingRod = rodToApplyTo;
+            activeFishingRod.EquipBait(this);
             return;
         }
 

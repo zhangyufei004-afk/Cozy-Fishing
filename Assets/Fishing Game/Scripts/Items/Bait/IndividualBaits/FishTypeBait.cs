@@ -11,17 +11,23 @@ namespace FishingGame.Items
     /// </summary>
     public class FishTypeBait : IBait
     {
-        FishScriptableObject fishThisCatches;
-        FishingRod activeFishingRod;
+        private FishScriptableObject _fishThisCatches;
+        private FishingRod _activeFishingRod;
+
+        public FishTypeBait (FishScriptableObject fishTypeToSet)
+        {
+            _fishThisCatches = fishTypeToSet;
+        }
 
         public void ApplyBait(FishingRod rodToApplyTo)
         {
-            throw new System.NotImplementedException();
+            _activeFishingRod = rodToApplyTo;
+            _activeFishingRod.EquipBait(this);
         }
 
         public FishScriptableObject GetForcedFishType()
         {
-            return fishThisCatches;
+            return _fishThisCatches;
         }
 
         public void BaitMinigameBehaviour()
