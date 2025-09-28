@@ -8,7 +8,7 @@ namespace FishingGame.FishSystem
 {
     public class Trash : IStorable, IFishAble
     {
-        private ECatchableType catchAbleType;
+        private ECatchableType _catchAbleType;
         private TrashScriptable _trashBase;
         private string _trashName;
         private float _weight;
@@ -20,7 +20,7 @@ namespace FishingGame.FishSystem
 
         public Trash(TrashScriptable newTrashBase, ETimeOfDay time, string location)
         {
-            catchAbleType = ECatchableType.Trash;
+            _catchAbleType = ECatchableType.Trash;
             _trashBase = newTrashBase;
             _weight = UnityEngine.Random.Range(_trashBase.MinMaxWeight.x, _trashBase.MinMaxWeight.y);
             // Round weight to 2 decimal places
@@ -38,7 +38,7 @@ namespace FishingGame.FishSystem
         /// <returns>The catchtype of object</returns>
         public ECatchableType GetCatchType()
         {
-            return catchAbleType;
+            return _catchAbleType;
         }
 
         /// <summary>

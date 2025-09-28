@@ -71,7 +71,7 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("Test for bait")]
-        private FishScriptableObject testFishForBait;
+        private FishTypeBaitScriptable testFishForBait;
 
         private IBait _currentlyEquipedBait;
         private bool _isBusy = false;
@@ -86,7 +86,7 @@ namespace FishingGame.Reeling
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
 
-            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new FishTypeBait(testFishForBait); }
+            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new FishTypeBait(testFishForBait, this); }
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
