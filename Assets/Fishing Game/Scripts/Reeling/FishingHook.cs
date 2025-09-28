@@ -1,5 +1,6 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
+using FishingGame.Items;
 using FishingGame.SaveGame;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
@@ -291,7 +292,9 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            IFishAble randomPoolFish = fishingPool.GetFishableCaught();
+            IBait baitBeingUsed = reelingMaster.GetCurrentFishingRod().GetCurrentBait();
+            IFishAble randomPoolFish = fishingPool.GetFishableCaught(baitBeingUsed);
+
             GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
             HookIsOut = false;
 

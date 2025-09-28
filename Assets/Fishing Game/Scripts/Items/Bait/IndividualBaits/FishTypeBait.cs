@@ -9,18 +9,19 @@ namespace FishingGame.Items
     /// When using this bait the player will always catch that type of fish unless it is not valid
     /// in the current pools environment
     /// </summary>
-    public class FishTypeBait : MonoBehaviour, IBait
+    public class FishTypeBait : IBait
     {
         FishScriptableObject fishThisCatches;
+        FishingRod activeFishingRod;
 
-        public void ApplyBait()
+        public void ApplyBait(FishingRod rodToApplyTo)
         {
             throw new System.NotImplementedException();
         }
 
-        public FishScriptableObject BaitCatchBehaviour(ReelingInitiation initationScript)
+        public FishScriptableObject GetForcedFishType()
         {
-            throw new System.NotImplementedException();
+            return fishThisCatches;
         }
 
         public void BaitMinigameBehaviour()

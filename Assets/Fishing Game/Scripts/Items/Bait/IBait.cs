@@ -6,11 +6,11 @@ namespace FishingGame.Items
 {
     public interface IBait
     {
-        public void ApplyBait();
+        public void ApplyBait(FishingRod rodToApplyTo);
 
         public void UseBaitCharge();
 
-        public FishScriptableObject BaitCatchBehaviour(ReelingInitiation initationScript);
+        public FishScriptableObject GetForcedFishType();
 
         public void BaitMinigameBehaviour();
     }

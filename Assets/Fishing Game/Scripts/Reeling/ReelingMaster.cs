@@ -8,6 +8,7 @@ using FishingGame.GameManagement;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using FishingGame.Items;
 
 namespace FishingGame.Reeling
 {
@@ -40,8 +41,10 @@ namespace FishingGame.Reeling
         private PlayerController characterController;
 
         [SerializeField]
-        [Tooltip("A reference to the fishing rod")]
+        [Tooltip("A reference to the current fishing rod")]
         private FishingRod fishingRodScript;
+
+        private IBait _currentBaitBeingUsed;
 
         [Header("Minigame Variables")]
 
@@ -247,6 +250,15 @@ namespace FishingGame.Reeling
         public GameObject GetCurrent3DFishObject()
         {
             return _current3DObject;
+        }
+
+        /// <summary>
+        /// Returns the current fishing rod
+        /// </summary>
+        /// <returns>Returns the current fishing rod</returns>
+        public FishingRod GetCurrentFishingRod()
+        {
+            return fishingRodScript;
         }
 
 

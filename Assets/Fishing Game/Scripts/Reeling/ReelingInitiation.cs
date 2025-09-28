@@ -39,14 +39,6 @@ namespace FishingGame.Reeling
         [Header("ReelingUIElements")]
 
         [SerializeField]
-        [Tooltip("Scales how fast the cast bar is charged when holding right click")]
-        private float chargeScalar;
-
-        [SerializeField]
-        [Tooltip("Slider for how much charge the cast bar has for reeling")]
-        private UnityEngine.UI.Slider chargeSlider;
-
-        [SerializeField]
         [Tooltip("The Button that is pressed to catch fish")]
         private UnityEngine.UI.Button catchButton;
 
@@ -78,36 +70,6 @@ namespace FishingGame.Reeling
         private int _stageOneDifficulty = 0;
         private int _catchSecondsToWait;
 
-        [Header("Aiming and Charging cast")]
-
-        [SerializeField]
-        [Tooltip("The characters parent, this is used for position")]
-        private GameObject characterParent;
-
-        [SerializeField]
-        [Tooltip("The character model this is used for rotation")]
-        private GameObject characterModel;
-
-        [SerializeField]
-        [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
-        private GameObject rodBobber;
-
-        [SerializeField]
-        [Tooltip("Max amount of distance a cast can be")]
-        private float fishingRange;
-
-        private bool _reverseDirection = false;
-        private bool _allowControls = true;
-        private bool _isCharging = false;
-        private float _chargePower = 0;
-        private float _maxCharge = 8;
-
-        private Vector3 _targetLocation;
-        private Vector3 _aimStartPoint;
-        private Vector3 _aimDirection;
-
-        private InputAction _castAction;
-
         [Header("Misc")]
 
         [SerializeField]
@@ -132,22 +94,8 @@ namespace FishingGame.Reeling
 
         public void OnEnable()
         {
-            chargeSlider.maxValue = _maxCharge;
-            fishCamera.gameObject.SetActive(false);
-
-            InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap playerActionMap = inputActions.FindActionMap("Player");
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
-            playerActionMap.Enable();
-            _castAction = playerActionMap.FindAction("Reel");
-
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
-        }
-
-        public void Update()
-        {
-
         }
 
         #region Public Methods
@@ -214,6 +162,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// This is called by the animation event attatched to the player
+        /// </summary>
         public void ThrowRodLine()
         {
             fishingRod.ThrowLine();

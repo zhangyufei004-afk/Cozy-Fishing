@@ -81,6 +81,8 @@ namespace FishingGame.Reeling
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
 
+            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new NullBait(); }
+
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
@@ -108,7 +110,6 @@ namespace FishingGame.Reeling
             }
         }
 
-
         /// <summary>
         /// Equips the inputed bait 
         /// </summary>
@@ -116,6 +117,15 @@ namespace FishingGame.Reeling
         public void EquipBait(IBait baitToEquip)
         {
             _currentlyEquipedBait = baitToEquip;
+        }
+
+        /// <summary>
+        /// Returns the currently equiped bait
+        /// </summary>
+        /// <returns>The currently equiped bait</returns>
+        public IBait GetCurrentBait()
+        {
+            return _currentlyEquipedBait;
         }
 
         /// <summary>

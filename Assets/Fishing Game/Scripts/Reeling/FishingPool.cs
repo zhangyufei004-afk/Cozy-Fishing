@@ -1,6 +1,7 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.GameTime;
+using FishingGame.Items;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -81,10 +82,21 @@ namespace FishingGame.Reeling
         /// Randomly selects a fish type based on the amount of types in the pool
         /// </summary>
         /// <returns>Returns the data of the fish being caught</returns>
-        public IFishAble GetFishableCaught()
+        public IFishAble GetFishableCaught(IBait baitBeingUsed)
         {
             ETimeOfDay timeCaught = timeScript.GetTimePeriod();
             string locationCaught = gameObject.name;
+
+            FishScriptableObject baitFish = baitBeingUsed.GetForcedFishType();
+
+            if (baitFish != null)
+            {
+                if (baseFishList.Contains(baitFish))
+                {
+                    Fish fishData = new Fish(baitFish, timeCaught, locationCaught);
+                    return fishData;
+                }
+            }
 
             if (overrideFishList.Count > 0)
             {
