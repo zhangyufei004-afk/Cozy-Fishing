@@ -32,5 +32,15 @@ namespace FishingGame
         {
             return;
         }
+
+        public void UsedUpBait()
+        {
+            return;
+        }
+
+        public bool IsBaitUsedUp()
+        {
+            return false;
+        }
     }
 }

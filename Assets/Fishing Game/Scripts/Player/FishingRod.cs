@@ -160,6 +160,11 @@ namespace FishingGame.Reeling
             fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
         }
 
+        public void RemoveBait()
+        {
+            _currentlyEquipedBait = new NullBait();
+        }
+
         #region Charging_and_throwing_line
 
         /// <summary>

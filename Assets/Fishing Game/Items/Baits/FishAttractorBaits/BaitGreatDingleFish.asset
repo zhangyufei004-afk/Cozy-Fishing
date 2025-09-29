@@ -15,9 +15,8 @@ MonoBehaviour:
   persistentID: 0
   ItemName: Bait Great Dingle
   ItemType: 2
-  Item2DTexture: {fileID: 0}
-  ItemWeight: 0
-  Texture: {fileID: 21300000, guid: 5d2560d44ce7b3d47a318f197a8d861e, type: 3}
-  Id: 1
-  BaitName: GreatDingleBait
+  Item2DTexture: {fileID: 21300000, guid: 027c6310449eba54ca6e1b7979e03d2a, type: 3}
+  ItemWeight: 0.4
+  MaxBaitCharge: 5
+  MinBaitCharge: 2
   FishAttractType: {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}

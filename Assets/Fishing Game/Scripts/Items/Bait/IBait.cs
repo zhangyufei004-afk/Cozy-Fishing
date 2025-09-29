@@ -10,6 +10,10 @@ namespace FishingGame.Items
 
         public void UseBaitCharge();
 
+        public void UsedUpBait();
+
+        public bool IsBaitUsedUp();
+
         public FishScriptableObject GetForcedFishType();
 
         public void BaitMinigameBehaviour();

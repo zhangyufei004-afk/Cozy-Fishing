@@ -102,6 +102,7 @@ namespace FishingGame.Reeling
                     {
                         waterSplash.Play();
                         waterSound.Play();
+                        reelingMaster.GetCurrentFishingRod().GetCurrentBait().UseBaitCharge();
                         initiationScript.BeginStageOne();
                     }
                     else

@@ -5,9 +5,8 @@ namespace FishingGame
     [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Baits")]
     public class BaitScriptable : ItemScriptable
     {
-        public Sprite Texture;
-        public string Id;
-        public string BaitName;
+        public int MaxBaitCharge;
+        public int MinBaitCharge;
         internal BaitScriptable(int persistentID) : base(persistentID)
         {
 
