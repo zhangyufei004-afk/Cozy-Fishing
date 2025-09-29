@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BaitGreatDingleFish
   m_EditorClassIdentifier: 
   persistentID: 0
-  Texture: {fileID: 0}
-  Id: 
+  ItemName: Bait Great Dingle
+  Texture: {fileID: 21300000, guid: 5d2560d44ce7b3d47a318f197a8d861e, type: 3}
+  Id: 1
+  BaitName: GreatDingleBait
   FishAttractType: {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}

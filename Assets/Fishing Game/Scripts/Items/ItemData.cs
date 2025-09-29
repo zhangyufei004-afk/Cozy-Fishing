@@ -2,18 +2,21 @@ using UnityEngine;
 
 namespace FishingGame
 {
-    public class ItemData : MonoBehaviour
+    public class ItemData
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private ItemScriptable _itemBase;
+
+
+        public ItemData(ItemScriptable itemScriptable)
         {
-        
+            _itemBase = itemScriptable;
         }
 
-        // Update is called once per frame
-        void Update()
+        public string GetItemName()
         {
-        
+            return _itemBase.ItemName;
         }
+
+
     }
 }

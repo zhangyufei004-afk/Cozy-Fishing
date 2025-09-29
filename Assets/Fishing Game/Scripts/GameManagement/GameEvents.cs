@@ -64,6 +64,8 @@ namespace FishingGame.GameManagement
         
         public event Action<bool> OnToggleGrappleCamera;
 
+        public event Action<bool, string> OnWithinItemPickupRange;
+
         #endregion
 
         #region AI Events
@@ -222,6 +224,11 @@ namespace FishingGame.GameManagement
         public void ToggleGrappleCamera(bool isCameraEnabled)
         {
             OnToggleGrappleCamera?.Invoke(isCameraEnabled);
+        }
+
+        public void PickupItemRange(bool isInRange, string textToDisplay)
+        {
+            OnWithinItemPickupRange?.Invoke(isInRange, textToDisplay);
         }
     }
 }
