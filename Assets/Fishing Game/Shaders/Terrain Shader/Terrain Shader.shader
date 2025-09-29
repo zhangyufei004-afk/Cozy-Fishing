@@ -286,7 +286,7 @@ Shader "Custom/Terrain/Lit"
     Dependency "BaseMapShader" = "Hidden/Universal Render Pipeline/Terrain/Lit (Base Pass)"
     Dependency "BaseMapGenShader" = "Hidden/Universal Render Pipeline/Terrain/Lit (Basemap Gen)"
 
-    // CustomEditor "UnityEditor.Rendering.Universal.TerrainLitShaderGUI"
+    // CustomEditor "FishingGame.Shaders.TerrainLitShaderGUI"
 
     Fallback "Hidden/Universal Render Pipeline/FallbackError"
 }

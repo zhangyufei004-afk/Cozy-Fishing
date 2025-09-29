@@ -155,7 +155,7 @@ Material:
     - _SrcBlend: 1
     - _TERRAIN_INSTANCED_PERPIXEL_NORMAL: 0
     - _UVSec: 0
-    - _WallTransitionLevel: 0.794
+    - _WallTransitionLevel: 0.7
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
