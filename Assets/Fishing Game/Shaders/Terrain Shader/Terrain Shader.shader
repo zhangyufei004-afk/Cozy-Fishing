@@ -1,7 +1,10 @@
-Shader "Universal Render Pipeline/Terrain/Lit"
+Shader "Custom/Terrain/Lit"
 {
     Properties
     {
+        _WallTransitionLevel("Wall Transition Level", Range(0.0, 1.0)) = 0.6
+        _WallTexture("Wall Texture", 2D) = "red" {}
+
         [HideInInspector] [ToggleUI] _EnableHeightBlend("EnableHeightBlend", Float) = 0.0
         _HeightTransition("Height Transition", Range(0, 1.0)) = 0.0
         // Layer count is passed down to guide height-blend enable/disable, due
@@ -98,7 +101,7 @@ Shader "Universal Render Pipeline/Terrain/Lit"
             // Sample normal in pixel shader when doing instancing
             #pragma shader_feature_local _TERRAIN_INSTANCED_PERPIXEL_NORMAL
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl"
+            #include "Assets/Fishing Game/Shaders/Terrain Shader/TerrainLitInput.hlsl"
             #include "Assets/Fishing Game/Shaders/Terrain Shader/TerrainLitPasses.hlsl"
             ENDHLSL
         }
@@ -283,7 +286,7 @@ Shader "Universal Render Pipeline/Terrain/Lit"
     Dependency "BaseMapShader" = "Hidden/Universal Render Pipeline/Terrain/Lit (Base Pass)"
     Dependency "BaseMapGenShader" = "Hidden/Universal Render Pipeline/Terrain/Lit (Basemap Gen)"
 
-    CustomEditor "UnityEditor.Rendering.Universal.TerrainLitShaderGUI"
+    // CustomEditor "UnityEditor.Rendering.Universal.TerrainLitShaderGUI"
 
     Fallback "Hidden/Universal Render Pipeline/FallbackError"
 }

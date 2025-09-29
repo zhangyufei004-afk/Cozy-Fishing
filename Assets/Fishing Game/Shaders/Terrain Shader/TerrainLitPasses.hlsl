@@ -424,8 +424,13 @@ void SplatmapFragment(
     half4 mixedDiffuse;
     half4 defaultSmoothness;
     SplatmapMix(IN.uvMainAndLM, IN.uvSplat01, IN.uvSplat23, splatControl, weight, mixedDiffuse, defaultSmoothness, normalTS);
-    half3 albedo = half4(1, 0.25, 1, 1);//mixedDiffuse.rgb;
-    //#region AHHHHHHHHHH
+    half3 albedo = mixedDiffuse.rgb;
+    
+    //#region Custom Wall Thing
+    if(IN.normal.y < _WallTransitionLevel)
+    {
+        albedo = SAMPLE_TEXTURE2D(_WallTexture, sampler_Splat0, IN.uvSplat01.xy) * 0.75;
+    }
 
     half4 defaultMetallic = half4(_Metallic0, _Metallic1, _Metallic2, _Metallic3);
     half4 defaultOcclusion = half4(_MaskMapRemapScale0.g, _MaskMapRemapScale1.g, _MaskMapRemapScale2.g, _MaskMapRemapScale3.g) +
