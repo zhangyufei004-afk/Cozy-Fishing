@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858591442020989648}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: -0.5}
-  m_LocalPosition: {x: -0.000000022351745, y: 0.5547004, z: 0.039900124}
+  m_LocalRotation: {x: 0.48456615, y: 0.5149716, z: -0.5149717, w: 0.48456597}
+  m_LocalPosition: {x: -0, y: 0.5546999, z: 0.03990006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -478,7 +478,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HookIsOut: 0
-  hookGoal: {x: 0, y: 0, z: 0}
   reelingMaster: {fileID: 0}
   initiationScript: {fileID: 0}
   hookResetSpot: {x: 0, y: 0.1547, z: 0.0399}
@@ -487,6 +486,13 @@ MonoBehaviour:
   castHookSpeed: 2
   waterSplash: {fileID: 6236095576221604}
   waterSound: {fileID: 4326176045348894468}
+  rangeFromFishSpot: 0
+  curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &4326176045348894468
 AudioSource:
   m_ObjectHideFlags: 0
