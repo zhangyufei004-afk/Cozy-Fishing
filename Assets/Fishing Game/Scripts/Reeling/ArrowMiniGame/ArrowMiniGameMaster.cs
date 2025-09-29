@@ -123,7 +123,7 @@ namespace FishingGame.Reeling
         private List<MovingArrow> _arrowsToRemove;
         private InputAction _directionAction;
         private EMovementDirection _arrowType;
-        InputActionMap uiActionMap;
+        private InputActionMap _uiActionMap;
 
         private InputAction _upAction;
         private InputAction _downAction;
@@ -138,7 +138,7 @@ namespace FishingGame.Reeling
             _arrowsToRemove = new List<MovingArrow>();
 
             InputActionAsset inputAction = InputSystem.actions;
-            uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
+            _uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
         }
 
         private void OnDisable()
@@ -611,16 +611,16 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetUpArrowKeys()
         {
-            _upAction = uiActionMap.FindAction("Up");
+            _upAction = _uiActionMap.FindAction("Up");
             _upAction.performed += UpPressed;
 
-            _downAction = uiActionMap.FindAction("Down");
+            _downAction = _uiActionMap.FindAction("Down");
             _downAction.performed += DownPressed;
 
-            _rightAction = uiActionMap.FindAction("Right");
+            _rightAction = _uiActionMap.FindAction("Right");
             _rightAction.performed += RightPressed;
 
-            _leftAction = uiActionMap.FindAction("Left");
+            _leftAction = _uiActionMap.FindAction("Left");
             _leftAction.performed += LeftPressed;
         }
 

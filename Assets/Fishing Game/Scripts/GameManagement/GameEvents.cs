@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
@@ -65,6 +66,8 @@ namespace FishingGame.GameManagement
         public event Action<bool> OnToggleGrappleCamera;
 
         public event Action<bool, string> OnWithinItemPickupRange;
+
+        public event Action OnAttemptItemPickup;
 
         #endregion
 
@@ -229,6 +232,11 @@ namespace FishingGame.GameManagement
         public void PickupItemRange(bool isInRange, string textToDisplay)
         {
             OnWithinItemPickupRange?.Invoke(isInRange, textToDisplay);
+        }
+
+        public void AttemptItemPickup()
+        {
+            OnAttemptItemPickup?.Invoke();
         }
     }
 }

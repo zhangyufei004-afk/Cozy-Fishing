@@ -86,6 +86,8 @@ namespace FishingGame.Player
             playerActionMap.FindAction("Crouch").performed += ToggleGrapple;
             playerActionMap.FindAction("Reel").performed += Fire;
 
+            playerActionMap.FindAction("Interact").performed += AttemptToPickupItem;
+
             _initialMovementSpeed = movementSpeed;
             _initialRotationSpeed = rotationSpeed;
 
@@ -245,6 +247,11 @@ namespace FishingGame.Player
                 }
 
             }
+        }
+
+        private void AttemptToPickupItem(InputAction.CallbackContext context)
+        {
+            GameManager.Instance.GameEvents.AttemptItemPickup();
         }
         
         private void Move(InputAction.CallbackContext context)
