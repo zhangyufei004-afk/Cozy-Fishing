@@ -127,5 +127,10 @@ namespace FishingGame.FishSystem
         {
             throw new NotImplementedException();
         }
+
+        public void UseItem()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

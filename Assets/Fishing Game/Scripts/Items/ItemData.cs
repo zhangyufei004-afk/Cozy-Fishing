@@ -51,5 +51,10 @@ namespace FishingGame
         {
             return _itemWeight;
         }
+
+        public virtual void UseItem()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

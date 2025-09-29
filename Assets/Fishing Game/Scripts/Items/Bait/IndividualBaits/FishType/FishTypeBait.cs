@@ -14,7 +14,7 @@ namespace FishingGame.Items
     /// When using this bait the player will always catch that type of fish unless it is not valid
     /// in the current pools environment
     /// </summary>
-    public class FishTypeBait : IBait, IStorable
+    public class FishTypeBait : ItemData, IBait, IStorable
     {
         private FishTypeBaitScriptable _baitBase;
         private EItemType _type = EItemType.RodAttachment;
@@ -23,7 +23,7 @@ namespace FishingGame.Items
         private FishScriptableObject _fishThisCatches;
         private FishingRod _activeFishingRod;
 
-        public FishTypeBait(FishTypeBaitScriptable baitBase, FishingRod fishingRod)
+        public FishTypeBait(FishTypeBaitScriptable baitBase, FishingRod fishingRod) : base(baitBase)
         {
             _baitBase = baitBase;
             _fishThisCatches = _baitBase.FishAttractType;
@@ -51,34 +51,9 @@ namespace FishingGame.Items
             throw new System.NotImplementedException();
         }
 
-        public float GetWeight()
+        public override void UseItem()
         {
-            throw new NotImplementedException();
-        }
-
-        public EItemType GetItemType()
-        {
-            return _type;
-        }
-
-        public SerializableObject GetDataObject(out Type dataClassType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ItemScriptable GetItemBase()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Sprite GetTexture()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetItemName()
-        {
-            throw new NotImplementedException();
+            ApplyBait(_activeFishingRod);
         }
     }
 }

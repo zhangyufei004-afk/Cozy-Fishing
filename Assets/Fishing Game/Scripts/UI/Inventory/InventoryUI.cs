@@ -25,12 +25,24 @@ namespace FishingGame.UI.Inventory
         [SerializeField] [Tooltip("The textbox that shows the location this was found from")] private TextMeshProUGUI location;
         [SerializeField] [Tooltip("The textbox that shows the time this was found")] private TextMeshProUGUI timeText;
 
+        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI weightLabel;
+        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI lengthLabel;
+        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI timeLabel;
+        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI locationLabel;
+
+        private IStorable _currentlyDisplayedItem;
+
 
         private readonly List<GameObject> _currentItemCards = new List<GameObject>();
 
         private void Start()
         {
             GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
+        }
+
+        private void OnEnable()
+        {
+            SetAllLabelsActive(false);
         }
 
         private void OnDisable()
@@ -104,12 +116,18 @@ namespace FishingGame.UI.Inventory
             _currentItemCards.Clear();
         }
 
+        public void UseButtonClicked()
+        {
+            _currentlyDisplayedItem.UseItem();
+        }
+
         /// <summary>
         /// Refreshes the inventory UI with the latest list of items.
         /// </summary>
         /// <param name="itemList">The list of items to display.</param>
         public void RefreshInventoryUI(List<IStorable> itemList)
         {
+            _currentlyDisplayedItem = null;
             ClearInventoryUI();
 
             foreach (var storable in itemList)
@@ -146,6 +164,8 @@ namespace FishingGame.UI.Inventory
         /// <param name="fish">The fish clicked</param>
         public void InventoryEntryClicked(IStorable item)
         {
+            _currentlyDisplayedItem = item;
+            SetAllLabelsActive(true);
             switch (item.GetItemType())
             {
                 case EItemType.Fish:
@@ -166,8 +186,6 @@ namespace FishingGame.UI.Inventory
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            
         }
 
         /// <summary>
@@ -205,6 +223,21 @@ namespace FishingGame.UI.Inventory
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetItemName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
+
+
+
+            lengthLabel.gameObject.SetActive(false);
+            timeLabel.gameObject.SetActive(false);
+            locationLabel.gameObject.SetActive(false);
+        }
+
+        private void SetAllLabelsActive(bool isActive)
+        {
+            itemImage.gameObject.SetActive(isActive);
+            weightLabel.gameObject.SetActive(isActive);
+            lengthLabel.gameObject.SetActive(isActive);
+            timeLabel.gameObject.SetActive(isActive);
+            locationLabel.gameObject.SetActive(isActive);
         }
     }
 }

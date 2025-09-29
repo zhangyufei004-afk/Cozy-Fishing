@@ -1,4 +1,8 @@
 using FishingGame.GameManagement;
+using FishingGame.Inventory;
+using FishingGame.Items;
+using FishingGame.Player;
+using FishingGame.Reeling;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,10 +15,10 @@ namespace FishingGame
         private ItemScriptable itemScriptable;
 
         [SerializeField]
-        [Tooltip("A reference to the player gameobect")]
-        private GameObject playerGameObject;
+        [Tooltip("A reference to the player controller script")]
+        private PlayerController playerControllerScript;
 
-        private ItemData _itemData;
+        private IStorable _itemData;
         private bool _playerInInteractionRange = false;
 
         private InputAction _playerInputAction;
@@ -34,7 +38,7 @@ namespace FishingGame
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject == playerGameObject)
+            if (other.gameObject == playerControllerScript.gameObject)
             {
                 _playerInInteractionRange = true;
                 GameManager.Instance.GameEvents.PickupItemRange(true, "Press E to pickup " + _itemData.GetItemName());
@@ -43,7 +47,7 @@ namespace FishingGame
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject == playerGameObject)
+            if (other.gameObject == playerControllerScript.gameObject)
             {
                 _playerInInteractionRange = false;
                 GameManager.Instance.GameEvents.PickupItemRange(false, "Press E to picskup " + _itemData.GetItemName());
@@ -52,7 +56,15 @@ namespace FishingGame
 
         private void SetItemData()
         {
-            _itemData = new ItemData(itemScriptable);
+            switch(itemScriptable.ItemType)
+            {
+                case EItemType.RodAttachment:
+                    _itemData = new FishTypeBait((FishTypeBaitScriptable)itemScriptable, playerControllerScript.CurrentFishingRod);
+                    break;
+                default:
+                    Debug.Log("Whatever type of item this is we don't have the implementation for it yet, check ItemMono script");
+                        break;
+            }
         }
 
         private void AttemptItemPickup()
@@ -60,11 +72,8 @@ namespace FishingGame
             if (_playerInInteractionRange)
             {
                 GameManager.Instance.GameEvents.ItemReceived(_itemData);
-                Destroy(this.gameObject);
-            }
-            else
-            {
                 GameManager.Instance.GameEvents.PickupItemRange(false, "Press E to picskup " + _itemData.GetItemName());
+                Destroy(this.gameObject);
             }
         }
 

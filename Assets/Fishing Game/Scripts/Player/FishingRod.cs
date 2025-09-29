@@ -86,7 +86,7 @@ namespace FishingGame.Reeling
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
 
-            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new FishTypeBait(testFishForBait, this); }
+            if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new NullBait(); }
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;

@@ -42,6 +42,14 @@ namespace FishingGame.Inventory
         /// </summary>
         /// <returns>The item type as defined in EItemType</returns>
         public EItemType GetItemType();
+
+        /// <summary>
+        /// Uses the item
+        /// Not every Istoreable object needs to have functionality for this
+        /// If a Istoreable item is of a type that can't be used from the inventory
+        /// the UI button that runs this function should be hidden
+        /// </summary>
+        public void UseItem();
         
         /// <summary>
         /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static

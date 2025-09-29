@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using FishingGame.GameManagement;
 using UnityEngine.UIElements;
 using Unity.Cinemachine;
+using FishingGame.Reeling;
 
 namespace FishingGame.Player
 {
@@ -55,6 +56,9 @@ namespace FishingGame.Player
         private Vector3 _grappleStart;
         private Vector3 _grappleTarget;
         private bool _isCurrentlyEngaged;
+
+        [Tooltip("A reference to the fishingRod script")]
+        public FishingRod CurrentFishingRod;
 
 
 
