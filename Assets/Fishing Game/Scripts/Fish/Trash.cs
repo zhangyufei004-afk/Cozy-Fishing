@@ -117,5 +117,15 @@ namespace FishingGame.FishSystem
         {
             return _trashName;
         }
+
+        public ItemScriptable GetItemBase()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetItemName()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

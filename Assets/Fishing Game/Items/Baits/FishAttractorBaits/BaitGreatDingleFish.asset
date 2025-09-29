@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   ItemName: Bait Great Dingle
+  ItemType: 2
+  Item2DTexture: {fileID: 0}
+  ItemWeight: 0
   Texture: {fileID: 21300000, guid: 5d2560d44ce7b3d47a318f197a8d861e, type: 3}
   Id: 1
   BaitName: GreatDingleBait

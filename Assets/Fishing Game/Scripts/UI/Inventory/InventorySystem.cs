@@ -14,6 +14,11 @@ namespace FishingGame.Inventory
         [SerializeField] private FishLogSystem fishLogSystem;
         private List<IStorable> _fishInventory = new List<IStorable>();
 
+        private void OnEnable()
+        {
+            GameManager.Instance.GameEvents.OnItemReceived += AddItem;
+        }
+
         /// <summary>
         /// Adds a new item to the inventory. If the item is a fish, it marks it as caught in FishLogSystem.
         /// </summary>

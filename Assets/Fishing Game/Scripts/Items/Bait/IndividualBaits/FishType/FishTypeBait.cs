@@ -65,5 +65,20 @@ namespace FishingGame.Items
         {
             throw new NotImplementedException();
         }
+
+        public ItemScriptable GetItemBase()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Sprite GetTexture()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetItemName()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
+using UnityEditor;
 
 namespace FishingGame.GameManagement
 {
@@ -29,7 +30,7 @@ namespace FishingGame.GameManagement
         #region Inventory Events
 
         public event Action<Fish> OnFishCaught;
-        public event Action OnItemReceived;
+        public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
 
         #endregion
@@ -169,7 +170,7 @@ namespace FishingGame.GameManagement
         /// <param name="item">The item which was received.</param>
         public void ItemReceived(IStorable item)
         {
-            OnItemReceived?.Invoke();
+            OnItemReceived?.Invoke(item);
         }
 
         /// <summary>

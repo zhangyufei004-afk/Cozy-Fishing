@@ -76,6 +76,23 @@ namespace FishingGame.UI.Inventory
         }
 
         /// <summary>
+        /// Adds a trash item to the inventory UI as a new card.
+        /// </summary>
+        /// <param name="trash">The item to be displayed</param>
+        public void AddAttatchmentToUI(ItemData itemToAdd)
+        {
+            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
+            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
+            if (inventoryUIEntry)
+            {
+                inventoryUIEntry.Item = itemToAdd;
+                inventoryUIEntry.InventoryUIController = this;
+                inventoryUIEntry.UpdateVisuals();
+            }
+            _currentItemCards.Add(card);
+        }
+
+        /// <summary>
         /// Clears all fish cards from the UI.
         /// </summary>
         public void ClearInventoryUI()
@@ -107,7 +124,8 @@ namespace FishingGame.UI.Inventory
                         Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
                         break;
                     case EItemType.RodAttachment:
-                        Debug.Log("TODO: Tried to add a rod attachment to the inventory UI, but we don't have logic for that yet. ");
+                        ItemData item = storable as ItemData;
+                        AddAttatchmentToUI(item);
                         break;
                     case EItemType.Money:
                         Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
@@ -137,7 +155,7 @@ namespace FishingGame.UI.Inventory
                     Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
                     break;
                 case EItemType.RodAttachment:
-                    Debug.Log("TODO: Tried to add a rod attachment to the inventory UI, but we don't have logic for that yet. ");
+                    AttatchmentEntryClicked((ItemData)item);
                     break;
                 case EItemType.Money:
                     Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
@@ -176,6 +194,17 @@ namespace FishingGame.UI.Inventory
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
             if (location) location.text = entryClicked.GetCaughtLocation();
             if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
+        }
+
+        /// <summary>
+        /// Run when a Rod Attatchment entry is clicked, sets the required display variables
+        /// </summary>
+        /// <param name="entryClicked">The trash that has been clicked</param>
+        private void AttatchmentEntryClicked(ItemData entryClicked)
+        {
+            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
+            if (itemNameText) itemNameText.text = entryClicked.GetItemName();
+            if (weight) weight.text = entryClicked.GetWeight() + "kg";
         }
     }
 }

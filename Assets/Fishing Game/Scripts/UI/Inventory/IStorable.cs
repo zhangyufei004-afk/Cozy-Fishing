@@ -21,12 +21,22 @@ namespace FishingGame.Inventory
     /// </summary>
     public interface IStorable
     {
+        public ItemScriptable GetItemBase();
+
         /// <summary>
         /// Gets the weight of the item.
         /// </summary>
         /// <returns>The weight in grams of the item.</returns>
         public float GetWeight();
-        
+
+        /// <summary>
+        /// Returns the texture used for this item
+        /// </summary>
+        /// <returns>The texture used for this item</returns>
+        public Sprite GetTexture();
+
+        public String GetItemName();
+
         /// <summary>
         /// Gets the item type.
         /// </summary>

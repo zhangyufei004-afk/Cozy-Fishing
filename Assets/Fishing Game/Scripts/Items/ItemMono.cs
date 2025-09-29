@@ -59,6 +59,7 @@ namespace FishingGame
         {
             if (_playerInInteractionRange)
             {
+                GameManager.Instance.GameEvents.ItemReceived(_itemData);
                 Destroy(this.gameObject);
             }
             else
