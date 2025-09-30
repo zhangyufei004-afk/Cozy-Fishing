@@ -18,6 +18,10 @@ namespace FishingGame
         [Tooltip("A reference to the player controller script")]
         private PlayerController playerControllerScript;
 
+        [SerializeField]
+        [Tooltip("The model this item has in 3D")]
+        private Mesh itemModel;
+
         private IStorable _itemData;
         private bool _playerInInteractionRange = false;
 
@@ -27,6 +31,7 @@ namespace FishingGame
 
         private void OnEnable()
         {
+            gameObject.GetComponent<MeshFilter>().mesh = itemModel;
             InputActionAsset inputAction = InputSystem.actions;
             _uiActionMap = inputAction.FindActionMap("Player");
             _playerInputAction = _uiActionMap.FindAction("Interact");
