@@ -206,6 +206,7 @@ namespace FishingGame.UI.Inventory
             if (itemNameText) itemNameText.text = entryClicked.GetName();
             if (lengthLabel) lengthLabel.text = "Length:";
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (timeLabel) timeLabel.text = "Time Found:";
             if (location) location.text = entryClicked.GetCaughtLocation();
             if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
         }
@@ -221,6 +222,7 @@ namespace FishingGame.UI.Inventory
             if (itemNameText) itemNameText.text = entryClicked.GetName();
             if (lengthLabel) lengthLabel.text = "Length:";
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (timeLabel) timeLabel.text = "Time Found:";
             if (location) location.text = entryClicked.GetCaughtLocation();
             if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
         }
@@ -238,9 +240,10 @@ namespace FishingGame.UI.Inventory
             if (itemNameText) itemNameText.text = entryClicked.GetItemName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
             if (lengthLabel) lengthLabel.text = "Charges:";
+            if (timeLabel) timeLabel.text = "Item description:";
+            if (timeLabel) timeText.text = entryClicked.GetTooltip();
             if (length) length.text = entryClicked.GetCurrentUseCharge().ToString();
 
-            timeLabel.gameObject.SetActive(false);
             locationLabel.gameObject.SetActive(false);
         }
 

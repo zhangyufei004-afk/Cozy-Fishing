@@ -17,6 +17,7 @@ MonoBehaviour:
   ItemType: 2
   Item2DTexture: {fileID: 21300000, guid: 50f87bda998defe42bd3e6061f254995, type: 3}
   ItemWeight: 0.4
+  ItemToolTip: Attracts a Blessed Squid if in a correct location
   MaxBaitCharge: 5
   MinBaitCharge: 2
   FishAttractType: {fileID: 11400000, guid: aeb9e36b649b43a47af58ce0f4d642bf, type: 2}

@@ -17,3 +17,4 @@ MonoBehaviour:
   ItemType: 2
   Item2DTexture: {fileID: 21300000, guid: 5d2560d44ce7b3d47a318f197a8d861e, type: 3}
   ItemWeight: 2
+  ItemToolTip: Test item

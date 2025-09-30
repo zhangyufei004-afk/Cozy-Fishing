@@ -17,6 +17,7 @@ MonoBehaviour:
   ItemType: 2
   Item2DTexture: {fileID: 21300000, guid: 027c6310449eba54ca6e1b7979e03d2a, type: 3}
   ItemWeight: 0.4
+  ItemToolTip: Attracts a Dynamite Fish if in a correct location
   MaxBaitCharge: 5
   MinBaitCharge: 2
   FishAttractType: {fileID: 11400000, guid: 41e32878341444e4a9469e39b26457b2, type: 2}

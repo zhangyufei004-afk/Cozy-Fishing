@@ -15,6 +15,7 @@ namespace FishingGame
         private string _itemName;
         private int _itemCharge;
         private bool _currentlyEquiped = false;
+        private string _itemToolTip;
 
         public ItemData(ItemScriptable itemScriptable)
         {
@@ -23,6 +24,7 @@ namespace FishingGame
             _itemSprite = _itemBase.Item2DTexture;
             _itemWeight = _itemBase.ItemWeight;
             _itemName = _itemBase.ItemName;
+            _itemToolTip = _itemBase.ItemToolTip;
         }
 
         public SerializableObject GetDataObject(out Type dataClassType)
@@ -74,6 +76,11 @@ namespace FishingGame
         {
             if (_currentlyEquiped) {  return true; }
             else { return false; }
+        }
+
+        public string GetTooltip()
+        {
+            return _itemToolTip;
         }
     }
 }
