@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4220d5af58e962449d1ae1019df1c64, type: 3}
-  m_Name: BaitGreatDingleFish
+  m_Name: BaitDoodleFin
   m_EditorClassIdentifier: 
-  persistentID: 3
-  ItemName: Bait Great Dingle
+  persistentID: 4
+  ItemName: Bait DoodleFin
   ItemType: 2
   Item2DTexture: {fileID: 21300000, guid: 027c6310449eba54ca6e1b7979e03d2a, type: 3}
   ItemWeight: 0.4
   MaxBaitCharge: 5
   MinBaitCharge: 2
-  FishAttractType: {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}
+  FishAttractType: {fileID: 11400000, guid: 7ae9cbd7c08597a40a55673adade7ef9, type: 2}
