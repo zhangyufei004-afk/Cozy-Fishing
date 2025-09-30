@@ -203,6 +203,7 @@ namespace FishingGame.UI.Inventory
             useItemButton.gameObject.SetActive(false);
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetName();
+            if (lengthLabel) lengthLabel.text = "Length:";
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
             if (location) location.text = entryClicked.GetCaughtLocation();
             if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();

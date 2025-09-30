@@ -75,7 +75,7 @@ namespace FishingGame.UI.Inventory
 
             image.sprite = fishUpdating.GetFishBase().Texture;
             nameText.text = fishUpdating.GetFishBase().SpeciesName;
-            // lengthText = fish.GetSize(); // missing?
+            lengthText.text = "temp"; // missing?
             weightText.text = $"{fishUpdating.GetWeight():0.00}kg";
             caughtTimeText.text = fishUpdating.GetCaughtTime().ToString();
             locationText.text = fishUpdating.GetCaughtLocation();
@@ -97,7 +97,7 @@ namespace FishingGame.UI.Inventory
 
             image.sprite = trashUpdating.GetTrashBase().Texture;
             nameText.text = trashUpdating.GetTrashBase().TrashName;
-            // lengthText = fish.GetSize(); // missing?
+            lengthText.text = "temp" ; // missing?
             weightText.text = $"{trashUpdating.GetWeight():0.00}kg";
             caughtTimeText.text = trashUpdating.GetCaughtTime().ToString();
             locationText.text = trashUpdating.GetCaughtLocation();

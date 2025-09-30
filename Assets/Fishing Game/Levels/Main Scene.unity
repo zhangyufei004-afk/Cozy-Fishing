@@ -3713,7 +3713,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 712705332}
-  - {fileID: 885265155}
   m_Father: {fileID: 1963978130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4136,16 +4135,16 @@ RectTransform:
   m_GameObject: {fileID: 885265154}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2142407573}
-  m_Father: {fileID: 779705935}
+  m_Father: {fileID: 1963978130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 137.80002, y: 21.60498}
-  m_SizeDelta: {x: 357.99805, y: 70}
+  m_AnchoredPosition: {x: 0.000061035156, y: -509.99994}
+  m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &885265156
 MonoBehaviour:
@@ -8974,6 +8973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemScriptable: {fileID: 11400000, guid: e0da84f4dabd6d342bd000b48501f824, type: 2}
   playerControllerScript: {fileID: 1175047035}
+  itemModel: {fileID: 8108563764783910780, guid: 51754b16748e0904eb2da76d6d602597, type: 3}
 --- !u!65 &1884063021
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9678,6 +9678,7 @@ RectTransform:
   - {fileID: 308133120}
   - {fileID: 1948374217}
   - {fileID: 1123048532}
+  - {fileID: 885265155}
   - {fileID: 779705935}
   - {fileID: 389033949}
   m_Father: {fileID: 483991025}
