@@ -223,7 +223,6 @@ namespace FishingGame.Reeling
         public void CancelFishing()
         {
             SetCancelButtonVisibilty(false);
-            if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().RemoveBait(); }
 
             if (IsFishing == true)
             {
@@ -231,6 +230,7 @@ namespace FishingGame.Reeling
             }
             else
             {
+                if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
                 initiationScript.CancelStageOne();
             }
         }
@@ -349,7 +349,7 @@ namespace FishingGame.Reeling
             fishingHook.PullBackHook();
             SetCancelButtonVisibilty(false);
 
-            if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().RemoveBait(); }
+            if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
             Destroy(_current3DObject);
 

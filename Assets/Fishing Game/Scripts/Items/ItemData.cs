@@ -12,6 +12,7 @@ namespace FishingGame
         private Sprite _itemSprite;
         private float _itemWeight;
         private string _itemName;
+        private int _itemCharge;
 
         public ItemData(ItemScriptable itemScriptable)
         {
@@ -50,6 +51,11 @@ namespace FishingGame
         public float GetWeight()
         {
             return _itemWeight;
+        }
+
+        public virtual int GetCurrentUseCharge()
+        {
+            return _itemCharge;
         }
 
         public virtual void UseItem()

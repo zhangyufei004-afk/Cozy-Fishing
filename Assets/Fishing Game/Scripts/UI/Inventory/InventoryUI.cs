@@ -22,6 +22,7 @@ namespace FishingGame.UI.Inventory
         [SerializeField] [Tooltip("The image that shows what item is being looked at")] private Image itemImage;
         [SerializeField] [Tooltip("The textbox that says the items name")]  private TextMeshProUGUI itemNameText;
         [SerializeField] [Tooltip("The textbox that says the weight of the item")] private TextMeshProUGUI weight;
+        [SerializeField][Tooltip("The textbox that says the weight of the item")] private TextMeshProUGUI length;
         [SerializeField] [Tooltip("The textbox that shows the location this was found from")] private TextMeshProUGUI location;
         [SerializeField] [Tooltip("The textbox that shows the time this was found")] private TextMeshProUGUI timeText;
 
@@ -29,6 +30,10 @@ namespace FishingGame.UI.Inventory
         [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI lengthLabel;
         [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI timeLabel;
         [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI locationLabel;
+
+        [SerializeField]
+        [Tooltip("The button that is pressed to use an item")]
+        private Button useItemButton;
 
         private IStorable _currentlyDisplayedItem;
 
@@ -109,6 +114,7 @@ namespace FishingGame.UI.Inventory
         /// </summary>
         public void ClearInventoryUI()
         {
+            SetAllLabelsActive(false);
             foreach (GameObject card in _currentItemCards)
             {
                 Destroy(card);
@@ -194,6 +200,7 @@ namespace FishingGame.UI.Inventory
         /// <param name="entryClicked">The fish that has been clicked</param>
         private void FishEntryClicked(Fish entryClicked)
         {
+            useItemButton.gameObject.SetActive(false);
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
@@ -207,8 +214,10 @@ namespace FishingGame.UI.Inventory
         /// <param name="entryClicked">The trash that has been clicked</param>
         private void TrashEntryClicked(Trash entryClicked)
         {
+            useItemButton.gameObject.SetActive(false);
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetName();
+            if (lengthLabel) lengthLabel.text = "Length:";
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
             if (location) location.text = entryClicked.GetCaughtLocation();
             if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
@@ -220,24 +229,26 @@ namespace FishingGame.UI.Inventory
         /// <param name="entryClicked">The trash that has been clicked</param>
         private void AttatchmentEntryClicked(ItemData entryClicked)
         {
+            useItemButton.gameObject.SetActive(true);
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetItemName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (lengthLabel) lengthLabel.text = "Charges:";
+            if (length) length.text = entryClicked.GetCurrentUseCharge().ToString();
 
-
-
-            lengthLabel.gameObject.SetActive(false);
             timeLabel.gameObject.SetActive(false);
             locationLabel.gameObject.SetActive(false);
         }
 
         private void SetAllLabelsActive(bool isActive)
         {
+            itemNameText.gameObject.SetActive(isActive);
             itemImage.gameObject.SetActive(isActive);
             weightLabel.gameObject.SetActive(isActive);
             lengthLabel.gameObject.SetActive(isActive);
             timeLabel.gameObject.SetActive(isActive);
             locationLabel.gameObject.SetActive(isActive);
+            useItemButton.gameObject.SetActive(isActive);
         }
     }
 }

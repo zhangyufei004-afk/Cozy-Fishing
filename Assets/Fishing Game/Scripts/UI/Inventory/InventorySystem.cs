@@ -17,6 +17,7 @@ namespace FishingGame.Inventory
         private void OnEnable()
         {
             GameManager.Instance.GameEvents.OnItemReceived += AddItem;
+            GameManager.Instance.GameEvents.OnItemUsedUp += RemoveItem;
         }
 
         /// <summary>
@@ -48,6 +49,12 @@ namespace FishingGame.Inventory
         public void ClearInventory()
         {
             _fishInventory.Clear();
+        }
+
+        private void RemoveItem(IStorable itemToRemove)
+        {
+            _fishInventory.Remove(itemToRemove);
+            GameManager.Instance.GameEvents.InventoryUpdated(_fishInventory);
         }
     }
 }

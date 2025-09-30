@@ -116,7 +116,7 @@ namespace FishingGame.UI.Inventory
             image.sprite = itemUpdating.GetTexture();
             nameText.text = itemUpdating.GetItemName();
             weightText.text = $"{itemUpdating.GetWeight():0.00}kg";
-            lengthText.gameObject.SetActive(false);
+            lengthText.text = itemUpdating.GetCurrentUseCharge().ToString();
             caughtTimeText.gameObject.SetActive(false);
             locationText.gameObject.SetActive(false);
         }

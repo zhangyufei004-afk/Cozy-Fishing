@@ -36,6 +36,11 @@ namespace FishingGame
             SetItemData();
         }
 
+        private void OnDestroy()
+        {
+            GameManager.Instance.GameEvents.OnAttemptItemPickup -= AttemptItemPickup;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == playerControllerScript.gameObject)

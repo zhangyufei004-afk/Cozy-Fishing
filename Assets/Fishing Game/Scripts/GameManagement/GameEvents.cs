@@ -32,6 +32,7 @@ namespace FishingGame.GameManagement
         public event Action<Fish> OnFishCaught;
         public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
+        public event Action<IStorable> OnItemUsedUp;
 
         #endregion
 
@@ -238,6 +239,11 @@ namespace FishingGame.GameManagement
         public void AttemptItemPickup()
         {
             OnAttemptItemPickup?.Invoke();
+        }
+
+        public void ItemUsedUp(IStorable itemUsedUp)
+        {
+            OnItemUsedUp?.Invoke(itemUsedUp);
         }
     }
 }

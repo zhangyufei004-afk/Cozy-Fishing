@@ -1,4 +1,5 @@
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
 using FishingGame.GameTime;
 using FishingGame.Inventory;
 using FishingGame.Reeling;
@@ -59,12 +60,18 @@ namespace FishingGame.Items
 
         public void UsedUpBait()
         {
+            GameManager.Instance.GameEvents.ItemUsedUp(this);
             _activeFishingRod.RemoveBait();
         }
 
         public override void UseItem()
         {
             ApplyBait(_activeFishingRod);
+        }
+
+        public override int GetCurrentUseCharge()
+        {
+            return _baitCharge;
         }
 
 
