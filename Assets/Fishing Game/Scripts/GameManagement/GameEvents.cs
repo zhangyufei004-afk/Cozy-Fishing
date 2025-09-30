@@ -231,16 +231,29 @@ namespace FishingGame.GameManagement
             OnToggleGrappleCamera?.Invoke(isCameraEnabled);
         }
 
+        /// <summary>
+        /// Run when the player is within range of an item for pickup
+        /// Used primarily to display text to the player that they can pickup an item
+        /// </summary>
+        /// <param name="isInRange">True if in range, otherwise false</param>
+        /// <param name="textToDisplay">The text to display to the player</param>
         public void PickupItemRange(bool isInRange, string textToDisplay)
         {
             OnWithinItemPickupRange?.Invoke(isInRange, textToDisplay);
         }
 
+        /// <summary>
+        /// Run when the player attempts to pickup an item and is range
+        /// </summary>
         public void AttemptItemPickup()
         {
             OnAttemptItemPickup?.Invoke();
         }
 
+        /// <summary>
+        /// Run when an item has used its final charge
+        /// </summary>
+        /// <param name="itemUsedUp">The item that has used its final charge</param>
         public void ItemUsedUp(IStorable itemUsedUp)
         {
             OnItemUsedUp?.Invoke(itemUsedUp);

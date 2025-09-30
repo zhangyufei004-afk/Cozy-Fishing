@@ -74,11 +74,21 @@ namespace FishingGame.FishSystem
             return _weight;
         }
 
+        /// <summary>
+        /// Returns a EItemType.Fish value
+        /// </summary>
+        /// <returns>Returns a EItemType.Fish value</returns>
         public EItemType GetItemType()
         {
             return EItemType.Fish;
         }
 
+        /// <summary>
+        /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
+        /// non-runtime data. 
+        /// </summary>
+        /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
+        /// <returns>The SerializableObject that the Data is stored in.</returns>
         public SerializableObject GetDataObject(out Type dataClassType)
         {
             dataClassType = typeof(FishScriptableObject);
@@ -118,16 +128,33 @@ namespace FishingGame.FishSystem
             return catchAbleType;
         }
 
+        /// <summary>
+        /// Returns the item base
+        /// Currently not used for fish
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">Not used for Fish</exception>
         public ItemScriptable GetItemBase()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Returns the item name
+        /// Current not used for fish
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">Not used for Fish</exception>
         public string GetItemName()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Uses the item
+        /// Not used for Fish
+        /// </summary>
+        /// <exception cref="NotImplementedException">Not used for Fish</exception>
         public void UseItem()
         {
             throw new NotImplementedException();

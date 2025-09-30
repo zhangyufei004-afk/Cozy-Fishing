@@ -51,6 +51,11 @@ namespace FishingGame.Inventory
             _fishInventory.Clear();
         }
 
+        /// <summary>
+        /// Removes inputed item from inventory
+        /// Runs a game event InventoryUpdated when this happens
+        /// </summary>
+        /// <param name="itemToRemove">Item to remove from inventory</param>
         private void RemoveItem(IStorable itemToRemove)
         {
             _fishInventory.Remove(itemToRemove);

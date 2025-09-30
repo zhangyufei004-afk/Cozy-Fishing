@@ -103,6 +103,10 @@ namespace FishingGame.UI.Inventory
             locationText.text = trashUpdating.GetCaughtLocation();
         }
 
+        /// <summary>
+        /// Sets the required text displays for a rod attatchment
+        /// </summary>
+        /// <param name="itemUpdating">The item being shown</param>
         private void VisualRodAttatchment(ItemData itemUpdating)
         {
             ResetTextElements();
@@ -124,6 +128,9 @@ namespace FishingGame.UI.Inventory
 
         #endregion
 
+        /// <summary>
+        /// Resets the active status of text elements to true
+        /// </summary>
         private void ResetTextElements()
         {
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();

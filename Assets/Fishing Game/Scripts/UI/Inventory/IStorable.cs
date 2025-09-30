@@ -35,6 +35,10 @@ namespace FishingGame.Inventory
         /// <returns>The texture used for this item</returns>
         public Sprite GetTexture();
 
+        /// <summary>
+        /// Returns the item name
+        /// </summary>
+        /// <returns>The item name</returns>
         public String GetItemName();
 
         /// <summary>

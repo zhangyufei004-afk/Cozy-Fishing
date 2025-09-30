@@ -8,6 +8,12 @@ using UnityEngine.InputSystem;
 
 namespace FishingGame
 {
+    /// <summary>
+    /// This is the monobehaviour script that is attatched to item gameobjects
+    /// It will update the visuals of the gameobject based on itemModel variable
+    /// It can contain anytype of itemScriptable object which will be turned into data
+    /// at runtime. It contains functionality for determining if player is in range to pickup item
+    /// </summary>
     public class ItemMono : MonoBehaviour
     {
         [SerializeField]
@@ -64,6 +70,9 @@ namespace FishingGame
             }
         }
 
+        /// <summary>
+        /// Sets the itemdata based on what type of scriptable object has been added to this from the inspector
+        /// </summary>
         private void SetItemData()
         {
             switch(itemScriptable.ItemType)
@@ -77,6 +86,10 @@ namespace FishingGame
             }
         }
 
+        /// <summary>
+        /// Runs a switch to check what type of itemscriptable has been set from the inspector
+        /// Creates a type of ItemData based on that
+        /// </summary>
         private void SetItemDataRodAttatch()
         {
             switch (itemScriptable)
@@ -94,6 +107,13 @@ namespace FishingGame
             }
         }
 
+        /// <summary>
+        /// Attempts to pickup the item if player is in range
+        /// This is run through a game event
+        /// If in range adds item to inventory by running itemrecieved event
+        /// and then turns off the text that shows an item is in range
+        /// Also destroys the game object.
+        /// </summary>
         private void AttemptItemPickup()
         {
             if (_playerInInteractionRange)

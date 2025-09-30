@@ -122,6 +122,11 @@ namespace FishingGame.UI.Inventory
             _currentItemCards.Clear();
         }
 
+        /// <summary>
+        /// Run by a button
+        /// This will run the currently displayed items useitem function
+        /// and refresh the inventory screen
+        /// </summary>
         public void UseButtonClicked()
         {
             _currentlyDisplayedItem.UseItem();
@@ -247,6 +252,11 @@ namespace FishingGame.UI.Inventory
             locationLabel.gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// Sets all ui text and labels to be active or inactive based on parameter inputed
+        /// True sets them to active false sets them to nonactive
+        /// </summary>
+        /// <param name="isActive">True sets text to active otherwise false</param>
         private void SetAllLabelsActive(bool isActive)
         {
             itemNameText.gameObject.SetActive(isActive);

@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace FishingGame
 {
+    /// <summary>
+    /// A bait that attracts a specific type of fish
+    /// Inherits from BaitScriptable, this bait has a unique 
+    /// FishScriptableObject variable that represents what type of fish
+    /// this attracts
+    /// </summary>
     [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Items/Baits/NewSpecificFishBait")]
     public class FishTypeBaitScriptable : BaitScriptable
     {

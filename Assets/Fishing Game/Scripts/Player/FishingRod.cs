@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// Contains the logic for charging and throwing the initial fishing line
+    /// </summary>
     public class FishingRod : MonoBehaviour
     {
         [Header("Scrip References")]
@@ -160,6 +163,9 @@ namespace FishingGame.Reeling
             fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
         }
 
+        /// <summary>
+        /// Sets the currently equiped bait to be a nullbait
+        /// </summary>
         public void RemoveBait()
         {
             _currentlyEquipedBait = new NullBait();

@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace FishingGame.FishSystem
 {
+    /// <summary>
+    /// Trash is made from trash scriptable objects
+    /// They are almost exactly like fish
+    /// Implement IStoreable and IFishable
+    /// </summary>
     public class Trash : IStorable, IFishAble
     {
         private ECatchableType _catchAbleType;
@@ -17,7 +22,14 @@ namespace FishingGame.FishSystem
         private int _trashCatchDifficulty;
         private Sprite _trashTexture;
 
-
+        /// <summary>
+        /// Trash is made from trash scriptable objects
+        /// They are almost exactly like fish
+        /// Implement IStoreable and IFishable
+        /// </summary>
+        /// <param name="newTrashBase">The scriptable object that data will come from</param>
+        /// <param name="time">The time this was caught</param>
+        /// <param name="location">The location this was caught at</param>
         public Trash(TrashScriptable newTrashBase, ETimeOfDay time, string location)
         {
             _catchAbleType = ECatchableType.Trash;
@@ -118,16 +130,30 @@ namespace FishingGame.FishSystem
             return _trashName;
         }
 
+        /// <summary>
+        /// Not implemented for Trash
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">Not implemented for Trash</exception>
         public ItemScriptable GetItemBase()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Not implemented for Trash
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">Not implemented for Trash</exception>
         public string GetItemName()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Not implemented for Trash
+        /// </summary>
+        /// <exception cref="NotImplementedException">Not implemented for Trash</exception>
         public void UseItem()
         {
             throw new NotImplementedException();

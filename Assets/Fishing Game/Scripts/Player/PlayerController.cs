@@ -253,6 +253,11 @@ namespace FishingGame.Player
             }
         }
 
+        /// <summary>
+        /// Runs when the player uses the pickup item input
+        /// Calls the AttemptToPickUp item event
+        /// </summary>
+        /// <param name="context"></param>
         private void AttemptToPickupItem(InputAction.CallbackContext context)
         {
             GameManager.Instance.GameEvents.AttemptItemPickup();
