@@ -69,11 +69,28 @@ namespace FishingGame
             switch(itemScriptable.ItemType)
             {
                 case EItemType.RodAttachment:
-                    _itemData = new FishTypeBait((FishTypeBaitScriptable)itemScriptable, playerControllerScript.CurrentFishingRod);
+                    SetItemDataRodAttatch();
                     break;
                 default:
-                    Debug.Log("Whatever type of item this is we don't have the implementation for it yet, check ItemMono script");
+                    Debug.Log("Whatever type of item this is we don't have the implementation for it yet, check ItemMono script under SetItemData()");
                         break;
+            }
+        }
+
+        private void SetItemDataRodAttatch()
+        {
+            switch (itemScriptable)
+            {
+                case FishTypeBaitScriptable:
+                    _itemData = new FishTypeBait((FishTypeBaitScriptable)itemScriptable, playerControllerScript.CurrentFishingRod);
+                    break;
+                case ItemScriptable:
+                    _itemData = new ItemData(itemScriptable);
+                    break;
+                default:
+                    Debug.Log("Whatever type of item this is we don't have the implementation for it yet, check ItemMono script under SetItemDataBait()");
+                    break;
+
             }
         }
 

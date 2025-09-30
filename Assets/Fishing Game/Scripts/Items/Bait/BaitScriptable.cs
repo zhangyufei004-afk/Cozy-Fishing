@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace FishingGame
 {
-    [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Baits")]
+    [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Items/Baits/NewGenericBait")]
     public class BaitScriptable : ItemScriptable
     {
         public int MaxBaitCharge;

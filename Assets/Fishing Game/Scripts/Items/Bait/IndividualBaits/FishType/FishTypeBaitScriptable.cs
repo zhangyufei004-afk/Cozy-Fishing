@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FishingGame
 {
-    [CreateAssetMenu(fileName = "NewFishTypeBait", menuName = "Fishing Game/Fish Type Bait")]
+    [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Items/Baits/NewSpecificFishBait")]
     public class FishTypeBaitScriptable : BaitScriptable
     {
         public FishScriptableObject FishAttractType;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace FishingGame
 {
+    [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Items/NewGenericItem")]
     public class ItemScriptable : SerializableObject
     {
         public string ItemName;
