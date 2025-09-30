@@ -125,6 +125,7 @@ namespace FishingGame.UI.Inventory
         public void UseButtonClicked()
         {
             _currentlyDisplayedItem.UseItem();
+            InventoryEntryClicked(_currentlyDisplayedItem);
         }
 
         /// <summary>
