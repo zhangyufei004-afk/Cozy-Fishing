@@ -139,7 +139,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
-        
+
+        private LayerMask _waterMask;
+
+
         #endregion
 
         public void OnEnable()
@@ -153,6 +156,7 @@ namespace FishingGame.Reeling
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Cast");
             _numberAction = uiActionMap.FindAction("NumberKeys");
+            _waterMask = LayerMask.GetMask("Water");
         }
 
         public void Update()
@@ -360,12 +364,11 @@ namespace FishingGame.Reeling
         {
             RaycastHit hit;
             float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
 
             Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
 
 
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _waterMask))
             {
                 rodBobber.transform.position = hit.point;
             }

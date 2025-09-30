@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using FishingGame.GameManagement;
 using UnityEngine.UIElements;
 using Unity.Cinemachine;
+using System.Xml;
 
 namespace FishingGame.Player
 {
@@ -56,7 +57,10 @@ namespace FishingGame.Player
         private Vector3 _grappleTarget;
         private bool _isCurrentlyEngaged;
 
-
+        // Raycast Properties
+        int _waterLayerMask;
+        int _terrainLayerMask;
+        int _raycastLayerMask;
 
         /// <summary>
         /// Enables or disables the characters movement
@@ -74,7 +78,7 @@ namespace FishingGame.Player
             movementSpeed = 0;
             rotationSpeed = 0;
         }
-        
+
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
@@ -93,6 +97,10 @@ namespace FishingGame.Player
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                 isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
 
+            _terrainLayerMask = 1 << LayerMask.NameToLayer("Terrain"); 
+            _waterLayerMask = 1 << LayerMask.NameToLayer("Water");
+
+            rayLayerMask = _waterLayerMask | _terrainLayerMask;
         }
 
         private void Update()
@@ -174,6 +182,15 @@ namespace FishingGame.Player
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
 
                 Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
+
+                if (!CanWalkInDirection(directionNormalized))
+                {
+                    animator.SetFloat(_speed, 0f);
+
+                    // We need this to apply gravity to the player, as if we don't have this they just float in the air when they get close to water.
+                    characterController.SimpleMove(Vector3.zero);
+                    return;
+                }
 
                 characterController.SimpleMove(directionNormalized * movementSpeed);
 
@@ -257,7 +274,26 @@ namespace FishingGame.Player
             _moveInput = Vector2.zero;
         }
 
-        
 
+        private bool CanWalkInDirection(Vector3 direction)
+        {
+            Vector3 startPositionOffset = transform.position + direction * 1.3f + Vector3.up;
+
+            Debug.DrawRay(startPositionOffset, Vector3.down * 10f, Color.green, Time.deltaTime);
+
+            if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 7f, rayLayerMask))
+            {
+                int layerHitMask = 1 << hitInfo.transform.gameObject.layer;
+                if (layerHitMask == _waterLayerMask)
+                {
+                    return false;
+                }
+                if (transform.position.y - hitInfo.point.y > 0.8f)
+                {   // Is the slope more than 45 degrees
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
