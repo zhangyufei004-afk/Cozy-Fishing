@@ -231,6 +231,8 @@ namespace FishingGame.UI.Inventory
         private void AttatchmentEntryClicked(ItemData entryClicked)
         {
             useItemButton.gameObject.SetActive(true);
+            if (entryClicked.IsCurrentlyEquiped()) { useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unequip item"; }
+            else { useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip item"; }
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetItemName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";

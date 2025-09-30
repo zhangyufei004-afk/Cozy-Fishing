@@ -66,7 +66,13 @@ namespace FishingGame.Items
 
         public override void UseItem()
         {
-            ApplyBait(_activeFishingRod);
+            base.UseItem();
+            if (_activeFishingRod.GetCurrentBait() == this)
+            {
+                _activeFishingRod.RemoveBait();
+                UnEquipItem();
+            }
+            else { ApplyBait(_activeFishingRod); }
         }
 
         public override int GetCurrentUseCharge()

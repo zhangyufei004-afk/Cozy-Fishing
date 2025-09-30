@@ -2,6 +2,7 @@ using FishingGame.Inventory;
 using FishingGame.SaveGame;
 using System;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 namespace FishingGame
 {
@@ -13,6 +14,7 @@ namespace FishingGame
         private float _itemWeight;
         private string _itemName;
         private int _itemCharge;
+        private bool _currentlyEquiped = false;
 
         public ItemData(ItemScriptable itemScriptable)
         {
@@ -60,7 +62,18 @@ namespace FishingGame
 
         public virtual void UseItem()
         {
-            throw new NotImplementedException();
+            _currentlyEquiped = true;
+        }
+
+        public void UnEquipItem()
+        {
+            _currentlyEquiped = false;
+        }
+
+        public bool IsCurrentlyEquiped()
+        {
+            if (_currentlyEquiped) {  return true; }
+            else { return false; }
         }
     }
 }
