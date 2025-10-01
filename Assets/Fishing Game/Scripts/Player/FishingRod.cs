@@ -1,6 +1,8 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Items;
+using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -274,9 +276,17 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputUsed(InputAction.CallbackContext inputAction)
         {
-            if (initiationScript.GetIsFishAtHook())
+            if (initiationScript.IsStageOne())
             {
-                initiationScript.FishCaught();
+                if (initiationScript.IsFishAtHook()) { initiationScript.FishCaught(); }
+                else
+                {
+                    initiationScript.CancelStageOne();
+                    tooSoonText.gameObject.SetActive(true);
+                    StartCoroutine(HideTooSoonText());
+                }
+
+                return;
             }
 
             if (_isBusy) {  return; }
@@ -297,6 +307,12 @@ namespace FishingGame.Reeling
                 SetThrowAnimation();
             }
             ResetCharge();
+        }
+
+        private IEnumerator HideTooSoonText()
+        {
+            yield return new WaitForSeconds(2f);
+            tooSoonText.gameObject.SetActive(false);
         }
 
         #endregion

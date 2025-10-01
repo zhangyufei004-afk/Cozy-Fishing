@@ -198,11 +198,22 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Returns true if the fish is at the hook otherwise falsse
+        /// Returns true if reeling is in stage one, otherwise false
         /// </summary>
-        /// <returns>True if fish is at hook otherwise false</returns>
-        public bool GetIsFishAtHook()
-        { return _fishAtHook; }
+        /// <returns>True if in stage one otherwise false</returns>
+        public bool IsStageOne()
+        {
+            return _isStageOne;
+        }
+
+        /// <summary>
+        /// Returns true if fish is at hook otherwise false
+        /// </summary>
+        /// <returns>True if fish at hook otherwise false</returns>
+        public bool IsFishAtHook()
+        {
+            return _fishAtHook;
+        }
 
         #endregion
 
