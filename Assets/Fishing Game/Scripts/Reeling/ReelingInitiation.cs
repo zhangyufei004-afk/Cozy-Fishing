@@ -38,10 +38,6 @@ namespace FishingGame.Reeling
 
         [Header("ReelingUIElements")]
 
-        [SerializeField]
-        [Tooltip("The Button that is pressed to catch fish")]
-        private UnityEngine.UI.Button catchButton;
-
         [Header("Stageone MiniGame variables")]
 
         [SerializeField]
@@ -64,9 +60,10 @@ namespace FishingGame.Reeling
         
         private GameObject _fishSwim;
 
-        private bool _fishAtHook = false;
         private bool _gameActive = false;
         private bool _isStageOne = false;
+        private bool _fishAtHook = false;
+
         private int _stageOneDifficulty = 0;
         private int _catchSecondsToWait;
 
@@ -136,7 +133,6 @@ namespace FishingGame.Reeling
         {
             _fishAtHook = true;
 
-            SetButtonToGreen(true);
             StartCoroutine(FishCatchTimer(5));
         }
 
@@ -151,7 +147,6 @@ namespace FishingGame.Reeling
             {
                 _fishAtHook = false;
                 _isStageOne = false;
-                StageOneUICleanup();
                 Destroy(_fishSwim);
                 StopAllCoroutines();
                 fishingHook.AttempToFishFromCurrentLocation();
@@ -193,7 +188,6 @@ namespace FishingGame.Reeling
         public void CancelStageOne()
         {
             StopAllCoroutines();
-            StageOneUICleanup();
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
@@ -202,6 +196,13 @@ namespace FishingGame.Reeling
             fishingHook.PullBackHook();
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
         }
+
+        /// <summary>
+        /// Returns true if the fish is at the hook otherwise falsse
+        /// </summary>
+        /// <returns>True if fish is at hook otherwise false</returns>
+        public bool GetIsFishAtHook()
+        { return _fishAtHook; }
 
         #endregion
 
@@ -241,7 +242,6 @@ namespace FishingGame.Reeling
         {
             _fishAtHook = false;
 
-            SetButtonToGreen(false);
             _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
             StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
         }
@@ -284,32 +284,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Sets the catch button color based on the inputed bool
-        /// True sets it to be green
-        /// False does grey
-        /// </summary>
-        /// <param name="isGreen">True sets button to be green, false does grey</param>
-        private void SetButtonToGreen(bool isGreen)
-        {
-            if (isGreen)
-            {
-                catchButton.image.color = Color.green;
-            }
-            else
-            {
-                catchButton.image.color = Color.grey;
-            }
-        }
-
-        /// <summary>
-        /// Disables stageone UI objects
-        /// </summary>
-        private void StageOneUICleanup()
-        {
-            catchButton.gameObject.SetActive(false);
-        }
-
-        /// <summary>
         /// Sets up variables for stage one
         /// </summary>
         private void SetupVariables()
@@ -321,8 +295,6 @@ namespace FishingGame.Reeling
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
             reelingMasterScript.SetCancelButtonVisibilty(true);
-            SetButtonToGreen(false);
-            catchButton.gameObject.SetActive(true);
 
 
             _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);

@@ -1,8 +1,10 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Items;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 namespace FishingGame.Reeling
 {
@@ -65,6 +67,10 @@ namespace FishingGame.Reeling
         [Tooltip("Slider for how much charge the cast bar has for reeling")]
         private UnityEngine.UI.Slider chargeSlider;
 
+        [SerializeField]
+        [Tooltip("The text that shows if you reel in too soon")]
+        private TextMeshProUGUI tooSoonText;
+
 
         [Header("Misc")]
 
@@ -91,30 +97,24 @@ namespace FishingGame.Reeling
 
             if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new NullBait(); }
 
+            _castAction.started += CastInputUsed;
+            _castAction.canceled += CastInputReleased;
+
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
 
+        private void OnDisable()
+        {
+            _castAction.started -= CastInputUsed;
+            _castAction.canceled -= CastInputReleased;
+        }
+
         private void Update()
         {
-            if (_isBusy == true)
+            if (_isCharging)
             {
-                return;
-            }
-
-            if (_castAction.IsPressed())
-            {
-                RightClickHeld();
-            }
-
-            if (_castAction.WasPressedThisFrame())
-            {
-                RightClickUsed();
-            }
-
-            if (_castAction.WasReleasedThisFrame())
-            {
-                RightClickReleased();
+                ChargeLine();
             }
         }
 
@@ -264,17 +264,23 @@ namespace FishingGame.Reeling
             AreReelingControlsActive(false);
         }
 
-        
+
 
         #endregion
 
         #region MouseControlFunctions
-
         /// <summary>
         /// Using right click will begin a charge if there is not one ongoing
         /// </summary>
-        private void RightClickUsed()
+        private void CastInputUsed(InputAction.CallbackContext inputAction)
         {
+            if (initiationScript.GetIsFishAtHook())
+            {
+                initiationScript.FishCaught();
+            }
+
+            if (_isBusy) {  return; }
+
             if (_isCharging != true)
             {
                 BeginCharge();
@@ -282,17 +288,9 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Holding the right mouse button will continiously charge the line
-        /// </summary>
-        private void RightClickHeld()
-        {
-            ChargeLine();
-        }
-
-        /// <summary>
         /// Releasing right click will reset the current charge and throw the rod
         /// </summary>
-        private void RightClickReleased()
+        private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
             if (_isCharging == true)
             {
