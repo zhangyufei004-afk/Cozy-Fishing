@@ -27,17 +27,17 @@ Material:
   m_ValidKeywords:
   - _EMISSIVE_SIMPLE
   - _IS_ANGELRING_OFF
-  - _IS_CLIPPING_TRANSMODE
-  - _IS_OUTLINE_CLIPPING_YES
+  - _IS_CLIPPING_OFF
+  - _IS_OUTLINE_CLIPPING_NO
   - _OUTLINE_NML
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
+  m_CustomRenderQueue: -1
   stringTagMap:
     IgnoreProjection: False
-    RenderType: TransparentCutout
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -52,6 +52,8 @@ Material:
     m_Floats:
     - _1st_ShadeColor_Step: 0.524
     - _BaseColor_Step: 0.524
+    - _ClippingMode: 0
+    - _CullMode: 2
     m_Colors:
     - _1st_ShadeColor: {r: 0.31132078, g: 0.25635713, b: 0.11894804, a: 1}
     - _BaseColor: {r: 0.4056604, g: 0.33223328, b: 0.1549929, a: 1}
