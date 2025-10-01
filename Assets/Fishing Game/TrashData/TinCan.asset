@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f1f061ff17b41144a584e2c976987c5, type: 3}
-  m_Name: Plastic Bag
+  m_Name: TinCan
   m_EditorClassIdentifier: 
-  persistentID: 1
-  Texture: {fileID: 21300000, guid: 20340f570de30fd44a9d2b6eb5e54065, type: 3}
-  Id: 1
-  MinMaxWeight: {x: 0.05, y: 0.1}
-  TrashName: Plastic Bag
+  persistentID: 2
+  Texture: {fileID: 21300000, guid: e59f32a801f070142bad4d19b8684d8d, type: 3}
+  Id: 2
+  MinMaxWeight: {x: 0.16, y: 0.4}
+  TrashName: Tin Can
   TrashDifficulty: 3
-  TrashBio: '"It said it was Bio-Degradable'
-  LocationsFound: 00000000010000000200000003000000
+  TrashBio: Looking at this makes you want beans
+  LocationsFound: 000000000100000003000000
   TimesFound: 00000000010000000200000003000000

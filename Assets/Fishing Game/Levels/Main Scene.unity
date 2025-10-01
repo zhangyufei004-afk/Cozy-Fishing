@@ -272,7 +272,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 155356210}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66b2e846e7f035a4ead6eda1de3cac88, type: 3}
@@ -673,6 +673,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8440614707176360172, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f4a53a06fd9d76840970d64e588dd26b, type: 3}
     - target: {fileID: 8567355452548746950, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: minigameMaster
       value: 
@@ -1088,6 +1092,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153803246}
   m_CullTransparentMesh: 1
+--- !u!1 &155356210 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2680999012508629255, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+  m_PrefabInstance: {fileID: 2125236617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &157760850 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6703619312514077927, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -6890,6 +6899,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38c61f5c4474b024795d9f8314d5a9a4, type: 2}
   potentialTrashTypes:
   - {fileID: 11400000, guid: 250cd2d7ab7835742bcc7f40c75cdada, type: 2}
+  - {fileID: 11400000, guid: cf16239ea3af9594c834d98f45ab04f2, type: 2}
+  - {fileID: 11400000, guid: 3f88db39fb4b0bf42bf4c256f50bce96, type: 2}
 --- !u!4 &1272523031
 Transform:
   m_ObjectHideFlags: 0
@@ -6975,7 +6986,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 84e2309d52ace0f4d9da7512bb632c8f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10600,8 +10611,12 @@ PrefabInstance:
       objectReference: {fileID: 2146182197}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: miniGameTypes.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: 'miniGameTypes.Array.data[1]'
+      value: 
+      objectReference: {fileID: 155356210}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fishingCanvas
       value: 
