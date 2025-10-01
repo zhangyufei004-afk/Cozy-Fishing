@@ -132,6 +132,7 @@ namespace FishingGame.Reeling
         public void FishAtHook()
         {
             _fishAtHook = true;
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", true);
 
             StartCoroutine(FishCatchTimer(5));
         }
@@ -145,6 +146,7 @@ namespace FishingGame.Reeling
         {
             if (_fishAtHook)
             {
+                fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
                 _fishAtHook = false;
                 _isStageOne = false;
                 Destroy(_fishSwim);
@@ -188,6 +190,7 @@ namespace FishingGame.Reeling
         public void CancelStageOne()
         {
             StopAllCoroutines();
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
@@ -252,6 +255,7 @@ namespace FishingGame.Reeling
         private void FishGotAway()
         {
             _fishAtHook = false;
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
 
             _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
             StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
