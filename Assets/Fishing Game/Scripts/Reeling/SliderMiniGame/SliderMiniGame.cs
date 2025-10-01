@@ -26,8 +26,6 @@ namespace FishingGame.Reeling
         [Tooltip("This is connected to the catch box (green square) of the ui")]
         private CatchBox uiCatchBoxScript;
 
-
-
         [Header("UI elements")]
 
         // NOTE: All UI transform modifications in this script use Y for left to right
@@ -54,6 +52,10 @@ namespace FishingGame.Reeling
         private RectTransform catchBox;
 
         [Header("Minigame Data")]
+
+        [SerializeField]
+        [Tooltip("The starting x location for the catchbox")]
+        private float catchboxYStartLocation;
 
         [SerializeField]
         [Tooltip("Scales how much to increase the progress by when the fish is inside of the catchbox")]
@@ -119,6 +121,7 @@ namespace FishingGame.Reeling
 
         private IFishAble _reelingObjectData;
         private bool _isMinigameActive = false;
+        private bool _isMiniGamePaused = false;
         private bool _isGoingLeft;
 
         private InputAction _directionAction;
@@ -141,6 +144,14 @@ namespace FishingGame.Reeling
                 return;
             }
 
+            // Right movement
+            if (_directionAction.ReadValue<Vector2>().x > 0)
+            {
+                UnPauseCatchboxMovement();
+                rightArrow.color = Color.green;
+                SetPlayerVelocity(boxSpeedScalar, false);
+            }
+
             _timePassed += Time.deltaTime;
 
             CheckTimePassed();
@@ -151,21 +162,6 @@ namespace FishingGame.Reeling
             {
                 LoseMiniGame();
             }
-
-            // Right movement
-            if (_directionAction.ReadValue<Vector2>().x > 0)
-            {
-                rightArrow.color = Color.green;
-                SetPlayerVelocity(boxSpeedScalar, false);
-            }
-
-            if (_directionAction.ReadValue<Vector2>().x == 0 || _directionAction.ReadValue<Vector2>().x < 0)
-            {
-                rightArrow.color = Color.white;
-                MovementFightBack();
-            }
-
-            MoveCatchBox();
 
             DetermineIfNeedGoal();
             UpdateFishLocation();
@@ -179,6 +175,16 @@ namespace FishingGame.Reeling
             {
                 ModifyCatchProgress(catchDecreaseAmount);
             }
+
+            if (_isMiniGamePaused) { return; }
+
+            if (_directionAction.ReadValue<Vector2>().x == 0 || _directionAction.ReadValue<Vector2>().x < 0)
+            {
+                rightArrow.color = Color.white;
+                MovementFightBack();
+            }
+
+            MoveCatchBox();
         }
 
         #region Public Functions
@@ -204,6 +210,8 @@ namespace FishingGame.Reeling
             FishSetGoal(newFishGoal);
             _timePassed = 0f;
             _currentTimeScalar = 1;
+            catchBox.transform.localPosition = new Vector3(catchBox.transform.localPosition.x, catchboxYStartLocation, catchBox.transform.localPosition.z);
+            _isMiniGamePaused = true;
 
             // Scaling variables based on difficulty
             _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetCatchDifficulty(), 40, 100);
@@ -237,6 +245,15 @@ namespace FishingGame.Reeling
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
+        }
+
+        /// <summary>
+        /// Returns true if going left, otherwise false
+        /// </summary>
+        /// <returns>True if fish going left otherwise false</returns>
+        public bool GetDirection()
+        {
+            return fishImage.GameObject().GetComponent<Animator>().GetBool("IsLeft");
         }
 
         #endregion
@@ -377,12 +394,22 @@ namespace FishingGame.Reeling
         #region Minigame Stats
 
         /// <summary>
+        /// Unpauses the minigame after the player has inputed right arrow
+        /// </summary>
+        private void UnPauseCatchboxMovement()
+        {
+            _isMiniGamePaused = false;
+        }
+
+        /// <summary>
         /// Modifys the progress bar for this minigame
         /// Checks if the minigame has been won
         /// </summary>
         /// <param name="valueToAdd">The value for how much to change the catch bar</param>
         private void ModifyCatchProgress(float valueToAdd)
         {
+            if (_isMiniGamePaused) { valueToAdd = valueToAdd / 2; }
+
             _catchProgress += (valueToAdd * Time.deltaTime) * _currentTimeScalar;
             progressSlider.value = _catchProgress;
 
