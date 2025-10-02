@@ -6971,7 +6971,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5685c684b3a55942905202f34cef347, type: 2}
   - {fileID: 11400000, guid: 6529f9b1f800b6149a00900b303b7ee2, type: 2}
   - {fileID: 11400000, guid: 38c61f5c4474b024795d9f8314d5a9a4, type: 2}
-  potentialTrashTypes: []
+  potentialTrashTypes:
+  - {fileID: 11400000, guid: cf16239ea3af9594c834d98f45ab04f2, type: 2}
+  - {fileID: 11400000, guid: 250cd2d7ab7835742bcc7f40c75cdada, type: 2}
+  - {fileID: 11400000, guid: 3f88db39fb4b0bf42bf4c256f50bce96, type: 2}
 --- !u!4 &1272523031
 Transform:
   m_ObjectHideFlags: 0
@@ -9603,7 +9606,7 @@ MonoBehaviour:
   length: {fileID: 577435913}
   location: {fileID: 2142407574}
   timeText: {fileID: 799336864}
-  weightLabel: {fileID: 308133121}
+  weightLabel: {fileID: 2039199255}
   lengthLabel: {fileID: 1948374218}
   timeLabel: {fileID: 1123048533}
   locationLabel: {fileID: 885265156}
