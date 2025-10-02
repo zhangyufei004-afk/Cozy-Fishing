@@ -200,6 +200,7 @@ namespace FishingGame.Reeling
             fishingHook.ClearCollidingFishAndPool();
             StopAllCoroutines();
             fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            SetIsReelingAnimation(false);
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
