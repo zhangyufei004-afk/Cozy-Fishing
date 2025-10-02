@@ -58,9 +58,9 @@ namespace FishingGame.Player
         private bool _isCurrentlyEngaged;
 
         [Tooltip("A reference to the fishingRod script")]
-        public FishingRod CurrentFishingRod;
-
-
+        [SerializeField] private FishingRod currentFishingRod;
+        
+        public FishingRod CurrentFishingRod => currentFishingRod;
 
         /// <summary>
         /// Enables or disables the characters movement
