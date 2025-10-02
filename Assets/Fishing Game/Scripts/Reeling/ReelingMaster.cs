@@ -224,6 +224,7 @@ namespace FishingGame.Reeling
         public void CancelFishing()
         {
             SetCancelButtonVisibilty(false);
+            fishingHook.ClearCollidingFishAndPool();
 
             if (IsFishing == true)
             {

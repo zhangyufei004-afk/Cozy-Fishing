@@ -688,6 +688,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4626143025870754190, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982902640698003893, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d279e25ac63fad642b5e277548cbe1ec, type: 3}
     - target: {fileID: 6189720281929895518, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -700,6 +708,10 @@ PrefabInstance:
       propertyPath: masterScript
       value: 
       objectReference: {fileID: 10457640}
+    - target: {fileID: 6841486656523378658, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d60524d386c443f4f92e0a2fc24dcc04, type: 3}
     - target: {fileID: 7319745494018167400, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -708,6 +720,10 @@ PrefabInstance:
       propertyPath: masterScript
       value: 
       objectReference: {fileID: 10457640}
+    - target: {fileID: 7466199062228666272, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7526941246350291450, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -720,6 +736,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8066524725249221471, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 92c5100d4b032fb4f903e734224428ea, type: 3}
     - target: {fileID: 8132309988141412286, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: masterScript
       value: 
@@ -728,6 +748,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8170957063554101541, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e3a82e27324f3024dab0cbb620614743, type: 3}
     - target: {fileID: 8440614707176360172, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -738,6 +762,10 @@ PrefabInstance:
       objectReference: {fileID: 1731090800}
     - target: {fileID: 8821759457862353717, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932022348629044288, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9031331516391147190, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -6479,7 +6507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1130377364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9569,17 +9597,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishListContainer: {fileID: 287286830}
   fishCardPrefab: {fileID: 5527036005734980451, guid: 8f91063fc3e59d04c837034f6d82fd60, type: 3}
-  itemImage: {fileID: 0}
-  itemNameText: {fileID: 0}
+  itemImage: {fileID: 1027459999}
+  itemNameText: {fileID: 695570868}
   weight: {fileID: 2039199255}
-  length: {fileID: 0}
+  length: {fileID: 577435913}
   location: {fileID: 2142407574}
   timeText: {fileID: 799336864}
-  weightLabel: {fileID: 0}
-  lengthLabel: {fileID: 0}
-  timeLabel: {fileID: 0}
-  locationLabel: {fileID: 0}
-  useItemButton: {fileID: 0}
+  weightLabel: {fileID: 308133121}
+  lengthLabel: {fileID: 1948374218}
+  timeLabel: {fileID: 1123048533}
+  locationLabel: {fileID: 885265156}
+  useItemButton: {fileID: 389033950}
 --- !u!1 &1947552813
 GameObject:
   m_ObjectHideFlags: 0
@@ -10758,6 +10786,10 @@ PrefabInstance:
       propertyPath: uiCatchBoxScript
       value: 
       objectReference: {fileID: 1088488886}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: initialTimeToWait
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: timeRequiredForScalar
       value: 6
