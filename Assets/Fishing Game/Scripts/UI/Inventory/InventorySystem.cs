@@ -14,6 +14,12 @@ namespace FishingGame.Inventory
         [SerializeField] private FishLogSystem fishLogSystem;
         private List<IStorable> _fishInventory = new List<IStorable>();
 
+        private void OnEnable()
+        {
+            GameManager.Instance.GameEvents.OnItemReceived += AddItem;
+            GameManager.Instance.GameEvents.OnItemUsedUp += RemoveItem;
+        }
+
         /// <summary>
         /// Adds a new item to the inventory. If the item is a fish, it marks it as caught in FishLogSystem.
         /// </summary>
@@ -43,6 +49,17 @@ namespace FishingGame.Inventory
         public void ClearInventory()
         {
             _fishInventory.Clear();
+        }
+
+        /// <summary>
+        /// Removes inputed item from inventory
+        /// Runs a game event InventoryUpdated when this happens
+        /// </summary>
+        /// <param name="itemToRemove">Item to remove from inventory</param>
+        private void RemoveItem(IStorable itemToRemove)
+        {
+            _fishInventory.Remove(itemToRemove);
+            GameManager.Instance.GameEvents.InventoryUpdated(_fishInventory);
         }
     }
 }

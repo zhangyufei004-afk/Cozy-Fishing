@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using FishingGame.GameManagement;
 using UnityEngine.UIElements;
 using Unity.Cinemachine;
+using FishingGame.Reeling;
 
 namespace FishingGame.Player
 {
@@ -56,7 +57,10 @@ namespace FishingGame.Player
         private Vector3 _grappleTarget;
         private bool _isCurrentlyEngaged;
 
-
+        [Tooltip("A reference to the fishingRod script")]
+        [SerializeField] private FishingRod currentFishingRod;
+        
+        public FishingRod CurrentFishingRod => currentFishingRod;
 
         /// <summary>
         /// Enables or disables the characters movement
@@ -85,6 +89,8 @@ namespace FishingGame.Player
 
             playerActionMap.FindAction("Crouch").performed += ToggleGrapple;
             playerActionMap.FindAction("Reel").performed += Fire;
+
+            playerActionMap.FindAction("Interact").performed += AttemptToPickupItem;
 
             _initialMovementSpeed = movementSpeed;
             _initialRotationSpeed = rotationSpeed;
@@ -245,6 +251,16 @@ namespace FishingGame.Player
                 }
 
             }
+        }
+
+        /// <summary>
+        /// Runs when the player uses the pickup item input
+        /// Calls the AttemptToPickUp item event
+        /// </summary>
+        /// <param name="context"></param>
+        private void AttemptToPickupItem(InputAction.CallbackContext context)
+        {
+            GameManager.Instance.GameEvents.AttemptItemPickup();
         }
         
         private void Move(InputAction.CallbackContext context)
