@@ -6507,7 +6507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1130377364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9597,17 +9597,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishListContainer: {fileID: 287286830}
   fishCardPrefab: {fileID: 5527036005734980451, guid: 8f91063fc3e59d04c837034f6d82fd60, type: 3}
-  itemImage: {fileID: 0}
-  itemNameText: {fileID: 0}
+  itemImage: {fileID: 1027459999}
+  itemNameText: {fileID: 695570868}
   weight: {fileID: 2039199255}
-  length: {fileID: 0}
+  length: {fileID: 577435913}
   location: {fileID: 2142407574}
   timeText: {fileID: 799336864}
-  weightLabel: {fileID: 0}
-  lengthLabel: {fileID: 0}
-  timeLabel: {fileID: 0}
-  locationLabel: {fileID: 0}
-  useItemButton: {fileID: 0}
+  weightLabel: {fileID: 308133121}
+  lengthLabel: {fileID: 1948374218}
+  timeLabel: {fileID: 1123048533}
+  locationLabel: {fileID: 885265156}
+  useItemButton: {fileID: 389033950}
 --- !u!1 &1947552813
 GameObject:
   m_ObjectHideFlags: 0
@@ -10786,6 +10786,10 @@ PrefabInstance:
       propertyPath: uiCatchBoxScript
       value: 
       objectReference: {fileID: 1088488886}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: initialTimeToWait
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: timeRequiredForScalar
       value: 6
