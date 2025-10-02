@@ -355,6 +355,11 @@ Varyings SplatmapVert(Attributes v)
     return o;
 }
 
+float TriangleWave(float p, float t)
+{
+    return (2 * abs(2 * ((t / p) - floor((t / p) + 0.5)))) - 1;
+}
+
 void ComputeMasks(out half4 masks[4], half4 hasMask, Varyings IN)
 {
     masks[0] = 0.5h;
@@ -427,9 +432,17 @@ void SplatmapFragment(
     half3 albedo = mixedDiffuse.rgb;
     
     //#region Custom Wall Thing
-    if(IN.normal.y < _WallTransitionLevel)
+
+    // + ((sin(IN.positionWS.x * 10) + sin(IN.positionWS.z * 10)) * 0.05)
+
+    float t1 = TriangleWave(1, IN.positionWS.x);
+    float t2 = TriangleWave(1, IN.positionWS.z);
+
+    float tf = t1 + t2;
+
+    if(dot(IN.normal.y, half3(0, 1, 0)) + ((tf) * 0.01) < _WallTransitionLevel)
     {
-        albedo = SAMPLE_TEXTURE2D(_WallTexture, sampler_Splat0, IN.uvSplat01.xy) * 0.75;
+        albedo = SAMPLE_TEXTURE2D(_WallTexture, sampler_Splat0, IN.uvSplat01.xy) * 1;
     }
 
     half4 defaultMetallic = half4(_Metallic0, _Metallic1, _Metallic2, _Metallic3);

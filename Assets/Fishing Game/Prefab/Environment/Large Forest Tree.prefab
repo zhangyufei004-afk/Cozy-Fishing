@@ -76,6 +76,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b56dac3cc2312994681511261a0e36f2, type: 2}
+    - target: {fileID: -2643790046992633586, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 76.60089
+      objectReference: {fileID: 0}
+    - target: {fileID: -2643790046992633586, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 69.096
+      objectReference: {fileID: 0}
+    - target: {fileID: -2643790046992633586, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 33.44513
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
       propertyPath: m_Name
       value: Large Forest Tree
@@ -87,6 +99,18 @@ PrefabInstance:
     - target: {fileID: 2745384060114333975, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177830895846513280, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177830895846513280, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 4177830895846513280, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 47.036007
       objectReference: {fileID: 0}
     - target: {fileID: 4711983386522685798, guid: 932579b7a8d11ec41a107fd442804a62, type: 3}
       propertyPath: m_LightProbeUsage

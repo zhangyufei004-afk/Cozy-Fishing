@@ -37,7 +37,7 @@ CBUFFER_START(_Terrain)
     half _HeightTransition;
     half _NumLayersCount;
     half _WallTransitionLevel;
-
+    half _ShadowLevel, _NormalShadowLevel;
 
     #ifdef UNITY_INSTANCING_ENABLED
     float4 _TerrainHeightmapRecipSize;   // float4(1.0f/width, 1.0f/height, 1.0f/(width-1), 1.0f/(height-1))
