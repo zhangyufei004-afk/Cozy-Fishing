@@ -189,6 +189,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void CancelStageOne()
         {
+            fishingHook.ClearCollidingFishAndPool();
             StopAllCoroutines();
             fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
             Destroy(_fishSwim);

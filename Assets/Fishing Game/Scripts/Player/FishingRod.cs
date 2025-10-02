@@ -246,7 +246,7 @@ namespace FishingGame.Reeling
             float maxDistance = fishingRange;
             LayerMask whatToHit = 1;
 
-            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
+            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
 
 
             if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
