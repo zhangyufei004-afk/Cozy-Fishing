@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
+using UnityEditor;
 
 namespace FishingGame.GameManagement
 {
@@ -28,8 +30,9 @@ namespace FishingGame.GameManagement
         #region Inventory Events
 
         public event Action<Fish> OnFishCaught;
-        public event Action OnItemReceived;
+        public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
+        public event Action<IStorable> OnItemUsedUp;
 
         #endregion
 
@@ -64,6 +67,10 @@ namespace FishingGame.GameManagement
         
         public event Action<bool> OnToggleGrappleCamera;
 
+        public event Action<bool, string> OnWithinItemPickupRange;
+
+        public event Action OnAttemptItemPickup;
+
         #endregion
 
         #region AI Events
@@ -78,9 +85,12 @@ namespace FishingGame.GameManagement
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
         /// /// <param name="fishCaught">The data object of the fish being caught</param>
-        public void FishCaught(Fish fishCaught)
+        public void FishCaught(IFishAble fishCaught)
         {
-            OnFishCaught?.Invoke(fishCaught);
+            if (fishCaught.GetCatchType() == ECatchableType.Fish)
+            {
+                OnFishCaught?.Invoke((Fish)fishCaught);
+            }
         }
 
         /// <summary>
@@ -161,7 +171,7 @@ namespace FishingGame.GameManagement
         /// <param name="item">The item which was received.</param>
         public void ItemReceived(IStorable item)
         {
-            OnItemReceived?.Invoke();
+            OnItemReceived?.Invoke(item);
         }
 
         /// <summary>
@@ -219,6 +229,34 @@ namespace FishingGame.GameManagement
         public void ToggleGrappleCamera(bool isCameraEnabled)
         {
             OnToggleGrappleCamera?.Invoke(isCameraEnabled);
+        }
+
+        /// <summary>
+        /// Run when the player is within range of an item for pickup
+        /// Used primarily to display text to the player that they can pickup an item
+        /// </summary>
+        /// <param name="isInRange">True if in range, otherwise false</param>
+        /// <param name="textToDisplay">The text to display to the player</param>
+        public void PickupItemRange(bool isInRange, string textToDisplay)
+        {
+            OnWithinItemPickupRange?.Invoke(isInRange, textToDisplay);
+        }
+
+        /// <summary>
+        /// Run when the player attempts to pickup an item and is range
+        /// </summary>
+        public void AttemptItemPickup()
+        {
+            OnAttemptItemPickup?.Invoke();
+        }
+
+        /// <summary>
+        /// Run when an item has used its final charge
+        /// </summary>
+        /// <param name="itemUsedUp">The item that has used its final charge</param>
+        public void ItemUsedUp(IStorable itemUsedUp)
+        {
+            OnItemUsedUp?.Invoke(itemUsedUp);
         }
     }
 }

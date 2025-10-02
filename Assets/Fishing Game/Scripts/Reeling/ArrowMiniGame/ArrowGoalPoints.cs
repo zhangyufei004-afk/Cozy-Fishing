@@ -10,6 +10,11 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ArrowGoalPoints : MonoBehaviour
     {
+        private void OnEnable()
+        {
+            gameObject.GetComponent<Image>().color = Color.white;
+        }
+
         /// <summary>
         /// Checks if the inputed object is within the inputed range
         /// Returns true if so else false
