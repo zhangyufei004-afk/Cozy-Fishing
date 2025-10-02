@@ -2793,8 +2793,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ffca4f9707438cb073a2a7285d4baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialoguePanel: {fileID: 0}
-  dialogueText: {fileID: 0}
+  dialoguePanel: {fileID: 1691787756}
+  dialogueText: {fileID: 2008394926}
 --- !u!224 &529460814
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14240,6 +14240,14 @@ PrefabInstance:
       propertyPath: gameTime
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 7727843180960746151, guid: f517d64bced34ad4c8f85d852f7e8052, type: 3}
+      propertyPath: homeTime
+      value: 0.993
+      objectReference: {fileID: 0}
+    - target: {fileID: 7727843180960746151, guid: f517d64bced34ad4c8f85d852f7e8052, type: 3}
+      propertyPath: workTime
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 7727843180960746151, guid: f517d64bced34ad4c8f85d852f7e8052, type: 3}
       propertyPath: dialogueUI
       value: 
