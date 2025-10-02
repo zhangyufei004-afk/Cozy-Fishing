@@ -6,6 +6,7 @@ using TMPro;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Inventory;
+using FishingGame.Items;
 using UnityEngine.EventSystems;
 
 namespace FishingGame.UI.Inventory
@@ -19,18 +20,35 @@ namespace FishingGame.UI.Inventory
         [SerializeField] private GameObject fishCardPrefab;
 
         [Header("Inventory Display References")]
-        [SerializeField] [Tooltip("The image that shows what fish is being looked at")] private Image fishImage;
-        [SerializeField] [Tooltip("The textbox that says the species name")]  private TextMeshProUGUI speciesNameText;
-        [SerializeField] [Tooltip("The textbox that says the weight")] private TextMeshProUGUI weight;
-        [SerializeField] [Tooltip("The textbox that shows the location text")] private TextMeshProUGUI location;
-        [SerializeField] [Tooltip("The textbox that shows the time text")] private TextMeshProUGUI timeText;
+        [SerializeField] [Tooltip("The image that shows what item is being looked at")] private Image itemImage;
+        [SerializeField] [Tooltip("The textbox that says the items name")]  private TextMeshProUGUI itemNameText;
+        [SerializeField] [Tooltip("The textbox that says the weight of the item")] private TextMeshProUGUI weight;
+        [SerializeField][Tooltip("The textbox that says the length of the item")] private TextMeshProUGUI length;
+        [SerializeField] [Tooltip("The textbox that shows the location this was found from")] private TextMeshProUGUI location;
+        [SerializeField] [Tooltip("The textbox that shows the time this was found")] private TextMeshProUGUI timeText;
+
+        [SerializeField][Tooltip("The weight title textbox")] private TextMeshProUGUI weightLabel;
+        [SerializeField][Tooltip("The length title textbox")] private TextMeshProUGUI lengthLabel;
+        [SerializeField][Tooltip("The time title textbox")] private TextMeshProUGUI timeLabel;
+        [SerializeField][Tooltip("The location title textbox")] private TextMeshProUGUI locationLabel;
+
+        [SerializeField]
+        [Tooltip("The button that is pressed to use an item")]
+        private Button useItemButton;
+
+        private IStorable _currentlyDisplayedItem;
 
 
-        private readonly List<GameObject> _currentFishCards = new List<GameObject>();
+        private readonly List<GameObject> _currentItemCards = new List<GameObject>();
 
         private void Start()
         {
             GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
+        }
+
+        private void OnEnable()
+        {
+            SetAllLabelsActive(false);
         }
 
         private void OnDisable()
@@ -51,11 +69,45 @@ namespace FishingGame.UI.Inventory
             InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
             if (inventoryUIEntry)
             {
-                inventoryUIEntry.Fish = fish;
+                inventoryUIEntry.Item = fish;
                 inventoryUIEntry.InventoryUIController = this;
                 inventoryUIEntry.UpdateVisuals();
             }
-            _currentFishCards.Add(card);
+            _currentItemCards.Add(card);
+        }
+
+        /// <summary>
+        /// Adds a trash item to the inventory UI as a new card.
+        /// </summary>
+        /// <param name="trash">The item to be displayed</param>
+        public void AddTrashToUI(Trash trash)
+        {
+            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
+            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
+            if (inventoryUIEntry)
+            {
+                inventoryUIEntry.Item = trash;
+                inventoryUIEntry.InventoryUIController = this;
+                inventoryUIEntry.UpdateVisuals();
+            }
+            _currentItemCards.Add(card);
+        }
+
+        /// <summary>
+        /// Adds a trash item to the inventory UI as a new card.
+        /// </summary>
+        /// <param name="trash">The item to be displayed</param>
+        public void AddAttatchmentToUI(ItemData itemToAdd)
+        {
+            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
+            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
+            if (inventoryUIEntry)
+            {
+                inventoryUIEntry.Item = itemToAdd;
+                inventoryUIEntry.InventoryUIController = this;
+                inventoryUIEntry.UpdateVisuals();
+            }
+            _currentItemCards.Add(card);
         }
 
         /// <summary>
@@ -63,11 +115,23 @@ namespace FishingGame.UI.Inventory
         /// </summary>
         public void ClearInventoryUI()
         {
-            foreach (GameObject card in _currentFishCards)
+            SetAllLabelsActive(false);
+            foreach (GameObject card in _currentItemCards)
             {
                 Destroy(card);
             }
-            _currentFishCards.Clear();
+            _currentItemCards.Clear();
+        }
+
+        /// <summary>
+        /// Run by a button
+        /// This will run the currently displayed items useitem function
+        /// and refresh the inventory screen
+        /// </summary>
+        public void UseButtonClicked()
+        {
+            _currentlyDisplayedItem.UseItem();
+            InventoryEntryClicked(_currentlyDisplayedItem);
         }
 
         /// <summary>
@@ -76,6 +140,7 @@ namespace FishingGame.UI.Inventory
         /// <param name="itemList">The list of items to display.</param>
         public void RefreshInventoryUI(List<IStorable> itemList)
         {
+            _currentlyDisplayedItem = null;
             ClearInventoryUI();
 
             foreach (var storable in itemList)
@@ -90,10 +155,15 @@ namespace FishingGame.UI.Inventory
                         Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
                         break;
                     case EItemType.RodAttachment:
-                        Debug.Log("TODO: Tried to add a rod attachment to the inventory UI, but we don't have logic for that yet. ");
+                        ItemData item = storable as ItemData;
+                        AddAttatchmentToUI(item);
                         break;
                     case EItemType.Money:
                         Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
+                        break;
+                    case EItemType.Trash:
+                        Trash trash = storable as Trash;
+                        AddTrashToUI(trash);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -105,13 +175,98 @@ namespace FishingGame.UI.Inventory
         /// Updates Inventory Info display to show whatever fish was clicked
         /// </summary>
         /// <param name="fish">The fish clicked</param>
-        public void FishEntryClicked(Fish fish)
+        public void InventoryEntryClicked(IStorable item)
         {
-            if (fishImage) fishImage.sprite = fish.GetTexture();
-            if (speciesNameText) speciesNameText.text = fish.GetSpeciesName();
-            if (weight) weight.text = fish.GetWeight() + "kg";
-            if (location) location.text = fish.GetCaughtLocation();
-            if (timeText) timeText.text = fish.GetCaughtTime().ToString();
+            _currentlyDisplayedItem = item;
+            SetAllLabelsActive(true);
+            switch (item.GetItemType())
+            {
+                case EItemType.Fish:
+                    FishEntryClicked((Fish)item);
+                    break;
+                case EItemType.Rod:
+                    Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.RodAttachment:
+                    AttatchmentEntryClicked((ItemData)item);
+                    break;
+                case EItemType.Money:
+                    Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
+                    break;
+                case EItemType.Trash:
+                    TrashEntryClicked((Trash)item);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Run when a fish entry is clicked, sets the required display variables
+        /// </summary>
+        /// <param name="entryClicked">The fish that has been clicked</param>
+        private void FishEntryClicked(Fish entryClicked)
+        {
+            useItemButton.gameObject.SetActive(false);
+            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
+            if (itemNameText) itemNameText.text = entryClicked.GetName();
+            if (lengthLabel) lengthLabel.text = "Length:";
+            if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (timeLabel) timeLabel.text = "Time Found:";
+            if (location) location.text = entryClicked.GetCaughtLocation();
+            if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
+        }
+
+        /// <summary>
+        /// Run when a trash entry is clicked, sets the required display variables
+        /// </summary>
+        /// <param name="entryClicked">The trash that has been clicked</param>
+        private void TrashEntryClicked(Trash entryClicked)
+        {
+            useItemButton.gameObject.SetActive(false);
+            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
+            if (itemNameText) itemNameText.text = entryClicked.GetName();
+            if (lengthLabel) lengthLabel.text = "Length:";
+            if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (timeLabel) timeLabel.text = "Time Found:";
+            if (location) location.text = entryClicked.GetCaughtLocation();
+            if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
+        }
+
+        /// <summary>
+        /// Run when a Rod Attatchment entry is clicked, sets the required display variables
+        /// </summary>
+        /// <param name="entryClicked">The trash that has been clicked</param>
+        private void AttatchmentEntryClicked(ItemData entryClicked)
+        {
+            useItemButton.gameObject.SetActive(true);
+            useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = entryClicked.IsCurrentlyEquiped() ? "Unequip item" : "Equip item";
+            
+            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
+            if (itemNameText) itemNameText.text = entryClicked.GetItemName();
+            if (weight) weight.text = entryClicked.GetWeight() + "kg";
+            if (lengthLabel) lengthLabel.text = "Charges:";
+            if (timeLabel) timeLabel.text = "Item description:";
+            if (timeLabel) timeText.text = entryClicked.GetTooltip();
+            if (length) length.text = entryClicked.GetCurrentUseCharge().ToString();
+
+            locationLabel.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Sets all ui text and labels to be active or inactive based on parameter inputed
+        /// True sets them to active false sets them to nonactive
+        /// </summary>
+        /// <param name="isActive">True sets text to active otherwise false</param>
+        private void SetAllLabelsActive(bool isActive)
+        {
+            itemNameText.gameObject.SetActive(isActive);
+            itemImage.gameObject.SetActive(isActive);
+            weightLabel.gameObject.SetActive(isActive);
+            lengthLabel.gameObject.SetActive(isActive);
+            timeLabel.gameObject.SetActive(isActive);
+            locationLabel.gameObject.SetActive(isActive);
+            useItemButton.gameObject.SetActive(isActive);
         }
     }
 }

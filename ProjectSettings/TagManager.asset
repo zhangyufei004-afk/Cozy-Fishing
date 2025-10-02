@@ -8,6 +8,7 @@ TagManager:
   - Cursor
   - RealisticGoal
   - DragableUI
+  - Item
   layers:
   - Default
   - TransparentFX
