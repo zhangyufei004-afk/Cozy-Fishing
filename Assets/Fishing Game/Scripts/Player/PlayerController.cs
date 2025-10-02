@@ -294,7 +294,7 @@ namespace FishingGame.Player
 
         private bool CanWalkInDirection(Vector3 direction)
         {
-            Vector3 startPositionOffset = transform.position + direction * 1.3f + Vector3.up;
+            Vector3 startPositionOffset = transform.position + direction * 0.9f + Vector3.up;
 
             Debug.DrawRay(startPositionOffset, Vector3.down * 10f, Color.green, Time.deltaTime);
 
