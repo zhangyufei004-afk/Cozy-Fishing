@@ -21,6 +21,10 @@ namespace FishingGame.GameManagement
         [Tooltip("A list of all potential fish in this level")]
         private List<FishScriptableObject> potentialFishTypes;
 
+        [SerializeField]
+        [Tooltip("A list of all potential trash in this level")]
+        private List<TrashScriptable> potentialTrashTypes;
+
         private Dictionary<FishScriptableObject, int> _fishTimesCaught;
         private Dictionary<FishScriptableObject, float> _fishBiggestCatch;
 
@@ -53,6 +57,15 @@ namespace FishingGame.GameManagement
         public List<FishScriptableObject> GetPossibleFishList()
         {
             return potentialFishTypes;
+        }
+
+        /// <summary>
+        /// Returns the list of trash available in this level
+        /// </summary>
+        /// <returns>A list of trash available in this level</returns>
+        public List<TrashScriptable> GetPossibleTrashList()
+        {
+            return potentialTrashTypes;
         }
 
         /// <summary>

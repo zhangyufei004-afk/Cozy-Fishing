@@ -1,10 +1,20 @@
 using FishingGame.FishSystem;
+using System;
+using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
+    internal enum ERealisticDirection
+    {
+        Clockwise = 0,
+        AntiClockwise,
+        Stop
+    };
+
     /// <summary>
     /// The realistic minigame simulates spinning a reel
     /// The player has to spin the reel either clockwise or anti clockwise by clicking and dragging a dragable UI image
@@ -49,24 +59,68 @@ namespace FishingGame.Reeling
         [Tooltip("The default value for how much progress is lost per second spinning wrong way")]
         private float defaultDecayValue;
 
+        [SerializeField]
+        [Tooltip("The default value for how much progress is needed to win")]
+        private float defaultProgressMax;
+
+        [SerializeField]
+        [Tooltip("The value for how much progress needed difficulty causes")]
+        private float defaultProgressScaleValue;
+
+        [SerializeField]
+        [Tooltip("The value for how many seconds until the time scale is increased")]
+        private int timeScaleMaxSeconds;
+
         private int _fishDifficulty;
+
+        private GameObject _currentFish3D;
+        private float _currentTimeScale;
+        private float _currentScaleTimerValue;
         private float _progressValue;
         private float _progressMaxValue;
+        private float _timeSinceLastDirectionChange;
+        private float _directionRollTimerMax = 8f;
 
-        private bool _goClockWise = false;
+
+        private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
 
         private void Update()
         {
             if (_miniGameActive != true) { return; }
 
-            if (CheckIfDragableInRightDirection() && dragableScript.GetIsMovingValue() != false)
+            if (CheckIfLost()) { EndMiniGame(false); return; }
+
+            // Triples the addition to timer if stop is current direction
+            if (_currentDirection == ERealisticDirection.Stop) { _timeSinceLastDirectionChange += (Time.deltaTime * 3) * _currentTimeScale; }
+            else { _timeSinceLastDirectionChange += Time.deltaTime * _currentTimeScale; }
+            
+
+            if (_timeSinceLastDirectionChange >= _directionRollTimerMax)
             {
-                float speed = dragableScript.GetSpeed() * Time.deltaTime;
+                DecideDirection();
+            }
+
+            if (_currentScaleTimerValue >= timeScaleMaxSeconds)
+            {
+                UpdateTimeScale();
+            }
+
+            if (CheckIfDragableInRightDirection())
+            {
+                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
+
+                if (_currentDirection == ERealisticDirection.Stop)
+                {
+                    AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
+                    return;
+                }
+                float speed = (dragableScript.GetSpeed() * Time.deltaTime) * _currentTimeScale;
                 AddToProgressSlider(speed);
             }
             else
             {
+                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
                 RemoveFromProgressSlider(defaultDecayValue * Time.deltaTime);
             }
         }
@@ -77,10 +131,11 @@ namespace FishingGame.Reeling
         /// Initializes the minigame, setting the catchdifficulty and runs the initiation functions
         /// </summary>
         /// <param name="fishScriptable">Data of fish being caught</param>
-        public void InitializeMiniGame(Fish fishScriptable)
+        public void InitializeMiniGame(IFishAble fishScriptable)
         {
-            _fishDifficulty = fishScriptable.GetFishCatchDifficulty();
+            _fishDifficulty = fishScriptable.GetCatchDifficulty();
             realisticCanvas.SetActive(true);
+            _currentFish3D = reelingMaster.GetCurrent3DFishObject();
 
             InitializeRunTimeData();
         }
@@ -132,10 +187,11 @@ namespace FishingGame.Reeling
         {
             // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
             progressToAdd *= 3;
-            if (_goClockWise)
+            if (_currentDirection == ERealisticDirection.Clockwise)
             {
                 progressToAdd = -progressToAdd;
             }
+
             progressSlider.value += progressToAdd;
             _progressValue += progressToAdd;
 
@@ -168,36 +224,53 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Decides what direction player must spin in by rolling a random value between 0 and 2
-        /// Rolling a 0 = clockwise
-        /// Rolling a 1 = anti-clockwise
+        /// Sets the initial direction to either clockwise or anti clockwise
+        /// Does not have stop as an option
         /// </summary>
-        private void DecideDirection()
+        private void SetInitialDirection()
         {
-            int rolledNumber = Random.Range(0, 2);
-            Debug.Log(rolledNumber);
-            if (rolledNumber == 0)
-            {
-                _goClockWise = true;
-            }
-            else { _goClockWise = false; }
+            int rolledNumber = UnityEngine.Random.Range(0, 2);
+            _currentDirection = (ERealisticDirection)rolledNumber;
+            SetTextAndAnimationForDirection();
         }
 
         /// <summary>
-        /// Sets the text that tells the player what direction to spin in
+        /// Decides what direction player must spin in by rolling a random value between 0 and enum value count
+        /// </summary>
+        private void DecideDirection()
+        {
+            Array enumValues = Enum.GetValues(typeof(ERealisticDirection));
+            int directionSize = enumValues.Length;
+
+            int rolledNumber = UnityEngine.Random.Range(0, directionSize);
+            _currentDirection = (ERealisticDirection)rolledNumber;
+
+            _timeSinceLastDirectionChange = 0f;
+            SetTextAndAnimationForDirection();
+        }
+
+        /// <summary>
+        /// Sets the text and animation that tells the player what direction to spin in
         /// Paremeter bool is used to decide what text to set
         /// true = Clockwise, False = anti-clockwise
         /// </summary>
         /// <param name="isClockwise">True = clockwise, false = anti-clockwise</param>
-        private void SetTextForDirection(bool isClockwise)
+        private void SetTextAndAnimationForDirection()
         {
-            if (isClockwise)
+            switch (_currentDirection)
             {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
-            }
-            else
-            {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+                case ERealisticDirection.Clockwise:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    break;
+                case ERealisticDirection.AntiClockwise:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+                    break;
+                case ERealisticDirection.Stop:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Stop spinning!";
+                    break;
+                default:
+                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
             }
         }
 
@@ -207,9 +280,9 @@ namespace FishingGame.Reeling
         /// <returns>True if dragged in right direction otherwise false</returns>
         private bool CheckIfDragableInRightDirection()
         {
-            bool goingClockwise = dragableScript.GetCurrentDirection();
+            ERealisticDirection dragableCurrentDirection = (ERealisticDirection)dragableScript.GetCurrentDirectionAsInt();
 
-            if (goingClockwise == _goClockWise)
+            if (dragableCurrentDirection == _currentDirection)
             {
                 return true;
             }
@@ -226,6 +299,25 @@ namespace FishingGame.Reeling
             else { return false; }
         }
 
+        /// <summary>
+        /// Checks if the progress value is less than or equal to 0 if so returns true
+        /// </summary>
+        /// <returns>True if below 0 progress</returns>
+        private bool CheckIfLost()
+        {
+            if (_progressValue <= 0) { return true; }
+            else { return false; }
+        }
+
+        /// <summary>
+        /// Increase the current timescale value by 1
+        /// </summary>
+        private void UpdateTimeScale()
+        {
+            _currentScaleTimerValue = 0;
+            _currentTimeScale += 1;
+        }
+
 
         #endregion
 
@@ -238,8 +330,7 @@ namespace FishingGame.Reeling
         {
             ResetGameTimeVariables();
             DifficultyScalars();
-            DecideDirection();
-            SetTextForDirection(_goClockWise);
+            SetInitialDirection();
         }
 
         /// <summary>
@@ -247,7 +338,9 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetGameTimeVariables()
         {
+            _currentTimeScale = 1.0f;
             _progressValue = 0f;
+            _timeSinceLastDirectionChange = 0f;
             progressSlider.value = _progressValue;
         }
 
@@ -256,9 +349,10 @@ namespace FishingGame.Reeling
         /// </summary>
         private void DifficultyScalars()
         {
-            // TODO: Add some difficulty scalars here
-            _progressMaxValue = 100;
+            _progressMaxValue = defaultProgressMax + (defaultProgressScaleValue * _fishDifficulty);
             progressSlider.maxValue = _progressMaxValue;
+            _progressValue = Mathf.Clamp(20f, _progressMaxValue / _fishDifficulty, 10000f);
+            progressSlider.value = _progressValue;
         }
 
         #endregion
