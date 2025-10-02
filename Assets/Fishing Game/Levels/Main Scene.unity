@@ -5003,6 +5003,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3ee5e9f9504d4d9459bf04b2bb2deb86, type: 2}
+    - target: {fileID: 4451464230676058494, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: m_Name
+      value: MiddleRIver
+      objectReference: {fileID: 0}
     - target: {fileID: 4967538340062464992, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_ProvidesContacts
       value: 1
@@ -5080,6 +5084,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4353727223104730747, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1827011510}
+    - targetCorrespondingSourceObject: {fileID: 1725149306719062553, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1746516826}
     - targetCorrespondingSourceObject: {fileID: 5365232863842809685, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 888942147}
@@ -5120,10 +5127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfFishHeld: 4
-  amountOfTrash: 0
-  maxAmountOfPopulation: 0
-  populationLowerable: 0
+  amountOfFishHeld: 8
+  amountOfTrash: 4
+  maxAmountOfPopulation: 12
+  populationLowerable: 1
   timeScript: {fileID: 1847882215}
   fishingLocation: 1
   lowestFishDifficulty: 1
@@ -5163,10 +5170,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfFishHeld: 4
-  amountOfTrash: 0
-  maxAmountOfPopulation: 0
-  populationLowerable: 0
+  amountOfFishHeld: 8
+  amountOfTrash: 4
+  maxAmountOfPopulation: 12
+  populationLowerable: 1
   timeScript: {fileID: 1847882215}
   fishingLocation: 0
   lowestFishDifficulty: 4
@@ -5207,9 +5214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfFishHeld: 6
+  amountOfFishHeld: 10
   amountOfTrash: 0
-  maxAmountOfPopulation: 0
+  maxAmountOfPopulation: 10
   populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 1
@@ -7958,9 +7965,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfFishHeld: 20
-  amountOfTrash: 0
-  maxAmountOfPopulation: 0
+  amountOfFishHeld: 25
+  amountOfTrash: 5
+  maxAmountOfPopulation: 30
   populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 0
@@ -9278,6 +9285,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744689244}
   m_CullTransparentMesh: 1
+--- !u!1 &1746516821 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1725149306719062553, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+  m_PrefabInstance: {fileID: 888942142}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1746516826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746516821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amountOfFishHeld: 12
+  amountOfTrash: 4
+  maxAmountOfPopulation: 16
+  populationLowerable: 1
+  timeScript: {fileID: 1847882215}
+  fishingLocation: 1
+  lowestFishDifficulty: 6
+  highestFishDifficulty: 10
+  isInfested: 0
+  overrideFishList: []
 --- !u!1001 &1756980145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9534,10 +9568,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfFishHeld: 4
-  amountOfTrash: 0
-  maxAmountOfPopulation: 0
-  populationLowerable: 0
+  amountOfFishHeld: 8
+  amountOfTrash: 2
+  maxAmountOfPopulation: 10
+  populationLowerable: 1
   timeScript: {fileID: 1847882215}
   fishingLocation: 3
   lowestFishDifficulty: 1
