@@ -195,6 +195,7 @@ namespace FishingGame.Reeling
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
+            characterAnimator.SetBool("isReeling", false);
 
             _isStageOne = false;
             fishingHook.PullBackHook();

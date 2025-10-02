@@ -263,6 +263,7 @@ namespace FishingGame.Reeling
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _targetLocation = rodBobber.transform.position;
             characterAnimator.SetTrigger("ThrowTrigger");
+            characterAnimator.SetBool("isReeling", true);
             reelingMasterScript.DisableControls(true);
             AreReelingControlsActive(false);
         }

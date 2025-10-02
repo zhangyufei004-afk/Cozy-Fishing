@@ -88,7 +88,13 @@ namespace FishingGame.Reeling
         [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
         public bool IsFishing { get; private set; }
 
-#endregion
+        [Header("Misc")]
+
+        [SerializeField]
+        [Tooltip("The animator attatched to the player")]
+        private Animator characterAnimator;
+
+        #endregion
 
         #region Public Methods
 
@@ -225,6 +231,7 @@ namespace FishingGame.Reeling
         {
             SetCancelButtonVisibilty(false);
             fishingHook.ClearCollidingFishAndPool();
+            
 
             if (IsFishing == true)
             {
@@ -353,6 +360,7 @@ namespace FishingGame.Reeling
 
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
+            characterAnimator.SetBool("isReeling", false);
             Destroy(_current3DObject);
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
