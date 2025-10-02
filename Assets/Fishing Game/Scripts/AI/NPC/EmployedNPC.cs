@@ -140,7 +140,10 @@ namespace FishingGame.AI.NPC
                         workPosition, 
                         homePosition, 
                         _hobbyPosition,
-                        gameTime
+                        gameTime,
+                        workTime,
+                        hobbyTime,
+                        homeTime
                     ),
                     new TaskMoveToDestination(agent, animator)
                 }),

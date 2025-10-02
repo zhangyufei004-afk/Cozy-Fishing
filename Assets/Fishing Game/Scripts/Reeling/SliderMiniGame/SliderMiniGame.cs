@@ -221,6 +221,7 @@ namespace FishingGame.Reeling
             _isMiniGamePaused = true;
 
             // Scaling variables based on difficulty
+            progressSlider.maxValue = _catchMax;
             _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetCatchDifficulty(), 40, 100);
         }
 
