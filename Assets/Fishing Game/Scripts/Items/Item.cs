@@ -1,12 +1,11 @@
 using FishingGame.GameManagement;
 using FishingGame.Inventory;
-using FishingGame.Items;
+using FishingGame.Items.Bait;
 using FishingGame.Player;
-using FishingGame.Reeling;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace FishingGame
+namespace FishingGame.Items
 {
     /// <summary>
     /// This is the monobehaviour script that is attatched to item gameobjects
@@ -14,7 +13,7 @@ namespace FishingGame
     /// It can contain anytype of itemScriptable object which will be turned into data
     /// at runtime. It contains functionality for determining if player is in range to pickup item
     /// </summary>
-    public class ItemMono : MonoBehaviour
+    public class Item : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The item that this object should represent, inputed as a scriptable object")]

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
-     enum ERealisticDireciton
+    internal enum ERealisticDirection
     {
         Clockwise = 0,
         AntiClockwise,
@@ -82,7 +82,7 @@ namespace FishingGame.Reeling
         private float _directionRollTimerMax = 8f;
 
 
-        private ERealisticDireciton _currentDirection;
+        private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
 
         private void Update()
@@ -92,7 +92,7 @@ namespace FishingGame.Reeling
             if (CheckIfLost()) { EndMiniGame(false); return; }
 
             // Triples the addition to timer if stop is current direction
-            if (_currentDirection == ERealisticDireciton.Stop) { _timeSinceLastDirectionChange += (Time.deltaTime * 3) * _currentTimeScale; }
+            if (_currentDirection == ERealisticDirection.Stop) { _timeSinceLastDirectionChange += (Time.deltaTime * 3) * _currentTimeScale; }
             else { _timeSinceLastDirectionChange += Time.deltaTime * _currentTimeScale; }
             
 
@@ -110,7 +110,7 @@ namespace FishingGame.Reeling
             {
                 textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
 
-                if (_currentDirection == ERealisticDireciton.Stop)
+                if (_currentDirection == ERealisticDirection.Stop)
                 {
                     AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
                     return;
@@ -187,7 +187,7 @@ namespace FishingGame.Reeling
         {
             // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
             progressToAdd *= 3;
-            if (_currentDirection == ERealisticDireciton.Clockwise)
+            if (_currentDirection == ERealisticDirection.Clockwise)
             {
                 progressToAdd = -progressToAdd;
             }
@@ -230,7 +230,7 @@ namespace FishingGame.Reeling
         private void SetInitialDirection()
         {
             int rolledNumber = UnityEngine.Random.Range(0, 2);
-            _currentDirection = (ERealisticDireciton)rolledNumber;
+            _currentDirection = (ERealisticDirection)rolledNumber;
             SetTextAndAnimationForDirection();
         }
 
@@ -239,11 +239,11 @@ namespace FishingGame.Reeling
         /// </summary>
         private void DecideDirection()
         {
-            Array enumValues = Enum.GetValues(typeof(ERealisticDireciton));
+            Array enumValues = Enum.GetValues(typeof(ERealisticDirection));
             int directionSize = enumValues.Length;
 
             int rolledNumber = UnityEngine.Random.Range(0, directionSize);
-            _currentDirection = (ERealisticDireciton)rolledNumber;
+            _currentDirection = (ERealisticDirection)rolledNumber;
 
             _timeSinceLastDirectionChange = 0f;
             SetTextAndAnimationForDirection();
@@ -259,13 +259,13 @@ namespace FishingGame.Reeling
         {
             switch (_currentDirection)
             {
-                case ERealisticDireciton.Clockwise:
+                case ERealisticDirection.Clockwise:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
                     break;
-                case ERealisticDireciton.AntiClockwise:
+                case ERealisticDirection.AntiClockwise:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
                     break;
-                case ERealisticDireciton.Stop:
+                case ERealisticDirection.Stop:
                     textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Stop spinning!";
                     break;
                 default:
@@ -280,7 +280,7 @@ namespace FishingGame.Reeling
         /// <returns>True if dragged in right direction otherwise false</returns>
         private bool CheckIfDragableInRightDirection()
         {
-            ERealisticDireciton dragableCurrentDirection = (ERealisticDireciton)dragableScript.GetCurrentDirectionAsInt();
+            ERealisticDirection dragableCurrentDirection = (ERealisticDirection)dragableScript.GetCurrentDirectionAsInt();
 
             if (dragableCurrentDirection == _currentDirection)
             {

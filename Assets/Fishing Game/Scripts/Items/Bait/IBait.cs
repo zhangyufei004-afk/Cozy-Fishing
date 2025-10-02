@@ -2,7 +2,7 @@ using FishingGame.FishSystem;
 using FishingGame.Reeling;
 using UnityEngine;
 
-namespace FishingGame.Items
+namespace FishingGame.Items.Bait
 {
     /// <summary>
     /// This is an interface that all baits should use

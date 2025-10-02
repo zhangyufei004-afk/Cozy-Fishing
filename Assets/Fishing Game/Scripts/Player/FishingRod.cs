@@ -3,6 +3,7 @@ using FishingGame.GameManagement;
 using FishingGame.Items;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using FishingGame.Items.Bait;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;

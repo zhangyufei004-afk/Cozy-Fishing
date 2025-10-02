@@ -11846,6 +11846,10 @@ PrefabInstance:
       propertyPath: CurrentFishingRod
       value: 
       objectReference: {fileID: 468167251}
+    - target: {fileID: 1148033641354189641, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: currentFishingRod
+      value: 
+      objectReference: {fileID: 468167251}
     - target: {fileID: 1300904315361867803, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -11.007208

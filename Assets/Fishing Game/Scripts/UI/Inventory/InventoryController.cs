@@ -45,17 +45,14 @@ namespace FishingGame.UI.Inventory
             {
                 _isInventoryOpen = !_isInventoryOpen;
                 GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-                inventoryPanel.SetActive(_isInventoryOpen);
-                playerController.ToggleMovement(!_isInventoryOpen);
             }
             else
             {
                 _isInventoryOpen = false;
                 GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-                inventoryPanel.SetActive(_isInventoryOpen);
-                playerController.ToggleMovement(!_isInventoryOpen);
             }
-            
+            inventoryPanel.SetActive(_isInventoryOpen);
+            playerController.ToggleMovement(!_isInventoryOpen);
         }
     }
 }

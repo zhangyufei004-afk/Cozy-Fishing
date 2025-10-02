@@ -2,6 +2,7 @@ using FishingGame.GameTime;
 using FishingGame.Inventory;
 using FishingGame.SaveGame;
 using System;
+using FishingGame.Items;
 using UnityEngine;
 
 namespace FishingGame.FishSystem

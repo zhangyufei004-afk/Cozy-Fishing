@@ -9,6 +9,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using FishingGame.Items;
+using FishingGame.Items.Bait;
 
 namespace FishingGame.Reeling
 {

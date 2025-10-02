@@ -2,7 +2,7 @@ using FishingGame.FishSystem;
 using FishingGame.SaveGame;
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.Items.Bait
 {
     /// <summary>
     /// A bait that attracts a specific type of fish

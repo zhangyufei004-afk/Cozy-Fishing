@@ -35,7 +35,7 @@ namespace FishingGame.Reeling
         private InputAction _mouseInput;
         private InputAction _realisticStickAction;
 
-        private ERealisticDireciton _currentDirection;
+        private ERealisticDirection _currentDirection;
 
         private bool _isMoving;
         private float _angleTotal;
@@ -114,7 +114,7 @@ namespace FishingGame.Reeling
             else 
             { 
                 _isMoving = false;
-                _currentDirection = ERealisticDireciton.Stop; 
+                _currentDirection = ERealisticDirection.Stop; 
             }
         }
 
@@ -166,19 +166,19 @@ namespace FishingGame.Reeling
 
             switch (_currentDirection)
             {
-                case ERealisticDireciton.Clockwise:
+                case ERealisticDirection.Clockwise:
                     if (_directionChangeTracker > 0)
                     {
                         _angleTotal = 0;
                     }
                     break;
-                case ERealisticDireciton.AntiClockwise:
+                case ERealisticDirection.AntiClockwise:
                     if (_directionChangeTracker < 0)
                     {
                         _angleTotal = 0;
                     }
                     break;
-                case ERealisticDireciton.Stop:
+                case ERealisticDirection.Stop:
                     break;
                 default:
                     if (_directionChangeTracker > 0)
@@ -196,15 +196,15 @@ namespace FishingGame.Reeling
         {
             if (_angleTotal < 0)
             {
-                _currentDirection = ERealisticDireciton.Clockwise;
+                _currentDirection = ERealisticDirection.Clockwise;
             }
             else if (_angleTotal > 0)
             {
-                _currentDirection = ERealisticDireciton.AntiClockwise;
+                _currentDirection = ERealisticDirection.AntiClockwise;
             }
             else
             {
-                _currentDirection = ERealisticDireciton.Stop;
+                _currentDirection = ERealisticDirection.Stop;
             }
         }
 

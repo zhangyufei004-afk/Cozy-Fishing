@@ -8,7 +8,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace FishingGame.Items
+namespace FishingGame.Items.Bait
 {
     /// <summary>
     /// When created this bait contains a reference to a type of fish it attracts

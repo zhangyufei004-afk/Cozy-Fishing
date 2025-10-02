@@ -2,7 +2,7 @@ using FishingGame.Inventory;
 using FishingGame.SaveGame;
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.Items
 {
     /// <summary>
     /// The base scriptable object for an item

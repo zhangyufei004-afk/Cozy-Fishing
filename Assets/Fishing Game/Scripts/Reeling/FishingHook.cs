@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Timers;
+using FishingGame.Items.Bait;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.ProBuilder.MeshOperations;
@@ -307,7 +308,7 @@ namespace FishingGame.Reeling
             }
             else if (randomPoolFish.GetCatchType() == ECatchableType.Trash)
             {
-                Trash trashCaught = (Trash)randomPoolFish;
+                Trash trashCaught = randomPoolFish as Trash;
 
                 reelingMaster.BeginCatchTrash(trashCaught, fishModel, fishingPool);
             }

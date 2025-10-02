@@ -1,4 +1,5 @@
 using System;
+using FishingGame.Items;
 using FishingGame.SaveGame;
 using UnityEngine;
 

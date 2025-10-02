@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
-namespace FishingGame
+namespace FishingGame.Items
 {
     /// <summary>
     /// This is the default item type class

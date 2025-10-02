@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.Items.Bait
 {
     [CreateAssetMenu(fileName = "Baititems", menuName = "Fishing Game/Items/Baits/NewGenericBait")]
     public class BaitScriptable : ItemScriptable

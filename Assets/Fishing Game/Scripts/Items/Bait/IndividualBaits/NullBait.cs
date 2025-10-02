@@ -4,7 +4,7 @@ using FishingGame.Items;
 using FishingGame.Reeling;
 using UnityEngine;
 
-namespace FishingGame
+namespace FishingGame.Items.Bait
 {
     /// <summary>
     /// When no bait is equiped by the fishing rod this bait is assigned to it

@@ -3,6 +3,7 @@ using FishingGame.GameManagement;
 using FishingGame.GameTime;
 using FishingGame.Items;
 using System.Collections.Generic;
+using FishingGame.Items.Bait;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -294,7 +295,7 @@ namespace FishingGame.Reeling
         /// If it returns true it is a fish otherwise it returns false
         /// meaning it is a trash object
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if a fish should be caught, false if trash should be caught</returns>
         private bool CatchFishOrTrash()
         {
             int rolledNumber = Random.Range(0, amountOfTrash + amountOfFishHeld);

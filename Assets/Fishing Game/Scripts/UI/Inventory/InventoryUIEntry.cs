@@ -2,6 +2,7 @@ using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.UI.Inventory;
 using System;
+using FishingGame.Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,7 +39,7 @@ namespace FishingGame.UI.Inventory
             switch(_item.GetItemType())
             {
                 case EItemType.Fish:
-                    VisualIsFish((Fish)_item);
+                    VisualiseFish((Fish)_item);
                     break;
                 case EItemType.Rod:
                     Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
@@ -50,7 +51,7 @@ namespace FishingGame.UI.Inventory
                     Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
                     break;
                 case EItemType.Trash:
-                    VisualTrash((Trash)_item);
+                    VisualiseTrash((Trash)_item);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -63,7 +64,7 @@ namespace FishingGame.UI.Inventory
         /// Run when the visual item is a fish
         /// </summary>
         /// <param name="fishUpdating">The fish data being used</param>
-        private void VisualIsFish(Fish fishUpdating)
+        private void VisualiseFish(Fish fishUpdating)
         {
             ResetTextElements();
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
@@ -85,7 +86,7 @@ namespace FishingGame.UI.Inventory
         /// Run when the visual item is a trash
         /// </summary>
         /// <param name="trashUpdating">Trash data being used</param>
-        private void VisualTrash(Trash trashUpdating)
+        private void VisualiseTrash(Trash trashUpdating)
         {
             ResetTextElements();
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();

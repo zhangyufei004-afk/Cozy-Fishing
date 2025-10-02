@@ -6,6 +6,7 @@ using TMPro;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Inventory;
+using FishingGame.Items;
 using UnityEngine.EventSystems;
 
 namespace FishingGame.UI.Inventory
@@ -22,14 +23,14 @@ namespace FishingGame.UI.Inventory
         [SerializeField] [Tooltip("The image that shows what item is being looked at")] private Image itemImage;
         [SerializeField] [Tooltip("The textbox that says the items name")]  private TextMeshProUGUI itemNameText;
         [SerializeField] [Tooltip("The textbox that says the weight of the item")] private TextMeshProUGUI weight;
-        [SerializeField][Tooltip("The textbox that says the weight of the item")] private TextMeshProUGUI length;
+        [SerializeField][Tooltip("The textbox that says the length of the item")] private TextMeshProUGUI length;
         [SerializeField] [Tooltip("The textbox that shows the location this was found from")] private TextMeshProUGUI location;
         [SerializeField] [Tooltip("The textbox that shows the time this was found")] private TextMeshProUGUI timeText;
 
-        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI weightLabel;
-        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI lengthLabel;
-        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI timeLabel;
-        [SerializeField][Tooltip("The image that shows what item is being looked at")] private TextMeshProUGUI locationLabel;
+        [SerializeField][Tooltip("The weight title textbox")] private TextMeshProUGUI weightLabel;
+        [SerializeField][Tooltip("The length title textbox")] private TextMeshProUGUI lengthLabel;
+        [SerializeField][Tooltip("The time title textbox")] private TextMeshProUGUI timeLabel;
+        [SerializeField][Tooltip("The location title textbox")] private TextMeshProUGUI locationLabel;
 
         [SerializeField]
         [Tooltip("The button that is pressed to use an item")]
@@ -239,8 +240,8 @@ namespace FishingGame.UI.Inventory
         private void AttatchmentEntryClicked(ItemData entryClicked)
         {
             useItemButton.gameObject.SetActive(true);
-            if (entryClicked.IsCurrentlyEquiped()) { useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unequip item"; }
-            else { useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip item"; }
+            useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = entryClicked.IsCurrentlyEquiped() ? "Unequip item" : "Equip item";
+            
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
             if (itemNameText) itemNameText.text = entryClicked.GetItemName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
