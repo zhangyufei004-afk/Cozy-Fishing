@@ -109,6 +109,10 @@ namespace FishingGame.Reeling
         [Tooltip("Max forward speed of the catch box")]
         private float catchBoxForwardMaxSpeed;
 
+        [SerializeField]
+        [Tooltip("The time buffer the player is given before the catchbox starts to move")]
+        private float initialTimeToWait;
+
         private float _catchProgress = 50f;
         private float _timeSinceLastGoal = 0f;
         private float _maxTimeBetweenGoals = 0f;
@@ -143,6 +147,9 @@ namespace FishingGame.Reeling
             {
                 return;
             }
+
+            if (_isMiniGamePaused == true) { CheckInitialBufferTimer(); }
+
 
             // Right movement
             if (_directionAction.ReadValue<Vector2>().x > 0)
@@ -437,6 +444,17 @@ namespace FishingGame.Reeling
             {
                 _currentTimeScalar += 1;
                 _timePassed = 0;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the total time passed has passed the initialwaittimer, if so unpauses the catchbox default movement
+        /// </summary>
+        private void CheckInitialBufferTimer()
+        {
+            if (_timePassed >= initialTimeToWait)
+            {
+                UnPauseCatchboxMovement();
             }
         }
 

@@ -134,7 +134,7 @@ namespace FishingGame.Reeling
             _fishAtHook = true;
             fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", true);
 
-            StartCoroutine(FishCatchTimer(5));
+            StartCoroutine(FishCatchTimer(2));
         }
 
         /// <summary>
