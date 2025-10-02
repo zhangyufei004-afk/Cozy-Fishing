@@ -169,7 +169,7 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Sets the animators isReeling value based on inputed parameter
         /// </summary>
-        /// <param name="isBobing"></param>
+        /// <param name="isReeling">True if the animation should player</param>
         public void SetIsReelingAnimation(bool isReeling)
         {
             characterAnimator.SetBool("isReeling", isReeling);
