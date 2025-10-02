@@ -196,6 +196,7 @@ namespace FishingGame.Reeling
             SetupHookTravelBack();
             ResetHookSpot();
             reelingMaster.DisableControls(false);
+            initiationScript.SetIsReelingAnimation(false);
         }
 
         /// <summary>
