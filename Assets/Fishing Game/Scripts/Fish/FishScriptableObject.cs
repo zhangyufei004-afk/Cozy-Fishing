@@ -28,6 +28,8 @@ namespace FishingGame.FishSystem
         public List<ETimeOfDay> TimesFound;
         public bool IsInvasive;
 
+        public int BasePrice = 10;
+
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {
         }

@@ -17,6 +17,7 @@ namespace FishingGame.Items
         public Sprite Item2DTexture;
         public float ItemWeight;
         public string ItemToolTip;
+        public int Price;
 
         internal ItemScriptable(int persistentID) : base(persistentID)
         {
