@@ -196,6 +196,24 @@ namespace FishingGame.Reeling
             return centerPoint;
         }
 
+        public Vector2 GetClosestPoint(Vector2 mousePosition)
+        {
+            Vector2 currentClosest = _boundsPoints[0];
+            float smallestDistance = 999f;
+
+            foreach (Vector2 point in _boundsPoints)
+            {
+                float thisDistance = Vector2.Distance(point, mousePosition);
+                if (smallestDistance > thisDistance)
+                {
+                    smallestDistance = thisDistance;
+                    currentClosest = point;
+                }
+            }
+
+            return currentClosest;
+        }
+
         #endregion
 
         #region Runtime Functions
