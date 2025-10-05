@@ -74,32 +74,44 @@ namespace FishingGame.Reeling
 
         private void Update()
         {
-            _isMoving = true;
-             SetPositionToMouse();
-             Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
+            if (minigameMaster.IsMoving() == true)
+            {
+                _isMoving = true;
+            }
+            else { _isMoving = false; }
 
-                
+            SetPositionToMouse();
+            Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 transform.parent as RectTransform,
                 mousePosition,
                 null,
                 out Vector2 localMousePos
             );
-
                 
-             Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
-             Vector2 previousDirection = (_lastPosition - center).normalized;
-             Vector2 newDirection = (localMousePos - center).normalized;
+            Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
+            Vector2 previousDirection = (_lastPosition - center).normalized;
+            Vector2 newDirection = (localMousePos - center).normalized;
 
-             if (_lastPosition != Vector2.zero)
-             {
+            
+
+            if (_lastPosition != Vector2.zero)
+            {
                 _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
                 _angleTotal += _currentSpeed;
                 DetermineCurrentDirection();
                 DirectionChangeLogic(_currentSpeed);
-             }
-            
+            }
+
+
             _lastPosition = localMousePos;
+
+            if (_isMoving == false)
+            {
+                _currentDirection = ERealisticDirection.Stop;
+            }
+
+
         }
 
         #region Public Functions

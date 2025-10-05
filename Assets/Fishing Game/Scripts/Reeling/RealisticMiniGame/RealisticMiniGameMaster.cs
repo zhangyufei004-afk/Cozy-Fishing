@@ -85,6 +85,8 @@ namespace FishingGame.Reeling
         private GameObject tempObject;
 
         private Vector2[] _boundsPoints;
+        private int _previousBoundsPoint = 0;
+        private int _currentBoundsPoint = 0;
 
         private int _fishDifficulty;
 
@@ -130,8 +132,6 @@ namespace FishingGame.Reeling
 
             if (CheckIfDragableInRightDirection())
             {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
-
                 if (_currentDirection == ERealisticDirection.Stop)
                 {
                     AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
@@ -142,7 +142,6 @@ namespace FishingGame.Reeling
             }
             else
             {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
                 RemoveFromProgressSlider(defaultDecayValue * Time.deltaTime);
             }
         }
@@ -198,8 +197,10 @@ namespace FishingGame.Reeling
 
         public Vector2 GetClosestPoint(Vector2 mousePosition)
         {
+            _previousBoundsPoint = _currentBoundsPoint;
             Vector2 currentClosest = _boundsPoints[0];
             float smallestDistance = 999f;
+            int i = 0;
 
             foreach (Vector2 point in _boundsPoints)
             {
@@ -208,10 +209,27 @@ namespace FishingGame.Reeling
                 {
                     smallestDistance = thisDistance;
                     currentClosest = point;
+                    _currentBoundsPoint = i;
                 }
+                i++;
             }
 
+            Debug.Log(_previousBoundsPoint);
+            Debug.Log(_currentBoundsPoint);
+
             return currentClosest;
+        }
+
+        public bool IsMoving()
+        {
+            if (_currentBoundsPoint == _previousBoundsPoint)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         #endregion
