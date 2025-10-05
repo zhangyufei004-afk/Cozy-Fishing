@@ -2,6 +2,7 @@ using FishingGame.FishSystem;
 using System;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -71,6 +72,20 @@ namespace FishingGame.Reeling
         [Tooltip("The value for how many seconds until the time scale is increased")]
         private int timeScaleMaxSeconds;
 
+        [SerializeField]
+        [Tooltip("How many points should the circle bounds have, the higher the points the greater the accurarcy but the worse the performance")]
+        private int amountOfPointsInBounds;
+
+        [SerializeField]
+        [Tooltip("The radius of the bounds circle")]
+        private float radius;
+
+        [SerializeField]
+        [Tooltip("temp")]
+        private GameObject tempObject;
+
+        private Vector2[] _boundsPoints;
+
         private int _fishDifficulty;
 
         private GameObject _currentFish3D;
@@ -84,6 +99,13 @@ namespace FishingGame.Reeling
 
         private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
+
+        private void OnEnable()
+        {
+            _boundsPoints = new Vector2[amountOfPointsInBounds];
+            SetBounds();
+        }
+
 
         private void Update()
         {
@@ -338,6 +360,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetGameTimeVariables()
         {
+            SetBounds();
             _currentTimeScale = 1.0f;
             _progressValue = 0f;
             _timeSinceLastDirectionChange = 0f;
@@ -353,6 +376,29 @@ namespace FishingGame.Reeling
             progressSlider.maxValue = _progressMaxValue;
             _progressValue = Mathf.Clamp(20f, _progressMaxValue / _fishDifficulty, 10000f);
             progressSlider.value = _progressValue;
+        }
+
+        /// <summary>
+        /// Calcualtes the bounds of the reeling UI
+        /// </summary>
+        private void SetBounds()
+        {
+            for (int i = 0; i < amountOfPointsInBounds; i++)
+            {
+                float pointNum = (i * 1.0f) / amountOfPointsInBounds;
+                float angle = pointNum * Mathf.PI * 2;
+
+                float floatX = Mathf.Sin(angle) * radius;
+                float floatY = Mathf.Cos(angle) * radius;
+
+                Vector3 pointPos = new Vector3(floatX, floatY) + centerPoint.transform.position;
+
+
+
+                _boundsPoints[i] = pointPos;
+                // The below line is temp for visualization sometimes when needed
+                // Instantiate(tempObject, _boundsPoints[i], Quaternion.identity);
+            }
         }
 
         #endregion
