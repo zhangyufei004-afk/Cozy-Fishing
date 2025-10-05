@@ -651,11 +651,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2069691476540852003, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 117.93
+      value: 117
       objectReference: {fileID: 0}
     - target: {fileID: 2069691476540852003, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 87.2
+      value: 117
       objectReference: {fileID: 0}
     - target: {fileID: 2346887675289102845, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_Enabled
@@ -731,7 +731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4262184282624356546, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4269701820036509837, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -11070,6 +11070,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4518172318511371622, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2083460396 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2702599287491368083, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+  m_PrefabInstance: {fileID: 2991282359923290821}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2118617549 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7491399072279620297, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
@@ -11149,6 +11154,14 @@ PrefabInstance:
       value: ReelingContainer
       objectReference: {fileID: 0}
     - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: radius
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: tempObject
+      value: 
+      objectReference: {fileID: 2083460396}
+    - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: centerPoint
       value: 
       objectReference: {fileID: 249324090}
@@ -11179,6 +11192,10 @@ PrefabInstance:
     - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: timeScaleMaxSeconds
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: amountOfPointsInBounds
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: defaultProgressScaleValue
@@ -11524,11 +11541,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 275876975484378811, guid: 1c1df9a0042c9d643b31874bbb0600ae, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 275876975484378811, guid: 1c1df9a0042c9d643b31874bbb0600ae, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3455865899737867392, guid: 1c1df9a0042c9d643b31874bbb0600ae, type: 3}
       propertyPath: m_Value
