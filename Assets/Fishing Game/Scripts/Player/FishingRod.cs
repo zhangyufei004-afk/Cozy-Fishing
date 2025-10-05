@@ -246,7 +246,7 @@ namespace FishingGame.Reeling
             float maxDistance = fishingRange;
             LayerMask whatToHit = 1;
 
-            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y += 10, locationToUse.z);
+            Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
 
 
             if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
@@ -263,6 +263,7 @@ namespace FishingGame.Reeling
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _targetLocation = rodBobber.transform.position;
             characterAnimator.SetTrigger("ThrowTrigger");
+            characterAnimator.SetBool("isReeling", true);
             reelingMasterScript.DisableControls(true);
             AreReelingControlsActive(false);
         }

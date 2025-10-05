@@ -146,7 +146,6 @@ namespace FishingGame.Reeling
         {
             if (_fishAtHook)
             {
-                fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
                 _fishAtHook = false;
                 _isStageOne = false;
                 Destroy(_fishSwim);
@@ -165,6 +164,15 @@ namespace FishingGame.Reeling
         public void ThrowRodLine()
         {
             fishingRod.ThrowLine();
+        }
+
+        /// <summary>
+        /// Sets the animators isReeling value based on inputed parameter
+        /// </summary>
+        /// <param name="isReeling">True if the animation should player</param>
+        public void SetIsReelingAnimation(bool isReeling)
+        {
+            characterAnimator.SetBool("isReeling", isReeling);
         }
 
         /// <summary>
@@ -189,11 +197,14 @@ namespace FishingGame.Reeling
         /// </summary>
         public void CancelStageOne()
         {
+            fishingHook.ClearCollidingFishAndPool();
             StopAllCoroutines();
             fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            SetIsReelingAnimation(false);
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
+            SetIsReelingAnimation(false);
 
             _isStageOne = false;
             fishingHook.PullBackHook();
