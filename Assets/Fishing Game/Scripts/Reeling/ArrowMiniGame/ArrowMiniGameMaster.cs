@@ -131,6 +131,7 @@ namespace FishingGame.Reeling
         private InputAction _rightAction;
 
         private ArrowWaveSO _arrowMiniGameBehaviour;
+        private bool _arrowMiniGameBehaviourActive = false;
 
 
         private void OnEnable()
@@ -156,6 +157,9 @@ namespace FishingGame.Reeling
 
             CheckTimePassed();
 
+            if (_arrowMiniGameBehaviourActive) { CustomArrowBehaviour(); }
+            else { DefaultArrowBehaviour(); }
+
 
 
             if (_activeArrows.Count == 0)
@@ -176,10 +180,10 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingObject.GetCatchDifficulty();
             fishingCanvas.SetActive(true);
             SetUpArrowKeys();
-            _arrowMiniGameBehaviour = _currentlyReelingObject.GetArrowMinigameBehaviour();
+            SetupArrowgameBehaviour();
 
             ResetRuntimeVariables();
-            SetDifficultyModifiers();
+            
 
             int i = 0;
             foreach (ArrowSpawner spawner in spawnPoints)
@@ -201,7 +205,7 @@ namespace FishingGame.Reeling
                 spawner.ActivateOrDeactivateSpawner(true);
             }
 
-            SpawnArrow();
+            if (!_arrowMiniGameBehaviourActive) { SpawnArrow(); }
         }
 
         /// <summary>
@@ -290,6 +294,16 @@ namespace FishingGame.Reeling
 
 
         #region CoreGameTimeFunctions
+
+        private void CustomArrowBehaviour()
+        {
+
+        }
+
+        private void DefaultArrowBehaviour()
+        {
+
+        }
 
         private void InputLogic(EMovementDirection inputedDirection)
         {
@@ -609,6 +623,20 @@ namespace FishingGame.Reeling
 
         #region Initilization_Functions
 
+        private void SetupArrowgameBehaviour()
+        {
+            _arrowMiniGameBehaviour = _currentlyReelingObject.GetArrowMinigameBehaviour();
+            if (_arrowMiniGameBehaviour == null)
+            {
+                _arrowMiniGameBehaviourActive = false;
+                SetDifficultyModifiers();
+            }
+            else
+            {
+                _arrowMiniGameBehaviourActive = true;
+            }
+        }
+
         /// <summary>
         /// Subscribes arrow key actions to their relevant functions
         /// </summary>
@@ -643,6 +671,7 @@ namespace FishingGame.Reeling
 
         /// <summary>
         /// Runs the functions that set variables based on the current difficulty
+        /// This is only run for default arrow behaviour
         /// </summary>
         private void SetDifficultyModifiers()
         {
