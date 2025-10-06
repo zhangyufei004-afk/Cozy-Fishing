@@ -74,12 +74,6 @@ namespace FishingGame.Reeling
 
         private void Update()
         {
-            if (minigameMaster.IsMoving() == true)
-            {
-                _isMoving = true;
-            }
-            else { _isMoving = false; }
-
             SetPositionToMouse();
             Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
