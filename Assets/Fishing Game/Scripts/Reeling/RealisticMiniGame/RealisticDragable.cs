@@ -89,7 +89,7 @@ namespace FishingGame.Reeling
 
             
 
-            if (_lastPosition != Vector2.zero)
+            if (_lastPosition !=  Vector2.zero)
             {
                 _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
                 _angleTotal += _currentSpeed;
@@ -97,13 +97,13 @@ namespace FishingGame.Reeling
                 DirectionChangeLogic(_currentSpeed);
             }
 
-
-            _lastPosition = localMousePos;
-
-            if (_isMoving == false)
+            if (_lastPosition == localMousePos)
             {
                 _currentDirection = ERealisticDirection.Stop;
             }
+
+
+            _lastPosition = localMousePos;
 
 
         }
