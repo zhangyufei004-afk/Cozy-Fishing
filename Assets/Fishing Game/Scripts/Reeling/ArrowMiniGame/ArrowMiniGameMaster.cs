@@ -13,13 +13,13 @@ namespace FishingGame.Reeling
     /// <summary>
     /// The type of direction an arrow will represent
     /// </summary>
-     internal enum EMovementDirection
-    {
+     public enum EMovementDirection
+     {
         Left = 0,
         Right = 1,
         Up = 2,
         Down = 3
-    };
+     };
     
     /// <summary>
     /// This minigame involves arrows falling down the screen
@@ -130,6 +130,8 @@ namespace FishingGame.Reeling
         private InputAction _leftAction;
         private InputAction _rightAction;
 
+        private ArrowWaveSO _arrowMiniGameBehaviour;
+
 
         private void OnEnable()
         {
@@ -174,6 +176,7 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingObject.GetCatchDifficulty();
             fishingCanvas.SetActive(true);
             SetUpArrowKeys();
+            _arrowMiniGameBehaviour = _currentlyReelingObject.GetArrowMinigameBehaviour();
 
             ResetRuntimeVariables();
             SetDifficultyModifiers();

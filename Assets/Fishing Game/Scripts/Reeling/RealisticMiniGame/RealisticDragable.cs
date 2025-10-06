@@ -235,23 +235,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Returns true if mouse is pressed and over the dragable object
-        /// </summary>
-        /// <returns>True if mouse is pressed and over the dragable object otherwise false</returns>
-        private bool CheckIfMouseIsHolding()
-        {
-            if (_mouseInput.IsPressed())
-            {
-                if (IsPointerOverUIElement(GetEventSystemRaycastResults(), _uILayer, _realisticTag))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Returns true if raycast from mouse touches a ui element matching the layer and tag inputed
         /// </summary>
         /// <param name="eventSystemRaysastResults">A raycast result</param>

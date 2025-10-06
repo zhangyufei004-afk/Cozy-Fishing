@@ -5,6 +5,7 @@ using FishingGame.Inventory;
 using FishingGame.Items;
 using FishingGame.SaveGame;
 using Random = UnityEngine.Random;
+using FishingGame.Reeling;
 
 namespace FishingGame.FishSystem
 {
@@ -22,6 +23,7 @@ namespace FishingGame.FishSystem
         private string _caughtLocation;
         private int _fishCatchDifficulty;
         private Sprite _fishTexture;
+        private ArrowWaveSO _arrowMiniGameBehaviour;
 
         /// <summary>
         /// Constructor for generating a new fish instance.
@@ -41,6 +43,7 @@ namespace FishingGame.FishSystem
             _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
             _fishTexture = _fishBase.Texture;
             _speciesName = _fishBase.SpeciesName;
+            _arrowMiniGameBehaviour = _fishBase.ArrowMiniGameBehaviour;
         }
 
         /// <summary>
@@ -159,6 +162,15 @@ namespace FishingGame.FishSystem
         public void UseItem()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Returns this fishes arrow minigame behaviour
+        /// </summary>
+        /// <returns>This fishes arrow minigame behaviour</returns>
+        public ArrowWaveSO GetArrowMinigameBehaviour()
+        {
+            return _arrowMiniGameBehaviour;
         }
     }
 }

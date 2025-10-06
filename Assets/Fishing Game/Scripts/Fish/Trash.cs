@@ -4,6 +4,7 @@ using FishingGame.SaveGame;
 using System;
 using FishingGame.Items;
 using UnityEngine;
+using FishingGame.Reeling;
 
 namespace FishingGame.FishSystem
 {
@@ -22,6 +23,7 @@ namespace FishingGame.FishSystem
         private string _caughtLocation;
         private int _trashCatchDifficulty;
         private Sprite _trashTexture;
+        private ArrowWaveSO _arrowMiniGameBehaviour;
 
         /// <summary>
         /// Trash is made from trash scriptable objects
@@ -43,6 +45,7 @@ namespace FishingGame.FishSystem
             _trashCatchDifficulty = _trashBase.TrashDifficulty;
             _trashTexture = _trashBase.Texture;
             _trashName = _trashBase.TrashName;
+            _arrowMiniGameBehaviour = _trashBase.ArrowMiniGameBehaviour;
         }
 
         /// <summary>
@@ -158,6 +161,15 @@ namespace FishingGame.FishSystem
         public void UseItem()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Returns this fishes arrow minigame behaviour
+        /// </summary>
+        /// <returns>This fishes arrow minigame behaviour</returns>
+        public ArrowWaveSO GetArrowMinigameBehaviour()
+        {
+            return _arrowMiniGameBehaviour;
         }
     }
 }

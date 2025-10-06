@@ -196,6 +196,11 @@ namespace FishingGame.Reeling
             return centerPoint;
         }
 
+        /// <summary>
+        /// Returns the closest circle point to the mouses position
+        /// </summary>
+        /// <param name="mousePosition">The mouse position</param>
+        /// <returns>The closest vector2 point of the circle bounds</returns>
         public Vector2 GetClosestPoint(Vector2 mousePosition)
         {
             _previousBoundsPoint = _currentBoundsPoint;
@@ -219,11 +224,6 @@ namespace FishingGame.Reeling
             Debug.Log(_currentBoundsPoint);
 
             return currentClosest;
-        }
-
-        public bool IsMoving()
-        {
-            return _dragableMoving;
         }
 
         #endregion

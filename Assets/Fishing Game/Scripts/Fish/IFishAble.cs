@@ -1,3 +1,4 @@
+using FishingGame.Reeling;
 using FishingGame.SaveGame;
 using System;
 using UnityEngine;
@@ -45,6 +46,12 @@ namespace FishingGame.FishSystem
         /// </summary>
         /// <returns>Enum value represneting the catch type</returns>
         public ECatchableType GetCatchType();
+
+        /// <summary>
+        /// Returns the custom arrow minigame behaviour for this fishable object
+        /// </summary>
+        /// <returns>The custom arrow minigame behaviour</returns>
+        public ArrowWaveSO GetArrowMinigameBehaviour();
 
         /// <summary>
         /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static

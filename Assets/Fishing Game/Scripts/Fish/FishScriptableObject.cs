@@ -1,4 +1,5 @@
 using FishingGame.GameTime;
+using FishingGame.Reeling;
 using FishingGame.SaveGame;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace FishingGame.FishSystem
         public List<EFishingLocation> LocationsFound;
         public List<ETimeOfDay> TimesFound;
         public bool IsInvasive;
+
+        public ArrowWaveSO ArrowMiniGameBehaviour;
 
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {
