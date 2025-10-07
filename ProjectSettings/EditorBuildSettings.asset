@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Fishing Game/Levels/PlayerSetting.unity
     guid: 7ea21993db48df0469df049886a18095
   - enabled: 1
-    path: Assets/Fishing Game/Levels/Main Scene.unity
+    path: Assets/Fishing Game/Levels/Main Scene Audio.unity
     guid: db35efabbc5627f499c75e12043032b6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
