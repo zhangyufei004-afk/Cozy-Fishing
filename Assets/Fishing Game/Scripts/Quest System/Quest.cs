@@ -155,6 +155,24 @@ namespace FishingGame.QuestSystem
         }
 
         /// <summary>
+        /// Gets the dialogue the NPC will speak prior to the commencement of this quest. 
+        /// </summary>
+        /// <returns>A list of strings, each entry in the list corresponding to one line of dialogue.</returns>
+        public List<string> GetPreQuestDialogue()
+        {
+            return _questData.PreQuestDialogueLines;
+        }
+
+        /// <summary>
+        /// Gets the dialogue the NPC will speak after the quest has been completed.
+        /// </summary>
+        /// <returns>A list of strings, each entry represnting a single line of dialogue spoken by the NPC which ends this quest.</returns>
+        public List<string> GetQuestEndDialogue()
+        {
+            return _questData.PostQuestDialogueLines;
+        }
+
+        /// <summary>
         /// Gets the current quest stage prefab, only if the quest stage exists.
         /// </summary>
         /// <returns>The current quest stage if it exists, null otherwise.</returns>

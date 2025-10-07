@@ -1,4 +1,7 @@
 using FishingGame.FishSystem;
+using FishingGame.GameManagement;
+using FishingGame.Items;
+using FishingGame.SaveGame;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
 using System;
@@ -6,6 +9,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Timers;
+using FishingGame.Items.Bait;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.ProBuilder.MeshOperations;
@@ -29,6 +33,8 @@ namespace FishingGame.Reeling
 
         #region Private Fields
 
+        [Header("Script references")]
+
         [SerializeField]
         [Tooltip("Reference to the reeling master script attatched to the reeling container.")]
         private ReelingMaster reelingMaster;
@@ -37,12 +43,11 @@ namespace FishingGame.Reeling
         [Tooltip("Reference to the reeling initation script attatched to the player.")]
         private ReelingInitiation initiationScript;
 
+        [Header("Runtime Variables")]
+
         [SerializeField]
         [Tooltip("The spot where the hook will default back to after casting. NOTE: For current implementation make sure the y is 0 or above.")]
         private Vector3 hookResetSpot;
-
-        [SerializeField]
-        private Animator rodAnimator;
 
         private bool _headingToFishSpot = false;
 
@@ -98,6 +103,7 @@ namespace FishingGame.Reeling
                     {
                         waterSplash.Play();
                         waterSound.Play();
+                        reelingMaster.GetCurrentFishingRod().GetCurrentBait().UseBaitCharge();
                         initiationScript.BeginStageOne();
                     }
                     else
@@ -186,9 +192,11 @@ namespace FishingGame.Reeling
         /// </summary>
         public void PullBackHook()
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             SetupHookTravelBack();
             ResetHookSpot();
             reelingMaster.DisableControls(false);
+            initiationScript.SetIsReelingAnimation(false);
         }
 
         /// <summary>
@@ -197,7 +205,7 @@ namespace FishingGame.Reeling
         /// <param name="targetLocation">Location to move to</param>
         public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
         {
-            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
+            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y -1f, targetLocation.z);
 
             _fishingLocation = newPosition;
             _headingToFishSpot = true;
@@ -268,28 +276,12 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ReactToFishOnHook()
         {
-            if (_collidingFish.Count > 0)
-            {
-                // TODO: Make this work with individual fish once individual fish have been setup
-                /*
-                CaughtFish(_collidingFish[0]);
-                */
-            }
-            else if (_collidingPool != null)
+            if (_collidingPool != null)
             {
                 CaughtFish(_collidingPool);
             }
         }
 
-        /// <summary>s
-        /// Gets the data needed from the fish, begins the reelingmaster minigame script
-        /// </summary>
-        /// /// <param name="fishCaught">The fish that has been caught</param>
-        private void CaughtFish(Fish fishCaught)
-        {
-            GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
-            reelingMaster.BeginCatch(fishCaught, fishModel);
-        }
 
         /// <summary>
         /// Gets fish data from the fishingpool and then gets the reelingmaster to begin catch with that data
@@ -303,13 +295,27 @@ namespace FishingGame.Reeling
                 return;
             }
 
-            Fish randomPoolFish = fishingPool.DetermineFishCaught();
-            GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
+            IBait baitBeingUsed = reelingMaster.GetCurrentFishingRod().GetCurrentBait();
+            IFishAble randomPoolFish = fishingPool.GetFishableCaught(baitBeingUsed);
 
-            ClearCollidingFishAndPool();
+            GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
             HookIsOut = false;
 
-            reelingMaster.BeginCatch(randomPoolFish, fishModel, fishingPool);
+            if (randomPoolFish.GetCatchType() == ECatchableType.Fish)
+            {
+                Fish fishCaught = (Fish)randomPoolFish;
+
+                reelingMaster.BeginCatchFish(fishCaught, fishModel, fishingPool);
+            }
+            else if (randomPoolFish.GetCatchType() == ECatchableType.Trash)
+            {
+                Trash trashCaught = randomPoolFish as Trash;
+
+                reelingMaster.BeginCatchTrash(trashCaught, fishModel, fishingPool);
+            }
+
+
+                ClearCollidingFishAndPool();
         }
 
 
@@ -323,6 +329,10 @@ namespace FishingGame.Reeling
             reelingMaster.DisableControls(false);
         }
         
+        /// <summary>
+        /// Checks if the hook is colliding with a relevant fishing pool, returns true if so otherwise false
+        /// </summary>
+        /// <returns>True if colliding else false</returns>
         private bool CheckIfColliding()
         {
             if (_collidingFish.Count > 0 || _collidingPool != null)

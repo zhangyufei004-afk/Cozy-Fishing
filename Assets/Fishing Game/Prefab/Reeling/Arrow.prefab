@@ -28,8 +28,8 @@ RectTransform:
   m_GameObject: {fileID: 4431288592897344608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -88,10 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a31dbe9165929d469acd9c68ae58963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upArrowSprite: {fileID: 21300000, guid: 748b994460c79aa45aaa8fe3e4674e23, type: 3}
-  downArrowSprite: {fileID: 21300000, guid: 6663e10550e4d724d886f549267d7d3b, type: 3}
-  leftArrowSprite: {fileID: 21300000, guid: 78ef7802e71de3a4ba9fee261990f18e, type: 3}
-  rightArrowSprite: {fileID: 21300000, guid: 297585c6fed9c9e42b95e54ba2f5ebfd, type: 3}
-  ifuckedUpSprite: {fileID: 21300000, guid: d3c57d5104e0f9d4697b6b92a56bf2db, type: 3}
-  _goalPoint: {fileID: 0}
+  upArrowSprite: {fileID: 21300000, guid: a5825e31f069ead4d81470ffc9e696cf, type: 3}
+  downArrowSprite: {fileID: 21300000, guid: a83d124294fdf304d9fd1c5c58caf2f2, type: 3}
+  leftArrowSprite: {fileID: 21300000, guid: 84e2309d52ace0f4d9da7512bb632c8f, type: 3}
+  rightArrowSprite: {fileID: 21300000, guid: f4a53a06fd9d76840970d64e588dd26b, type: 3}
   fadeRate: 2

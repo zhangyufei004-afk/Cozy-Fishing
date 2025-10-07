@@ -9,7 +9,7 @@ namespace FishingGame.PlayerCustomization
     /// </summary>
     public class CharacterColorCustomizer : MonoBehaviour
     {
-        [Header("Materials")]
+        [Header("Player")]
         [SerializeField] private Material hatMaterial;
         [SerializeField] private Material hairMaterial;
 
@@ -37,6 +37,9 @@ namespace FishingGame.PlayerCustomization
         [SerializeField] private Button[] hairPresetButtons; // 4 hair colors
         [SerializeField] private Color[] hairPresetColors;   // Must match button count
 
+        [Header("Preview Character Properties")]
+        [SerializeField] PlayerCustomizationProperties customizationProperties;
+
         private Image _hatBtnImage;
         private Image _hairBtnImage;
 
@@ -49,13 +52,13 @@ namespace FishingGame.PlayerCustomization
         private void OnEnable()
         {
             // Hook slider change -> update preview
-            if (hatR) hatR.onValueChanged.AddListener(_ => UpdateHatPreview());
-            if (hatG) hatG.onValueChanged.AddListener(_ => UpdateHatPreview());
-            if (hatB) hatB.onValueChanged.AddListener(_ => UpdateHatPreview());
+            if (hatR) hatR.onValueChanged.AddListener(_ => ApplyHatFromSliders());
+            if (hatG) hatG.onValueChanged.AddListener(_ => ApplyHatFromSliders());
+            if (hatB) hatB.onValueChanged.AddListener(_ => ApplyHatFromSliders());
 
-            if (hairR) hairR.onValueChanged.AddListener(_ => UpdateHairPreview());
-            if (hairG) hairG.onValueChanged.AddListener(_ => UpdateHairPreview());
-            if (hairB) hairB.onValueChanged.AddListener(_ => UpdateHairPreview());
+            if (hairR) hairR.onValueChanged.AddListener(_ => ApplyHairFromSliders());
+            if (hairG) hairG.onValueChanged.AddListener(_ => ApplyHairFromSliders());
+            if (hairB) hairB.onValueChanged.AddListener(_ => ApplyHairFromSliders());
 
             // Buttons apply color
             if (hatApplyButton) hatApplyButton.onClick.AddListener(ApplyHatFromSliders);
@@ -84,10 +87,6 @@ namespace FishingGame.PlayerCustomization
             // Init sliders from defaults
             SetHatSliders(defaultHatColor);
             SetHairSliders(defaultHairColor);
-
-            // Initial previews
-            UpdateHatPreview();
-            UpdateHairPreview();
         }
 
         private void OnDisable()
@@ -139,8 +138,6 @@ namespace FishingGame.PlayerCustomization
             ApplyHairColor(defaultHairColor);
             SetHatSliders(defaultHatColor);
             SetHairSliders(defaultHairColor);
-            UpdateHatPreview();
-            UpdateHairPreview();
         }
 
         private void ApplyHatFromSliders() => ApplyHatColor(GetHatSliderColor());
@@ -150,26 +147,24 @@ namespace FishingGame.PlayerCustomization
         {
             if (index < 0 || index >= hatPresetColors.Length) return;
             ApplyHatColor(hatPresetColors[index]);
-            SetHatSliders(hatPresetColors[index]);
-            UpdateHatPreview();
         }
 
         private void ApplyHairPreset(int index)
         {
             if (index < 0 || index >= hairPresetColors.Length) return;
             ApplyHairColor(hairPresetColors[index]);
-            SetHairSliders(hairPresetColors[index]);
-            UpdateHairPreview();
         }
 
         private void UpdateHatPreview()
         {
             if (_hatBtnImage) _hatBtnImage.color = GetHatSliderColor();
+            customizationProperties.ForceMaterialUpdate();
         }
 
         private void UpdateHairPreview()
         {
             if (_hairBtnImage) _hairBtnImage.color = GetHairSliderColor();
+            customizationProperties.ForceMaterialUpdate();
         }
 
         private Color GetHatSliderColor() =>
@@ -178,32 +173,47 @@ namespace FishingGame.PlayerCustomization
         private Color GetHairSliderColor() =>
             new Color(hairR ? hairR.value : 0f, hairG ? hairG.value : 0f, hairB ? hairB.value : 0f, 1f);
 
-        private void ApplyHatColor(Color c) => ApplyColor(hatMaterial, c);
-        private void ApplyHairColor(Color c) => ApplyColor(hairMaterial, c);
+        private void ApplyHatColor(Color color)
+        {
+            Material hatMaterialCopy = ApplyColor(hatMaterial, color);
+            PlayerCustomizationProperties.HatMaterial = hatMaterialCopy;
+            SetHatSliders(color);
+            UpdateHatPreview();
+        }
+        private void ApplyHairColor(Color color)
+        {
+            Material hairMaterialCopy = ApplyColor(hairMaterial, color);
+            PlayerCustomizationProperties.HairMaterial = hairMaterialCopy;
+            SetHairSliders(color);
+            UpdateHairPreview();
+        }
+
 
         /// <summary>
-        /// Applies a colour to the given material.
+        /// Creates a copy of the material and applies a colour to the given material.
         /// Supports Unity Toon Shader by using _BaseColor and _1st_ShadeColor.
         /// </summary>
-        private void ApplyColor(Material mat, Color color)
+        /// <returns>A copy of the original material, to be applied to the player. Can return null if no copy was able to be created</returns>
+        private Material ApplyColor(Material mat, Color color)
         {
-            if (!mat) return;
-
+            Material materialInstance = new Material(mat);
             // UTS base color
-            if (mat.HasProperty("_BaseColor"))
+            if (materialInstance.HasProperty("_BaseColor"))
             {
-                mat.SetColor("_BaseColor", color);
+                materialInstance.SetColor("_BaseColor", color);
             }
-            else if (mat.HasProperty("_Color"))
+            else if (materialInstance.HasProperty("_Color"))
             {
-                mat.SetColor("_Color", color);
+                materialInstance.SetColor("_Color", color);
             }
 
             // Sync 1st shade for toon shadow consistency
-            if (mat.HasProperty("_1st_ShadeColor"))
+            if (materialInstance.HasProperty("_1st_ShadeColor"))
             {
-                mat.SetColor("_1st_ShadeColor", color * 0.8f);
+                materialInstance.SetColor("_1st_ShadeColor", color * 0.8f);
             }
+
+            return materialInstance;
         }
     }
 }

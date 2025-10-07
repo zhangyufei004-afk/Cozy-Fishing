@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using FishingGame.GameTime;
 using FishingGame.Inventory;
+using FishingGame.Items;
 using FishingGame.SaveGame;
 using Random = UnityEngine.Random;
 
@@ -11,8 +12,9 @@ namespace FishingGame.FishSystem
     /// <para>Represents a runtime fish object.</para>
     /// <para>Stores dynamic data including base info, length, weight, caught time, and location.</para>
     /// </summary>
-    public class Fish : IStorable
+    public class Fish : IStorable, IFishAble
     {
+        private ECatchableType catchAbleType;
         private FishScriptableObject _fishBase;
         private string _speciesName;
         private float _weight;
@@ -29,6 +31,7 @@ namespace FishingGame.FishSystem
         /// <param name="location">Location where the fish was caught</param>
         public Fish(FishScriptableObject newFishBase, ETimeOfDay time, string location)
         {
+            catchAbleType = ECatchableType.Fish;
             _fishBase = newFishBase;
             _weight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
             // Round weight to 2 decimal places
@@ -72,11 +75,21 @@ namespace FishingGame.FishSystem
             return _weight;
         }
 
+        /// <summary>
+        /// Returns a EItemType.Fish value
+        /// </summary>
+        /// <returns>Returns a EItemType.Fish value</returns>
         public EItemType GetItemType()
         {
             return EItemType.Fish;
         }
 
+        /// <summary>
+        /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
+        /// non-runtime data. 
+        /// </summary>
+        /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
+        /// <returns>The SerializableObject that the Data is stored in.</returns>
         public SerializableObject GetDataObject(out Type dataClassType)
         {
             dataClassType = typeof(FishScriptableObject);
@@ -86,7 +99,7 @@ namespace FishingGame.FishSystem
         /// <summary>
         /// Gets the fish catch difficulty.
         /// </summary>
-        public int GetFishCatchDifficulty()
+        public int GetCatchDifficulty()
         {
             return _fishCatchDifficulty;
         }
@@ -102,9 +115,50 @@ namespace FishingGame.FishSystem
         /// <summary>
         /// Gets the species name
         /// </summary>
-        public string GetSpeciesName()
+        public string GetName()
         {
             return _speciesName;
+        }
+
+        /// <summary>
+        /// Gets the catchable type of this object
+        /// </summary>
+        /// <returns>The catchable type of this object</returns>
+        public ECatchableType GetCatchType()
+        {
+            return catchAbleType;
+        }
+
+        /// <summary>
+        /// Returns the item base
+        /// Currently not used for fish
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">Not used for Fish</exception>
+        public ItemScriptable GetItemBase()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Returns the item name
+        /// Current not used for fish
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">Not used for Fish</exception>
+        public string GetItemName()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Uses the item
+        /// Not used for Fish
+        /// </summary>
+        /// <exception cref="NotImplementedException">Not used for Fish</exception>
+        public void UseItem()
+        {
+            throw new NotImplementedException();
         }
     }
 }
