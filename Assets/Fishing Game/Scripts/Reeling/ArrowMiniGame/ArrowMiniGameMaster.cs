@@ -98,7 +98,7 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("The amount of time it takes for the time scaler to increase")]
-        private float maxTimeBeforeModify;
+        private float defaultMaxTimeBeforeModify;
 
         [SerializeField]
         [Tooltip("Rate of spawn during a wave")]
@@ -117,6 +117,7 @@ namespace FishingGame.Reeling
         private bool _waveActive = false;
         private int _maxRangeWaveChance = 10;
         private int _currentWaveChance = 0;
+        private float _initialMaxTimeBeforeModify;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
@@ -130,9 +131,11 @@ namespace FishingGame.Reeling
         private InputAction _leftAction;
         private InputAction _rightAction;
 
-        private ArrowWaveSO _arrowMiniGameBehaviour;
+        // Custom Arrow Behaviour Variables
+
+        private ArrowWaveData _arrowMiniGameBehaviour;
         private bool _arrowMiniGameBehaviourActive = false;
-        private List<ArrowWaveEntry> _arrowWaveBehaviourList;
+        private List<ArrowWaveEntry> _activeArrowWaveBehaviourList;
 
 
         private void OnEnable()
@@ -140,10 +143,12 @@ namespace FishingGame.Reeling
             _activeArrows = new List<MovingArrow>();
             _arrowsAvailableToBePressed = new List<MovingArrow>();
             _arrowsToRemove = new List<MovingArrow>();
-            _arrowWaveBehaviourList = new List<ArrowWaveEntry>();
+            _activeArrowWaveBehaviourList = new List<ArrowWaveEntry>();
 
             InputActionAsset inputAction = InputSystem.actions;
             _uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
+
+            _initialMaxTimeBeforeModify = defaultMaxTimeBeforeModify;
         }
 
         private void OnDisable()
@@ -161,13 +166,6 @@ namespace FishingGame.Reeling
 
             if (_arrowMiniGameBehaviourActive) { CustomArrowBehaviour(); }
             else { DefaultArrowBehaviour(); }
-
-
-
-            if (_activeArrows.Count == 0)
-            {
-                EmergencySpawnArrow();
-            }
         }
 
         #region Public Functions
@@ -182,10 +180,8 @@ namespace FishingGame.Reeling
             _fishDifficulty = _currentlyReelingObject.GetCatchDifficulty();
             fishingCanvas.SetActive(true);
             SetUpArrowKeys();
-            SetupArrowgameBehaviour();
-
             ResetRuntimeVariables();
-            
+            SetupArrowgameBehaviour();
 
             int i = 0;
             foreach (ArrowSpawner spawner in spawnPoints)
@@ -207,7 +203,7 @@ namespace FishingGame.Reeling
                 spawner.ActivateOrDeactivateSpawner(true);
             }
 
-            if (!_arrowMiniGameBehaviourActive) { SpawnArrow(); }
+            if (!_arrowMiniGameBehaviourIsActive) { SpawnArrowNormal(); }
         }
 
         /// <summary>
@@ -296,16 +292,6 @@ namespace FishingGame.Reeling
 
 
         #region CoreGameTimeFunctions
-
-        private void CustomArrowBehaviour()
-        {
-            
-        }
-
-        private void DefaultArrowBehaviour()
-        {
-
-        }
 
         private void InputLogic(EMovementDirection inputedDirection)
         {
@@ -409,11 +395,76 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Modifys the current progress based on the inputed value
+        /// Updates the slider UI to properly reflect the progress
+        /// </summary>
+        /// <param name="progressValue"></param>
+        private void ModifyProgress(float progressValue)
+        {
+            _currentProgress += progressValue;
+            progressSlider.value = _currentProgress;
+        }
+
+        /// <summary>
+        /// Deactivates the minigame
+        /// Has a bool parameter that is used for changing logic based on if the minigame was won or lost
+        /// </summary>
+        /// <param name="didWin">Was the minigame won or lost, true if won, otherwise false</param>
+        private void DeactivateMiniGame(bool didWin)
+        {
+            _gameActive = false;
+            DisableArrowKeys();
+
+            foreach (MovingArrow arrow in _activeArrows)
+            {
+                arrow.StartFadeAwayOnSuccess(didWin);
+            }
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(false);
+            }
+
+            StartCoroutine(UIDissapear(didWin));
+        }
+
+        #endregion
+
+        #region CustomBehaviour Functions
+
+        private void CustomArrowBehaviour()
+        {
+
+        }
+
+        private void SpawnCustomArrow()
+        {
+
+        }
+
+        private IEnumerator CustomArrowTime(float timeToWait)
+        {
+            yield return new WaitForSeconds(timeToWait);
+        }
+
+        #endregion
+
+        #region StandardBehaviour Functions
+
+        private void DefaultArrowBehaviour()
+        {
+            if (_activeArrows.Count == 0)
+            {
+                EmergencySpawnArrow();
+            }
+        }
+
+        /// <summary>
         /// Spawns an Arrow as long as the current amount of arrows active is not greater to the maximum amount of arrows
         /// Starts a timer for when this will next be run
         /// Chooses a random spawner each time to spawn the arrow
         /// </summary>
-        private void SpawnArrow()
+        private void SpawnArrowNormal()
         {
             if (HasReachedMaxArrowSpawned()) { return; }
 
@@ -453,17 +504,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Modifys the current progress based on the inputed value
-        /// Updates the slider UI to properly reflect the progress
-        /// </summary>
-        /// <param name="progressValue"></param>
-        private void ModifyProgress(float progressValue)
-        {
-            _currentProgress += progressValue;
-            progressSlider.value = _currentProgress;
-        }
-
-        /// <summary>
         /// Rolls a random number between the max wave chance and 0
         /// If that number is less than or equal to current wave chance
         /// A wave is begun
@@ -478,29 +518,6 @@ namespace FishingGame.Reeling
                 _waveActive = true;
             }
             else { _currentWaveChance++; }
-        }
-
-        /// <summary>
-        /// Deactivates the minigame
-        /// Has a bool parameter that is used for changing logic based on if the minigame was won or lost
-        /// </summary>
-        /// <param name="didWin">Was the minigame won or lost, true if won, otherwise false</param>
-        private void DeactivateMiniGame(bool didWin)
-        {
-            _gameActive = false;
-            DisableArrowKeys();
-
-            foreach (MovingArrow arrow in _activeArrows)
-            {
-                arrow.StartFadeAwayOnSuccess(didWin);
-            }
-
-            foreach (ArrowSpawner spawner in spawnPoints)
-            {
-                spawner.ActivateOrDeactivateSpawner(false);
-            }
-
-            StartCoroutine(UIDissapear(didWin));
         }
 
         #endregion
@@ -547,7 +564,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CheckTimePassed()
         {
-            if (_currentTimePassed >= maxTimeBeforeModify)
+            if (_currentTimePassed >= defaultMaxTimeBeforeModify)
             {
                 _currentTimePassed = 0;
                 _timeModifier += 1;
@@ -599,7 +616,7 @@ namespace FishingGame.Reeling
         private IEnumerator SpawnCoolDown(float timeToWait)
         {
             yield return new WaitForSeconds(timeToWait);
-            SpawnArrow();
+            SpawnArrowNormal();
         }
 
         /// <summary>
@@ -630,15 +647,18 @@ namespace FishingGame.Reeling
 
         private void SetupArrowgameBehaviour()
         {
-            _arrowMiniGameBehaviour = _currentlyReelingObject.GetArrowMinigameBehaviour();
-            if (_arrowMiniGameBehaviour == null)
+            if (_currentlyReelingObject.GetArrowMinigameBehaviour() == null)
             {
                 _arrowMiniGameBehaviourActive = false;
                 SetDifficultyModifiers();
             }
             else
             {
+                _arrowMiniGameBehaviour = new ArrowWaveData(_currentlyReelingObject.GetArrowMinigameBehaviour());
                 _arrowMiniGameBehaviourActive = true;
+                _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
+                defaultMaxTimeBeforeModify = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
+                _activeArrowWaveBehaviourList.Sort();
             }
         }
 
@@ -723,7 +743,8 @@ namespace FishingGame.Reeling
             _currentWaveChance = 0;
             _arrowsToRemove.Clear();
             _arrowsAvailableToBePressed.Clear();
-            _arrowWaveBehaviourList.Clear();
+            _activeArrowWaveBehaviourList.Clear();
+            defaultMaxTimeBeforeModify = _initialMaxTimeBeforeModify;
         }
 
         #endregion

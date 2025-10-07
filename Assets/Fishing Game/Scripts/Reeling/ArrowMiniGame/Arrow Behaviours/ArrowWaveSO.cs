@@ -6,25 +6,17 @@ using UnityEngine;
 
 namespace FishingGame.Reeling
 {
-    public class ArrowWaveSO
-    {
         [CreateAssetMenu(fileName = "NewArrowWave", menuName = "Fishing Game/ArrowWaves")]
-        public class ArrowWaveSo : SerializableObject
+        public class ArrowWaveSO : SerializableObject
         {
             [Tooltip("A list of all arrows this will spawn and at what points it will spawn them")]
             public List<ArrowWaveEntry> ArrowEntrys;
 
-            internal ArrowWaveSo(int persistentID) : base(persistentID)
+            [Tooltip("How long until this will loop back to the start")]
+            public int MaxTimeForCycle;
+
+            internal ArrowWaveSO(int persistentID) : base(persistentID)
             {
             }
         }
-
-
-
-
-
-
-
-
-    }
 }

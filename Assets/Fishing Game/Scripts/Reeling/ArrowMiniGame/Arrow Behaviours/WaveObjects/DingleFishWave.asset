@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: DingleFish
+  m_Name: DingleFishWave
   m_EditorClassIdentifier: Assembly-CSharp:FishingGame.Reeling:ArrowWaveSO/ArrowWaveSo
   persistentID: 0
   ArrowEntrys: []
