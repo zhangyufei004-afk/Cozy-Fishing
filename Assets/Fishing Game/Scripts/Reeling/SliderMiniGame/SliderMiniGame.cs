@@ -369,6 +369,15 @@ namespace FishingGame.Reeling
             reelingMaster.EndCurrentMiniGame(false);
         }
 
+        /// <summary>
+        /// Gets input bool for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public bool GetInput()
+        {
+            return _directionAction.ReadValue<Vector2>().x > 0;
+        }
+
 
 
         #region TOBEPOTENTIALLY REMOVED
