@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: DingleFish
   m_EditorClassIdentifier: Assembly-CSharp:FishingGame.Reeling:ArrowWaveSO/ArrowWaveSo
   persistentID: 0
+  ArrowEntrys: []
