@@ -132,6 +132,7 @@ namespace FishingGame.Reeling
 
         private ArrowWaveSO _arrowMiniGameBehaviour;
         private bool _arrowMiniGameBehaviourActive = false;
+        private List<ArrowWaveEntry> _arrowWaveBehaviourList;
 
 
         private void OnEnable()
@@ -139,6 +140,7 @@ namespace FishingGame.Reeling
             _activeArrows = new List<MovingArrow>();
             _arrowsAvailableToBePressed = new List<MovingArrow>();
             _arrowsToRemove = new List<MovingArrow>();
+            _arrowWaveBehaviourList = new List<ArrowWaveEntry>();
 
             InputActionAsset inputAction = InputSystem.actions;
             _uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
@@ -297,7 +299,7 @@ namespace FishingGame.Reeling
 
         private void CustomArrowBehaviour()
         {
-
+            
         }
 
         private void DefaultArrowBehaviour()
@@ -324,7 +326,7 @@ namespace FishingGame.Reeling
                     ArrowSuccsessfullyPressed(arrow);
                     RemoveArrowFromPressList(arrow);
                     arrow.DeactivateArrow();
-                    arrow.StartFadeAway(true);
+                    arrow.StartFadeAwayOnSuccess(false);
                 }
                 _arrowsToRemove.Clear();
             }
@@ -398,8 +400,11 @@ namespace FishingGame.Reeling
         /// <param name="arrowCompleted">The arrow being modified</param>
         private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
+            float distanceModifier = arrowCompleted.GetPointModfiierFromGoal();
+
             AddOrRemoveActiveArrow(arrowCompleted, false);
-            ModifyProgress(defaultProgressModify * _timeModifier);
+            Debug.Log((defaultProgressModify * distanceModifier) * _timeModifier);
+            ModifyProgress((defaultProgressModify * distanceModifier) * _timeModifier);
             if (CheckIfEnoughProgress()) { WinMiniGame(); }
         }
 
@@ -487,7 +492,7 @@ namespace FishingGame.Reeling
 
             foreach (MovingArrow arrow in _activeArrows)
             {
-                arrow.StartFadeAway(didWin);
+                arrow.StartFadeAwayOnSuccess(didWin);
             }
 
             foreach (ArrowSpawner spawner in spawnPoints)
@@ -718,6 +723,7 @@ namespace FishingGame.Reeling
             _currentWaveChance = 0;
             _arrowsToRemove.Clear();
             _arrowsAvailableToBePressed.Clear();
+            _arrowWaveBehaviourList.Clear();
         }
 
         #endregion

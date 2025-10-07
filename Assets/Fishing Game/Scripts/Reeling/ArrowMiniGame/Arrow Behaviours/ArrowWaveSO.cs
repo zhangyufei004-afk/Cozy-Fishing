@@ -12,7 +12,7 @@ namespace FishingGame.Reeling
         public class ArrowWaveSo : SerializableObject
         {
             [Tooltip("A list of all arrows this will spawn and at what points it will spawn them")]
-            public List<ArrowWaveEntry> ArrowEntry;
+            public List<ArrowWaveEntry> ArrowEntrys;
 
             internal ArrowWaveSo(int persistentID) : base(persistentID)
             {

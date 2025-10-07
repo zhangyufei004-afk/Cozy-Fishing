@@ -40,12 +40,15 @@ namespace FishingGame.Reeling
         private ArrowGoalPoints _goalPoint;
 
         private bool _isActive = false;
-        private bool _canBePressed = false;
-        private bool _closestArrow = false;
         private float _speedScalar = 1f;
         
         private Image _arrowImage;
-        private float _acceptanceDistance = 250f;
+
+        private float _maxAcceptanceRange = 600f;
+        private float _maxFullPointDistance;
+        private float _halfPointDivider = 0.5f;
+
+
 
         private EMovementDirection _typeOfArrow;
         private float _targetAlpha;
@@ -53,6 +56,8 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             _arrowImage = GetComponent<Image>();
+            _arrowImage.color = Color.white;
+            _maxFullPointDistance = _maxAcceptanceRange / 3;
         }
 
         private void Update()
@@ -89,21 +94,30 @@ namespace FishingGame.Reeling
         {
             _isActive = false;
             _spawner.GetMasterScript().RemoveArrowFromPressList(this);
-            StartFadeAway(false);
             ArrowMiniGameMaster masterScript = _spawner.GetMasterScript();
             masterScript.ArrowFailedToBePressed(this);
+
+            _arrowImage.color = Color.red;
+            _spawner.RemoveActiveArrow(this);
+            StartCoroutine(FadeAway());
         }
 
         /// <summary>
-        /// Sets the arrow color based on if it was failed or a succsess then starts the fade away coroutine
+        /// Sets the arrow color based on how close to a perfect spot it was pressed
+        /// If pressed within the full point range it goes green
+        /// otherwise yellow,
+        /// if game over parameter is set to true the color instead goes grey
+        /// Calls the fadeaway timer after this is done
+        /// and removes this arrow from its spawner
         /// </summary>
-        /// <param name="wasASuccsess">Input true if this arrow was pressed properly, otherwise false</param>
-        public void StartFadeAway(bool wasASuccsess)
+        /// <param name="gameOver">Input true if game is over</param>
+        public void StartFadeAwayOnSuccess(bool gameOver)
         {
-            _spawner.RemoveActiveArrow(this);
-            if (wasASuccsess) { _arrowImage.color = Color.grey; }
-            else { _arrowImage.color = Color.red; }
+            if (gameOver) { _arrowImage.color = Color.grey;}
+            else if (gameObject.transform.localPosition.y - _goalPoint.transform.localPosition.y > _maxFullPointDistance) { _arrowImage.color = Color.yellow; }
+            else { _arrowImage.color = Color.green; }
 
+            _spawner.RemoveActiveArrow(this);
             StartCoroutine(FadeAway());
         }
 
@@ -153,6 +167,18 @@ namespace FishingGame.Reeling
             return (int)_typeOfArrow;
         }
 
+        /// <summary>
+        /// Returns the range between this arrow and its goal
+        /// </summary>
+        /// <returns>The distance between the two objects</returns>
+        public float GetPointModfiierFromGoal()
+        {
+            float distance = gameObject.transform.localPosition.y - _goalPoint.transform.localPosition.y;
+
+            if (distance > _maxFullPointDistance) { return _halfPointDivider; }
+            else { return 1; }
+        }
+
         #endregion
 
         #region GameTimeData
@@ -169,16 +195,12 @@ namespace FishingGame.Reeling
 
             transform.position = newPosition;
 
-            if (_goalPoint.CheckIfObjectIsInRange(_acceptanceDistance, gameObject))
+            if (_goalPoint.CheckIfObjectIsInRange(_maxAcceptanceRange, gameObject))
             {
-                _canBePressed = true;
-                _arrowImage.color = Color.green;
                 if (_spawner.GetMasterScript().DoesThisContainArrow(this) == false) { _spawner.GetMasterScript().AddArrowToPressList(this); }
             }
             else
             {
-                _canBePressed = false;
-                _arrowImage.color = Color.white;
                 if (_spawner.GetMasterScript().DoesThisContainArrow(this) == true) { _spawner.GetMasterScript().RemoveArrowFromPressList(this); }
             }
         }
@@ -214,7 +236,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CheckIfFailed()
         {
-            if (_goalPoint.CheckIfFailSpot(_acceptanceDistance, gameObject))
+            if (_goalPoint.CheckIfFailSpot(_maxAcceptanceRange, gameObject))
             {
                 ArrowFailed();
             }
