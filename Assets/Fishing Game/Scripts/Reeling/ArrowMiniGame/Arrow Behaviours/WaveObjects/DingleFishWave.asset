@@ -37,5 +37,5 @@ MonoBehaviour:
   - timeToSpawnInSeconds: 9
     ArrowTypeToSpawn: 3
   MaxTimeForCycle: 9
-  PointsNeededToPass: 500
-  PointsPerArrow: 20
+  PointsNeededToPass: 200
+  PointsPerArrow: 100

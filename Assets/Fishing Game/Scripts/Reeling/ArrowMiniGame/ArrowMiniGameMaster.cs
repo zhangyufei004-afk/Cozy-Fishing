@@ -61,16 +61,8 @@ namespace FishingGame.Reeling
         private GameObject spawnableArrow;
 
         [SerializeField]
-        [Tooltip("Default slow speed value for arrows")]
-        private int slowSpeed;
-
-        [SerializeField]
-        [Tooltip("Default medium speed value for arrows")]
-        private int mediumSpeed;
-
-        [SerializeField]
-        [Tooltip("Default fast speed value for arrows")]
-        private int fastSpeed;
+        [Tooltip("Default speed value for arrows")]
+        private int normalSpeed;
 
         [SerializeField]
         [Tooltip("The minimum amount of time needed inbetween arrow spawns, regardless of difficulty. Stops arrows overlapping exactly even at highest difficulty levels")]
@@ -118,6 +110,7 @@ namespace FishingGame.Reeling
         private int _maxRangeWaveChance = 10;
         private int _currentWaveChance = 0;
         private float _initialMaxTimeBeforeModify;
+        private float _defaultProgressModify;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
@@ -152,6 +145,7 @@ namespace FishingGame.Reeling
             _uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
 
             _initialMaxTimeBeforeModify = defaultMaxTimeBeforeModify;
+            _defaultProgressModify = defaultProgressModify;
         }
 
         private void OnDisable()
@@ -459,7 +453,7 @@ namespace FishingGame.Reeling
                 if (i > spawnPoints.Count) { break; };
             }
 
-            spawnerToUse.SpawnArrow(fastSpeed);
+            spawnerToUse.SpawnArrow(normalSpeed);
             SetupNextCustomArrow();
         }
 
@@ -470,8 +464,6 @@ namespace FishingGame.Reeling
             
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            Debug.Log("Time to wait was: " + timeToWait);
-            Debug.Log("Entry time to spawn = " + _nextEntryToSpawn.GetTimeToSpawn() + "Currenttimepassed = " + _currentTimePassed);
             StartCoroutine(CustomArrowTime(timeToWait));
             CheckTimePassed();
         }
@@ -506,7 +498,7 @@ namespace FishingGame.Reeling
 
             int chosenSpawner = Random.Range(0, spawnPoints.Count);
 
-            spawnPoints[chosenSpawner].SpawnArrow(fastSpeed);
+            spawnPoints[chosenSpawner].SpawnArrow(normalSpeed);
 
             if (_waveActive)
             {
@@ -536,7 +528,7 @@ namespace FishingGame.Reeling
         {
             int chosenSpawner = Random.Range(0, spawnPoints.Count);
 
-            spawnPoints[chosenSpawner].SpawnArrow(fastSpeed);
+            spawnPoints[chosenSpawner].SpawnArrow(normalSpeed);
         }
 
         /// <summary>
@@ -699,6 +691,7 @@ namespace FishingGame.Reeling
                 _maxProgress = _arrowMiniGameBehaviour.GetMaxPointsNeeded();
                 progressSlider.maxValue = _maxProgress;
                 progressSlider.value = _currentProgress;
+                defaultProgressModify = _arrowMiniGameBehaviour.GetPointPerArrow();
             }
         }
 
@@ -776,6 +769,7 @@ namespace FishingGame.Reeling
         {
             _timeModifier = 1;
             _currentArrowCount = 0;
+            defaultProgressModify = _defaultProgressModify;
             _currentProgress = defaultProgressModify * 4;
             _activeArrows.Clear();
             _waveActive = false;
