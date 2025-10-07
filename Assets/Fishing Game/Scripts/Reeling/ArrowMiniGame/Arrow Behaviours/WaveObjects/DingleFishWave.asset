@@ -16,14 +16,26 @@ MonoBehaviour:
   ArrowEntrys:
   - timeToSpawnInSeconds: 0
     ArrowTypeToSpawn: 0
-  - timeToSpawnInSeconds: 1
-    ArrowTypeToSpawn: 1
   - timeToSpawnInSeconds: 2
-    ArrowTypeToSpawn: 2
-  - timeToSpawnInSeconds: 3
-    ArrowTypeToSpawn: 0
-  - timeToSpawnInSeconds: 3
     ArrowTypeToSpawn: 1
-  - timeToSpawnInSeconds: 5
+  - timeToSpawnInSeconds: 4
+    ArrowTypeToSpawn: 2
+  - timeToSpawnInSeconds: 4
     ArrowTypeToSpawn: 3
-  MaxTimeForCycle: 5
+  - timeToSpawnInSeconds: 5
+    ArrowTypeToSpawn: 1
+  - timeToSpawnInSeconds: 5.5
+    ArrowTypeToSpawn: 0
+  - timeToSpawnInSeconds: 6
+    ArrowTypeToSpawn: 3
+  - timeToSpawnInSeconds: 7
+    ArrowTypeToSpawn: 3
+  - timeToSpawnInSeconds: 8
+    ArrowTypeToSpawn: 2
+  - timeToSpawnInSeconds: 9
+    ArrowTypeToSpawn: 2
+  - timeToSpawnInSeconds: 9
+    ArrowTypeToSpawn: 3
+  MaxTimeForCycle: 9
+  PointsNeededToPass: 500
+  PointsPerArrow: 20
