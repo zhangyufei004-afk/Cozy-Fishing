@@ -429,6 +429,8 @@ namespace FishingGame.Reeling
                 spawner.ActivateOrDeactivateSpawner(false);
             }
 
+            StopAllCoroutines();
+
             StartCoroutine(UIDissapear(didWin));
         }
 
@@ -438,6 +440,7 @@ namespace FishingGame.Reeling
 
         private void CustomArrowBehaviourBegin()
         {
+            _currentWaveIndex = 0;
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
             StartCoroutine(CustomArrowTime(timeToWait));
@@ -465,9 +468,9 @@ namespace FishingGame.Reeling
 
         private void SetupNextCustomArrow()
         {
-            if (_currentWaveIndex > _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
-
             _currentWaveIndex++;
+            if (_currentWaveIndex >= _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
+            
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
             StartCoroutine(CustomArrowTime(timeToWait));
@@ -690,7 +693,11 @@ namespace FishingGame.Reeling
                 _arrowMiniGameBehaviourActive = true;
                 _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
                 defaultMaxTimeBeforeModify = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
-               // _activeArrowWaveBehaviourList.Sort();
+                _activeArrowWaveBehaviourList.Sort();
+
+                _maxProgress = _arrowMiniGameBehaviour.GetMaxPointsNeeded();
+                progressSlider.maxValue = _maxProgress;
+                progressSlider.value = _currentProgress;
             }
         }
 
