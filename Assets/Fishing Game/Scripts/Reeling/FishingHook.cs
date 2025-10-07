@@ -83,6 +83,9 @@ namespace FishingGame.Reeling
         // There is a small chance for multipile fish to collide at once so I have made _collidingFish a list
         private List<GameObject> _collidingFish;
         private FishingPool _collidingPool;
+
+        private float _velocity;
+
         #endregion
 
         private void OnEnable()
@@ -94,7 +97,10 @@ namespace FishingGame.Reeling
         {
             if (_headingToFishSpot)
             {
-                transform.position = Vector3.MoveTowards(transform.position, _fishingLocation, castHookSpeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_fishingLocation.x, transform.position.y, _fishingLocation.z), castHookSpeed * Time.deltaTime);
+                transform.position += new Vector3(0, _velocity, 0);
+
+                _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
 
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
@@ -114,6 +120,7 @@ namespace FishingGame.Reeling
             }
             if (_headingBackToHook)
             {
+                _velocity = 0;
                 transform.localPosition = Vector3.MoveTowards(transform.localPosition, hookResetSpot, hookReturnSpeed * Time.deltaTime);
                 if (transform.localPosition == hookResetSpot)
                 {
