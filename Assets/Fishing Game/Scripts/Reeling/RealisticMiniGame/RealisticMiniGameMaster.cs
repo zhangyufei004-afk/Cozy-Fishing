@@ -220,9 +220,6 @@ namespace FishingGame.Reeling
                 i++;
             }
 
-            Debug.Log(_previousBoundsPoint);
-            Debug.Log(_currentBoundsPoint);
-
             return currentClosest;
         }
 

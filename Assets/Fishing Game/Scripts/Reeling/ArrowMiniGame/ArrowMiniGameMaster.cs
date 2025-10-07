@@ -393,7 +393,6 @@ namespace FishingGame.Reeling
             float distanceModifier = arrowCompleted.GetPointModfiierFromGoal();
 
             AddOrRemoveActiveArrow(arrowCompleted, false);
-            Debug.Log((defaultProgressModify * distanceModifier) * _timeModifier);
             ModifyProgress((defaultProgressModify * distanceModifier) * _timeModifier);
             if (CheckIfEnoughProgress()) { WinMiniGame(); }
         }
@@ -473,6 +472,8 @@ namespace FishingGame.Reeling
             
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            Debug.Log("Time to wait was: " + timeToWait);
+            Debug.Log("Entry time to spawn = " + _nextEntryToSpawn.GetTimeToSpawn() + "Currenttimepassed = " + _currentTimePassed);
             StartCoroutine(CustomArrowTime(timeToWait));
         }
 
@@ -785,6 +786,7 @@ namespace FishingGame.Reeling
             _activeArrowWaveBehaviourList.Clear();
             defaultMaxTimeBeforeModify = _initialMaxTimeBeforeModify;
             _currentWaveIndex = 0;
+            _currentTimePassed = 0;
         }
 
         #endregion
