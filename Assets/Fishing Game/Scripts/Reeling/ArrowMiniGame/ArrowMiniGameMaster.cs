@@ -434,10 +434,11 @@ namespace FishingGame.Reeling
             _currentWaveIndex = 0;
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            StartCoroutine(CustomArrowTime(timeToWait));
+            float speedToUse = _nextEntryToSpawn.GetCustomSpeed();
+            StartCoroutine(CustomArrowTime(timeToWait, speedToUse));
         }
 
-        private void SpawnCustomArrow()
+        private void SpawnCustomArrow(float speedToUse)
         {
             int i = 0;
             ArrowSpawner spawnerToUse = null;
@@ -453,7 +454,7 @@ namespace FishingGame.Reeling
                 if (i > spawnPoints.Count) { break; };
             }
 
-            spawnerToUse.SpawnArrow(normalSpeed);
+            spawnerToUse.SpawnArrow(speedToUse);
             SetupNextCustomArrow();
         }
 
@@ -464,14 +465,16 @@ namespace FishingGame.Reeling
             
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            StartCoroutine(CustomArrowTime(timeToWait));
+            float speedToUse = _nextEntryToSpawn.GetCustomSpeed();
+            StartCoroutine(CustomArrowTime(timeToWait, speedToUse));
             CheckTimePassed();
         }
 
-        private IEnumerator CustomArrowTime(float timeToWait)
+        private IEnumerator CustomArrowTime(float timeToWait, float speedToUse)
         {
             yield return new WaitForSeconds(timeToWait);
-            SpawnCustomArrow();
+            if (speedToUse == 0) { speedToUse = normalSpeed; }
+            SpawnCustomArrow(speedToUse);
         }
 
         #endregion

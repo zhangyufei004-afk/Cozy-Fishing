@@ -14,9 +14,15 @@ namespace FishingGame.Reeling
         [Tooltip("The type of arrow spawned")]
         private EMovementDirection ArrowTypeToSpawn;
 
+        [SerializeField]
+        [Tooltip("If this arrow has a custom speed set it here, if this is 0 it will default to normal arrow speed")]
+        private float customSpeed;
+
         public float GetTimeToSpawn() { return timeToSpawnInSeconds; }
 
         public EMovementDirection GetArrowType () { return ArrowTypeToSpawn; }
+
+        public float GetCustomSpeed() { return customSpeed; }  
 
         public int CompareTo(object obj)
         {
