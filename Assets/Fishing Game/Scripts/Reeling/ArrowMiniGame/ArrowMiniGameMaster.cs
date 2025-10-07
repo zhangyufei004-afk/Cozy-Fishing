@@ -136,6 +136,9 @@ namespace FishingGame.Reeling
         private ArrowWaveData _arrowMiniGameBehaviour;
         private bool _arrowMiniGameBehaviourActive = false;
         private List<ArrowWaveEntry> _activeArrowWaveBehaviourList;
+        private int _currentWaveIndex = 0;
+
+        private ArrowWaveEntry _nextEntryToSpawn;
 
 
         private void OnEnable()
@@ -164,8 +167,7 @@ namespace FishingGame.Reeling
 
             CheckTimePassed();
 
-            if (_arrowMiniGameBehaviourActive) { CustomArrowBehaviour(); }
-            else { DefaultArrowBehaviour(); }
+            if (!_arrowMiniGameBehaviourActive) { DefaultArrowBehaviour(); }
         }
 
         #region Public Functions
@@ -176,6 +178,7 @@ namespace FishingGame.Reeling
         /// <param name="fishScriptable">The data of the fish being caught</param>
         public void InitializeMiniGame(IFishAble fishScriptable)
         {
+            _arrowMiniGameBehaviour = null;
             _currentlyReelingObject = fishScriptable;
             _fishDifficulty = _currentlyReelingObject.GetCatchDifficulty();
             fishingCanvas.SetActive(true);
@@ -203,7 +206,8 @@ namespace FishingGame.Reeling
                 spawner.ActivateOrDeactivateSpawner(true);
             }
 
-            if (!_arrowMiniGameBehaviourIsActive) { SpawnArrowNormal(); }
+            if (!_arrowMiniGameBehaviourActive) { SpawnArrowNormal(); }
+            else { CustomArrowBehaviourBegin(); }
         }
 
         /// <summary>
@@ -432,19 +436,47 @@ namespace FishingGame.Reeling
 
         #region CustomBehaviour Functions
 
-        private void CustomArrowBehaviour()
+        private void CustomArrowBehaviourBegin()
         {
-
+            _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
+            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            StartCoroutine(CustomArrowTime(timeToWait));
         }
 
         private void SpawnCustomArrow()
         {
+            int i = 0;
+            ArrowSpawner spawnerToUse = null;
+            while (spawnerToUse == null)
+            {
+                if (i > spawnPoints.Count) { break; }
+                if (spawnPoints[i].GetSpawnerTypeAsInt() == (int)_nextEntryToSpawn.GetArrowType())
+                {
+                    spawnerToUse = spawnPoints[i];
+                }
+                else { i++; }
 
+                if (i > spawnPoints.Count) { break; };
+            }
+
+            spawnerToUse.SpawnArrow(fastSpeed);
+            SetupNextCustomArrow();
+        }
+
+        private void SetupNextCustomArrow()
+        {
+            if (_currentWaveIndex > _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
+
+            _currentWaveIndex++;
+            _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
+            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            StartCoroutine(CustomArrowTime(timeToWait));
         }
 
         private IEnumerator CustomArrowTime(float timeToWait)
         {
             yield return new WaitForSeconds(timeToWait);
+            SpawnCustomArrow();
         }
 
         #endregion
@@ -658,7 +690,7 @@ namespace FishingGame.Reeling
                 _arrowMiniGameBehaviourActive = true;
                 _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
                 defaultMaxTimeBeforeModify = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
-                _activeArrowWaveBehaviourList.Sort();
+               // _activeArrowWaveBehaviourList.Sort();
             }
         }
 
@@ -745,6 +777,7 @@ namespace FishingGame.Reeling
             _arrowsAvailableToBePressed.Clear();
             _activeArrowWaveBehaviourList.Clear();
             defaultMaxTimeBeforeModify = _initialMaxTimeBeforeModify;
+            _currentWaveIndex = 0;
         }
 
         #endregion

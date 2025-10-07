@@ -14,7 +14,7 @@ namespace FishingGame.Reeling
         public ArrowWaveData(ArrowWaveSO arrowWaveBase)
         {
             _waveBase = arrowWaveBase;
-            _arrowEntrys = new List<ArrowWaveEntry>();
+            _arrowEntrys = new List<ArrowWaveEntry>(arrowWaveBase.ArrowEntrys);
             _maxTimeForCycle = _waveBase.MaxTimeForCycle;
         }
 
