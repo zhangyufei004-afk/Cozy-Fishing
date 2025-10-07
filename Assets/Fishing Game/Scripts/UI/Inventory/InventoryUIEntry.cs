@@ -123,8 +123,6 @@ namespace FishingGame.UI.Inventory
             weightText.text = $"{itemUpdating.GetWeight():0.00}kg";
             lengthText.text = itemUpdating.GetCurrentUseCharge().ToString();
             caughtTimeText.text = itemUpdating.GetTooltip();
-            caughtTimeText.gameObject.SetActive(false);
-            locationText.gameObject.SetActive(false);
         }
 
         #endregion
@@ -136,17 +134,11 @@ namespace FishingGame.UI.Inventory
         {
             Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
             TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
 
             image.gameObject.SetActive(true);
             nameText.gameObject.SetActive(true);
-            lengthText.gameObject.SetActive(true);
             weightText.gameObject.SetActive(true);
-            caughtTimeText.gameObject.SetActive(true);
-            locationText.gameObject.SetActive(true);
         }
 
         /// <summary>
