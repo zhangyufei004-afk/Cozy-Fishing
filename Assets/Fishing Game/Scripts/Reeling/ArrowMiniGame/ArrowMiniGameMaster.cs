@@ -165,8 +165,6 @@ namespace FishingGame.Reeling
 
             _currentTimePassed += Time.deltaTime;
 
-            CheckTimePassed();
-
             if (!_arrowMiniGameBehaviourActive) { DefaultArrowBehaviour(); }
         }
 
@@ -475,6 +473,7 @@ namespace FishingGame.Reeling
             Debug.Log("Time to wait was: " + timeToWait);
             Debug.Log("Entry time to spawn = " + _nextEntryToSpawn.GetTimeToSpawn() + "Currenttimepassed = " + _currentTimePassed);
             StartCoroutine(CustomArrowTime(timeToWait));
+            CheckTimePassed();
         }
 
         private IEnumerator CustomArrowTime(float timeToWait)
@@ -489,6 +488,7 @@ namespace FishingGame.Reeling
 
         private void DefaultArrowBehaviour()
         {
+            CheckTimePassed();
             if (_activeArrows.Count == 0)
             {
                 EmergencySpawnArrow();
