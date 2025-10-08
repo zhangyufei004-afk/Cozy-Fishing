@@ -14,39 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:FishingGame.Reeling:ArrowWaveSO/ArrowWaveSo
   persistentID: 0
   ArrowEntrys:
-  - timeToSpawnInSeconds: 0
+  - timeToSpawnInSeconds: 0.5
     ArrowTypeToSpawn: 0
+    customSpeed: 0
+  - timeToSpawnInSeconds: 1.5
+    ArrowTypeToSpawn: 1
     customSpeed: 0
   - timeToSpawnInSeconds: 2
-    ArrowTypeToSpawn: 1
-    customSpeed: 0
-  - timeToSpawnInSeconds: 4
     ArrowTypeToSpawn: 2
     customSpeed: 0
-  - timeToSpawnInSeconds: 4
+  - timeToSpawnInSeconds: 3
     ArrowTypeToSpawn: 3
+    customSpeed: 0
+  - timeToSpawnInSeconds: 4
+    ArrowTypeToSpawn: 1
     customSpeed: 0
   - timeToSpawnInSeconds: 5
-    ArrowTypeToSpawn: 1
-    customSpeed: 0
-  - timeToSpawnInSeconds: 5.5
-    ArrowTypeToSpawn: 0
+    ArrowTypeToSpawn: 3
     customSpeed: 0
   - timeToSpawnInSeconds: 6
-    ArrowTypeToSpawn: 3
-    customSpeed: 0
-  - timeToSpawnInSeconds: 7
-    ArrowTypeToSpawn: 3
-    customSpeed: 0
-  - timeToSpawnInSeconds: 8
     ArrowTypeToSpawn: 2
     customSpeed: 0
-  - timeToSpawnInSeconds: 9
-    ArrowTypeToSpawn: 2
-    customSpeed: 0
-  - timeToSpawnInSeconds: 9
-    ArrowTypeToSpawn: 3
-    customSpeed: 0
-  MaxTimeForCycle: 9
-  PointsNeededToPass: 200
+  MaxTimeForCycle: 6
+  PointsNeededToPass: 140
   PointsPerArrow: 10

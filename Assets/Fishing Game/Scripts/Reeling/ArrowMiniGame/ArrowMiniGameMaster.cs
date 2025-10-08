@@ -396,6 +396,7 @@ namespace FishingGame.Reeling
         /// <param name="progressValue"></param>
         private void ModifyProgress(float progressValue)
         {
+            Debug.Log(progressValue);
             _currentProgress += progressValue;
             progressSlider.value = _currentProgress;
         }
@@ -695,6 +696,8 @@ namespace FishingGame.Reeling
                 progressSlider.maxValue = _maxProgress;
                 progressSlider.value = _currentProgress;
                 defaultProgressModify = _arrowMiniGameBehaviour.GetPointPerArrow();
+                _currentProgress = defaultProgressModify * 4;
+                progressSlider.value = _currentProgress;
             }
         }
 
