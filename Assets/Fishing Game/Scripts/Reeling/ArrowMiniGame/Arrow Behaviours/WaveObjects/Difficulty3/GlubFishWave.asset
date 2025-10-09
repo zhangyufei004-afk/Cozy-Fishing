@@ -10,34 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9127c648a74c9f46aa3422f756eaaf9, type: 3}
-  m_Name: GoblinFishWave
+  m_Name: GlubFishWave
   m_EditorClassIdentifier: 
   persistentID: 0
   ArrowEntrys:
   - timeToSpawnInSeconds: 1
     ArrowTypeToSpawn: 0
-    customSpeed: 0
-  - timeToSpawnInSeconds: 2
-    ArrowTypeToSpawn: 1
+    customSpeed: 640
+  - timeToSpawnInSeconds: 1.5
+    ArrowTypeToSpawn: 0
     customSpeed: 0
   - timeToSpawnInSeconds: 3
-    ArrowTypeToSpawn: 0
-    customSpeed: 0
-  - timeToSpawnInSeconds: 4
+    ArrowTypeToSpawn: 1
+    customSpeed: 640
+  - timeToSpawnInSeconds: 3.5
     ArrowTypeToSpawn: 1
     customSpeed: 0
   - timeToSpawnInSeconds: 5
-    ArrowTypeToSpawn: 0
-    customSpeed: 0
-  - timeToSpawnInSeconds: 5
-    ArrowTypeToSpawn: 1
-    customSpeed: 0
-  - timeToSpawnInSeconds: 6
-    ArrowTypeToSpawn: 0
-    customSpeed: 0
-  - timeToSpawnInSeconds: 7
-    ArrowTypeToSpawn: 1
-    customSpeed: 0
-  MaxTimeForCycle: 9
-  PointsNeededToPass: 180
+    ArrowTypeToSpawn: 2
+    customSpeed: 640
+  MaxTimeForCycle: 5
+  PointsNeededToPass: 600
   PointsPerArrow: 10

@@ -28,3 +28,4 @@ MonoBehaviour:
   LocationsFound: 03000000
   TimesFound: 0000000001000000
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 11400000, guid: 13c918e5a77834c4382da13238e2975f, type: 2}

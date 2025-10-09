@@ -21,5 +21,6 @@ MonoBehaviour:
   FishBio: Toxic at heart but gorgeous scales. Predates on colorful fish who are
     deemed more beautiful.
   LocationsFound: 0100000002000000
-  TimeOfDayFound: Morning, Daytime
+  TimesFound: 
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 11400000, guid: e83263bb4d6682541816fd15d08b9b54, type: 2}
