@@ -29,6 +29,6 @@ MonoBehaviour:
   - timeToSpawnInSeconds: 5
     ArrowTypeToSpawn: 2
     customSpeed: 640
-  MaxTimeForCycle: 5
+  SuddenDeathTimer: 30
   PointsNeededToPass: 600
   PointsPerArrow: 10

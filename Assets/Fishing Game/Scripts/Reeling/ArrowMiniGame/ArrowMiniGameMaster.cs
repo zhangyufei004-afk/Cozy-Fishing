@@ -89,8 +89,8 @@ namespace FishingGame.Reeling
         private float defaultProgressMax;
 
         [SerializeField]
-        [Tooltip("The amount of time it takes for the time scaler to increase")]
-        private float defaultMaxTimeBeforeModify;
+        [Tooltip("The amount of time it takes for sudden death")]
+        private float suddenDeathTimerDuration;
 
         [SerializeField]
         [Tooltip("Rate of spawn during a wave")]
@@ -102,15 +102,17 @@ namespace FishingGame.Reeling
         private int _currentArrowCount;
         private float _currentProgress;
         private float _currentTimePassed;
-        private int _timeModifier;
+        private float _suddenDeathTimePassed;
         private float _maxProgress;
         private int _waveArrowCount = 0;
         private bool _gameActive = false;
         private bool _waveActive = false;
         private int _maxRangeWaveChance = 10;
         private int _currentWaveChance = 0;
-        private float _initialMaxTimeBeforeModify;
-        private float _defaultProgressModify;
+        private float _initialSuddenDeathTimer;
+        private int _suddenDeathMultiplier = 4;
+        private bool _suddenDeath = false;
+        private float _minigameLoopDuration;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
@@ -144,8 +146,7 @@ namespace FishingGame.Reeling
             InputActionAsset inputAction = InputSystem.actions;
             _uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
 
-            _initialMaxTimeBeforeModify = defaultMaxTimeBeforeModify;
-            _defaultProgressModify = defaultProgressModify;
+            _initialSuddenDeathTimer = suddenDeathTimerDuration;
         }
 
         private void OnDisable()
@@ -158,6 +159,7 @@ namespace FishingGame.Reeling
             if (_gameActive != true) { return; }
 
             _currentTimePassed += Time.deltaTime;
+            _suddenDeathTimePassed += Time.deltaTime;
 
             if (!_arrowMiniGameBehaviourActive) { DefaultArrowBehaviour(); }
         }
@@ -280,7 +282,7 @@ namespace FishingGame.Reeling
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
             AddOrRemoveActiveArrow(arrowFailed, false);
-            ModifyProgress(-defaultProgressModify * _timeModifier);
+            ModifyProgress(-defaultProgressModify);
             if (CheckIfFailed()) { LoseMiniGame(); }
         }
 
@@ -385,7 +387,7 @@ namespace FishingGame.Reeling
             float distanceModifier = arrowCompleted.GetPointModfiierFromGoal();
 
             AddOrRemoveActiveArrow(arrowCompleted, false);
-            ModifyProgress((defaultProgressModify * distanceModifier) * _timeModifier);
+            ModifyProgress(defaultProgressModify * distanceModifier);
             if (CheckIfEnoughProgress()) { WinMiniGame(); }
         }
 
@@ -396,6 +398,7 @@ namespace FishingGame.Reeling
         /// <param name="progressValue"></param>
         private void ModifyProgress(float progressValue)
         {
+            if (_suddenDeath) { progressValue *= _suddenDeathMultiplier; }
             Debug.Log(progressValue);
             _currentProgress += progressValue;
             progressSlider.value = _currentProgress;
@@ -593,14 +596,18 @@ namespace FishingGame.Reeling
 
         /// <summary>
         /// Checks if enough time has past since the last time the time modifier was changed
-        /// If so, increases the time modified by 1
+        /// If so, activated sudden death
+        /// Also checks minigame loop duration and if true sets it back to 0
         /// </summary>
         private void CheckTimePassed()
         {
-            if (_currentTimePassed >= defaultMaxTimeBeforeModify)
+            if (_suddenDeathTimePassed >= suddenDeathTimerDuration && !_suddenDeath)
+            {
+                _suddenDeath = true;
+            }
+            if (_currentTimePassed >= _minigameLoopDuration)
             {
                 _currentTimePassed = 0;
-                _timeModifier += 1;
             }
         }
 
@@ -690,7 +697,8 @@ namespace FishingGame.Reeling
                 _arrowMiniGameBehaviour = new ArrowWaveData(_currentlyReelingObject.GetArrowMinigameBehaviour());
                 _arrowMiniGameBehaviourActive = true;
                 _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
-                defaultMaxTimeBeforeModify = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
+                _minigameLoopDuration = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
+                _initialSuddenDeathTimer = _arrowMiniGameBehaviour.GetSuddenDeathTimer();
                 _activeArrowWaveBehaviourList.Sort();
 
                 _maxProgress = _arrowMiniGameBehaviour.GetMaxPointsNeeded();
@@ -774,9 +782,11 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetRuntimeVariables()
         {
-            _timeModifier = 1;
+            _initialSuddenDeathTimer = suddenDeathTimerDuration;
+            _currentTimePassed = 0;
+            _suddenDeathTimePassed = 0;
+            _suddenDeath = false;
             _currentArrowCount = 0;
-            defaultProgressModify = _defaultProgressModify;
             _currentProgress = defaultProgressModify * 4;
             _activeArrows.Clear();
             _waveActive = false;
@@ -785,7 +795,7 @@ namespace FishingGame.Reeling
             _arrowsToRemove.Clear();
             _arrowsAvailableToBePressed.Clear();
             _activeArrowWaveBehaviourList.Clear();
-            defaultMaxTimeBeforeModify = _initialMaxTimeBeforeModify;
+            suddenDeathTimerDuration = _initialSuddenDeathTimer;
             _currentWaveIndex = 0;
             _currentTimePassed = 0;
         }

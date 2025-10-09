@@ -8,7 +8,7 @@ namespace FishingGame.Reeling
     {
         private ArrowWaveSO _waveBase;
         private List<ArrowWaveEntry> _arrowEntrys;
-        private int _maxTimeForCycle;
+        private float _suddenDeathTimer;
         private float _pointPerArrow;
         private float _pointsNeeded;
 
@@ -17,7 +17,7 @@ namespace FishingGame.Reeling
         {
             _waveBase = arrowWaveBase;
             _arrowEntrys = new List<ArrowWaveEntry>(arrowWaveBase.ArrowEntrys);
-            _maxTimeForCycle = _waveBase.MaxTimeForCycle;
+            _suddenDeathTimer = _waveBase.SuddenDeathTimer;
             _pointPerArrow = _waveBase.PointsPerArrow;
             _pointsNeeded = _waveBase.PointsNeededToPass;
         }
@@ -28,9 +28,15 @@ namespace FishingGame.Reeling
             return _arrowEntrys;
         }
 
-        public int GetMaxTimeForCycle()
+        public float GetMaxTimeForCycle()
         {
-            return _maxTimeForCycle;
+            int index = _arrowEntrys.Count - 1;
+            return _arrowEntrys[index].GetTimeToSpawn();
+        }
+
+        public float GetSuddenDeathTimer()
+        {
+            return _suddenDeathTimer;
         }
 
         public float GetPointPerArrow() { return _pointPerArrow; }

@@ -210,8 +210,6 @@ namespace FishingGame.Reeling
         public void InitializeMiniGame(IFishAble fishScriptable) 
         {
             _reelingObjectData = fishScriptable;
-            
-
 
             InitializeVariables();
 

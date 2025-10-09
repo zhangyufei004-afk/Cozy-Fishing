@@ -15,7 +15,7 @@ namespace FishingGame.Reeling
         private EMovementDirection ArrowTypeToSpawn;
 
         [SerializeField]
-        [Tooltip("If this arrow has a custom speed set it here, if this is 0 it will default to normal arrow speed which is 320")]
+        [Tooltip("If this arrow has a custom speed set it here, if this is 0 it will default to normal arrow speed which is 400")]
         private float customSpeed;
 
         public float GetTimeToSpawn() { return timeToSpawnInSeconds; }
@@ -24,7 +24,7 @@ namespace FishingGame.Reeling
 
         public float GetCustomSpeed() { return customSpeed; }  
 
-        public int CompareTo(object obj)
+        public int CompareTo(object obj) 
         {
             if (obj is ArrowWaveEntry other)
             {

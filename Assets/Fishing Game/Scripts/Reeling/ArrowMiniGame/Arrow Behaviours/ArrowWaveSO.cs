@@ -12,8 +12,8 @@ namespace FishingGame.Reeling
         [Tooltip("A list of all arrows this will spawn and at what points it will spawn them")]
         public List<ArrowWaveEntry> ArrowEntrys;
         
-        [Tooltip("How long until this will loop back to the start")]
-        public int MaxTimeForCycle;
+        [Tooltip("How long until this will activate sudden death")]
+        public float SuddenDeathTimer;
 
         [Tooltip("The max amount of points needed to pass")]
         public float PointsNeededToPass;
