@@ -1,5 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using FishingGame.GameManagement;
+using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -16,23 +22,52 @@ namespace FishingGame.Reeling
     public class ReelingInitiation : MonoBehaviour
     {
         #region Private Fields
-
-        [SerializeField]
-        private GameObject characterParent;
-
-        [SerializeField] 
-        private GameObject characterModel;
-
-        private Vector3 _aimStartPoint;
-        private Vector3 _aimDirection;
-
-        private bool _isCharging = false;
-        private float _chargePower = 0;
-        private float _maxCharge = 10;
+        [Header("Reeling Scripts")]
 
         [SerializeField]
         [Tooltip("Reference to the master reeling script found in the reelingcontainer")]
         private ReelingMaster reelingMasterScript;
+
+        [SerializeField]
+        [Tooltip("Contains logic for detecting if a fish or pool is touching the hook, gameobject is attatched to the fishing rod")]
+        private FishingHook fishingHook;
+
+        [SerializeField]
+        [Tooltip("A reference to the currently used fishing rod script")]
+        private FishingRod fishingRod;
+
+        [Header("ReelingUIElements")]
+
+        [Header("Stageone MiniGame variables")]
+
+        [SerializeField]
+        [Tooltip("The max amount of seconds a player would have to wait for a catch")]
+        private int maxFishWaitTime;
+
+        [SerializeField]
+        [Tooltip("The min amount of seconds a player would have to wait for a catch")]
+        private int minFishWaitTime;
+
+        [SerializeField]
+        [Tooltip("The prefab of the object that swims up to the reel")]
+        private GameObject reelSwimmerPrefab;
+
+        [SerializeField]
+        [Tooltip("Max distance the fish can be")]
+        private int maxDistance;
+
+        private int _fishDissapearTimeVisual = 1;
+        
+        private GameObject _fishSwim;
+
+        private bool _gameActive = false;
+        private bool _isStageOne = false;
+        private bool _fishAtHook = false;
+
+        private int _stageOneDifficulty = 0;
+        private int _catchSecondsToWait;
+
+        [Header("Misc")]
 
         [SerializeField]
         [Tooltip("Reference to the fish camera this is attatched to the hook")]
@@ -47,77 +82,30 @@ namespace FishingGame.Reeling
         private Animator characterAnimator;
 
         [SerializeField]
-        [Tooltip("Scales how fast the cast bar is charged when holding right click")]
-        private float chargeScalar;
-
-        [SerializeField]
-        [Tooltip("Slider for how much charge the cast bar has for reeling")]
-        private UnityEngine.UI.Slider chargeSlider;
-
-        [SerializeField]
-        [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
-        private GameObject rodBobber;
-
-        [SerializeField]
-        [Tooltip("Contains logic for detecting if a fish or pool is touching the hook, gameobject is attatched to the fishing rod")]
-        private FishingHook fishingHook;
-
-        [SerializeField]
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
 
-        [SerializeField]
-        [Tooltip("Max amount of distance a cast can be")]
-        private float fishingRange;
-
-        private InputAction _castAction;
-        private InputAction _reelAction;
-        private Vector3 _targetLocation;
+        private bool _isBusy = false;
+        
         #endregion
 
         public void OnEnable()
         {
-            chargeSlider.maxValue = _maxCharge;
-            fishCamera.gameObject.SetActive(false);
-
-            InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap playerActionMap = inputActions.FindActionMap("Player");
-            playerActionMap.Enable();
-            _castAction = playerActionMap.FindAction("Cast");
-            _reelAction = playerActionMap.FindAction("Reel");
-
-        }
-
-
-        public void Update()
-        {
-            if (fishingHook.HookIsOut == true)
-            {
-                return;
-            }
-
-            if (_reelAction.WasPressedThisFrame())
-            {
-                LeftClick();
-            }
-
-            if (_castAction.IsPressed())
-            {
-                RightClickHeld();
-            }
-
-            if (_castAction.WasPressedThisFrame())
-            {
-                RightClickUsed();
-            }
-
-            if (_castAction.WasReleasedThisFrame())
-            {
-                RightClickReleased();
-            }
+            GameManager.Instance.GameEvents.OnBecomeOccupied +=
+               isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
 
         #region Public Methods
+
+        /// <summary>
+        /// Sets appropreate values for Stage one of fishing and then runs the required functions
+        /// </summary>
+        public void BeginStageOne()
+        {
+            SetupVariables();
+            
+            StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
+        }
 
         /// <summary>
         /// A public function that calls the private enable fish perspective function with a true value
@@ -133,8 +121,58 @@ namespace FishingGame.Reeling
         /// <returns>Returns the 3D fish model that has been created</returns>
         public GameObject CreateAndReturn3DFishModel()
         {
-            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(90, 0, 0));
+            GameObject fishModel = Instantiate(fishModelPrefab, fishingHook.gameObject.transform.position, Quaternion.Euler(0, 90, 90));
             return fishModel;
+        }
+
+        /// <summary>
+        /// Run once the fish is at the hook transform
+        /// This turns the button interactable and starts a timer for how long player has
+        /// </summary>
+        public void FishAtHook()
+        {
+            _fishAtHook = true;
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", true);
+
+            StartCoroutine(FishCatchTimer(2));
+        }
+
+        /// <summary>
+        /// Run through a button, this signals stage one was a sucsess
+        /// It stops all current timers on this object and tell the master script
+        /// to fish
+        /// </summary>
+        public void FishCaught()
+        {
+            if (_fishAtHook)
+            {
+                _fishAtHook = false;
+                _isStageOne = false;
+                Destroy(_fishSwim);
+                StopAllCoroutines();
+                fishingHook.AttempToFishFromCurrentLocation();
+            }
+            else
+            {
+                CancelStageOne();
+            }
+        }
+
+        /// <summary>
+        /// This is called by the animation event attatched to the player
+        /// </summary>
+        public void ThrowRodLine()
+        {
+            fishingRod.ThrowLine();
+        }
+
+        /// <summary>
+        /// Sets the animators isReeling value based on inputed parameter
+        /// </summary>
+        /// <param name="isReeling">True if the animation should player</param>
+        public void SetIsReelingAnimation(bool isReeling)
+        {
+            characterAnimator.SetBool("isReeling", isReeling);
         }
 
         /// <summary>
@@ -154,129 +192,140 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// This can be called to cancel stage one of fishing, hiding the ui and restoring player controls
+        /// </summary>
+        public void CancelStageOne()
+        {
+            fishingHook.ClearCollidingFishAndPool();
+            StopAllCoroutines();
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            SetIsReelingAnimation(false);
+            Destroy(_fishSwim);
+            reelingMasterScript.SetCancelButtonVisibilty(false);
+            _fishAtHook = false;
+            SetIsReelingAnimation(false);
+
+            _isStageOne = false;
+            fishingHook.PullBackHook();
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+        }
+
+        /// <summary>
+        /// Returns true if reeling is in stage one, otherwise false
+        /// </summary>
+        /// <returns>True if in stage one otherwise false</returns>
+        public bool IsStageOne()
+        {
+            return _isStageOne;
+        }
+
+        /// <summary>
+        /// Returns true if fish is at hook otherwise false
+        /// </summary>
+        /// <returns>True if fish at hook otherwise false</returns>
+        public bool IsFishAtHook()
+        {
+            return _fishAtHook;
+        }
+
         #endregion
 
+        #region StageoneReelingGame
+
         /// <summary>
-        /// Holding down right click charges the cast line of the rod.
-        /// This will update the ui element representing the charge
-        /// and also show the tragectory line if the player were to release
+        /// Spawns the fish shadow object that will move up to the hook
+        /// This is a prefab that should have the StageOneSwimmer class attatched to it
         /// </summary>
-        private void ChargeLine()
+        private void SpawnFishShadow()
         {
-            _aimDirection = characterModel.transform.forward;
-            _aimStartPoint = characterParent.transform.position;
-
-            _chargePower += Time.deltaTime * chargeScalar;
-            _chargePower = Mathf.Min(_chargePower, _maxCharge);
-
-            chargeSlider.value = _chargePower;
-
-            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
-            SetAimPoint(aimLocation);
+            _fishSwim = Instantiate(reelSwimmerPrefab, SetFishSpawnLocation(), Quaternion.Euler(90, 0, 0));
+            _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(fishingHook.transform.position, this);
         }
 
         /// <summary>
-        /// When using the left click the line should cast if it is currently being charged
-        /// otherwise currently do nothing
-        /// If currently charged this will throw the fish line and then reset the charge
+        /// Returns a vector3 that can be used for the location the fish swimmer should spawn at
+        /// This vector3 is modified with a random int for the z and x axis
         /// </summary>
-        private void LeftClick()
+        /// <returns>A vector3 location</returns>
+        private Vector3 SetFishSpawnLocation()
         {
-            if (_isCharging == true)
-            {
-                SetThrowAnimation();
-                ResetCharge();
-            }
+            int zToAdd = UnityEngine.Random.Range(-maxDistance, maxDistance);
+            int xToAdd = UnityEngine.Random.Range(-maxDistance, maxDistance);
+
+            Vector3 currentHookLocation = fishingHook.gameObject.transform.position;
+            Vector3 trialLocation = new Vector3(currentHookLocation.x += xToAdd, currentHookLocation.y - 1, currentHookLocation.z += zToAdd);
+
+            return trialLocation;
         }
 
         /// <summary>
-        /// Using right click will begin a charge if there is not one ongoing
+        /// This is run when the catch window is not pressed before the fish escapes
+        /// It restarts the stageone cycle, makes button uninteractable and tells the fish to swim off
         /// </summary>
-        private void RightClickUsed()
+        private void FishGotAway()
         {
-            if (_isCharging != true)
-            {
-                BeginCharge();
-            }
+            _fishAtHook = false;
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+
+            _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
+            StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
         }
 
         /// <summary>
-        /// Holding the right mouse button will continiously charge the line
+        /// This timer will spawn a fish shadow once completed
         /// </summary>
-        private void RightClickHeld()
+        /// <param name="waitTime">The amount of seconds to wait before spawning</param>
+        /// <returns>Spawns the fish object</returns>
+        private IEnumerator SpawnFishTimer(int waitTime)
         {
-            ChargeLine();
+            yield return new WaitForSeconds(waitTime);
+            SpawnFishShadow();
         }
 
         /// <summary>
-        /// Releasing right click will reset the current charge
-        /// </summary>
-        private void RightClickReleased()
+        /// This timer represents howlong the player has until the fish swims off
+        /// After inputed seconds the fish will swim away
+        /// </summary>a
+        /// <param name="waitTime">The amount of seconds until fish swims away</param>
+        /// <returns>The fish swims away</returns>
+        private IEnumerator FishCatchTimer(int waitTime)
         {
-            ResetCharge();
+            yield return new WaitForSeconds(waitTime);
+            if (_isStageOne == true) { FishGotAway(); }
+            
         }
 
         /// <summary>
-        /// Makes the throw line animation play
+        /// This time despawns the fish after x seconds
+        /// It will then start a new spawn fish timer
         /// </summary>
-        private void SetThrowAnimation()
+        /// <param name="waitTime">The amount of seconds to wait before despawning</param>
+        /// <returns>Despawns the fish and starts timer for new one to spawn</returns>
+        private IEnumerator DespawnFishTimer(int waitTime)
         {
-            _targetLocation = rodBobber.transform.position;
-            characterAnimator.SetTrigger("ThrowTrigger");
+            yield return new WaitForSeconds(waitTime);
+            Destroy(_fishSwim);
+            StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
         }
 
         /// <summary>
-        /// Throws the fishing line at the location shown by the bobber
-        /// This is run through an animation event
+        /// Sets up variables for stage one
         /// </summary>
-        private void ThrowLine()
+        private void SetupVariables()
         {
-            fishingHook.HookIsOut = true;
-            reelingMasterScript.DisableControls(true);
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            _isStageOne = true;
+            _fishAtHook = false;
+            FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
+            _stageOneDifficulty = currentPool.GetADifficultyInRange();
 
-            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
+            reelingMasterScript.SetCancelButtonVisibilty(true);
+
+
+            _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
         }
 
-        /// <summary>
-        /// Setsup the variable for a cast being started
-        /// </summary>
-        private void BeginCharge()
-        {
-            chargeSlider.gameObject.SetActive(true);
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            _isCharging = true;
-            rodBobber.SetActive(true);
-        }
-
-        /// <summary>
-        /// Resets the variables when a cast is cancelled or completed
-        /// </summary>
-        private void ResetCharge()
-        {
-            chargeSlider.gameObject.SetActive(false);
-            _isCharging = false;
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            rodBobber.SetActive(false);
-        }
-
-        
-
-        /// <summary>
-        /// Fires a downwards ray from the inputed location, then sets the rodbobber to where the rod hits
-        /// </summary>
-        /// <param name="locationToUse"> The location that will be raycasted from</param>
-        private void SetAimPoint(Vector3 locationToUse)
-        {
-            RaycastHit hit;
-            float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
-
-            if (Physics.Raycast(locationToUse, Vector3.down, out hit, maxDistance, whatToHit))
-            {
-                rodBobber.transform.position = hit.point;
-            }
-        }
+        #endregion
     }
 }

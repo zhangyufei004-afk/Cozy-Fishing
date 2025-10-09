@@ -8,6 +8,8 @@ using FishingGame.GameManagement;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using FishingGame.Items;
+using FishingGame.Items.Bait;
 
 namespace FishingGame.Reeling
 {
@@ -19,23 +21,9 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
-        [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
-        public bool IsFishing { get; private set; } 
+        #region Private Variables
 
-
-        #region Private Fields
-
-        // Minigame stats and fields \\
-        private GameObject _currentMinigame;
-        private int _miniGameWinsRequired = 1;
-        private int _currentMiniGameWins;
-        private bool _hasWon = false;
-        private int _fishDifficulty;
-        private Fish _currentlyReelingFish;
-        private FishingPool _currentFishPool;
-
-        //TODO: Can combine this likely with the other fish variable once I have scriptable objects working
-        private GameObject _currentFish3DObject;
+        [Header("Script References")]
 
         [SerializeField]
         [Tooltip("A reference to the initiation script attatched to player.")]
@@ -49,16 +37,35 @@ namespace FishingGame.Reeling
         [Tooltip("A reference to the inventory system.")]
         private InventorySystem inventoryScript;
 
+        [SerializeField]
+        [Tooltip("A reference to the character controller")]
+        private PlayerController characterController;
+
+        [SerializeField]
+        [Tooltip("A reference to the current fishing rod")]
+        private FishingRod fishingRodScript;
+
+        private IBait _currentBaitBeingUsed;
+
+        [Header("Minigame Variables")]
+
         // Unity dosen't support making interface types a list so this is a gameobject list
         [SerializeField]
         [Tooltip("A list of all potential minigames.")]
         private List<GameObject> miniGameTypes;
 
-        //***************************\\
+        private GameObject _currentMinigame;
+        private IFishAble _currentlyReelingObject;
+        private FishingPool _currentFishPool;
+        private GameObject _current3DObject;
 
-        [SerializeField]
-        [Tooltip("A reference to the character controller")]
-        private PlayerController characterController;
+        private int _miniGameWinsRequired = 1;
+        private int _currentMiniGameWins;
+        private int _catchDifficulty;
+
+        private bool _hasWon = false;
+
+        [Header("UI elements")]
 
         [SerializeField]
         [Tooltip("The image UI element shown if succsesfully fishing.")]
@@ -72,46 +79,49 @@ namespace FishingGame.Reeling
         [Tooltip("The timer UI element contained in ReelingUI.")]
         private GameObject timerObject;
 
-        // TODO: Remove this once not needed with new inventory setup
         [SerializeField]
-        [Tooltip("A reference to the inventory UI.")] 
-        private InventoryUI inventoryUI;
+        [Tooltip("The UI button that allows the player to exit from fishing")]
+        private Button cancelButton;
+
+        [Header("Misc")]
+
+        [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
+        public bool IsFishing { get; private set; }
+
+        [Header("Misc")]
+
+        [SerializeField]
+        [Tooltip("The animator attatched to the player")]
+        private Animator characterAnimator;
+
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// Begin catch is run once a player succsesfully lands the fishing rod on a pool or an individual fish
-        /// It has two variations, 1 takes a fishscriptableobject and a gameobject
-        /// The other variation additionally takes a Fishing pool input.
-        /// This variation is to be used for individually caught fish and not fishing pools.
+        /// BeginCatchFish is run once a player succsesfully lands the fishing rod on a pool
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
-        /// <param name="fish3DObject">The 3D object of the fish</param>
-        public void BeginCatch(Fish fishCaught, GameObject fish3DObject)
+        /// <param name="visual3DObject">The 3D object of the fish</param>
+        /// <param name="fishPool">The fish pool being fished from</param>
+        public void BeginCatchFish(Fish fishCaught, GameObject visual3DObject, FishingPool fishPool)
         {
-            _currentFishPool = null;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
 
-            _currentFish3DObject = fish3DObject;
+            _currentlyReelingObject = fishCaught;
+            _currentFishPool = fishPool;
+            _current3DObject = visual3DObject;
+            _current3DObject.GetComponent<Animator>().SetBool("Active", true);
 
             DisableControls(true);
-
             initiationScript.InitiateFishingPerspective();
-
-            //Reset properties for the new catch
-            _currentlyReelingFish = fishCaught;
-            _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
-            _currentMinigame = null;
-            _currentMiniGameWins = 0;
-            timerObject.SetActive(true);
-
-            IsFishing = true;
+            SetDefaultVariables();
 
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
-                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
-                SetNextMiniGame(); 
+                _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
+                SetNextMiniGame();
             }
             else
             {
@@ -122,37 +132,31 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Begin catch is run once a player succsesfully lands the fishing rod on a pool or an individual fish
-        /// It has two variations, 1 takes a fishscriptableobject and a gameobject
-        /// The other variation additionally takes a Fishing pool input.
-        /// This variation is to be used for fishing pools. 
+        /// This is run once a player succsesfully completes the initial stage of reeling
+        /// This version is run when the caught object has been decided to be a piece of trash
         /// </summary>
-        /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
-        /// <param name="fish3DObject">The 3D object of the fish</param>
-        /// <param name="fishPool">The fish pool being fished from</param>
-        public void BeginCatch(Fish fishCaught, GameObject fish3DObject, FishingPool fishPool)
+        /// <param name="trashCaught">The data of the trash caught</param>
+        /// <param name="visual3DObject">Visual 3D object of what is being reeled</param>
+        /// <param name="fishPool">The pool this was caught from</param>
+        public void BeginCatchTrash(Trash trashCaught, GameObject visual3DObject, FishingPool fishPool)
         {
-            _currentFishPool = fishPool;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
 
-            _currentFish3DObject = fish3DObject;
+            _currentlyReelingObject = trashCaught;
+            _currentFishPool = fishPool;
+            _current3DObject = visual3DObject;
+            _current3DObject.GetComponent<Animator>().SetBool("Active", true);
 
             DisableControls(true);
-
             initiationScript.InitiateFishingPerspective();
+            SetDefaultVariables();
 
-            //Reset properties for the new catch
-            _currentlyReelingFish = fishCaught;
-            _fishDifficulty = _currentlyReelingFish.GetFishCatchDifficulty();
-            _currentMinigame = null;
-            _currentMiniGameWins = 0;
-            timerObject.SetActive(true);
-
-            IsFishing = true;
+            int miniGamesRequired = Mathf.Clamp(_catchDifficulty / 2, 1, _catchDifficulty);
 
             // Check if the fish is strong enough for minigames to be ran
             if (CheckIsFishDifficult() == true)
             {
-                _miniGameWinsRequired = GetMiniGamesRequired(_fishDifficulty);
+                _miniGameWinsRequired = GetMiniGamesRequired(miniGamesRequired);
                 SetNextMiniGame();
             }
             else
@@ -178,8 +182,8 @@ namespace FishingGame.Reeling
             }
 
             _currentMiniGameWins += 1;
-            Vector3 fishPosition = _currentFish3DObject.transform.position;
-            _currentFish3DObject.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
+            Vector3 fishPosition = _current3DObject.transform.position;
+            _current3DObject.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
             _hasWon = CheckIfWonEnough();
 
             if (_hasWon)
@@ -204,7 +208,6 @@ namespace FishingGame.Reeling
 
             fishingFinishedText.text = textToDisplay;
             fishingFinishedText.gameObject.SetActive(true);
-            fishingHook.ClearCollidingFishAndPool();
             fishingHook.PullBackHook();
             StartCoroutine(HideUIAfterCatch(2));
         }
@@ -217,7 +220,57 @@ namespace FishingGame.Reeling
         public void DisableControls(bool isDisabled)
         {
             characterController.ToggleMovement(!isDisabled);
+            fishingRodScript.AreReelingControlsActive(!isDisabled);
         }
+
+        /// <summary>
+        /// Run by a button, this will cancel fishing
+        /// Does this differently based on fishing is in stage one or the minigame section
+        /// </summary>
+        public void CancelFishing()
+        {
+            SetCancelButtonVisibilty(false);
+            fishingHook.ClearCollidingFishAndPool();
+            
+
+            if (IsFishing == true)
+            {
+                _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
+            }
+            else
+            {
+                if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
+                initiationScript.CancelStageOne();
+            }
+        }
+
+        /// <summary>
+        /// Sets the cancel button to be visible if parameter is true, otherwise nonvisible
+        /// </summary>
+        /// <param name="isVisible">If true the button will be visisble, otherwise it will be hidden</param>
+        public void SetCancelButtonVisibilty(bool isVisible)
+        {
+            cancelButton.gameObject.SetActive(isVisible);
+        }
+
+        /// <summary>
+        /// Returns the current 3D object representing the fish being reeled
+        /// </summary>
+        /// <returns>The 3D object of the current fish</returns>
+        public GameObject GetCurrent3DFishObject()
+        {
+            return _current3DObject;
+        }
+
+        /// <summary>
+        /// Returns the current fishing rod
+        /// </summary>
+        /// <returns>Returns the current fishing rod</returns>
+        public FishingRod GetCurrentFishingRod()
+        {
+            return fishingRodScript;
+        }
+
 
         #endregion
 
@@ -237,7 +290,7 @@ namespace FishingGame.Reeling
             // 5/08/2025 - Brayden
             if (testNextMiniGame != _currentMinigame)
             {
-                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingFish);
+                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingObject);
                 _currentMinigame = testNextMiniGame;
                 _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
             }
@@ -247,15 +300,13 @@ namespace FishingGame.Reeling
             }
         }
 
-
-
         /// <summary>
         /// Returns true if the fish difficulty of the current fish is above 0
         /// </summary>
         /// <returns>Returns true if the fish difficulty is above 0</returns>
         private bool CheckIsFishDifficult()
         {
-            if (_fishDifficulty > 0)
+            if (_catchDifficulty > 0)
             {
                 return true;
             }
@@ -302,36 +353,55 @@ namespace FishingGame.Reeling
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             DisableControls(false);
+            fishingRodScript.AreReelingControlsActive(true);
             initiationScript.ShouldEnableFishPerspective(false);
-            timerObject.SetActive(false);
             fishingHook.PullBackHook();
+            SetCancelButtonVisibilty(false);
 
+            if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
+            _current3DObject.GetComponent<Animator>().SetBool("Active", false);
+            characterAnimator.SetBool("isReeling", false);
+            Destroy(_current3DObject);
 
-            Destroy(_currentFish3DObject);
-
-             
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
-                DisplayFishingResult(_currentlyReelingFish, false);
+                DisplayFishingResult(_currentlyReelingObject, false);
                 StartCoroutine(HideUIAfterCatch(4));
-                _currentlyReelingFish = null;
+                _currentlyReelingObject = null;
             }
             else
             {
                 // Check if this was from a fishing pool
                 if (_currentFishPool != null)
                 {
-                    _currentFishPool.FishCaught();
+                    _currentFishPool.ObjectCaught(_currentlyReelingObject);
                 }
 
-                inventoryScript.AddItem(_currentlyReelingFish);
-                GameManager.Instance.GameEvents.FishCaught(_currentlyReelingFish);
-                DisplayFishingResult(_currentlyReelingFish, true);
+                IStorable itemGained = (IStorable)_currentlyReelingObject;
+                if (itemGained != null)
+                {
+                    inventoryScript.AddItem(itemGained);
+                }
 
-                _currentlyReelingFish = null;
+                GameManager.Instance.GameEvents.FishCaught(_currentlyReelingObject);
+                DisplayFishingResult(_currentlyReelingObject, true);
+
+                _currentlyReelingObject = null;
                 StartCoroutine(HideUIAfterCatch(2));
             }
+        }
+
+        /// <summary>
+        /// Sets the default variables that dont require parameters
+        /// </summary>
+        private void SetDefaultVariables()
+        {
+            _catchDifficulty = _currentlyReelingObject.GetCatchDifficulty();
+            _currentMinigame = null;
+            _currentMiniGameWins = 0;
+            IsFishing = true;
         }
 
         /// <summary>
@@ -360,11 +430,11 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="fishData">The data of the fish being reeled</param>
         /// <param name="didCatch">Was the fish caught</param>
-        private void DisplayFishingResult(Fish fishData, bool didCatch)
+        private void DisplayFishingResult(IFishAble fishData, bool didCatch)
         {
             if (didCatch)
             {
-                string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetSpeciesName()}!";
+                string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetName()}!";
 
                 caughtFishImage.sprite = fishData.GetTexture();
                 fishingFinishedText.text = textToDisplay;
@@ -373,7 +443,7 @@ namespace FishingGame.Reeling
             }
             else
             {
-                string textToDisplay = $"The {fishData.GetSpeciesName()} got away!";
+                string textToDisplay = $"The {fishData.GetName()} got away!";
                 fishingFinishedText.text = textToDisplay;
                 fishingFinishedText.gameObject.SetActive(true);
             }

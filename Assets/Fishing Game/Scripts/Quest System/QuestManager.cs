@@ -111,7 +111,14 @@ namespace FishingGame.QuestSystem
         /// <returns>The IQuest object which matches that name, or null if it wasn't found.</returns>
         public IQuest GetQuestByName(string questName)
         {
-            return _quests[questName];
+            try
+            {
+                return _quests[questName];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return null;
+            }
         }
 
         /// <summary>

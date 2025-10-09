@@ -19,7 +19,7 @@ namespace FishingGame.Reeling
         /// Variables can be modified based on the difficulty of fish
         /// </summary>
         /// /// <param name="fishScriptable">The data of the fish being caught</param>
-        public void InitializeMiniGame(Fish fishScriptable);
+        public void InitializeMiniGame(IFishAble fishScriptable);
 
         /// <summary>
         /// Begins the currently selected minigame
@@ -35,7 +35,5 @@ namespace FishingGame.Reeling
         /// Loses the minigame and tells the ReelingMaster it was a loss
         /// </summary>
         public void LoseMiniGame();
-
-        public void UpdateTimer();
     }
 }

@@ -53,7 +53,7 @@ namespace FishingGame.Input
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -123,6 +123,15 @@ namespace FishingGame.Input
                     ""name"": ""MousePress"",
                     ""type"": ""Button"",
                     ""id"": ""2ac99612-9dcb-49ce-ae74-5500179d8d6c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""d98007f3-9035-4617-9269-ed5955bc6094"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -341,17 +350,6 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b3c1c7f0-bd20-4ee7-a0f1-899b24bca6d7"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Reel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""eb40bb66-4559-4dfa-9a2f-820438abb426"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -536,6 +534,17 @@ namespace FishingGame.Input
                     ""action"": ""MousePress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb9f5aa8-8ac4-4faf-9a77-3377a610afb6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -644,12 +653,12 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": ""ArrowMiniGame"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""ad80eda9-74ed-4869-8d38-23c4d2796628"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""RealisticStickMovement"",
@@ -665,6 +674,15 @@ namespace FishingGame.Input
                     ""type"": ""Button"",
                     ""id"": ""49d08dfe-a2a8-40d5-b9d7-c0ef1aecd265"",
                     ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NumberKeys"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a8d279a2-2a21-448c-b45c-4f6fbde9b4da"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1092,7 +1110,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""4274abdf-01ab-418a-9af9-b94de99a89fd"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -1110,116 +1128,6 @@ namespace FishingGame.Input
                     ""action"": ""ContinueDialogue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5d5ad9a7-565b-44f1-a318-791095c4a4bc"",
-                    ""path"": ""<Gamepad>/dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""ae747cb4-bda3-4805-9124-482e9f07046b"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""17568e22-e9cd-42c4-ae94-34be603b1289"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""140b9a60-d450-43ce-8769-f80c5ed0c3f6"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""ace8271e-40d4-48f5-8bcd-35d04c1e5b9a"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""0781c0fa-5a93-486e-a6af-60be7a6d2dc1"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""256ac253-ca4b-4c4e-bac2-369a48140297"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""fd266aa3-b89d-4d3e-998c-74cc3dc6d150"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""9cc45e56-b65e-4cad-b2fc-625ca335819a"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""1387fe46-916f-4f8b-83ed-114ffe5fdab9"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -1251,6 +1159,424 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5af86fc-22bb-4dd2-bfcb-ccbe57dc7f79"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30dd1842-bc78-41fa-8a86-571209524463"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d66b8055-84aa-4e93-971d-fd56270b2882"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6110c5cb-b0f6-4354-aaab-26ee0b4b91bc"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f262b0ab-888e-497b-bbcc-acd31db6527b"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""466ec59d-5722-4bbd-ad43-38303f09c9d0"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=5)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73e2306e-9ca7-446f-8507-46517da7f2f2"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=6)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f687a7e9-7016-40a6-b58a-5a986c373bce"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=7)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a88df7ac-f3a5-42bc-9de2-fdf108f7c4c9"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=8)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90e7a08a-a717-42e8-90ff-620a10e5f2fc"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=9)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NumberKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56ccf06c-4907-473e-9944-dee9b4e80329"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72e3b7be-018a-48a8-be92-115f3c277b39"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64b21b9e-29aa-430e-99ee-b95795ae5b07"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14d93e4c-3280-48af-8f26-8155c2a4e058"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92071107-0973-4cd7-9c5d-7baa3fafe54e"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1c27e5c-bbcf-4c74-8651-e4008bfc3802"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4861da2c-24e1-4a89-8713-cd89f0cba519"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a608d5d0-9a41-4786-bddb-12cadd0bfd9e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8bccf6f2-60d5-46de-b454-ef3ed6d4c27d"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""072708bf-c127-4f82-8cc3-f563b86cfcbe"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb4e0876-fe23-4d9a-ba93-46a17054050e"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e49b90d3-6647-4c10-9aeb-15de03cdd709"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ArrowMiniGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""ArrowMiniGame"",
+            ""id"": ""2c461d90-275b-43e6-bc83-e87bd2002d49"",
+            ""actions"": [
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""14c237e1-cf70-435c-8b1e-aca482dd861a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""368c0c57-ee80-4565-9a94-a183956e3b0d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""3be23e97-2170-4138-a3bc-c78dd9d2f261"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""56829383-e7c7-456a-90b2-c46fbbd65a33"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d5163c6e-6777-4aa1-851c-de692b5dbe00"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b61e2f3-6bb4-459a-97fb-8cc677dfd486"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f5f7149-ae5f-4345-8501-02737bb725ef"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7300c51c-0b04-467c-9172-e0c3eaa53348"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0780317b-a6fe-4b9a-98ea-b939aeafc594"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""441aed37-80d5-4eb9-a96f-2d5b66c6ad0a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a3253b2-8be9-4e1e-8c66-b7908e8e6070"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79c53858-63cc-4cc4-8158-f2f9dfbab990"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f42d72ed-3216-4061-acf6-abc0a89db4a9"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eecd96e8-7279-4755-85ef-f6fa04484ed1"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87ce037b-5897-4db2-8c39-90b230f303cb"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44ca26e9-a7c4-4f61-a654-120c785ae09d"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1333,6 +1659,7 @@ namespace FishingGame.Input
             m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
             m_Player_MouseDelta = m_Player.FindAction("MouseDelta", throwIfNotFound: true);
             m_Player_MousePress = m_Player.FindAction("MousePress", throwIfNotFound: true);
+            m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1349,12 +1676,20 @@ namespace FishingGame.Input
             m_UI_ArrowMiniGame = m_UI.FindAction("ArrowMiniGame", throwIfNotFound: true);
             m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
+            m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
+            // ArrowMiniGame
+            m_ArrowMiniGame = asset.FindActionMap("ArrowMiniGame", throwIfNotFound: true);
+            m_ArrowMiniGame_Up = m_ArrowMiniGame.FindAction("Up", throwIfNotFound: true);
+            m_ArrowMiniGame_Down = m_ArrowMiniGame.FindAction("Down", throwIfNotFound: true);
+            m_ArrowMiniGame_Left = m_ArrowMiniGame.FindAction("Left", throwIfNotFound: true);
+            m_ArrowMiniGame_Right = m_ArrowMiniGame.FindAction("Right", throwIfNotFound: true);
         }
 
         ~@InputActions()
         {
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputActions.Player.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_ArrowMiniGame.enabled, "This will cause a leak and performance issues, InputActions.ArrowMiniGame.Disable() has not been called.");
         }
 
         public void Dispose()
@@ -1427,6 +1762,7 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_ToggleQuestLog;
         private readonly InputAction m_Player_MouseDelta;
         private readonly InputAction m_Player_MousePress;
+        private readonly InputAction m_Player_Newaction;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -1442,6 +1778,7 @@ namespace FishingGame.Input
             public InputAction @ToggleQuestLog => m_Wrapper.m_Player_ToggleQuestLog;
             public InputAction @MouseDelta => m_Wrapper.m_Player_MouseDelta;
             public InputAction @MousePress => m_Wrapper.m_Player_MousePress;
+            public InputAction @Newaction => m_Wrapper.m_Player_Newaction;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1484,6 +1821,9 @@ namespace FishingGame.Input
                 @MousePress.started += instance.OnMousePress;
                 @MousePress.performed += instance.OnMousePress;
                 @MousePress.canceled += instance.OnMousePress;
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1521,6 +1861,9 @@ namespace FishingGame.Input
                 @MousePress.started -= instance.OnMousePress;
                 @MousePress.performed -= instance.OnMousePress;
                 @MousePress.canceled -= instance.OnMousePress;
+                @Newaction.started -= instance.OnNewaction;
+                @Newaction.performed -= instance.OnNewaction;
+                @Newaction.canceled -= instance.OnNewaction;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1556,6 +1899,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_ArrowMiniGame;
         private readonly InputAction m_UI_RealisticStickMovement;
         private readonly InputAction m_UI_Back;
+        private readonly InputAction m_UI_NumberKeys;
         public struct UIActions
         {
             private @InputActions m_Wrapper;
@@ -1574,6 +1918,7 @@ namespace FishingGame.Input
             public InputAction @ArrowMiniGame => m_Wrapper.m_UI_ArrowMiniGame;
             public InputAction @RealisticStickMovement => m_Wrapper.m_UI_RealisticStickMovement;
             public InputAction @Back => m_Wrapper.m_UI_Back;
+            public InputAction @NumberKeys => m_Wrapper.m_UI_NumberKeys;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1625,6 +1970,9 @@ namespace FishingGame.Input
                 @Back.started += instance.OnBack;
                 @Back.performed += instance.OnBack;
                 @Back.canceled += instance.OnBack;
+                @NumberKeys.started += instance.OnNumberKeys;
+                @NumberKeys.performed += instance.OnNumberKeys;
+                @NumberKeys.canceled += instance.OnNumberKeys;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
@@ -1671,6 +2019,9 @@ namespace FishingGame.Input
                 @Back.started -= instance.OnBack;
                 @Back.performed -= instance.OnBack;
                 @Back.canceled -= instance.OnBack;
+                @NumberKeys.started -= instance.OnNumberKeys;
+                @NumberKeys.performed -= instance.OnNumberKeys;
+                @NumberKeys.canceled -= instance.OnNumberKeys;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -1688,6 +2039,76 @@ namespace FishingGame.Input
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // ArrowMiniGame
+        private readonly InputActionMap m_ArrowMiniGame;
+        private List<IArrowMiniGameActions> m_ArrowMiniGameActionsCallbackInterfaces = new List<IArrowMiniGameActions>();
+        private readonly InputAction m_ArrowMiniGame_Up;
+        private readonly InputAction m_ArrowMiniGame_Down;
+        private readonly InputAction m_ArrowMiniGame_Left;
+        private readonly InputAction m_ArrowMiniGame_Right;
+        public struct ArrowMiniGameActions
+        {
+            private @InputActions m_Wrapper;
+            public ArrowMiniGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Up => m_Wrapper.m_ArrowMiniGame_Up;
+            public InputAction @Down => m_Wrapper.m_ArrowMiniGame_Down;
+            public InputAction @Left => m_Wrapper.m_ArrowMiniGame_Left;
+            public InputAction @Right => m_Wrapper.m_ArrowMiniGame_Right;
+            public InputActionMap Get() { return m_Wrapper.m_ArrowMiniGame; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(ArrowMiniGameActions set) { return set.Get(); }
+            public void AddCallbacks(IArrowMiniGameActions instance)
+            {
+                if (instance == null || m_Wrapper.m_ArrowMiniGameActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_ArrowMiniGameActionsCallbackInterfaces.Add(instance);
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Left.started += instance.OnLeft;
+                @Left.performed += instance.OnLeft;
+                @Left.canceled += instance.OnLeft;
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
+            }
+
+            private void UnregisterCallbacks(IArrowMiniGameActions instance)
+            {
+                @Up.started -= instance.OnUp;
+                @Up.performed -= instance.OnUp;
+                @Up.canceled -= instance.OnUp;
+                @Down.started -= instance.OnDown;
+                @Down.performed -= instance.OnDown;
+                @Down.canceled -= instance.OnDown;
+                @Left.started -= instance.OnLeft;
+                @Left.performed -= instance.OnLeft;
+                @Left.canceled -= instance.OnLeft;
+                @Right.started -= instance.OnRight;
+                @Right.performed -= instance.OnRight;
+                @Right.canceled -= instance.OnRight;
+            }
+
+            public void RemoveCallbacks(IArrowMiniGameActions instance)
+            {
+                if (m_Wrapper.m_ArrowMiniGameActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IArrowMiniGameActions instance)
+            {
+                foreach (var item in m_Wrapper.m_ArrowMiniGameActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_ArrowMiniGameActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public ArrowMiniGameActions @ArrowMiniGame => new ArrowMiniGameActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1746,6 +2167,7 @@ namespace FishingGame.Input
             void OnToggleQuestLog(InputAction.CallbackContext context);
             void OnMouseDelta(InputAction.CallbackContext context);
             void OnMousePress(InputAction.CallbackContext context);
+            void OnNewaction(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
@@ -1763,6 +2185,14 @@ namespace FishingGame.Input
             void OnArrowMiniGame(InputAction.CallbackContext context);
             void OnRealisticStickMovement(InputAction.CallbackContext context);
             void OnBack(InputAction.CallbackContext context);
+            void OnNumberKeys(InputAction.CallbackContext context);
+        }
+        public interface IArrowMiniGameActions
+        {
+            void OnUp(InputAction.CallbackContext context);
+            void OnDown(InputAction.CallbackContext context);
+            void OnLeft(InputAction.CallbackContext context);
+            void OnRight(InputAction.CallbackContext context);
         }
     }
 }

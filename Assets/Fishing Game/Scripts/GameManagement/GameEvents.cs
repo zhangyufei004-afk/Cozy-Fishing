@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
+using UnityEditor;
 
 namespace FishingGame.GameManagement
 {
@@ -28,8 +30,9 @@ namespace FishingGame.GameManagement
         #region Inventory Events
 
         public event Action<Fish> OnFishCaught;
-        public event Action OnItemReceived;
+        public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
+        public event Action<IStorable> OnItemUsedUp;
 
         #endregion
 
@@ -56,15 +59,38 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnToggleDialogueCamera;
 
+        public event Action<bool, string> OnWithinDialogueRange;
+
+        public event Action<bool, string> OnNPCInteraction;
+        
+        public event Action<bool> OnBecomeOccupied;
+        
+        public event Action<bool> OnToggleGrappleCamera;
+
+        public event Action<bool, string> OnWithinItemPickupRange;
+
+        public event Action OnAttemptItemPickup;
+
+        #endregion
+
+        #region AI Events
+
+        public event Action<bool, string> OnToggleNPCMovement;
+
+
+
         #endregion
 
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
         /// /// <param name="fishCaught">The data object of the fish being caught</param>
-        public void FishCaught(Fish fishCaught)
+        public void FishCaught(IFishAble fishCaught)
         {
-            OnFishCaught?.Invoke(fishCaught);
+            if (fishCaught.GetCatchType() == ECatchableType.Fish)
+            {
+                OnFishCaught?.Invoke((Fish)fishCaught);
+            }
         }
 
         /// <summary>
@@ -145,7 +171,7 @@ namespace FishingGame.GameManagement
         /// <param name="item">The item which was received.</param>
         public void ItemReceived(IStorable item)
         {
-            OnItemReceived?.Invoke();
+            OnItemReceived?.Invoke(item);
         }
 
         /// <summary>
@@ -155,6 +181,82 @@ namespace FishingGame.GameManagement
         public void ToggleDialogueCamera(bool isCameraEnabled)
         {
             OnToggleDialogueCamera?.Invoke(isCameraEnabled);
+        }
+
+        /// <summary>
+        /// Invokes the OnWithinDialogueRange event to let the NPC <c>npcName</c> know the player is within dialogue range.
+        /// </summary>
+        /// <param name="isInRange">Is the player in range of the NPC Character for dialogue. True if they are, false otherwise.</param>
+        /// <param name="npcName">The name of the NPC we are in the dialogue range of.</param>
+        public void WithinDialogueRange(bool isInRange, string npcName)
+        {
+            OnWithinDialogueRange?.Invoke(isInRange, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnNPCInteraction event to let the NPC named <c>npcName</c> know the player is interacting with them and wants dialogue displayed.
+        /// </summary>
+        /// <param name="isCurrentlyInteracting">Is the player currently interacting with <c>npcName</c> NPC. True if they are, false if they are no longer interacting.</param>
+        /// <param name="npcName">The name of the NPC the player is interacting with.</param>
+        public void NPCInteraction(bool isCurrentlyInteracting, string npcName)
+        {
+            OnNPCInteraction?.Invoke(isCurrentlyInteracting, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleNPCMovement event to tell the NPC named <c>npcName</c> to disable or enable its movement.
+        /// </summary>
+        /// <param name="isMovementEnabled">Bool to represent whether the movement is enabled. True if movement is enabled, false otherwise.</param>
+        /// <param name="npcName">The name of the NPC to disable movement on.</param>
+        public void ToggleNPCMovement(bool isMovementEnabled, string npcName)
+        {
+            OnToggleNPCMovement?.Invoke(isMovementEnabled, npcName);
+        }
+
+        /// <summary>
+        /// Invokes the OnBecomeOccupied event with <c>isPlayerOccupied</c>. 
+        /// </summary>
+        /// <param name="isPlayerOccupied">Is the player currently occupied doing something else.</param>
+        public void SetPlayerOccupied(bool isPlayerOccupied)
+        {
+            OnBecomeOccupied?.Invoke(isPlayerOccupied);
+        }
+
+        /// <summary>
+        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// </summary>
+        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
+        public void ToggleGrappleCamera(bool isCameraEnabled)
+        {
+            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
+        }
+
+        /// <summary>
+        /// Run when the player is within range of an item for pickup
+        /// Used primarily to display text to the player that they can pickup an item
+        /// </summary>
+        /// <param name="isInRange">True if in range, otherwise false</param>
+        /// <param name="textToDisplay">The text to display to the player</param>
+        public void PickupItemRange(bool isInRange, string textToDisplay)
+        {
+            OnWithinItemPickupRange?.Invoke(isInRange, textToDisplay);
+        }
+
+        /// <summary>
+        /// Run when the player attempts to pickup an item and is range
+        /// </summary>
+        public void AttemptItemPickup()
+        {
+            OnAttemptItemPickup?.Invoke();
+        }
+
+        /// <summary>
+        /// Run when an item has used its final charge
+        /// </summary>
+        /// <param name="itemUsedUp">The item that has used its final charge</param>
+        public void ItemUsedUp(IStorable itemUsedUp)
+        {
+            OnItemUsedUp?.Invoke(itemUsedUp);
         }
     }
 }
