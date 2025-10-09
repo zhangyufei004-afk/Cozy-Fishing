@@ -464,13 +464,11 @@ namespace FishingGame.Reeling
             _currentWaveIndex++;
             if (_currentWaveIndex >= _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
 
-
             CheckTimePassed();
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
             float speedToUse = _nextEntryToSpawn.GetCustomSpeed();
             StartCoroutine(CustomArrowTime(timeToWait, speedToUse));
-            Debug.Log("Arrow spawned: GetTimeToSpawn: " + _nextEntryToSpawn.GetTimeToSpawn() + "currentimepassed " + _currentTimePassed);
         }
 
         private IEnumerator CustomArrowTime(float timeToWait, float speedToUse)
