@@ -4927,6 +4927,14 @@ PrefabInstance:
       propertyPath: timeScript
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: timeScript
+      value: 
+      objectReference: {fileID: 1847882215}
+    - target: {fileID: 4136142979881599312, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: timeScript
+      value: 
+      objectReference: {fileID: 1847882215}
     - target: {fileID: 4445300618230751179, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -24.73
@@ -4939,6 +4947,10 @@ PrefabInstance:
       propertyPath: timeScript
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 4557646425361534842, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfTrash
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4654643369933048174, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: timeScript
       value: 
@@ -4983,6 +4995,10 @@ PrefabInstance:
       propertyPath: timeScript
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 8822736530768286474, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: timeScript
+      value: 
+      objectReference: {fileID: 1847882215}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2868484126281217465, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
@@ -4990,6 +5006,7 @@ PrefabInstance:
     - {fileID: 8670500511400950239, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
     - {fileID: 725852819458786240, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
     - {fileID: 1632566935809560560, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+    - {fileID: 6250503258324188017, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
