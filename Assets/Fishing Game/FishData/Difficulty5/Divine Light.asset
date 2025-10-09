@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
-  m_Name: ChadFish
+  m_Name: Divine Light
   m_EditorClassIdentifier: 
   persistentID: 0
-  Texture: {fileID: 21300000, guid: 3edfcaa9f515e034686b7f5d60bf00a4, type: 3}
-  Id: 12
-  MinMaxWeight: {x: 4, y: 8}
-  SpeciesName: ChadFish
+  Texture: {fileID: 21300000, guid: e8f6b6a483ff19f4aa5eca1297ccf8b3, type: 3}
+  Id: 15
+  MinMaxWeight: {x: 8, y: 12}
+  SpeciesName: Divine Light
   FishCatchDifficulty: 5
-  FishBio: Non-migratory fish that likes to hit on the ladies
-  LocationsFound: 0300000000000000
-  TimeOfDayFound: Daytime, Evening
-  IsInvasive: 0
+  FishBio: Aggressive species that lurks in the shadows. Lures fish in by jingling
+    it's glowing bell on its hat. Invasive predator.
+  LocationsFound: 0000000002000000
+  TimesFound: 
+  IsInvasive: 1
+  ArrowMiniGameBehaviour: {fileID: 0}

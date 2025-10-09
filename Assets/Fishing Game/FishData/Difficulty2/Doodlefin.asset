@@ -17,11 +17,12 @@ MonoBehaviour:
   Id: 8
   MinMaxWeight: {x: 0.1, y: 0.8}
   SpeciesName: DoodleFin
-  FishCatchDifficulty: 4
+  FishCatchDifficulty: 2
   FishBio: While usually found in the average math students workbook, a few of these
     fierce competitors managed to escape the school grounds and repopulate the local
     ecosystem. These night owls developed their habits from the students that created
     them.
   LocationsFound: 010000000000000003000000
-  TimeOfDayFound: Evening, Night
+  TimesFound: 
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 11400000, guid: 23498b0fb63424b4b85d420e4b370327, type: 2}

@@ -17,9 +17,10 @@ MonoBehaviour:
   Id: 14
   MinMaxWeight: {x: 2, y: 6}
   SpeciesName: Blessed Squid
-  FishCatchDifficulty: 9
+  FishCatchDifficulty: 6
   FishBio: Species blessed by the heavens to bring holiness to the foodweb. Small
     and mighty but can migrate long distances to spread the holy spirit.
   LocationsFound: 030000000000000001000000
-  TimeOfDayFound: Morning, Daytime
+  TimesFound: 
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 0}

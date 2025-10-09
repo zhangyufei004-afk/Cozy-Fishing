@@ -17,8 +17,9 @@ MonoBehaviour:
   Id: 6
   MinMaxWeight: {x: 0.5, y: 1.2}
   SpeciesName: Goblin Fish
-  FishCatchDifficulty: 4
+  FishCatchDifficulty: 2
   FishBio: Wicked creature of the sea that feeds on other fish
   LocationsFound: 00000000030000000100000002000000
   TimesFound: 00000000010000000200000003000000
   IsInvasive: 1
+  ArrowMiniGameBehaviour: {fileID: 11400000, guid: 3dc4cd029517d0144a7dff2804749071, type: 2}

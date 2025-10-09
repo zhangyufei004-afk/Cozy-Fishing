@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13d1689999c38cf4690e6377affa3c2b, type: 3}
-  m_Name: One-eyed wangfish
+  m_Name: ChadFish
   m_EditorClassIdentifier: 
   persistentID: 0
-  Texture: {fileID: 21300000, guid: d5b6526a186f52d418de027e5dc5d6b9, type: 3}
-  Id: 9
-  MinMaxWeight: {x: 0.25, y: 0.75}
-  SpeciesName: One-eyed wangfish
+  Texture: {fileID: 21300000, guid: 3edfcaa9f515e034686b7f5d60bf00a4, type: 3}
+  Id: 12
+  MinMaxWeight: {x: 4, y: 8}
+  SpeciesName: ChadFish
   FishCatchDifficulty: 3
-  FishBio: A very shy dark dwelling creature, very active in the morning less common
-    in the night or cold
-  LocationsFound: 0100000002000000
-  TimeOfDayFound: Morning
+  FishBio: Non-migratory fish that likes to hit on the ladies
+  LocationsFound: 0300000000000000
+  TimesFound: 
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 0}

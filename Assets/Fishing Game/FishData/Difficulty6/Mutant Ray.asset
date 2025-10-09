@@ -17,8 +17,9 @@ MonoBehaviour:
   Id: 11
   MinMaxWeight: {x: 4, y: 8}
   SpeciesName: Mutant Ray
-  FishCatchDifficulty: 8
+  FishCatchDifficulty: 6
   FishBio: 'Lives off algea and glows mutant waves of toxic. '
   LocationsFound: 0100000000000000
-  TimeOfDayFound: Night
+  TimesFound: 
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 0}

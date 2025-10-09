@@ -434,6 +434,7 @@ namespace FishingGame.Reeling
         {
             _currentWaveIndex = 0;
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
+            CheckTimePassed();
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
             float speedToUse = _nextEntryToSpawn.GetCustomSpeed();
             StartCoroutine(CustomArrowTime(timeToWait, speedToUse));

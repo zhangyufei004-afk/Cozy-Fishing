@@ -17,7 +17,7 @@ MonoBehaviour:
   Id: 3
   MinMaxWeight: {x: 0.3, y: 0.6}
   SpeciesName: Great Dinglefish
-  FishCatchDifficulty: 3
+  FishCatchDifficulty: 1
   FishBio: ???
   LocationsFound: 0300000000000000
   TimesFound: 0200000003000000

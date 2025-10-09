@@ -17,7 +17,7 @@ MonoBehaviour:
   Id: 5
   MinMaxWeight: {x: 0.15, y: 0.6}
   SpeciesName: Silver Finfish
-  FishCatchDifficulty: 2
+  FishCatchDifficulty: 1
   FishBio: 'With its shimmering blue body and distinct silver dorsal fins, the Silver
     Finfish is often mistaken for a magical creature. Local fishermen believe it
     brings good luck if caught under the moonlight. Despite its fragile appearance,
@@ -25,3 +25,4 @@ MonoBehaviour:
   LocationsFound: 0100000003000000
   TimesFound: 00000000010000000200000003000000
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 11400000, guid: 3ce0b14e96ca0e44f9b8220779d98ea4, type: 2}

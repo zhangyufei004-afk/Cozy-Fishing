@@ -17,10 +17,11 @@ MonoBehaviour:
   Id: 10
   MinMaxWeight: {x: 0.3, y: 1.3}
   SpeciesName: My Jelly Romance
-  FishCatchDifficulty: 7
+  FishCatchDifficulty: 4
   FishBio: Chemical Romance Jelly's are wild and strong willed, they love there alone
     time and can be found in raging storms. They hate clown fish. they glow in the
     dark at night.
   LocationsFound: 00000000
-  TimeOfDayFound: Evening, Night
+  TimesFound: 
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 0}

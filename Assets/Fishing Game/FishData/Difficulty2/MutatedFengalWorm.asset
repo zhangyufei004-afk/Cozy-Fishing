@@ -17,7 +17,7 @@ MonoBehaviour:
   Id: 1
   MinMaxWeight: {x: 0, y: 0}
   SpeciesName: Mutated Fengal Worm
-  FishCatchDifficulty: 3
+  FishCatchDifficulty: 2
   FishBio: 'Fengal worms don''t usually swim well, but when alchemists keep dumping
     their leftover waste in the lake you get some odd side effects. While they dont
     look edible they are a suprising delicacy to some. Typically found in smaller
@@ -25,3 +25,4 @@ MonoBehaviour:
   LocationsFound: 02000000
   TimesFound: 0000000002000000
   IsInvasive: 0
+  ArrowMiniGameBehaviour: {fileID: 11400000, guid: a8ffa21d46b121f43a6644a972d0842e, type: 2}
