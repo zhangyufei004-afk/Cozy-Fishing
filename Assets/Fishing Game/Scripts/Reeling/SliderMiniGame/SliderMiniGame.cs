@@ -113,6 +113,9 @@ namespace FishingGame.Reeling
         [Tooltip("The time buffer the player is given before the catchbox starts to move")]
         private float initialTimeToWait;
 
+        private bool _goingLeft = true;
+        private bool _behaviourLoaded = false;
+
         private float _catchProgress = 50f;
         private float _timeSinceLastGoal = 0f;
         private float _maxTimeBetweenGoals = 0f;
@@ -207,8 +210,12 @@ namespace FishingGame.Reeling
         public void InitializeMiniGame(IFishAble fishScriptable) 
         {
             _reelingObjectData = fishScriptable;
+            
 
-            fishImage.sprite = _reelingObjectData.GetTexture();
+
+            InitializeVariables();
+
+            
             sliderCanvas.SetActive(true);
             _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
@@ -458,6 +465,27 @@ namespace FishingGame.Reeling
                 UnPauseCatchboxMovement();
             }
         }
+
+        private void DetermineBehaviour()
+        {
+
+        }
+
+        private void InitializeVariables()
+        {
+            fishImage.sprite = _reelingObjectData.GetTexture();
+
+            int decideDirection = Random.Range(0, 2);
+            if (decideDirection == 0) { _goingLeft = true; }
+            else {  _goingLeft = false; }
+
+
+        }
+
+        #endregion
+
+        #region CustomBehaviour Functions
+
 
         #endregion
     }
