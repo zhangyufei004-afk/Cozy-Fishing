@@ -54,6 +54,18 @@ namespace FishingGame.Reeling
         [Tooltip("The Direction indicator for what way a player needs to spin the reel")]
         private Image textDirectionHolder;
 
+        [SerializeField]
+        [Tooltip("The image that shows what direction to spin in")]
+        private Image directionImage;
+
+        [SerializeField]
+        [Tooltip("The sprite used when the player is meant to hold")]
+        private Sprite stopSprite;
+
+        [SerializeField]
+        [Tooltip("The arrow sprite used when showing the direction image")]
+        private Sprite arrowSprite;
+
         [Header("GameData")]
 
         [SerializeField]

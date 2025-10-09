@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace FishingGame.Reeling
 {
-        [CreateAssetMenu(fileName = "NewArrowWave", menuName = "Fishing Game/ArrowWaves")]
+        [CreateAssetMenu(fileName = "NewArrowWave", menuName = "Fishing Game/Minigames/ArrowWaves")]
         public class ArrowWaveSO : SerializableObject
         {
         [Tooltip("A list of all arrows this will spawn and at what points it will spawn them")]
