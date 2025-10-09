@@ -355,6 +355,11 @@ Varyings SplatmapVert(Attributes v)
     return o;
 }
 
+float TriangleWave(float p, float t)
+{
+    return (2 * abs(2 * ((t / p) - floor((t / p) + 0.5)))) - 1;
+}
+
 void ComputeMasks(out half4 masks[4], half4 hasMask, Varyings IN)
 {
     masks[0] = 0.5h;
@@ -425,6 +430,20 @@ void SplatmapFragment(
     half4 defaultSmoothness;
     SplatmapMix(IN.uvMainAndLM, IN.uvSplat01, IN.uvSplat23, splatControl, weight, mixedDiffuse, defaultSmoothness, normalTS);
     half3 albedo = mixedDiffuse.rgb;
+    
+    //#region Custom Wall Thing
+
+    // + ((sin(IN.positionWS.x * 10) + sin(IN.positionWS.z * 10)) * 0.05)
+
+    float t1 = TriangleWave(1, IN.positionWS.x);
+    float t2 = TriangleWave(1, IN.positionWS.z);
+
+    float tf = t1 + t2;
+
+    if(dot(IN.normal.y, half3(0, 1, 0)) + ((tf) * 0.01) < _WallTransitionLevel)
+    {
+        albedo = SAMPLE_TEXTURE2D(_WallTexture, sampler_Splat0, IN.uvSplat01.xy) * 1;
+    }
 
     half4 defaultMetallic = half4(_Metallic0, _Metallic1, _Metallic2, _Metallic3);
     half4 defaultOcclusion = half4(_MaskMapRemapScale0.g, _MaskMapRemapScale1.g, _MaskMapRemapScale2.g, _MaskMapRemapScale3.g) +
@@ -460,33 +479,6 @@ void SplatmapFragment(
 
     InitializeBakedGIData(IN, inputData);
 
-#ifdef TERRAIN_GBUFFER
-
-    BRDFData brdfData;
-    InitializeBRDFData(albedo, metallic, /* specular */ half3(0.0h, 0.0h, 0.0h), smoothness, alpha, brdfData);
-
-    // Baked lighting.
-    half4 color;
-    Light mainLight = GetMainLight(inputData.shadowCoord, inputData.positionWS, inputData.shadowMask);
-    MixRealtimeAndBakedGI(mainLight, inputData.normalWS, inputData.bakedGI, inputData.shadowMask);
-    color.rgb = GlobalIllumination(brdfData, inputData.bakedGI, occlusion, inputData.positionWS, inputData.normalWS, inputData.viewDirectionWS);
-    color.a = alpha;
-    SplatmapFinalColor(color, inputData.fogCoord);
-
-    // Dynamic lighting: emulate SplatmapFinalColor() by scaling gbuffer material properties. This will not give the same results
-    // as forward renderer because we apply blending pre-lighting instead of post-lighting.
-    // Blending of smoothness and normals is also not correct but close enough?
-    brdfData.albedo.rgb *= alpha;
-    brdfData.diffuse.rgb *= alpha;
-    brdfData.specular.rgb *= alpha;
-    brdfData.reflectivity *= alpha;
-    inputData.normalWS = inputData.normalWS * alpha;
-    smoothness *= alpha;
-
-    return BRDFDataToGbuffer(brdfData, inputData, smoothness, color.rgb, occlusion);
-
-#else
-        // half4(albedo, alpha);
     half4 color = UniversalFragmentPBR(inputData, albedo, metallic, /* specular */ half3(0.0h, 0.0h, 0.0h), smoothness, occlusion, /* emission */ half3(0, 0, 0), alpha);
 
     SplatmapFinalColor(color, inputData.fogCoord);
@@ -496,7 +488,6 @@ void SplatmapFragment(
 #ifdef _WRITE_RENDERING_LAYERS
     uint renderingLayers = GetMeshRenderingLayer();
     outRenderingLayers = float4(EncodeMeshRenderingLayer(renderingLayers), 0, 0, 0);
-#endif
 #endif
 }
 
