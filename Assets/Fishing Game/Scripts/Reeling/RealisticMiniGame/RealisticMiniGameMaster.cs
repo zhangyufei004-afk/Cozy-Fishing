@@ -47,7 +47,7 @@ namespace FishingGame.Reeling
         private Slider progressSlider;
 
         [SerializeField]
-        [Tooltip("The centerpoint of the rod in the UI")]
+        [Tooltip("The centerpoint of the rod in the UI used for calculating radius and showing the direction")]
         private Image centerPoint;
 
         [SerializeField]
@@ -59,12 +59,10 @@ namespace FishingGame.Reeling
         private Image directionImage;
 
         [SerializeField]
-        [Tooltip("The sprite used when the player is meant to hold")]
-        private Sprite stopSprite;
+        [Tooltip("The image that shows the player to stop")]
+        private Image stopImage;
 
-        [SerializeField]
-        [Tooltip("The arrow sprite used when showing the direction image")]
-        private Sprite arrowSprite;
+        private float _directionAntiClockWiseRotation = 180;
 
         [Header("GameData")]
 
@@ -321,16 +319,23 @@ namespace FishingGame.Reeling
             switch (_currentDirection)
             {
                 case ERealisticDirection.Clockwise:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    directionImage.GameObject().SetActive(true);
+                    directionImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    stopImage.GameObject().SetActive(false);
                     break;
                 case ERealisticDirection.AntiClockwise:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+                    directionImage.GameObject().SetActive(true);
+                    Quaternion currentRotation = directionImage.transform.rotation;
+                    directionImage.transform.rotation = Quaternion.Euler(currentRotation.x, _directionAntiClockWiseRotation, currentRotation.z);
+                    stopImage.GameObject().SetActive(false);
                     break;
                 case ERealisticDirection.Stop:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Stop spinning!";
+                    stopImage.GameObject().SetActive(true);
+                    directionImage.GameObject().SetActive(false);
                     break;
                 default:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    directionImage.GameObject().SetActive(true);
+                    directionImage.transform.rotation = Quaternion.Euler(0, 0, 0);
                     throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
             }
         }

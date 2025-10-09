@@ -113,6 +113,7 @@ namespace FishingGame.Reeling
         private int _suddenDeathMultiplier = 4;
         private bool _suddenDeath = false;
         private float _minigameLoopDuration;
+        private int _failedArrowModifier = 4;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
@@ -282,7 +283,7 @@ namespace FishingGame.Reeling
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
             AddOrRemoveActiveArrow(arrowFailed, false);
-            ModifyProgress(-defaultProgressModify);
+            ModifyProgress(-defaultProgressModify * _failedArrowModifier);
             if (CheckIfFailed()) { LoseMiniGame(); }
         }
 
