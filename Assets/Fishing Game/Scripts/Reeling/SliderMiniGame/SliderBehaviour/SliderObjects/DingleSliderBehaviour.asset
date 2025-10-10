@@ -14,8 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   SliderBehaviourList:
-  - timeToSpawnInSeconds: 0
-    locationToMoveTo: 221
-    speedToUse: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  - timeToStart: 2
+    locationToMoveTo: 297.6
+    speedToUse: 800
+  - timeToStart: 6
+    locationToMoveTo: -212
+    speedToUse: 800
+  - timeToStart: 12
+    locationToMoveTo: 201
+    speedToUse: 400
+  StartingLocation: -214
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 200
+  PointsPerSecond: 5

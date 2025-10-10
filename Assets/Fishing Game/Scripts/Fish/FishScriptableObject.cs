@@ -30,6 +30,7 @@ namespace FishingGame.FishSystem
         public bool IsInvasive;
 
         public ArrowWaveSO ArrowMiniGameBehaviour;
+        public SliderSO SliderMiniGameBehaviour;
 
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {

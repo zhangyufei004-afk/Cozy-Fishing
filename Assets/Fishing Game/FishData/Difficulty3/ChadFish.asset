@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ChadFish
   m_EditorClassIdentifier: 
   persistentID: 0
-  Texture: {fileID: 21300000, guid: 3edfcaa9f515e034686b7f5d60bf00a4, type: 3}
+  Texture: {fileID: 21300000, guid: 5be13ea8b6360894d86adb0bf6c31d28, type: 3}
   Id: 12
   MinMaxWeight: {x: 4, y: 8}
   SpeciesName: ChadFish

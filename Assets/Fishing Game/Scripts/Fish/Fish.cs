@@ -24,6 +24,7 @@ namespace FishingGame.FishSystem
         private int _fishCatchDifficulty;
         private Sprite _fishTexture;
         private ArrowWaveSO _arrowMiniGameBehaviour;
+        private SliderSO _sliderMiniGameBehaviour;
 
         /// <summary>
         /// Constructor for generating a new fish instance.
@@ -44,6 +45,7 @@ namespace FishingGame.FishSystem
             _fishTexture = _fishBase.Texture;
             _speciesName = _fishBase.SpeciesName;
             _arrowMiniGameBehaviour = _fishBase.ArrowMiniGameBehaviour;
+            _sliderMiniGameBehaviour = _fishBase.SliderMiniGameBehaviour;
         }
 
         /// <summary>
@@ -171,6 +173,15 @@ namespace FishingGame.FishSystem
         public ArrowWaveSO GetArrowMinigameBehaviour()
         {
             return _arrowMiniGameBehaviour;
+        }
+
+        /// <summary>
+        /// Returns this fishes slider minigame behaviour
+        /// </summary>
+        /// <returns>This fishes slider minigame behaviour</returns>
+        public SliderSO GetSliderMinigameBehaviour()
+        {
+            return _sliderMiniGameBehaviour;
         }
     }
 }

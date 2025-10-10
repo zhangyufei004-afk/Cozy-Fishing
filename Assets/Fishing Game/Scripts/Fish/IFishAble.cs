@@ -54,6 +54,12 @@ namespace FishingGame.FishSystem
         public ArrowWaveSO GetArrowMinigameBehaviour();
 
         /// <summary>
+        /// Returns the custom slider minigame behaviour for this fishable object
+        /// </summary>
+        /// <returns>The custom slider minigame behaviour</returns>
+        public SliderSO GetSliderMinigameBehaviour();
+
+        /// <summary>
         /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
         /// non-runtime data. 
         /// </summary>

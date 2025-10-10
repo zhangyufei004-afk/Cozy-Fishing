@@ -48,5 +48,5 @@ MonoBehaviour:
     ArrowTypeToSpawn: 2
     customSpeed: 650
   SuddenDeathTimer: 30
-  PointsNeededToPass: 800
+  PointsNeededToPass: 250
   PointsPerArrow: 10

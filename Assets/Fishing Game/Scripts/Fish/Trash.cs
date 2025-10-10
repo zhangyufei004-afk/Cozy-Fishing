@@ -24,6 +24,7 @@ namespace FishingGame.FishSystem
         private int _trashCatchDifficulty;
         private Sprite _trashTexture;
         private ArrowWaveSO _arrowMiniGameBehaviour;
+        private SliderSO _sliderMiniGameBehaviour;
 
         /// <summary>
         /// Trash is made from trash scriptable objects
@@ -46,6 +47,7 @@ namespace FishingGame.FishSystem
             _trashTexture = _trashBase.Texture;
             _trashName = _trashBase.TrashName;
             _arrowMiniGameBehaviour = _trashBase.ArrowMiniGameBehaviour;
+            _sliderMiniGameBehaviour = _trashBase.SliderMiniGameBehaviour;
         }
 
         /// <summary>
@@ -170,6 +172,11 @@ namespace FishingGame.FishSystem
         public ArrowWaveSO GetArrowMinigameBehaviour()
         {
             return _arrowMiniGameBehaviour;
+        }
+
+        public SliderSO GetSliderMinigameBehaviour()
+        {
+            return _sliderMiniGameBehaviour;
         }
     }
 }

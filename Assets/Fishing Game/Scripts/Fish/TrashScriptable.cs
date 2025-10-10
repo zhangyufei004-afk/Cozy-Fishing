@@ -23,6 +23,7 @@ namespace FishingGame.FishSystem
         public List<EFishingLocation> LocationsFound;
         public List<ETimeOfDay> TimesFound;
         public ArrowWaveSO ArrowMiniGameBehaviour;
+        public SliderSO SliderMiniGameBehaviour;
 
 
         internal TrashScriptable(int persistentID) : base(persistentID)
