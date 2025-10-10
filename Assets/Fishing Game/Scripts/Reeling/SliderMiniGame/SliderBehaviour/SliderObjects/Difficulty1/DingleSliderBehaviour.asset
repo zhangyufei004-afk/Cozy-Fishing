@@ -16,13 +16,13 @@ MonoBehaviour:
   SliderBehaviourList:
   - timeToStart: 2
     locationToMoveTo: 297.6
-    speedToUse: 800
+    speedToUse: 0
   - timeToStart: 6
     locationToMoveTo: -212
-    speedToUse: 800
+    speedToUse: 0
   - timeToStart: 12
     locationToMoveTo: 201
-    speedToUse: 400
+    speedToUse: 0
   StartingLocation: -214
   SuddenDeathTimer: 30
   PointsNeededToPass: 200
