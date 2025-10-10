@@ -20,6 +20,9 @@ namespace FishingGame.Reeling
 
         [Tooltip("The default amount of points given per arrow if perfectly timed")]
         public float PointsPerArrow;
+
+        [Tooltip("The speed for the arrows, set to 0 for default speed found on minigame master")]
+        public float MinigameSpeed;
         
         internal ArrowWaveSO(int persistentID) : base(persistentID)
         {

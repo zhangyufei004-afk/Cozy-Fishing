@@ -12,17 +12,17 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("The type of arrow spawned")]
-        private EMovementDirection ArrowTypeToSpawn;
+        private EMovementDirection arrowTypeToSpawn;
 
         [SerializeField]
-        [Tooltip("If this arrow has a custom speed set it here, if this is 0 it will default to normal arrow speed which is 400")]
-        private float customSpeed;
+        [Tooltip("Is this being spawned with another arrow")]
+        private bool isDouble;
 
         public float GetTimeToSpawn() { return timeToSpawnInSeconds; }
 
-        public EMovementDirection GetArrowType () { return ArrowTypeToSpawn; }
+        public EMovementDirection GetArrowType () { return arrowTypeToSpawn; }
 
-        public float GetCustomSpeed() { return customSpeed; }  
+        public bool GetIsDouble() { return isDouble; }
 
         public int CompareTo(object obj) 
         {

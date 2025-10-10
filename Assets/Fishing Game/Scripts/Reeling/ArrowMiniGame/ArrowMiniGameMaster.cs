@@ -133,6 +133,7 @@ namespace FishingGame.Reeling
         private bool _arrowMiniGameBehaviourActive = false;
         private List<ArrowWaveEntry> _activeArrowWaveBehaviourList;
         private int _currentWaveIndex = 0;
+        private float _roundSpeed;
 
         private ArrowWaveEntry _nextEntryToSpawn;
 
@@ -440,8 +441,8 @@ namespace FishingGame.Reeling
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
             CheckTimePassed();
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            float speedToUse = _nextEntryToSpawn.GetCustomSpeed();
-            StartCoroutine(CustomArrowTime(timeToWait, speedToUse));
+            StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
+            
         }
 
         private void SpawnCustomArrow(float speedToUse)
@@ -472,8 +473,8 @@ namespace FishingGame.Reeling
             CheckTimePassed();
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
             float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            float speedToUse = _nextEntryToSpawn.GetCustomSpeed();
-            StartCoroutine(CustomArrowTime(timeToWait, speedToUse));
+            if (_currentWaveIndex == _activeArrowWaveBehaviourList.Count - 1 && _nextEntryToSpawn.GetIsDouble()) { timeToWait = 0; }
+            StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
         }
 
         private IEnumerator CustomArrowTime(float timeToWait, float speedToUse)
@@ -702,6 +703,8 @@ namespace FishingGame.Reeling
                 _initialSuddenDeathTimer = _arrowMiniGameBehaviour.GetSuddenDeathTimer();
                 _activeArrowWaveBehaviourList.Sort();
 
+                _roundSpeed = _arrowMiniGameBehaviour.GetSpeedOfGame();
+                if (_roundSpeed == 0) { _roundSpeed = normalSpeed; }
                 _maxProgress = _arrowMiniGameBehaviour.GetMaxPointsNeeded();
                 progressSlider.maxValue = _maxProgress;
                 progressSlider.value = _currentProgress;
