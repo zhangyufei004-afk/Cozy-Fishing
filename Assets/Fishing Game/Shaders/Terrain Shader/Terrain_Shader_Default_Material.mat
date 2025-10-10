@@ -26,7 +26,6 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _TERRAIN_BLEND_HEIGHT
-  - _TERRAIN_INSTANCED_PERPIXEL_NORMAL
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -106,10 +105,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _WallTexture:
+        m_Texture: {fileID: 2800000, guid: c25a265fde697df48a95e10e34096f15, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _EnableHeightBlend: 1
-    - _EnableInstancedPerPixelNormal: 1
+    - _EnableInstancedPerPixelNormal: 0
     - _HeightTransition: 0
     - _Metallic0: 0
     - _Metallic1: 0
@@ -121,6 +124,7 @@ Material:
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
     - _Smoothness3: 0.5
+    - _WallTransitionLevel: 0.7
     m_Colors:
     - _BColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

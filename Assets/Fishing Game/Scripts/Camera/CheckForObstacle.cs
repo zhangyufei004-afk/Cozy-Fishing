@@ -34,7 +34,7 @@ namespace FishingGame.Camera
             if (_brain.ActiveVirtualCamera.Name == this.name && IsObjectInFrustum(hook))
             {
                 if (Physics.Raycast(this.transform.position,
-                        hook.transform.position - this.transform.position, out RaycastHit hit, LayerMask.GetMask("Default")))
+                        hook.transform.position - this.transform.position, out RaycastHit hit))
                 {
                     if (hit.collider.gameObject != hook)
                     {   // We have a collision
