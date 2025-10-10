@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Burst;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,37 +17,25 @@ namespace FishingGame.Player
         private readonly int _speed = Animator.StringToHash("Speed");
 
         public bool HasGrappleHook => hasGrapple;
-        
-        [SerializeField]
-        private GameObject playerBody;
-        [SerializeField]
-        private GameObject playerMesh;
-        [SerializeField]
-        private CharacterController characterController;
-        [SerializeField]
-        private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
-        [SerializeField]
-        private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20    
-        [SerializeField] 
-        private Animator animator;
-        [SerializeField]
-        private CinemachineBrain brain;
-        [SerializeField]
-        private GameObject fpsCamera;
-        [SerializeField]
-        private LayerMask rayLayerMask;
-        [SerializeField]
-        private float grappleRange;
-        [SerializeField]
-        private float grappleSpeed;
 
-        [SerializeField]
-        private bool hasGrapple;
+        [SerializeField] private GameObject playerBody;
+        [SerializeField] private GameObject playerMesh;
+        [SerializeField] private CharacterController characterController;
+        [SerializeField] private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
+        [SerializeField] private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20    
+        [SerializeField] private Animator animator;
+        [SerializeField] private CinemachineBrain brain;
+        [SerializeField] private GameObject fpsCamera;
+        [SerializeField] private LayerMask rayLayerMask;
+        [SerializeField] private float grappleRange;
+        [SerializeField] private float grappleSpeed;
+
+        [SerializeField] private bool hasGrapple;
 
         private Vector2 _moveInput;
         private float _initialMovementSpeed;
         private float _initialRotationSpeed;
-        
+
         // Grapple Variables
         private bool _grappleMode;
         private bool _fireGrapple;
@@ -57,16 +46,18 @@ namespace FishingGame.Player
         private Vector3 _grappleTarget;
         private bool _isCurrentlyEngaged;
 
-        [Tooltip("A reference to the fishingRod script")]
-        [SerializeField] private FishingRod currentFishingRod;
-        
-        public FishingRod CurrentFishingRod => currentFishingRod;
-        
-        // Raycast Properties
-        int _waterLayerMask;
-        int _terrainLayerMask;
-        int _raycastLayerMask;
+        [Tooltip("A reference to the fishingRod script")] [SerializeField]
+        private FishingRod currentFishingRod;
 
+        public FishingRod CurrentFishingRod => currentFishingRod;
+
+        // Raycast Properties
+        private int _waterLayerMask;
+        private int _terrainLayerMask;
+        private int _raycastLayerMask;
+        private Vector3 _previousDirection;
+        private readonly List<float> _rayDistances = new() {0.75f, 1f};
+        
         /// <summary>
         /// Enables or disables the characters movement
         /// </summary>
@@ -108,6 +99,7 @@ namespace FishingGame.Player
             _waterLayerMask = 1 << LayerMask.NameToLayer("Water");
 
             rayLayerMask = _waterLayerMask | _terrainLayerMask;
+            _previousDirection = Vector3.zero;
         }
 
         private void Update()
@@ -190,21 +182,26 @@ namespace FishingGame.Player
 
                 Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
 
-                if (!CanWalkInDirection(directionNormalized))
-                {
-                    animator.SetFloat(_speed, 0f);
-
-                    // We need this to apply gravity to the player, as if we don't have this they just float in the air when they get close to water.
-                    characterController.SimpleMove(Vector3.zero);
-                    return;
-                }
-
-                characterController.SimpleMove(directionNormalized * movementSpeed);
-
                 float animationSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, min: 0, max: 2f);
 
                 animator.SetFloat(_speed, animationSpeed);
+                _previousDirection = directionNormalized;
 
+
+                if (!CanWalkInDirection())
+                {
+                    if (_previousDirection == directionNormalized)
+                    {
+                        movementSpeed = Mathf.Lerp(movementSpeed, 0f, Time.deltaTime * _initialMovementSpeed);
+                    }
+                }
+                else
+                {
+                    movementSpeed = _initialMovementSpeed;
+                }
+
+                characterController.SimpleMove(directionNormalized * movementSpeed);
+                
                 if (_moveInput != Vector2.zero)
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
@@ -292,24 +289,19 @@ namespace FishingGame.Player
         }
 
 
-        private bool CanWalkInDirection(Vector3 direction)
+        private bool CanWalkInDirection()
         {
-            Vector3 startPositionOffset = transform.position + direction * 0.9f + Vector3.up;
-
+            Vector3 startPositionOffset = transform.position + playerBody.transform.forward;
             Debug.DrawRay(startPositionOffset, Vector3.down * 10f, Color.green, Time.deltaTime);
 
-            if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 7f, rayLayerMask))
+            if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 20f, rayLayerMask))
             {
-                int layerHitMask = 1 << hitInfo.transform.gameObject.layer;
-                if (layerHitMask == _waterLayerMask)
-                {
-                    return false;
-                }
-                if (transform.position.y - hitInfo.point.y > 0.8f)
-                {   // Is the slope more than 45 degrees
+                if (transform.position.y - hitInfo.point.y > 1f || 1 << hitInfo.transform.gameObject.layer == _waterLayerMask)
+                {   
                     return false;
                 }
             }
+
             return true;
         }
     }
