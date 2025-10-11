@@ -8,7 +8,7 @@ namespace FishingGame.Player
 {
     /// <summary>
     /// Class containing methods which control the cameras used by the player. Useful for switching to a close up camera
-    /// or a fist person camera for looking up. 
+    /// or a first person camera for looking up. 
     /// </summary>
     public class PlayerCameraController : MonoBehaviour
     {
@@ -31,10 +31,10 @@ namespace FishingGame.Player
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
             playerActionMap.Enable();
-            playerActionMap.FindAction("Interact").started += SwitchToDialogueCamera;
-            playerActionMap.FindAction("Crouch").started += ToggleGrappleCamera;
             
-
+            playerActionMap.FindAction("Interact").started += SwitchToDialogueCamera;
+            playerActionMap.FindAction("Crouch").started += ToggleGrappleCameraInput;
+            
             GameManager.Instance.GameEvents.OnToggleDialogueCamera += ToggleDialogueCamera;
             GameManager.Instance.GameEvents.OnToggleGrappleCamera += ToggleGrappleCamera;
             GameManager.Instance.GameEvents.OnBecomeOccupied += isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
@@ -69,9 +69,16 @@ namespace FishingGame.Player
             }
         }
         
-        private void ToggleGrappleCamera(InputAction.CallbackContext context)
+        /// <summary>
+        /// Called from Input System when Crouch key is pressed.
+        /// Only toggles GrappleCamera if player has grapple and is in GrappleZone.
+        /// </summary>
+        private void ToggleGrappleCameraInput(InputAction.CallbackContext context)
         {
-            ToggleGrappleCamera(!grappleCamera.gameObject.activeSelf);
+            if (player != null && player.HasGrappleHook && player.IsInGrappleZone && !_isCurrentlyEngaged)
+            {
+                ToggleGrappleCamera(!grappleCamera.gameObject.activeSelf);
+            }
         }
 
         private void ToggleGrappleCamera(bool isCameraEnabled)
@@ -103,3 +110,4 @@ namespace FishingGame.Player
         }
     }
 }
+

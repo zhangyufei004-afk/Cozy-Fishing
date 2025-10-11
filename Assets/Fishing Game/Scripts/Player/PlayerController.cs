@@ -65,6 +65,7 @@ namespace FishingGame.Player
         // === Properties ===
         public bool HasGrappleHook => hasGrapple;
         public FishingRod CurrentFishingRod => currentFishingRod;
+        public bool IsInGrappleZone => _isInGrappleZone;
 
         private void OnEnable()
         {
@@ -143,8 +144,8 @@ namespace FishingGame.Player
         {
             if (!hasGrapple) return;
 
-            // Fire grapple
-            if (_grappleMode && !_isGrappling && _fireGrapple)
+            // Fire grapple only if in zone
+            if (_grappleMode && !_isGrappling && _fireGrapple && _isInGrappleZone)
             {
                 _fireGrapple = false;
 
@@ -166,7 +167,6 @@ namespace FishingGame.Player
             {
                 Vector3 direction = (_grappleAnchor - transform.position).normalized;
 
-                // Ascend / descend
                 float verticalInput = 0f;
                 if (Keyboard.current.wKey.isPressed) verticalInput = 1f;
                 else if (Keyboard.current.sKey.isPressed) verticalInput = -1f;
@@ -224,6 +224,7 @@ namespace FishingGame.Player
         // === Input Handlers ===
         private void ToggleGrapple(InputAction.CallbackContext context)
         {
+            // Only allow toggling in GrappleZone
             if (context.performed && hasGrapple && !_isCurrentlyEngaged && _isInGrappleZone)
             {
                 _grappleMode = !_grappleMode;
@@ -233,7 +234,8 @@ namespace FishingGame.Player
 
         private void Fire(InputAction.CallbackContext context)
         {
-            if (context.performed && _grappleMode)
+            // Only allow firing if in zone and grapple mode
+            if (context.performed && _grappleMode && _isInGrappleZone)
             {
                 _fireGrapple = true;
             }
@@ -279,4 +281,6 @@ namespace FishingGame.Player
         }
     }
 }
+
+
 
