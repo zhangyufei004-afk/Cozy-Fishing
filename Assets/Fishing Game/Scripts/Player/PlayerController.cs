@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using Unity.Burst;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FishingGame.GameManagement;
-using UnityEngine.UIElements;
 using Unity.Cinemachine;
 using FishingGame.Reeling;
 
@@ -26,9 +24,11 @@ namespace FishingGame.Player
         [SerializeField] private Animator animator;
         [SerializeField] private CinemachineBrain brain;
         [SerializeField] private GameObject fpsCamera;
-        [SerializeField] private LayerMask rayLayerMask;
         [SerializeField] private float grappleRange;
         [SerializeField] private float grappleSpeed;
+        [SerializeField] private LayerMask grappleLayer;
+        [SerializeField] private LayerMask waterLayerMask;
+        [SerializeField] private LayerMask terrainLayerMask;
 
         [SerializeField] private bool hasGrapple;
 
@@ -51,12 +51,10 @@ namespace FishingGame.Player
 
         public FishingRod CurrentFishingRod => currentFishingRod;
 
-        // Raycast Properties
-        private int _waterLayerMask;
-        private int _terrainLayerMask;
+        // Anti Water Walking Properties
         private int _raycastLayerMask;
-        private Vector3 _previousDirection;
-        private readonly List<float> _rayDistances = new() {0.75f, 1f};
+        private Vector3 _previousSafePlace;
+        private bool _isRespawnRoutineRunning;
         
         /// <summary>
         /// Enables or disables the characters movement
@@ -95,15 +93,18 @@ namespace FishingGame.Player
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                 isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
 
-            _terrainLayerMask = 1 << LayerMask.NameToLayer("Terrain"); 
-            _waterLayerMask = 1 << LayerMask.NameToLayer("Water");
-
-            rayLayerMask = _waterLayerMask | _terrainLayerMask;
-            _previousDirection = Vector3.zero;
+            _raycastLayerMask = waterLayerMask | terrainLayerMask;
+            _previousSafePlace = Vector3.zero;
         }
 
         private void Update()
         {
+            if (IsInWater() && !_isRespawnRoutineRunning)
+            {
+                StartCoroutine(RespawnCharacter());
+                return;
+            }
+            
             Movement();
             Grappling();
 
@@ -176,6 +177,10 @@ namespace FishingGame.Player
         /// </summary>
         private void Movement()
         {
+            if (!characterController.enabled)
+            {
+                return;
+            }
             if (!_grappleMode)
             {
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -185,19 +190,10 @@ namespace FishingGame.Player
                 float animationSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, min: 0, max: 2f);
 
                 animator.SetFloat(_speed, animationSpeed);
-                _previousDirection = directionNormalized;
 
-
-                if (!CanWalkInDirection())
+                if (!CanWalkInDirection() && _previousSafePlace == Vector3.zero)
                 {
-                    if (_previousDirection == directionNormalized)
-                    {
-                        movementSpeed = Mathf.Lerp(movementSpeed, 0f, Time.deltaTime * _initialMovementSpeed);
-                    }
-                }
-                else
-                {
-                    movementSpeed = _initialMovementSpeed;
+                    _previousSafePlace = transform.position;
                 }
 
                 characterController.SimpleMove(directionNormalized * movementSpeed);
@@ -224,7 +220,8 @@ namespace FishingGame.Player
         private void Grappling()
         {
             RaycastHit hit;
-            if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, grappleRange, rayLayerMask) && _grappleMode)
+            if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, grappleRange, grappleLayer) 
+                && _grappleMode)
             {
                 if (_fireGrapple && !_targetHooked)
                 {
@@ -291,18 +288,37 @@ namespace FishingGame.Player
 
         private bool CanWalkInDirection()
         {
-            Vector3 startPositionOffset = transform.position + playerBody.transform.forward;
+            Vector3 startPositionOffset = transform.position + playerBody.transform.forward * 2f + Vector3.up * 2f;
             Debug.DrawRay(startPositionOffset, Vector3.down * 10f, Color.green, Time.deltaTime);
 
-            if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 20f, rayLayerMask))
+            if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 20f, _raycastLayerMask))
             {
-                if (transform.position.y - hitInfo.point.y > 1f || 1 << hitInfo.transform.gameObject.layer == _waterLayerMask)
+                if (1 << hitInfo.transform.gameObject.layer == waterLayerMask)
                 {   
                     return false;
                 }
+                _previousSafePlace = Vector3.zero;
             }
 
             return true;
+        }
+
+        private bool IsInWater()
+        {
+            Debug.DrawRay(transform.position + Vector3.up * 1.5f, Vector3.down*0.2f, Color.green);
+            return Physics.Raycast(transform.position + Vector3.up * 1.5f, Vector3.down, 0.2f, waterLayerMask);
+        }
+
+        IEnumerator RespawnCharacter()
+        {
+            _isRespawnRoutineRunning = true;
+            characterController.enabled = false;
+            transform.position = _previousSafePlace;
+            animator.SetFloat(_speed, 0);
+            yield return new WaitForSeconds(1.5f);
+            _previousSafePlace = Vector3.zero;
+            characterController.enabled = true;
+            _isRespawnRoutineRunning = false;
         }
     }
 }
