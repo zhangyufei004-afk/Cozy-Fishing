@@ -2,6 +2,8 @@ using FishingGame.FishSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace FishingGame.GameManagement
 {
@@ -30,12 +32,12 @@ namespace FishingGame.GameManagement
 
         private void OnEnable()
         {
-            _gameEvents = new GameEvents();
             if (_instance != null && _instance != this)
             {
                 Destroy(this.gameObject);
             }
             _instance = this;
+            _gameEvents = new GameEvents();
 
             _instance.GameEvents.OnFishCaught += AddToTimesCaught;
             _instance.GameEvents.OnFishCaught += CheckBiggestCatch;
@@ -50,13 +52,21 @@ namespace FishingGame.GameManagement
             }
         }
 
+        private void OnDestroy()
+        {
+            if (_instance == this)
+            {
+                _instance = null;
+            } 
+        }
+
         /// <summary>
         /// Returns the list of fish available in this level
         /// </summary>
         /// <returns>A list of fish available in this level</returns>
         public List<FishScriptableObject> GetPossibleFishList()
         {
-            return potentialFishTypes;
+            return potentialFishTypes ;
         }
 
         /// <summary>
@@ -86,6 +96,15 @@ namespace FishingGame.GameManagement
         public float GetBiggestCaught(FishScriptableObject fishToCheck)
         {
             return _fishBiggestCatch[fishToCheck];
+        }
+
+        /// <summary>
+        /// Gets a randomised death tip from the predefined messages for the player.
+        /// </summary>
+        /// <returns>The string of the death tip.</returns>
+        public string GetRandomDeathTip()
+        {
+            return "Baits increase your chances of catching certain fish.";
         }
 
         /// <summary>

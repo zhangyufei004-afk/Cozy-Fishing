@@ -55,6 +55,7 @@ namespace FishingGame.Player
         private int _raycastLayerMask;
         private Vector3 _previousSafePlace;
         private bool _isRespawnRoutineRunning;
+        private bool _isDead;
         
         /// <summary>
         /// Enables or disables the characters movement
@@ -92,6 +93,7 @@ namespace FishingGame.Player
             GameManager.Instance.GameEvents.OnTogglePlayerMovement += ToggleMovement;
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                 isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
+            GameManager.Instance.GameEvents.OnPlayerDeathScreenActive += RespawnPlayer;
 
             _raycastLayerMask = waterLayerMask | terrainLayerMask;
             _previousSafePlace = Vector3.zero;
@@ -99,9 +101,15 @@ namespace FishingGame.Player
 
         private void Update()
         {
-            if (IsInWater() && !_isRespawnRoutineRunning)
+            if (IsInWater() && !_isDead)
             {
-                StartCoroutine(RespawnCharacter());
+                _isDead = true;
+                GameManager.Instance.GameEvents.PlayerDied();
+                characterController.SimpleMove(Vector3.zero);
+                animator.SetFloat(_speed, 0);
+            }
+            if (_isDead)
+            {
                 return;
             }
             
@@ -146,6 +154,30 @@ namespace FishingGame.Player
         public Quaternion GetPlayerBodyRotation()
         {
             return playerBody.transform.rotation;
+        }
+        
+        private void RespawnPlayer(bool deathScreenActive)
+        {
+            switch (_isDead)
+            {
+                case true when deathScreenActive:
+                    characterController.enabled = false;
+                    transform.position = _previousSafePlace;
+                    animator.SetFloat(_speed, 0);
+                    _previousSafePlace = Vector3.zero;
+                    characterController.enabled = true;
+                    ToggleMovement(false);
+                    GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+                    break;
+                case true when !deathScreenActive:
+                    ToggleMovement(true);
+                    GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                    _isDead = false;
+                    break;
+                default:
+                    Debug.LogError($"Attempted to Respawn player while the player is not dead!");
+                    break;
+            }
         }
 
         /// <summary>
@@ -307,18 +339,6 @@ namespace FishingGame.Player
         {
             Debug.DrawRay(transform.position + Vector3.up * 1.5f, Vector3.down*0.2f, Color.green);
             return Physics.Raycast(transform.position + Vector3.up * 1.5f, Vector3.down, 0.2f, waterLayerMask);
-        }
-
-        IEnumerator RespawnCharacter()
-        {
-            _isRespawnRoutineRunning = true;
-            characterController.enabled = false;
-            transform.position = _previousSafePlace;
-            animator.SetFloat(_speed, 0);
-            yield return new WaitForSeconds(1.5f);
-            _previousSafePlace = Vector3.zero;
-            characterController.enabled = true;
-            _isRespawnRoutineRunning = false;
         }
     }
 }
