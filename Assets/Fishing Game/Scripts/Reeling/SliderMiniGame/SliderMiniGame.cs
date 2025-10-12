@@ -134,6 +134,9 @@ namespace FishingGame.Reeling
         private float _speedToUse;
         private float _defaultSuddenDeathTime;
 
+        private int _wanderRange = 5;
+        private float _atGoalRange = 0.2f;
+
         private float _catchMax = 100;
 
 
@@ -282,10 +285,11 @@ namespace FishingGame.Reeling
         private void MovementFightBack()
         {
             _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
-            /*if (_catchBoxVelocity > 0)
+            // Doubles the Fight back if catchbox is going forward
+            if (_catchBoxVelocity > 0)
             {
-                _catchBoxVelocity /= 2;
-            }*/
+                _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
+            }
 
             _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
         }
@@ -461,9 +465,10 @@ namespace FishingGame.Reeling
         /// </summary>
         private void UpdateFishLocation()
         {
-            if (fishImage.transform.position.y == _fishMoveGoal.y)
+            if (fishImage.transform.position.y < _fishMoveGoal.y + _wanderRange && fishImage.transform.position.y < _fishMoveGoal.y + -_wanderRange)
             {
-                return;
+                Debug.Log("Wandering");
+                Wander();
             }
 
             if (_isGoingLeft)
@@ -482,6 +487,18 @@ namespace FishingGame.Reeling
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);
                 fishImage.transform.localPosition = newPosition;
             }
+        }
+
+        /// <summary>
+        /// This is run when the fish is at its goal, it causes it to wander a small bit until it gets a new goal
+        /// </summary>
+        private void Wander()
+        {
+            float wanderValue = Random.Range(-_wanderRange, _wanderRange);
+
+            Vector3 currentPosition = fishImage.transform.localPosition;
+            Vector3 newGoal = new Vector3(currentPosition.x, wanderValue, currentPosition.z);
+            FishSetGoal(newGoal);
         }
 
 
