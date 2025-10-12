@@ -13,8 +13,26 @@ MonoBehaviour:
   m_Name: ChadfishSlider
   m_EditorClassIdentifier: 
   persistentID: 0
-  SliderBehaviourList: []
-  StartingLocation: 0
-  SuddenDeathTimer: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 2
+    locationToMoveTo: -215
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -141
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -280
+    speedToUse: 0
+  - timeToSpendOnGoal: 2
+    locationToMoveTo: 235
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 112
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 252
+    speedToUse: 0
+  StartingLocation: 236
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 15

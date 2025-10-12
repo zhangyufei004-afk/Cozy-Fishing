@@ -54,6 +54,8 @@ namespace FishingGame.Reeling
         [Tooltip("A list of all potential minigames.")]
         private List<GameObject> miniGameTypes;
 
+        private List<GameObject> _currentPoolOfMiniGames;
+
         private GameObject _currentMinigame;
         private IFishAble _currentlyReelingObject;
         private FishingPool _currentFishPool;
@@ -117,18 +119,9 @@ namespace FishingGame.Reeling
             initiationScript.InitiateFishingPerspective();
             SetDefaultVariables();
 
-            // Check if the fish is strong enough for minigames to be ran
-            if (CheckIsFishDifficult() == true)
-            {
-                _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
-                SetNextMiniGame();
-            }
-            else
-            {
-                // TODO: Implement a visual indicator so this debug log is not needed when a catch is not difficult enough
-                Debug.Log("DEBUGLOG: This fish was not difficult enough to cause minigames");
-                EndCatch(true);
-            }
+            _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
+            _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
+            SetNextMiniGame();
         }
 
         /// <summary>
@@ -151,20 +144,9 @@ namespace FishingGame.Reeling
             initiationScript.InitiateFishingPerspective();
             SetDefaultVariables();
 
-            int miniGamesRequired = Mathf.Clamp(_catchDifficulty / 2, 1, _catchDifficulty);
-
-            // Check if the fish is strong enough for minigames to be ran
-            if (CheckIsFishDifficult() == true)
-            {
-                _miniGameWinsRequired = GetMiniGamesRequired(miniGamesRequired);
-                SetNextMiniGame();
-            }
-            else
-            {
-                // TODO: Implement a visual indicator so this debug log is not needed when a catch is not difficult enough
-                Debug.Log("DEBUGLOG: This fish was not difficult enough to cause minigames");
-                EndCatch(true);
-            }
+            _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
+            _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
+            SetNextMiniGame();
         }
 
         /// <summary>
@@ -280,37 +262,14 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetNextMiniGame()
         {
-            int index = Random.Range(0, miniGameTypes.Count);
+            int index = Random.Range(0, _currentPoolOfMiniGames.Count);
 
-            GameObject testNextMiniGame = miniGameTypes[index];
+            GameObject nextMiniGame = _currentPoolOfMiniGames[index];
 
-            // TODO: Check if next minigame is not the current minigame
-            // Going to try find a more efficient way to do this if I have time
-            // Not sure rerunning the function in the event of an overlap is the best way to do it
-            // 5/08/2025 - Brayden
-            if (testNextMiniGame != _currentMinigame)
-            {
-                testNextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingObject);
-                _currentMinigame = testNextMiniGame;
-                _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
-            }
-            else
-            {
-                SetNextMiniGame();
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the fish difficulty of the current fish is above 0
-        /// </summary>
-        /// <returns>Returns true if the fish difficulty is above 0</returns>
-        private bool CheckIsFishDifficult()
-        {
-            if (_catchDifficulty > 0)
-            {
-                return true;
-            }
-            else { return false; }
+            nextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingObject);
+            _currentPoolOfMiniGames.Remove(nextMiniGame);
+            _currentMinigame = nextMiniGame;
+            _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
         }
 
         /// <summary>
@@ -319,7 +278,7 @@ namespace FishingGame.Reeling
         /// <returns>Returns true if the currentMiniGamesWon variables is greater than the minigamewins required variable</returns>
         private bool CheckIfWonEnough()
         {
-            if (_currentMiniGameWins > _miniGameWinsRequired)
+            if (_currentMiniGameWins >= _miniGameWinsRequired)
             {
                 return true;
             }
@@ -337,8 +296,9 @@ namespace FishingGame.Reeling
         /// <returns>Returns the amount of minigames that will need to be done based on the inputed fishdifficulty</returns>
         private int GetMiniGamesRequired(int fishDifficulty)
         {
-            _miniGameWinsRequired = 1;
-            return _miniGameWinsRequired + (fishDifficulty / 2);
+            if (fishDifficulty == 1) { return 1; }
+            else if (fishDifficulty >= 2 && fishDifficulty < 5) { return 2; }
+            else { return 3; }
         }
 
 
@@ -364,7 +324,6 @@ namespace FishingGame.Reeling
             Destroy(_current3DObject);
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-            // TODO: Implement more logic on if reeling was a win or not
             if (didWin == false)
             {
                 DisplayFishingResult(_currentlyReelingObject, false);
@@ -373,7 +332,6 @@ namespace FishingGame.Reeling
             }
             else
             {
-                // Check if this was from a fishing pool
                 if (_currentFishPool != null)
                 {
                     _currentFishPool.ObjectCaught(_currentlyReelingObject);

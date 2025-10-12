@@ -13,8 +13,44 @@ MonoBehaviour:
   m_Name: ToxicPufferSlider
   m_EditorClassIdentifier: 
   persistentID: 0
-  SliderBehaviourList: []
-  StartingLocation: 0
-  SuddenDeathTimer: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 64
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -61
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 83
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -54
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 134
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 0
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 158
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -7
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 219
+    speedToUse: 125
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -208
+    speedToUse: 125
+  - timeToSpendOnGoal: 0
+    locationToMoveTo: 183
+    speedToUse: 125
+  - timeToSpendOnGoal: 0
+    locationToMoveTo: -157
+    speedToUse: 180
+  StartingLocation: 140
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 10

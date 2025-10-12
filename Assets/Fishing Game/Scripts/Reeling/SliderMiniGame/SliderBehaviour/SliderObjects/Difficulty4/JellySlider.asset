@@ -13,8 +13,32 @@ MonoBehaviour:
   m_Name: JellySlider
   m_EditorClassIdentifier: 
   persistentID: 0
-  SliderBehaviourList: []
-  StartingLocation: 0
-  SuddenDeathTimer: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 259
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 175
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 282
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 107
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 252
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 297.6
+    speedToUse: 0
+  - timeToSpendOnGoal: 1.5
+    locationToMoveTo: -246
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.75
+    locationToMoveTo: 234
+    speedToUse: 200
+  StartingLocation: 138
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 10

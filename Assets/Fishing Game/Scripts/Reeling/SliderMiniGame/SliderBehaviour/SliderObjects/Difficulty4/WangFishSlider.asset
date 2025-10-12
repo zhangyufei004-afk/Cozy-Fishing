@@ -13,8 +13,29 @@ MonoBehaviour:
   m_Name: WangFishSlider
   m_EditorClassIdentifier: 
   persistentID: 0
-  SliderBehaviourList: []
-  StartingLocation: 0
-  SuddenDeathTimer: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 115
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -88
+    speedToUse: 80
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 107
+    speedToUse: 80
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -68
+    speedToUse: 80
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 78
+    speedToUse: 80
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 270
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -249
+    speedToUse: 150
+  StartingLocation: 81
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 10

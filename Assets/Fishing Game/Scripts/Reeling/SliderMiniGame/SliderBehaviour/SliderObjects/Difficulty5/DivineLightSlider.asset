@@ -13,8 +13,32 @@ MonoBehaviour:
   m_Name: DivineLightSlider
   m_EditorClassIdentifier: 
   persistentID: 0
-  SliderBehaviourList: []
-  StartingLocation: 0
-  SuddenDeathTimer: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 237
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -232
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 237
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -187
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 225
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -163
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 232
+    speedToUse: 150
+  - timeToSpendOnGoal: 3
+    locationToMoveTo: 38
+    speedToUse: 80
+  StartingLocation: -234
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 10

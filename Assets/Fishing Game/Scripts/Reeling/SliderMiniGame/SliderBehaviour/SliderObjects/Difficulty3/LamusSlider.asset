@@ -13,8 +13,26 @@ MonoBehaviour:
   m_Name: LamusSlider
   m_EditorClassIdentifier: 
   persistentID: 0
-  SliderBehaviourList: []
-  StartingLocation: 0
-  SuddenDeathTimer: 0
-  PointsNeededToPass: 0
-  PointsPerSecond: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -232
+    speedToUse: 125
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -109
+    speedToUse: 125
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 45
+    speedToUse: 125
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -271
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 146
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -297
+    speedToUse: 150
+  StartingLocation: 91
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 10
