@@ -1814,7 +1814,6 @@ MonoBehaviour:
   resolutionSlider: {fileID: 1901522722}
   resolutionLabel: {fileID: 484127076}
   displayModeDropdown: {fileID: 582862567}
-  returnButton: {fileID: 1186519999}
   firstSelected: {fileID: 0}
 --- !u!114 &1901522722 stripped
 MonoBehaviour:
