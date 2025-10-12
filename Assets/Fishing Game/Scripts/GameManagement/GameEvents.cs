@@ -77,7 +77,11 @@ namespace FishingGame.GameManagement
 
         public event Action<bool, string> OnToggleNPCMovement;
 
+        #endregion
 
+        #region UI Events
+
+        public event Action<string, float> OnShowStatusText;
 
         #endregion
 
@@ -257,6 +261,16 @@ namespace FishingGame.GameManagement
         public void ItemUsedUp(IStorable itemUsedUp)
         {
             OnItemUsedUp?.Invoke(itemUsedUp);
+        }
+
+        /// <summary>
+        /// This can be run when a script wants to display some status text due to an event
+        /// </summary>
+        /// <param name="textToShow">The text to be shown</param>
+        /// <param name="durationToShow">How long in seconds should this text stay up for</param>
+        public void ShowStatusText(string textToShow, float durationToShow)
+        {
+            OnShowStatusText?.Invoke(textToShow, durationToShow);
         }
     }
 }

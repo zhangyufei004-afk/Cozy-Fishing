@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using System.ComponentModel.Design;
 
 namespace FishingGame.Reeling
 {
@@ -59,6 +60,8 @@ namespace FishingGame.Reeling
         private float _chargePower = 0;
         private float _maxCharge = 8;
         private float _chargePowerMinimum = 1f;
+        private float _chargePowerAverageMaxValue = 3f;
+        private float _chargePowerGoodMaxValue = 6f;
 
         private Vector3 _targetLocation;
         private Vector3 _aimStartPoint;
@@ -216,10 +219,7 @@ namespace FishingGame.Reeling
                 _chargePower += Time.deltaTime * chargeScalar;
                 _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
 
-                if (_chargePower == _maxCharge)
-                {
-                    _reverseDirection = true;
-                }
+                if (_chargePower == _maxCharge) { _reverseDirection = true; }
             }
             else
             {
@@ -241,9 +241,7 @@ namespace FishingGame.Reeling
         {
             RaycastHit hit;
             float maxDistance = fishingRange;
-
             Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
-
 
             if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, waterLayer))
             {
@@ -264,11 +262,13 @@ namespace FishingGame.Reeling
                 characterAnimator.SetBool("isReeling", true);
                 reelingMasterScript.DisableControls(true);
                 AreReelingControlsActive(false);
+
+                if (_chargePower > _chargePowerGoodMaxValue) { GameManager.Instance.GameEvents.ShowStatusText("Amazing!", 2f); }
+                else if (_chargePower > _chargePowerAverageMaxValue) { GameManager.Instance.GameEvents.ShowStatusText("Good", 2f); }
+                else { GameManager.Instance.GameEvents.ShowStatusText("Average", 2f); }
             }
             else { ResetCharge(); }
         }
-
-
 
         #endregion
 
@@ -287,7 +287,6 @@ namespace FishingGame.Reeling
                     tooSoonText.gameObject.SetActive(true);
                     StartCoroutine(HideTooSoonText());
                 }
-
                 return;
             }
 
@@ -305,6 +304,10 @@ namespace FishingGame.Reeling
             ResetCharge();
         }
 
+        /// <summary>
+        /// Hides the fish was caught too soon text
+        /// </summary>
+        /// <returns>Hides the text</returns>
         private IEnumerator HideTooSoonText()
         {
             yield return new WaitForSeconds(2f);
