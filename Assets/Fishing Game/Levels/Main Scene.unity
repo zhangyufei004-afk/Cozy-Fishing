@@ -2688,6 +2688,9 @@ MonoBehaviour:
   characterModel: {fileID: 1518870355}
   fishingRange: 15
   rodBobber: {fileID: 994188510}
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 1
   chargeScalar: 8
   chargeSlider: {fileID: 658318867}
   tooSoonText: {fileID: 2041148613}

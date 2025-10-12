@@ -48,6 +48,11 @@ namespace FishingGame.Reeling
         [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
         private GameObject rodBobber;
 
+        [SerializeField]
+        [Tooltip("Layer that water is set to")]
+        LayerMask waterLayer;
+
+        private int _aimingYOffset = 5;
         private bool _reverseDirection = false;
         private bool _allowControls = true;
         private bool _isCharging = false;
@@ -211,6 +216,8 @@ namespace FishingGame.Reeling
             _aimDirection = characterModel.transform.forward;
             _aimStartPoint = characterParent.transform.position;
 
+            Vector3 modifiedStartAimLocation = new Vector3(_aimStartPoint.x, _aimStartPoint.y + _aimingYOffset, _aimStartPoint.z);
+
             if (!_reverseDirection)
             {
                 _chargePower += Time.deltaTime * chargeScalar;
@@ -232,7 +239,7 @@ namespace FishingGame.Reeling
             }
 
             chargeSlider.value = _chargePower;
-            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
+            Vector3 aimLocation = modifiedStartAimLocation + (_aimDirection * _chargePower);
             SetAimPoint(aimLocation);
         }
 
@@ -244,12 +251,11 @@ namespace FishingGame.Reeling
         {
             RaycastHit hit;
             float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
 
             Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
 
 
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, waterLayer))
             {
                 rodBobber.transform.position = hit.point;
             }
@@ -274,7 +280,7 @@ namespace FishingGame.Reeling
 
         #region MouseControlFunctions
         /// <summary>
-        /// Using right click will begin a charge if there is not one ongoing
+        /// Using left click will begin a charge if there is not one ongoing
         /// </summary>
         private void CastInputUsed(InputAction.CallbackContext inputAction)
         {
