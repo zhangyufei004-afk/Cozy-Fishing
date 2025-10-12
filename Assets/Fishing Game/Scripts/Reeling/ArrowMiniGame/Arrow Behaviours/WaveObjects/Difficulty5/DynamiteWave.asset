@@ -15,53 +15,36 @@ MonoBehaviour:
   persistentID: 0
   ArrowEntrys:
   - timeToSpawnInSeconds: 1
-    ArrowTypeToSpawn: 0
-    customSpeed: 800
+    arrowTypeToSpawn: 0
+    isDouble: 1
+  - timeToSpawnInSeconds: 1
+    arrowTypeToSpawn: 1
+    isDouble: 1
+  - timeToSpawnInSeconds: 1.5
+    arrowTypeToSpawn: 2
+    isDouble: 1
+  - timeToSpawnInSeconds: 1.5
+    arrowTypeToSpawn: 0
+    isDouble: 1
   - timeToSpawnInSeconds: 2
-    ArrowTypeToSpawn: 1
-    customSpeed: 800
+    arrowTypeToSpawn: 3
+    isDouble: 1
+  - timeToSpawnInSeconds: 2
+    arrowTypeToSpawn: 1
+    isDouble: 1
   - timeToSpawnInSeconds: 2.5
-    ArrowTypeToSpawn: 1
-    customSpeed: 120
+    arrowTypeToSpawn: 2
+    isDouble: 0
   - timeToSpawnInSeconds: 3
-    ArrowTypeToSpawn: 2
-    customSpeed: 800
-  - timeToSpawnInSeconds: 4
-    ArrowTypeToSpawn: 0
-    customSpeed: 800
-  - timeToSpawnInSeconds: 5
-    ArrowTypeToSpawn: 0
-    customSpeed: 800
-  - timeToSpawnInSeconds: 5
-    ArrowTypeToSpawn: 1
-    customSpeed: 800
-  - timeToSpawnInSeconds: 6
-    ArrowTypeToSpawn: 0
-    customSpeed: 800
-  - timeToSpawnInSeconds: 6
-    ArrowTypeToSpawn: 1
-    customSpeed: 800
-  - timeToSpawnInSeconds: 7
-    ArrowTypeToSpawn: 2
-    customSpeed: 800
-  - timeToSpawnInSeconds: 7
-    ArrowTypeToSpawn: 3
-    customSpeed: 800
-  - timeToSpawnInSeconds: 8
-    ArrowTypeToSpawn: 0
-    customSpeed: 800
-  - timeToSpawnInSeconds: 9
-    ArrowTypeToSpawn: 1
-    customSpeed: 800
-  - timeToSpawnInSeconds: 10
-    ArrowTypeToSpawn: 3
-    customSpeed: 180
-  - timeToSpawnInSeconds: 11
-    ArrowTypeToSpawn: 0
-    customSpeed: 800
-  - timeToSpawnInSeconds: 12
-    ArrowTypeToSpawn: 1
-    customSpeed: 800
+    arrowTypeToSpawn: 2
+    isDouble: 0
+  - timeToSpawnInSeconds: 3.5
+    arrowTypeToSpawn: 2
+    isDouble: 0
+  - timeToSpawnInSeconds: 3.75
+    arrowTypeToSpawn: 3
+    isDouble: 0
   SuddenDeathTimer: 30
   PointsNeededToPass: 300
   PointsPerArrow: 10
+  MinigameSpeed: 600

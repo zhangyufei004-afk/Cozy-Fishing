@@ -8282,7 +8282,7 @@ MonoBehaviour:
   highestFishDifficulty: 5
   isInfested: 0
   overrideFishList:
-  - {fileID: 11400000, guid: 6529f9b1f800b6149a00900b303b7ee2, type: 2}
+  - {fileID: 11400000, guid: aeb9e36b649b43a47af58ce0f4d642bf, type: 2}
 --- !u!114 &1455977958 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7408674872728082327, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
