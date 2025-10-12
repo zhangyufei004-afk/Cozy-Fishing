@@ -7050,7 +7050,7 @@ MonoBehaviour:
   shopController: {fileID: 451325930}
   playerController: {fileID: 1175047035}
   interactPromptText: {fileID: 1508378355}
-  interactDistance: 5
+  playerTag: Player
 --- !u!65 &965453751
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10179,7 +10179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.036072, y: 26.847}
+  m_AnchoredPosition: {x: 9.036133, y: 26.847046}
   m_SizeDelta: {x: -354.782, y: -162.31}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1531127188

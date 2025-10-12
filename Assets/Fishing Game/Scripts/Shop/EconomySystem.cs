@@ -5,6 +5,7 @@ namespace FishingGame.Economy
 {
     /// <summary>
     /// Handles the player's money and raises events when it changes.
+    /// Singleton that handles the player's money and raises events when it changes.
     /// </summary>
     public class EconomySystem : MonoBehaviour
     {
@@ -17,10 +18,10 @@ namespace FishingGame.Economy
         public event Action<int> MoneyChanged;
 
         [SerializeField] private int startingMoney = 100;
-        private int playerMoney;
+        private int _playerMoney;
 
         /// <summary>Current amount of player's money.</summary>
-        public int PlayerMoney => playerMoney;
+        public int PlayerMoney => _playerMoney;
 
         private void Awake()
         {
@@ -31,7 +32,7 @@ namespace FishingGame.Economy
             }
             Instance = this;
 
-            playerMoney = startingMoney;
+            _playerMoney = startingMoney;
         }
 
         /// <summary>
@@ -40,10 +41,10 @@ namespace FishingGame.Economy
         public bool SpendMoney(int amount)
         {
             if (amount <= 0) return false;
-            if (playerMoney < amount) return false;
+            if (_playerMoney < amount) return false;
 
-            playerMoney -= amount;
-            MoneyChanged?.Invoke(playerMoney);
+            _playerMoney -= amount;
+            MoneyChanged?.Invoke(_playerMoney);
             return true;
         }
 
@@ -53,8 +54,8 @@ namespace FishingGame.Economy
         public void AddMoney(int amount)
         {
             if (amount <= 0) return;
-            playerMoney += amount;
-            MoneyChanged?.Invoke(playerMoney);
+            _playerMoney += amount;
+            MoneyChanged?.Invoke(_playerMoney);
         }
 
         /// <summary>
@@ -62,8 +63,8 @@ namespace FishingGame.Economy
         /// </summary>
         public void ResetMoney(int amount)
         {
-            playerMoney = Mathf.Max(0, amount);
-            MoneyChanged?.Invoke(playerMoney);
+            _playerMoney = Mathf.Max(0, amount);
+            MoneyChanged?.Invoke(_playerMoney);
         }
     }
 }

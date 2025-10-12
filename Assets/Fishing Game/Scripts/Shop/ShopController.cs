@@ -4,6 +4,7 @@ using FishingGame.Economy;
 using FishingGame.Inventory;
 using FishingGame.Items;
 using FishingGame.FishSystem;
+using FishingGame.Items.Bait;
 
 namespace FishingGame.Shop
 {
@@ -18,21 +19,21 @@ namespace FishingGame.Shop
         [Header("Inventory Reference")]
         [SerializeField] private ShopInventory shopInventory;
 
-        private bool isOpen = false;
+        private bool _isOpen = false;
 
         public void OpenShopUI()
         {
             shopUI?.SetActive(true);
-            isOpen = true;
+            _isOpen = true;
         }
 
         public void CloseShopUI()
         {
             shopUI?.SetActive(false);
-            isOpen = false;
+            _isOpen = false;
         }
 
-        public bool IsShopOpen() => isOpen;
+        public bool IsShopOpen() => _isOpen;
 
         /// <summary>
         /// Returns all ItemScriptables available for sale.
@@ -44,6 +45,7 @@ namespace FishingGame.Shop
 
         /// <summary>
         /// Attempts to buy an item and add it to the player's inventory.
+        /// If the item is a bait, automatically adds +1 charge.
         /// </summary>
         public bool BuyItem(ItemScriptable itemScriptable, InventorySystem playerInventory, int price)
         {
@@ -55,7 +57,17 @@ namespace FishingGame.Shop
 
             // Create runtime ItemData from ItemScriptable
             ItemData itemData = new ItemData(itemScriptable);
+
+            if (itemScriptable is BaitScriptable)
+            {
+                int currentCharge = itemData.GetCurrentUseCharge();
+                var field = typeof(ItemData).GetField("_itemCharge", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (field != null)
+                    field.SetValue(itemData, currentCharge + 1);
+            }
+
             playerInventory.AddItem(itemData);
+
             Debug.Log($"Bought {itemScriptable.ItemName}");
             return true;
         }

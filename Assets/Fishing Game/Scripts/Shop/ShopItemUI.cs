@@ -16,16 +16,16 @@ namespace FishingGame.UI.Shop
         [SerializeField] private TextMeshProUGUI priceText;
         [SerializeField] private Button buyButton;
 
-        private ItemScriptable currentItem;
-        private Action<ItemScriptable> onBuyCallback;
+        private ItemScriptable _currentItem;
+        private Action<ItemScriptable> _onBuyCallback;
 
         /// <summary>
         /// Setup the UI entry and hook the buy callback.
         /// </summary>
         public void Setup(ItemScriptable item, Action<ItemScriptable> buyCallback)
         {
-            currentItem = item;
-            onBuyCallback = buyCallback;
+            _currentItem = item;
+            _onBuyCallback = buyCallback;
 
             if (item == null) return;
 
@@ -36,7 +36,7 @@ namespace FishingGame.UI.Shop
 
             // Button callback
             buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(() => onBuyCallback?.Invoke(currentItem));
+            buyButton.onClick.AddListener(() => _onBuyCallback?.Invoke(_currentItem));
         }
     }
 }
