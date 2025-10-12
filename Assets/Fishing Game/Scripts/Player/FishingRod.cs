@@ -58,6 +58,7 @@ namespace FishingGame.Reeling
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 8;
+        private float _chargePowerMinimum = 1f;
 
         private Vector3 _targetLocation;
         private Vector3 _aimStartPoint;
@@ -78,7 +79,6 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("The text that shows if you reel in too soon")]
         private TextMeshProUGUI tooSoonText;
-
 
         [Header("Misc")]
 
@@ -150,14 +150,8 @@ namespace FishingGame.Reeling
         /// <param name="enable">Enables controls if set to true otherwise disables controls</param>
         public void AreReelingControlsActive(bool enable)
         {
-            if (enable)
-            {
-                _allowControls = true;
-            }
-            else
-            {
-                _allowControls = false;
-            }
+            if (enable) { _allowControls = true; } 
+            else { _allowControls = false; }
         }
 
         /// <summary>
@@ -167,7 +161,6 @@ namespace FishingGame.Reeling
         public void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-
             fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
         }
 
@@ -232,10 +225,7 @@ namespace FishingGame.Reeling
             {
                 _chargePower -= Time.deltaTime * chargeScalar;
                 _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
-                if (_chargePower == 0)
-                {
-                    _reverseDirection = false;
-                }
+                if (_chargePower == 0) { _reverseDirection = false; }
             }
 
             chargeSlider.value = _chargePower;
@@ -266,12 +256,16 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetThrowAnimation()
         {
-            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-            _targetLocation = rodBobber.transform.position;
-            characterAnimator.SetTrigger("ThrowTrigger");
-            characterAnimator.SetBool("isReeling", true);
-            reelingMasterScript.DisableControls(true);
-            AreReelingControlsActive(false);
+            if (_chargePower >= _chargePowerMinimum)
+            {
+                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+                _targetLocation = rodBobber.transform.position;
+                characterAnimator.SetTrigger("ThrowTrigger");
+                characterAnimator.SetBool("isReeling", true);
+                reelingMasterScript.DisableControls(true);
+                AreReelingControlsActive(false);
+            }
+            else { ResetCharge(); }
         }
 
 
@@ -299,10 +293,7 @@ namespace FishingGame.Reeling
 
             if (_isBusy) {  return; }
 
-            if (_isCharging != true)
-            {
-                BeginCharge();
-            }
+            if (_isCharging != true) { BeginCharge(); }
         }
 
         /// <summary>
@@ -310,10 +301,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true)
-            {
-                SetThrowAnimation();
-            }
+            if (_isCharging == true) { SetThrowAnimation(); }
             ResetCharge();
         }
 

@@ -23,11 +23,6 @@ namespace FishingGame.Reeling
         [Tooltip("The default amount of points given per second that the player has the catchbox over the fish")]
         public float PointsPerSecond;
 
-        
-
-
-
-
         internal SliderSO(int persistentID) : base(persistentID)
         {
 
