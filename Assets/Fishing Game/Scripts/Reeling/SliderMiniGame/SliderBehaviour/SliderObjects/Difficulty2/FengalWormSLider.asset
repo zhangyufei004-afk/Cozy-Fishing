@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb91b21041fcfd9408ee8f0c86ff247a, type: 3}
-  m_Name: SilverFinSlider
+  m_Name: FengalWormSLider
   m_EditorClassIdentifier: 
   persistentID: 0
   SliderBehaviourList:
-  - timeToSpendOnGoal: 3
-    locationToMoveTo: -169
+  - timeToSpendOnGoal: 1.5
+    locationToMoveTo: -137
     speedToUse: 0
-  - timeToSpendOnGoal: 3
-    locationToMoveTo: 224
+  - timeToSpendOnGoal: 1.5
+    locationToMoveTo: 176
     speedToUse: 0
-  StartingLocation: 65
+  StartingLocation: 0
   SuddenDeathTimer: 30
-  PointsNeededToPass: 80
+  PointsNeededToPass: 100
   PointsPerSecond: 10

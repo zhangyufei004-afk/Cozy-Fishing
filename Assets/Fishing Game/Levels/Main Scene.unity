@@ -8310,7 +8310,7 @@ MonoBehaviour:
   highestFishDifficulty: 6
   isInfested: 0
   overrideFishList:
-  - {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}
+  - {fileID: 11400000, guid: 6d5c27600c0ce8b44943753fb26b5865, type: 2}
 --- !u!114 &1455977958 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7408674872728082327, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -11593,12 +11593,20 @@ PrefabInstance:
       objectReference: {fileID: 1278295830}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: defaultSpeed
-      value: 200
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: sliderCanvas
       value: 
       objectReference: {fileID: 1867482762}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: boxSpeedScalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: fightBackSpeed
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: progressSlider
       value: 

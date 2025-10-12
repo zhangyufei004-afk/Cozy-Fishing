@@ -243,6 +243,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void WinMiniGame()
         {
+            StopAllCoroutines();
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(true);
@@ -254,6 +255,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void LoseMiniGame()
         {
+            StopAllCoroutines();
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
@@ -355,6 +357,7 @@ namespace FishingGame.Reeling
             Vector3 currentPosition = fishImage.transform.localPosition;
             float newFishGoal = _sliderBehaviourList[_currentBehaviourIndex].GetLocationToMoveTo();
             Vector3 newGoal = new Vector3(currentPosition.x, newFishGoal, currentPosition.z);
+            _speedToUse = _sliderBehaviourList[_currentBehaviourIndex].GetSpeedToUse();
             FishSetGoal(newGoal);
             FishSetSpeed(_speedToUse);
             if (_speedToUse == 0) { _speedToUse = defaultSpeed; }

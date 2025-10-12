@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb91b21041fcfd9408ee8f0c86ff247a, type: 3}
-  m_Name: SilverFinSlider
+  m_Name: DoodleFinSlider
   m_EditorClassIdentifier: 
   persistentID: 0
   SliderBehaviourList:
   - timeToSpendOnGoal: 3
-    locationToMoveTo: -169
-    speedToUse: 0
+    locationToMoveTo: -121
+    speedToUse: 150
   - timeToSpendOnGoal: 3
-    locationToMoveTo: 224
-    speedToUse: 0
-  StartingLocation: 65
+    locationToMoveTo: 189
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -233
+    speedToUse: 250
+  StartingLocation: -297
   SuddenDeathTimer: 30
   PointsNeededToPass: 80
   PointsPerSecond: 10

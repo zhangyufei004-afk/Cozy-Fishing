@@ -26,3 +26,4 @@ MonoBehaviour:
   TimesFound: 00000000010000000200000003000000
   IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 3ce0b14e96ca0e44f9b8220779d98ea4, type: 2}
+  SliderMiniGameBehaviour: {fileID: 11400000, guid: e3c8b964b6dcede4e97be13c9ebc77ea, type: 2}

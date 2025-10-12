@@ -15,7 +15,7 @@ namespace FishingGame.Reeling
         private float locationToMoveTo;
 
         [SerializeField]
-        [Tooltip("The speed to move at when going to this location, 0 will use default speed of 200")]
+        [Tooltip("The speed to move at when going to this location, 0 will use default speed of 100")]
         private float speedToUse;
 
         public float GetTimeToSpendOnGoal() { return timeToSpendOnGoal; }
