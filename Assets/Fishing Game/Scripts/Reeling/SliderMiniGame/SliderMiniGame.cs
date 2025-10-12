@@ -574,6 +574,7 @@ namespace FishingGame.Reeling
             _timePassed = 0f;
             _timeSinceLastGoal = 0f;
             _suddenDeath = false;
+            _catchBoxVelocity = 0f;
             FishSetSpeed(defaultSpeed);
 
             _behaviourLoaded = false;
@@ -584,11 +585,6 @@ namespace FishingGame.Reeling
 
 
         }
-
-        #endregion
-
-        #region CustomBehaviour Functions
-
 
         #endregion
     }
