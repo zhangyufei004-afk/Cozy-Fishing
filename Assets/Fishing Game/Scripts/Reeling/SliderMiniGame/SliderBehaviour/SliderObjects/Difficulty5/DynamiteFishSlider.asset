@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb91b21041fcfd9408ee8f0c86ff247a, type: 3}
+  m_Name: DynamiteFishSlider
+  m_EditorClassIdentifier: 
+  persistentID: 0
+  SliderBehaviourList:
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -172
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 4
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -174
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 158
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 261
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 137
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 254
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -213
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 193
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -267
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 204
+    speedToUse: 150
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 10
+    speedToUse: 150
+  StartingLocation: 30
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 100
+  PointsPerSecond: 10
