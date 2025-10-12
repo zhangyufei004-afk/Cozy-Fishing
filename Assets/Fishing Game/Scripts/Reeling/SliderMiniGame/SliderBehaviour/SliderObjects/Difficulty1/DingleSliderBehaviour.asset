@@ -15,15 +15,12 @@ MonoBehaviour:
   persistentID: 0
   SliderBehaviourList:
   - timeToStart: 2
-    locationToMoveTo: 297.6
+    locationToMoveTo: 256
     speedToUse: 0
-  - timeToStart: 6
-    locationToMoveTo: -212
+  - timeToStart: 3
+    locationToMoveTo: 74
     speedToUse: 0
-  - timeToStart: 12
-    locationToMoveTo: 201
-    speedToUse: 0
-  StartingLocation: -214
+  StartingLocation: 0
   SuddenDeathTimer: 30
-  PointsNeededToPass: 200
-  PointsPerSecond: 5
+  PointsNeededToPass: 80
+  PointsPerSecond: 10

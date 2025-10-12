@@ -101,7 +101,7 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("How many seconds required to increase time scalar")]
-        private float timeRequiredForScalar;
+        private float suddenDeathTimer;
 
         [SerializeField]
         [Tooltip("The max speed going left the catchbox can go")]
@@ -116,6 +116,7 @@ namespace FishingGame.Reeling
         private float initialTimeToWait;
 
         private bool _goingLeft = true;
+        private bool _suddenDeath = false;
 
         private bool _behaviourLoaded = false;
         private SliderData _sliderData;
@@ -132,9 +133,9 @@ namespace FishingGame.Reeling
         private float _catchIncreaseValueToUse;
         private float _catchDecreaseValueToUse;
         private float _speedToUse;
+        private float _defaultSuddenDeathTime;
 
         private float _catchMax = 100;
-        private int _currentTimeScalar;
 
 
         private IFishAble _reelingObjectData;
@@ -153,6 +154,8 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             uiActionMap.Enable();
             _directionAction = uiActionMap.FindAction("Navigate");
+
+            _defaultSuddenDeathTime = suddenDeathTimer;
         }
 
         public void Update()
@@ -325,6 +328,8 @@ namespace FishingGame.Reeling
             _catchIncreaseValueToUse = _sliderData.GetPointPerSecond();
             _catchDecreaseValueToUse = -_sliderData.GetPointPerSecond();
 
+            suddenDeathTimer = _sliderData.GetSuddenDeathTimer();
+
             // Starting Locations
             Vector3 currentPosition = fishImage.transform.localPosition;
             Vector3 startingLocation = new Vector3(currentPosition.x, _sliderData.GetStartingLocation(), currentPosition.z);
@@ -386,12 +391,12 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetupDefaultBehaviour()
         {
+            suddenDeathTimer = _defaultSuddenDeathTime;
             _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
             fishImage.transform.localPosition = startLocation;
             Vector3 newFishGoal = CreateGoalLocation();
             FishSetGoal(newFishGoal);
-            catchBox.transform.localPosition = new Vector3(catchBox.transform.localPosition.x, catchboxYStartLocation, catchBox.transform.localPosition.z);
 
             _catchIncreaseValueToUse = catchIncreaseAmount;
             _catchDecreaseValueToUse = catchDecreaseAmount;
@@ -510,7 +515,9 @@ namespace FishingGame.Reeling
         {
             if (_isMiniGamePaused) { valueToAdd = valueToAdd / 2; }
 
-            _catchProgress += (valueToAdd * Time.deltaTime) * _currentTimeScalar;
+            if (_suddenDeath) { valueToAdd *= 4; }
+
+            _catchProgress += (valueToAdd * Time.deltaTime);
             progressSlider.value = _catchProgress;
 
             if (CheckIfCatchWon())
@@ -529,14 +536,13 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Checks if the time passed is equal to the time required for scalar, if so increase scalar by 1 and reset time passed
+        /// Checks if the time passed is equal to the time required for sudden death, if so sudden death is set to true
         /// </summary>
         private void CheckTimePassed()
         {
-            if (_timePassed >= timeRequiredForScalar)
+            if (_timePassed >= suddenDeathTimer && _suddenDeath != true)
             {
-                _currentTimeScalar += 1;
-                _timePassed = 0;
+                _suddenDeath = true;
             }
         }
 
@@ -573,9 +579,10 @@ namespace FishingGame.Reeling
             fishImage.sprite = _reelingObjectData.GetTexture();
             sliderCanvas.SetActive(true);
 
+            catchBox.transform.localPosition = new Vector3(catchBox.transform.localPosition.x, catchboxYStartLocation, catchBox.transform.localPosition.z);
             _timePassed = 0f;
-            _currentTimeScalar = 1;
             _timeSinceLastGoal = 0f;
+            _suddenDeath = false;
             FishSetSpeed(defaultSpeed);
 
             _behaviourLoaded = false;
