@@ -113,7 +113,7 @@ namespace FishingGame.Reeling
         /// <param name="gameOver">Input true if game is over</param>
         public void StartFadeAwayOnSuccess(bool gameOver)
         {
-            if (gameOver) { _arrowImage.color = Color.grey;}
+            if (gameOver) { _arrowImage.color = Color.green;}
             else if (gameObject.transform.localPosition.y - _goalPoint.transform.localPosition.y > _maxFullPointDistance) { _arrowImage.color = Color.yellow; }
             else { _arrowImage.color = Color.green; }
 
@@ -199,10 +199,7 @@ namespace FishingGame.Reeling
             {
                 if (_spawner.GetMasterScript().DoesThisContainArrow(this) == false) { _spawner.GetMasterScript().AddArrowToPressList(this); }
             }
-            else
-            {
-                if (_spawner.GetMasterScript().DoesThisContainArrow(this) == true) { _spawner.GetMasterScript().RemoveArrowFromPressList(this); }
-            }
+            else { if (_spawner.GetMasterScript().DoesThisContainArrow(this) == true) { _spawner.GetMasterScript().RemoveArrowFromPressList(this); } }
         }
 
         /// <summary>
@@ -236,10 +233,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CheckIfFailed()
         {
-            if (_goalPoint.CheckIfFailSpot(_maxAcceptanceRange, gameObject))
-            {
-                ArrowFailed();
-            }
+            if (_goalPoint.CheckIfFailSpot(_maxAcceptanceRange, gameObject)) { ArrowFailed(); }
         }
 
         #endregion

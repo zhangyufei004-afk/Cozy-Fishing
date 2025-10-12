@@ -283,6 +283,8 @@ namespace FishingGame.Reeling
         /// <param name="arrowFailed"></param>
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
+            if (_gameActive == false) { return; }
+
             AddOrRemoveActiveArrow(arrowFailed, false);
             ModifyProgress(-defaultProgressModify * _failedArrowModifier);
             if (CheckIfFailed()) { LoseMiniGame(); }
@@ -418,6 +420,7 @@ namespace FishingGame.Reeling
 
             foreach (MovingArrow arrow in _activeArrows)
             {
+                arrow.DeactivateArrow();
                 arrow.StartFadeAwayOnSuccess(didWin);
             }
 

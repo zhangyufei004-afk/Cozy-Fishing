@@ -157,26 +157,15 @@ namespace FishingGame.Reeling
         /// <param name="didWin">Represents if the player won the minigame or not</param>
         public void EndCurrentMiniGame(bool didWin)
         {
-            if (didWin == false)
-            {
-                EndCatch(false);
-                return;
-            }
+            if (didWin == false) { EndCatch(false); return; }
 
             _currentMiniGameWins += 1;
             Vector3 fishPosition = _current3DObject.transform.position;
             _current3DObject.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
             _hasWon = CheckIfWonEnough();
 
-            if (_hasWon)
-            {
-                EndCatch(true);
-                return;
-            }
-            else
-            {
-                SetNextMiniGame();
-            }
+            if (_hasWon) { EndCatch(true); return; }
+            else { SetNextMiniGame(); }
         }
 
         /// <summary>
@@ -213,12 +202,8 @@ namespace FishingGame.Reeling
         {
             SetCancelButtonVisibilty(false);
             fishingHook.ClearCollidingFishAndPool();
-            
 
-            if (IsFishing == true)
-            {
-                _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
-            }
+            if (IsFishing == true) { _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame(); }
             else
             {
                 if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
@@ -239,20 +224,13 @@ namespace FishingGame.Reeling
         /// Returns the current 3D object representing the fish being reeled
         /// </summary>
         /// <returns>The 3D object of the current fish</returns>
-        public GameObject GetCurrent3DFishObject()
-        {
-            return _current3DObject;
-        }
+        public GameObject GetCurrent3DFishObject() { return _current3DObject; }
 
         /// <summary>
         /// Returns the current fishing rod
         /// </summary>
         /// <returns>Returns the current fishing rod</returns>
-        public FishingRod GetCurrentFishingRod()
-        {
-            return fishingRodScript;
-        }
-
+        public FishingRod GetCurrentFishingRod() { return fishingRodScript; }
 
         #endregion
 
@@ -278,14 +256,8 @@ namespace FishingGame.Reeling
         /// <returns>Returns true if the currentMiniGamesWon variables is greater than the minigamewins required variable</returns>
         private bool CheckIfWonEnough()
         {
-            if (_currentMiniGameWins >= _miniGameWinsRequired)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if (_currentMiniGameWins >= _miniGameWinsRequired) { return true; }
+            else { return false; }
         }
 
         /// <summary>
@@ -332,16 +304,10 @@ namespace FishingGame.Reeling
             }
             else
             {
-                if (_currentFishPool != null)
-                {
-                    _currentFishPool.ObjectCaught(_currentlyReelingObject);
-                }
+                if (_currentFishPool != null) { _currentFishPool.ObjectCaught(_currentlyReelingObject); }
 
                 IStorable itemGained = (IStorable)_currentlyReelingObject;
-                if (itemGained != null)
-                {
-                    inventoryScript.AddItem(itemGained);
-                }
+                if (itemGained != null) { inventoryScript.AddItem(itemGained); }
 
                 GameManager.Instance.GameEvents.FishCaught(_currentlyReelingObject);
                 DisplayFishingResult(_currentlyReelingObject, true);
