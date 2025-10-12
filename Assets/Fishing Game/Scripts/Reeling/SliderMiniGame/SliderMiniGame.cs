@@ -347,9 +347,8 @@ namespace FishingGame.Reeling
             if (_speedToUse == 0) { _speedToUse = defaultSpeed; }
             FishSetGoal(newGoal);
             FishSetSpeed(_speedToUse);
-            _currentBehaviourIndex++;
-
             StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
+            _currentBehaviourIndex++;
         }
 
         private void SetNextBehaviourPoint()
@@ -362,11 +361,10 @@ namespace FishingGame.Reeling
             FishSetSpeed(_speedToUse);
             if (_speedToUse == 0) { _speedToUse = defaultSpeed; }
             Debug.Log("GOal: " + newGoal);
-            _currentBehaviourIndex++;
-
-            if (_currentBehaviourIndex >= _sliderBehaviourList.Count) {  _currentBehaviourIndex = 0; }
-
             StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
+
+            _currentBehaviourIndex++;
+            if (_currentBehaviourIndex >= _sliderBehaviourList.Count) {  _currentBehaviourIndex = 0; }
         }
 
         private IEnumerator CustomBehaviourTime(float timeToWait)
