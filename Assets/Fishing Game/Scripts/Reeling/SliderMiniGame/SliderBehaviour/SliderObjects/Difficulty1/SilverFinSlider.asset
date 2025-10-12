@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb91b21041fcfd9408ee8f0c86ff247a, type: 3}
-  m_Name: DingleSliderBehaviour
+  m_Name: SilverFinSlider
   m_EditorClassIdentifier: 
   persistentID: 0
   SliderBehaviourList:
-  - timeToSpendOnGoal: 2
-    locationToMoveTo: 256
+  - timeToSpendOnGoal: 0
+    locationToMoveTo: -169
     speedToUse: 0
-  - timeToSpendOnGoal: 2
-    locationToMoveTo: 74
+  - timeToSpendOnGoal: 0
+    locationToMoveTo: 224
     speedToUse: 0
   StartingLocation: 0
-  SuddenDeathTimer: 30
-  PointsNeededToPass: 70
-  PointsPerSecond: 10
+  SuddenDeathTimer: 0
+  PointsNeededToPass: 0
+  PointsPerSecond: 0

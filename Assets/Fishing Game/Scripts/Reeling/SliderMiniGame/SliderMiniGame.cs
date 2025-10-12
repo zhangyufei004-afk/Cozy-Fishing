@@ -122,7 +122,6 @@ namespace FishingGame.Reeling
         private SliderData _sliderData;
         private List<SliderBehaviour> _sliderBehaviourList;
         private int _currentBehaviourIndex = 0;
-        private float _timerForBehaviour = 0;
         private int _initialPointScalar = 5;
 
         private float _catchProgress = 50f;
@@ -177,7 +176,6 @@ namespace FishingGame.Reeling
             }
 
             _timePassed += Time.deltaTime;
-            _timerForBehaviour += Time.deltaTime;
 
             CheckTimePassed();
 
@@ -349,7 +347,7 @@ namespace FishingGame.Reeling
             FishSetSpeed(_speedToUse);
             _currentBehaviourIndex++;
 
-            StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToStart()));
+            StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
         }
 
         private void SetNextBehaviourPoint()
@@ -363,23 +361,15 @@ namespace FishingGame.Reeling
             Debug.Log("GOal: " + newGoal);
             _currentBehaviourIndex++;
 
-            ResetTimerIfNeeded();
-            StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToStart() - _timerForBehaviour));
+            if (_currentBehaviourIndex >= _sliderBehaviourList.Count) {  _currentBehaviourIndex = 0; }
+
+            StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
         }
 
         private IEnumerator CustomBehaviourTime(float timeToWait)
         {
             yield return new WaitForSeconds(timeToWait);
             SetNextBehaviourPoint();
-        }
-
-        private void ResetTimerIfNeeded()
-        {
-            if (_timerForBehaviour >= _sliderData.GetMaxTimeForCycle())
-            {
-                _timerForBehaviour = 0;
-                _currentBehaviourIndex = 0;
-            }
         }
 
         #endregion

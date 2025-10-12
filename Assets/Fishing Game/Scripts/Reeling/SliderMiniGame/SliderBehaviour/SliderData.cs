@@ -30,7 +30,7 @@ namespace FishingGame.Reeling
         public float GetMaxTimeForCycle()
         {
             int index = _sliderEntrys.Count - 1;
-            return _sliderEntrys[index].GetTimeToStart();
+            return _sliderEntrys[index].GetTimeToSpendOnGoal();
         }
 
         public float GetSuddenDeathTimer()

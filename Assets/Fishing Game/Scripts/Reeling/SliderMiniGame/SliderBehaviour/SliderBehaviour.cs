@@ -6,8 +6,8 @@ namespace FishingGame.Reeling
     public struct SliderBehaviour
     {
         [SerializeField]
-        [Tooltip("How many seconds passed until this should move to this location")]
-        private float timeToStart;
+        [Tooltip("How many seconds passed until this should move to the next goal")]
+        private float timeToSpendOnGoal;
 
         [Range(-297.3f, 297.6f)]
         [SerializeField]
@@ -18,7 +18,7 @@ namespace FishingGame.Reeling
         [Tooltip("The speed to move at when going to this location, 0 will use default speed of 200")]
         private float speedToUse;
 
-        public float GetTimeToStart() { return timeToStart; }
+        public float GetTimeToSpendOnGoal() { return timeToSpendOnGoal; }
 
         public float GetLocationToMoveTo() { return locationToMoveTo; }
 
