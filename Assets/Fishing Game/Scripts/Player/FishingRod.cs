@@ -13,6 +13,17 @@ using System.ComponentModel.Design;
 namespace FishingGame.Reeling
 {
     /// <summary>
+    /// Used to set the text and influence how fast fish is attracted to line, based on the throw power
+    /// </summary>
+    internal enum ECastingResult
+    {
+        None = 0,
+        Average = 1,
+        Good = 2,
+        Amazing = 3
+    }
+
+    /// <summary>
     /// Contains the logic for charging and throwing the initial fishing line
     /// </summary>
     public class FishingRod : MonoBehaviour
@@ -62,6 +73,11 @@ namespace FishingGame.Reeling
         private float _chargePowerMinimum = 1f;
         private float _chargePowerAverageMaxValue = 3f;
         private float _chargePowerGoodMaxValue = 6f;
+
+        private float _amazingFishMinWaitTime = 2;
+        private float _amazingFishMaxWaitTime = 4;
+
+        private ECastingResult _throwLineResult;
 
         private Vector3 _targetLocation;
         private Vector3 _aimStartPoint;
@@ -263,11 +279,38 @@ namespace FishingGame.Reeling
                 reelingMasterScript.DisableControls(true);
                 AreReelingControlsActive(false);
 
-                if (_chargePower > _chargePowerGoodMaxValue) { GameManager.Instance.GameEvents.ShowStatusText("Amazing!", 2f); }
-                else if (_chargePower > _chargePowerAverageMaxValue) { GameManager.Instance.GameEvents.ShowStatusText("Good", 2f); }
-                else { GameManager.Instance.GameEvents.ShowStatusText("Average", 2f); }
+                if (_chargePower > _chargePowerGoodMaxValue) { _throwLineResult = ECastingResult.Amazing; }
+                else if (_chargePower > _chargePowerAverageMaxValue) { _throwLineResult = ECastingResult.Good; ; }
+                else { _throwLineResult = ECastingResult.Average; }
+                SetChargeResultData();
             }
             else { ResetCharge(); }
+        }
+
+        /// <summary>
+        /// Runs the game event that shows the status text based on the ECastingResult enum
+        /// Also sets the reeling initation scripts wait time based on this value
+        /// </summary>
+        private void SetChargeResultData()
+        {
+            switch (_throwLineResult)
+            {
+                case ECastingResult.Amazing:
+                    GameManager.Instance.GameEvents.ShowStatusText("Amazing!", 2f);
+                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime, _amazingFishMaxWaitTime);
+                    break;
+                case ECastingResult.Good:
+                    GameManager.Instance.GameEvents.ShowStatusText("Good!", 2f);
+                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime * 2, _amazingFishMaxWaitTime * 2);
+                    break;
+                case ECastingResult.Average:
+                    GameManager.Instance.GameEvents.ShowStatusText("Average", 2f);
+                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime * 2.5f, _amazingFishMaxWaitTime * 2.5f);
+                    break;
+                default:
+                    GameManager.Instance.GameEvents.ShowStatusText("You bugged something this is a default case!", 2f);
+                    break;
+            }
         }
 
         #endregion

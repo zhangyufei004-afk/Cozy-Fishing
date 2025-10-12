@@ -282,10 +282,10 @@ namespace FishingGame.Reeling
         private void MovementFightBack()
         {
             _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
-            if (_catchBoxVelocity > 0)
+            /*if (_catchBoxVelocity > 0)
             {
                 _catchBoxVelocity /= 2;
-            }
+            }*/
 
             _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
         }

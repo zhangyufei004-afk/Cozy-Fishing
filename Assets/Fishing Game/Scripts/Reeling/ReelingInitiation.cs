@@ -41,14 +41,6 @@ namespace FishingGame.Reeling
         [Header("Stageone MiniGame variables")]
 
         [SerializeField]
-        [Tooltip("The max amount of seconds a player would have to wait for a catch")]
-        private int maxFishWaitTime;
-
-        [SerializeField]
-        [Tooltip("The min amount of seconds a player would have to wait for a catch")]
-        private int minFishWaitTime;
-
-        [SerializeField]
         [Tooltip("The prefab of the object that swims up to the reel")]
         private GameObject reelSwimmerPrefab;
 
@@ -60,12 +52,15 @@ namespace FishingGame.Reeling
         
         private GameObject _fishSwim;
 
+        private float _maxFishWaitTime;
+        private float _minFishWaitTime;
+
         private bool _gameActive = false;
         private bool _isStageOne = false;
         private bool _fishAtHook = false;
 
         private int _stageOneDifficulty = 0;
-        private int _catchSecondsToWait;
+        private float _catchSecondsToWait;
 
         [Header("Misc")]
 
@@ -229,6 +224,12 @@ namespace FishingGame.Reeling
             return _fishAtHook;
         }
 
+        public void SetFishWaitTimes(float minWaitTime, float maxWaitTime)
+        {
+            _minFishWaitTime = minWaitTime;
+            _maxFishWaitTime = maxWaitTime;
+        }
+
         #endregion
 
         #region StageoneReelingGame
@@ -277,7 +278,7 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="waitTime">The amount of seconds to wait before spawning</param>
         /// <returns>Spawns the fish object</returns>
-        private IEnumerator SpawnFishTimer(int waitTime)
+        private IEnumerator SpawnFishTimer(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             SpawnFishShadow();
@@ -289,7 +290,7 @@ namespace FishingGame.Reeling
         /// </summary>a
         /// <param name="waitTime">The amount of seconds until fish swims away</param>
         /// <returns>The fish swims away</returns>
-        private IEnumerator FishCatchTimer(int waitTime)
+        private IEnumerator FishCatchTimer(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             if (_isStageOne == true) { FishGotAway(); }
@@ -302,7 +303,7 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="waitTime">The amount of seconds to wait before despawning</param>
         /// <returns>Despawns the fish and starts timer for new one to spawn</returns>
-        private IEnumerator DespawnFishTimer(int waitTime)
+        private IEnumerator DespawnFishTimer(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             Destroy(_fishSwim);
@@ -323,7 +324,7 @@ namespace FishingGame.Reeling
             reelingMasterScript.SetCancelButtonVisibilty(true);
 
 
-            _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
+            _catchSecondsToWait = UnityEngine.Random.Range(_minFishWaitTime, _maxFishWaitTime);
         }
 
         #endregion
