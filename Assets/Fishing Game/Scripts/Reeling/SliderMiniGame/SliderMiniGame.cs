@@ -115,6 +115,7 @@ namespace FishingGame.Reeling
         [Tooltip("The time buffer the player is given before the catchbox starts to move")]
         private float initialTimeToWait;
 
+        private bool _inputHeld = false;
         private bool _goingLeft = true;
         private bool _suddenDeath = false;
 
@@ -145,7 +146,7 @@ namespace FishingGame.Reeling
         private bool _isMiniGamePaused = false;
         private bool _isGoingLeft;
 
-        private InputAction _directionAction;
+        private InputAction _clickAction;
 
         private Vector3 _fishMoveGoal = Vector3.zero;
         #endregion
@@ -153,11 +154,18 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
+            InputActionMap uiActionMap = inputActions.FindActionMap("SliderMiniGame");
             uiActionMap.Enable();
-            _directionAction = uiActionMap.FindAction("Navigate");
+            _clickAction = uiActionMap.FindAction("LeftClick");
 
             _defaultSuddenDeathTime = suddenDeathTimer;
+        }
+
+        private void OnDisable()
+        {
+            if (_clickAction == null) { return; }
+            _clickAction.started -= MouseDown;
+            _clickAction.canceled -= MouseUp;
         }
 
         public void Update()
@@ -171,7 +179,7 @@ namespace FishingGame.Reeling
 
 
             // Right movement
-            if (_directionAction.ReadValue<Vector2>().x > 0)
+            if (_inputHeld)
             {
                 UnPauseCatchboxMovement();
                 rightArrow.color = Color.green;
@@ -192,7 +200,7 @@ namespace FishingGame.Reeling
             DetermineIfNeedGoal();
             UpdateFishLocation();
             SetFishDirection();
-
+            
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
             {
                 ModifyCatchProgress(_catchIncreaseValueToUse);
@@ -204,7 +212,7 @@ namespace FishingGame.Reeling
 
             if (_isMiniGamePaused) { return; }
 
-            if (_directionAction.ReadValue<Vector2>().x == 0 || _directionAction.ReadValue<Vector2>().x < 0)
+            if (!_inputHeld)
             {
                 rightArrow.color = Color.white;
                 MovementFightBack();
@@ -314,6 +322,24 @@ namespace FishingGame.Reeling
             yPosition = Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
             catchBox.localPosition = newPosition;
+        }
+
+        /// <summary>
+        /// Sets input held to true
+        /// Run when the mouse is pressed down
+        /// </summary>
+        private void MouseDown(InputAction.CallbackContext inputAction)
+        {
+            _inputHeld = true;
+        }
+
+        /// <summary>
+        /// Sets input held to false
+        /// Run when the mouse is released
+        /// </summary>
+        private void MouseUp(InputAction.CallbackContext inputAction)
+        {
+            _inputHeld = false;
         }
 
 
@@ -610,12 +636,16 @@ namespace FishingGame.Reeling
             fishImage.sprite = _reelingObjectData.GetTexture();
             sliderCanvas.SetActive(true);
 
+            _clickAction.started += MouseDown;
+            _clickAction.canceled += MouseUp;
+
             catchBox.transform.localPosition = new Vector3(catchBox.transform.localPosition.x, catchboxYStartLocation, catchBox.transform.localPosition.z);
             _timePassed = 0f;
             _timeSinceLastGoal = 0f;
             _suddenDeath = false;
             _catchBoxVelocity = 0f;
             FishSetSpeed(defaultSpeed);
+            _inputHeld = false;
 
             _behaviourLoaded = false;
 

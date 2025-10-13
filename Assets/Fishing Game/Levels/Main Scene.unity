@@ -272,7 +272,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 155356210}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66b2e846e7f035a4ead6eda1de3cac88, type: 3}
@@ -1566,11 +1566,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153803246}
   m_CullTransparentMesh: 1
---- !u!1 &155356210 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2680999012508629255, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-  m_PrefabInstance: {fileID: 2125236617}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &157760850 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6703619312514077927, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -8481,8 +8476,8 @@ MonoBehaviour:
   populationLowerable: 0
   timeScript: {fileID: 1847882215}
   fishingLocation: 0
-  lowestFishDifficulty: 2
-  highestFishDifficulty: 5
+  lowestFishDifficulty: 1
+  highestFishDifficulty: 3
   isInfested: 0
   overrideFishList:
   - {fileID: 11400000, guid: c14dc72ea904b8e4381311e826f772c5, type: 2}
@@ -11688,12 +11683,12 @@ PrefabInstance:
       objectReference: {fileID: 2146182197}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: miniGameTypes.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[0]'
       value: 
-      objectReference: {fileID: 155356210}
+      objectReference: {fileID: 1229696457}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[1]'
       value: 
