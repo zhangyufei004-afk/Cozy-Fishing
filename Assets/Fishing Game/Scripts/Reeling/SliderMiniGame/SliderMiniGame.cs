@@ -296,7 +296,7 @@ namespace FishingGame.Reeling
             // Doubles the Fight back if catchbox is going forward
             if (_catchBoxVelocity > 0)
             {
-                _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
+                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
             }
 
             _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
@@ -509,7 +509,7 @@ namespace FishingGame.Reeling
             if (fishImage.transform.localPosition.y == _fishMoveGoal.y)
             {
                 Debug.Log("Wandering");
-                //Wander();
+                Wander();
             }
 
             if (_isGoingLeft)
