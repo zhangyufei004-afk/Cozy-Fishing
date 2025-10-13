@@ -307,6 +307,12 @@ namespace FishingGame.Reeling
         /// <param name="moveValue">The value for how far to move</param>
         private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
         {
+            // Resets velocity if catchbox is against the left edge
+            if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
+            {
+                _catchBoxVelocity = 0;
+            }
+
             _catchBoxVelocity += accelerationValue * Time.deltaTime;
         }
 
