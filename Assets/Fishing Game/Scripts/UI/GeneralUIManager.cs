@@ -48,10 +48,12 @@ namespace FishingGame
         /// </summary>
         /// <param name="textToSet">What the text should display</param>
         /// <param name="timeToShowFor">How long should text be displayed for</param>
-        private void SetStatusText(string textToSet, float timeToShowFor)
+        /// <param name="colorToUse">Color to use for the text</param>
+        private void SetStatusText(string textToSet, float timeToShowFor, Color colorToUse)
         {
             reelingThrowLineText.text = textToSet;
             reelingThrowLineText.gameObject.SetActive(true);
+            reelingThrowLineText.color = colorToUse;
             reelingThrowLineText.GetComponent<Animator>().SetTrigger("TextIsActive");
             StartCoroutine(HideStatusText(timeToShowFor));
         }

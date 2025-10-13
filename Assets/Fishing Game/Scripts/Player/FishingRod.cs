@@ -74,8 +74,8 @@ namespace FishingGame.Reeling
         private float _chargePowerAverageMaxValue = 3f;
         private float _chargePowerGoodMaxValue = 6f;
 
-        private float _amazingFishMinWaitTime = 2;
-        private float _amazingFishMaxWaitTime = 4;
+        private float _amazingFishMinWaitTime = 1;
+        private float _amazingFishMaxWaitTime = 2;
 
         private ECastingResult _throwLineResult;
 
@@ -293,19 +293,20 @@ namespace FishingGame.Reeling
             switch (_throwLineResult)
             {
                 case ECastingResult.Amazing:
-                    GameManager.Instance.GameEvents.ShowStatusText("Amazing!", 2f);
+                    GameManager.Instance.GameEvents.ShowStatusText("Amazing!", 2f, Color.green);
                     initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime, _amazingFishMaxWaitTime);
                     break;
                 case ECastingResult.Good:
-                    GameManager.Instance.GameEvents.ShowStatusText("Good!", 2f);
-                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime * 2, _amazingFishMaxWaitTime * 2);
+                    GameManager.Instance.GameEvents.ShowStatusText("Good!", 2f, Color.green);
+                    initiationScript.SetFishWaitTimes((_amazingFishMinWaitTime + 1) * 2, (_amazingFishMaxWaitTime + 1) * 2);
                     break;
                 case ECastingResult.Average:
-                    GameManager.Instance.GameEvents.ShowStatusText("Average", 2f);
-                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime * 2.5f, _amazingFishMaxWaitTime * 2.5f);
+                    GameManager.Instance.GameEvents.ShowStatusText("Average", 2f, Color.yellow);
+                    initiationScript.SetFishWaitTimes((_amazingFishMinWaitTime + 1) * 2.5f, (_amazingFishMaxWaitTime + 1) * 2.5f);
                     break;
                 default:
-                    GameManager.Instance.GameEvents.ShowStatusText("You bugged something this is a default case!", 2f);
+                    GameManager.Instance.GameEvents.ShowStatusText("You bugged something this is a default case!", 2f, Color.green);
+                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime, _amazingFishMaxWaitTime);
                     break;
             }
         }

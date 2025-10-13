@@ -593,6 +593,10 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Sets the speed of the fish based on inputed float
+        /// </summary>
+        /// <param name="speedToSet">The speed to set the fish to</param>
         private void FishSetSpeed(float speedToSet)
         {
             _speedToUse = speedToSet;
@@ -642,8 +646,6 @@ namespace FishingGame.Reeling
             int decideDirection = Random.Range(0, 2);
             if (decideDirection == 0) { _goingLeft = true; }
             else {  _goingLeft = false; }
-
-
         }
 
         #endregion

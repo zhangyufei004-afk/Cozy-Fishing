@@ -5,6 +5,7 @@ using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.QuestSystem;
 using UnityEditor;
+using UnityEngine;
 
 namespace FishingGame.GameManagement
 {
@@ -81,7 +82,7 @@ namespace FishingGame.GameManagement
 
         #region UI Events
 
-        public event Action<string, float> OnShowStatusText;
+        public event Action<string, float, Color> OnShowStatusText;
 
         #endregion
 
@@ -268,9 +269,9 @@ namespace FishingGame.GameManagement
         /// </summary>
         /// <param name="textToShow">The text to be shown</param>
         /// <param name="durationToShow">How long in seconds should this text stay up for</param>
-        public void ShowStatusText(string textToShow, float durationToShow)
+        public void ShowStatusText(string textToShow, float durationToShow, Color colorToUse)
         {
-            OnShowStatusText?.Invoke(textToShow, durationToShow);
+            OnShowStatusText?.Invoke(textToShow, durationToShow, colorToUse);
         }
     }
 }
