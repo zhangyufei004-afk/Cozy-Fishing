@@ -291,6 +291,12 @@ namespace FishingGame.Reeling
                 _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
             }
 
+            // Resets velocity if catchbox is against the left edge
+            if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
+            {
+                _catchBoxVelocity = 0;
+            }
+
             _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
         }
 
