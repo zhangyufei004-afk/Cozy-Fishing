@@ -191,6 +191,16 @@ namespace FishingGame.Reeling
             _currentlyEquipedBait = new NullBait();
         }
 
+        /// <summary>
+        /// Hides the fishing charge slider
+        /// </summary>
+        public void ResetCharge()
+        {
+            chargeSlider.gameObject.SetActive(false);
+            chargeSlider.value = 0;
+            _chargePower = 0;
+        }
+
         #region Charging_and_throwing_line
 
         /// <summary>
@@ -202,20 +212,7 @@ namespace FishingGame.Reeling
             chargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
-            rodBobber.SetActive(true);
             _reverseDirection = false;
-        }
-
-        /// <summary>
-        /// Resets the variables when a cast is cancelled or completed
-        /// </summary>
-        private void ResetCharge()
-        {
-            chargeSlider.gameObject.SetActive(false);
-            _isCharging = false;
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            rodBobber.SetActive(false);
         }
 
         /// <summary>
@@ -284,7 +281,7 @@ namespace FishingGame.Reeling
                 else { _throwLineResult = ECastingResult.Average; }
                 SetChargeResultData();
             }
-            else { ResetCharge(); }
+            else { _isCharging = false; ResetCharge(); }
         }
 
         /// <summary>
@@ -343,8 +340,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true) { SetThrowAnimation(); }
-            ResetCharge();
+            if (_isCharging == true) { SetThrowAnimation();}
+            _isCharging = false;
         }
 
         /// <summary>

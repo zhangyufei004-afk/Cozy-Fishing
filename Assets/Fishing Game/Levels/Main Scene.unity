@@ -13390,6 +13390,10 @@ PrefabInstance:
       value: 0.01734
       objectReference: {fileID: 0}
     - target: {fileID: 2008722758051366086, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: fishingRodScript
+      value: 
+      objectReference: {fileID: 468167251}
+    - target: {fileID: 2008722758051366086, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: initiationScript
       value: 
       objectReference: {fileID: 193100724}

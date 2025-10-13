@@ -43,6 +43,10 @@ namespace FishingGame.Reeling
         [Tooltip("Reference to the reeling initation script attatched to the player.")]
         private ReelingInitiation initiationScript;
 
+        [SerializeField]
+        [Tooltip("Reference to the fishing rod")]
+        private FishingRod fishingRodScript;
+
         [Header("Runtime Variables")]
 
         [SerializeField]
@@ -197,6 +201,7 @@ namespace FishingGame.Reeling
             ResetHookSpot();
             reelingMaster.DisableControls(false);
             initiationScript.SetIsReelingAnimation(false);
+            fishingRodScript.ResetCharge();
         }
 
         /// <summary>
