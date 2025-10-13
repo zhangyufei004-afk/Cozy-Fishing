@@ -295,6 +295,11 @@ namespace FishingGame.Reeling
 
         #region CoreGameTimeFunctions
 
+        /// <summary>
+        /// Takes a paremeter that represents what arrow key was pressed
+        /// Checks if that arrowkey aligns with a pressable arrow
+        /// </summary>
+        /// <param name="inputedDirection">The direction that was inputed</param>
         private void InputLogic(EMovementDirection inputedDirection)
         {
             if (CheckIfThereAreArrowsPressable())
@@ -438,6 +443,9 @@ namespace FishingGame.Reeling
 
         #region CustomBehaviour Functions
 
+        /// <summary>
+        /// Sets up the variables and cycle for the custom behaviour for the arrow minigame
+        /// </summary>
         private void CustomArrowBehaviourBegin()
         {
             _currentWaveIndex = 0;
@@ -448,6 +456,10 @@ namespace FishingGame.Reeling
             
         }
 
+        /// <summary>
+        /// Spawns an arrow at inputed speed
+        /// </summary>
+        /// <param name="speedToUse">Speed the arrow should go at, if 0 this resorts to defaultspeed</param>
         private void SpawnCustomArrow(float speedToUse)
         {
             int i = 0;
@@ -468,6 +480,9 @@ namespace FishingGame.Reeling
             SetupNextCustomArrow();
         }
 
+        /// <summary>
+        /// Sets up the next arrow to be spawned, starting a timer for when it was will spawned
+        /// </summary>
         private void SetupNextCustomArrow()
         {
             _currentWaveIndex++;
@@ -480,6 +495,12 @@ namespace FishingGame.Reeling
             StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
         }
 
+        /// <summary>
+        /// After timer is run this calls for the arrow to be spawned
+        /// </summary>
+        /// <param name="timeToWait">How long to wait until spawning arrow</param>
+        /// <param name="speedToUse">The speed the arrow should move at</param>
+        /// <returns></returns>
         private IEnumerator CustomArrowTime(float timeToWait, float speedToUse)
         {
             yield return new WaitForSeconds(timeToWait);
@@ -490,7 +511,10 @@ namespace FishingGame.Reeling
         #endregion
 
         #region StandardBehaviour Functions
-
+        /// <summary>
+        /// Logic that is only run for default version of arrow minigame
+        /// This checks time passed and spawns an arrow if current arrows are at 0
+        /// </summary>
         private void DefaultArrowBehaviour()
         {
             CheckTimePassed();
@@ -690,6 +714,11 @@ namespace FishingGame.Reeling
 
         #region Initilization_Functions
 
+        /// <summary>
+        /// Checks if the current fishing object has an arrow minigame behaviour
+        /// If so it sets up the required variables and functions
+        /// Otherwise this sets up default minigame behaviour variables
+        /// </summary>
         private void SetupArrowgameBehaviour()
         {
             if (_currentlyReelingObject.GetArrowMinigameBehaviour() == null)

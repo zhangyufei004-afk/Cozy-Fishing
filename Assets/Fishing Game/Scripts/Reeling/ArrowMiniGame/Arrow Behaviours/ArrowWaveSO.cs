@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// This scriptable object is used to create a custom behaviour for the arrow minigame
+    /// It contains al ist of Arrow Entrys and different variables to be setup for how this minigame will playout
+    /// </summary>
         [CreateAssetMenu(fileName = "NewArrowWave", menuName = "Fishing Game/Minigames/ArrowWaves")]
         public class ArrowWaveSO : SerializableObject
         {

@@ -321,6 +321,9 @@ namespace FishingGame.Reeling
 
         #region FishMovementCustomBehaviour
 
+        /// <summary>
+        /// Setsup the custom slider behaviour
+        /// </summary>
         private void SetupCustomBehaviour()
         {
             _behaviourLoaded = true;
@@ -355,6 +358,9 @@ namespace FishingGame.Reeling
             _currentBehaviourIndex++;
         }
 
+        /// <summary>
+        /// Sets the next behaviour point that the fish should move to, starts a timer based on this entrys time to spend on goal
+        /// </summary>
         private void SetNextBehaviourPoint()
         {
             Vector3 currentPosition = fishImage.transform.localPosition;
@@ -371,6 +377,11 @@ namespace FishingGame.Reeling
             if (_currentBehaviourIndex >= _sliderBehaviourList.Count) {  _currentBehaviourIndex = 0; }
         }
 
+        /// <summary>
+        /// A timer for how long until the next behaviour point should be set
+        /// </summary>
+        /// <param name="timeToWait">How long to wait</param>
+        /// <returns>Sets the new behaviour point</returns>
         private IEnumerator CustomBehaviourTime(float timeToWait)
         {
             yield return new WaitForSeconds(timeToWait);
@@ -576,6 +587,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Determines if this will use a custom behaviour or a default behaviour
+        /// </summary>
         private void DetermineBehaviour()
         {
             if (_reelingObjectData.GetSliderMinigameBehaviour() == null)
@@ -588,6 +602,9 @@ namespace FishingGame.Reeling
             }
         }
 
+        /// <summary>
+        /// Setsup default variables that are needed
+        /// </summary>
         private void InitializeVariables()
         {
             fishImage.sprite = _reelingObjectData.GetTexture();
