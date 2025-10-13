@@ -135,7 +135,7 @@ namespace FishingGame.Reeling
         private float _speedToUse;
         private float _defaultSuddenDeathTime;
 
-        private int _wanderRange = 20;
+        private int _wanderRange = 50;
         private float _atGoalRange = 0.2f;
 
         private float _catchMax = 100;
@@ -170,10 +170,7 @@ namespace FishingGame.Reeling
 
         public void Update()
         {
-            if (_isMinigameActive == false)
-            {
-                return;
-            }
+            if (_isMinigameActive == false) { return; }
 
             if (_isMiniGamePaused == true) { CheckInitialBufferTimer(); }
 
@@ -202,13 +199,8 @@ namespace FishingGame.Reeling
             SetFishDirection();
             
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
-            {
-                ModifyCatchProgress(_catchIncreaseValueToUse);
-            }
-            else
-            {
-                ModifyCatchProgress(_catchDecreaseValueToUse);
-            }
+            { ModifyCatchProgress(_catchIncreaseValueToUse); }
+            else { ModifyCatchProgress(_catchDecreaseValueToUse); }
 
             if (_isMiniGamePaused) { return; }
 
@@ -359,7 +351,7 @@ namespace FishingGame.Reeling
             _sliderBehaviourList = _sliderData.GetSliderBehaviours();
 
             _catchIncreaseValueToUse = _sliderData.GetPointPerSecond();
-            _catchDecreaseValueToUse = -_sliderData.GetPointPerSecond();
+            _catchDecreaseValueToUse = -_sliderData.GetPointPerSecond() / 2;
 
             suddenDeathTimer = _sliderData.GetSuddenDeathTimer();
 
@@ -371,7 +363,7 @@ namespace FishingGame.Reeling
             // Scaling variables based on difficulty
             _catchMax = _sliderData.GetMaxPointsNeeded();
             progressSlider.maxValue = _catchMax;
-            _catchProgress = 0 + _sliderData.GetPointPerSecond() * _initialPointScalar;
+            _catchProgress = _sliderData.GetPointsToStartWith();
 
 
             float initialFishGoal = _sliderBehaviourList[_currentBehaviourIndex].GetLocationToMoveTo();
@@ -502,11 +494,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void UpdateFishLocation()
         {
-            // fishImage.transform.position.y < _fishMoveGoal.y + _atGoalRange && fishImage.transform.position.y > _fishMoveGoal.y + -_atGoalRange
-
-            // Debug.Log("Fish move goal: " + _fishMoveGoal + "Current location: " + fishImage.transform.localPosition);
-            
-            if (fishImage.transform.localPosition.y == _fishMoveGoal.y)
+            if (Mathf.Approximately(fishImage.transform.localPosition.y, _fishMoveGoal.y))
             {
                 Debug.Log("Wandering");
                 Wander();
@@ -571,10 +559,7 @@ namespace FishingGame.Reeling
             _catchProgress += (valueToAdd * Time.deltaTime);
             progressSlider.value = _catchProgress;
 
-            if (CheckIfCatchWon())
-            {
-                WinMiniGame();
-            }
+            if (CheckIfCatchWon()) { WinMiniGame(); }
         }
 
         /// <summary>
@@ -618,14 +603,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void DetermineBehaviour()
         {
-            if (_reelingObjectData.GetSliderMinigameBehaviour() == null)
-            {
-                SetupDefaultBehaviour();
-            }
-            else
-            {
-                SetupCustomBehaviour();
-            }
+            if (_reelingObjectData.GetSliderMinigameBehaviour() == null) { SetupDefaultBehaviour(); }
+            else { SetupCustomBehaviour(); }
         }
 
         /// <summary>

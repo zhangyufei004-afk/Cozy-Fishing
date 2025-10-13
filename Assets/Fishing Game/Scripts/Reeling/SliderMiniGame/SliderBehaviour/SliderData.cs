@@ -16,6 +16,7 @@ namespace FishingGame.Reeling
         private float _suddenDeathTimer;
         private float _pointsPerSecond;
         private float _pointsNeeded;
+        private float _startingPoints;
 
         /// <summary>
         /// Constructor for the slider data requires the slider scriptable object it is based of
@@ -29,6 +30,7 @@ namespace FishingGame.Reeling
             _suddenDeathTimer = _sliderBase.SuddenDeathTimer;
             _pointsPerSecond = _sliderBase.PointsPerSecond;
             _pointsNeeded = _sliderBase.PointsNeededToPass;
+            _startingPoints = _sliderBase.PointsToStartWith;
         }
 
         /// <summary>
@@ -66,6 +68,12 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <returns>The max points needed for this game</returns>
         public float GetMaxPointsNeeded() { return _pointsNeeded; }
+
+        /// <summary>
+        /// Returns the points to start with
+        /// </summary>
+        /// <returns>The amount of points to start with</returns>
+        public float GetPointsToStartWith() { return _startingPoints; }
 
     }
 }

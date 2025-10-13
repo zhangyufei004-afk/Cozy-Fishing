@@ -36,3 +36,4 @@ MonoBehaviour:
   SuddenDeathTimer: 30
   PointsNeededToPass: 100
   PointsPerSecond: 10
+  PointsToStartWith: 20

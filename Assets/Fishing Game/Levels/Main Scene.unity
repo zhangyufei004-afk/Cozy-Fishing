@@ -272,7 +272,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 667146798}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66b2e846e7f035a4ead6eda1de3cac88, type: 3}
@@ -643,11 +643,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 963141656346053713, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 963141656346053713, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.9
+      value: -278.7
       objectReference: {fileID: 0}
     - target: {fileID: 1173777083803444639, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -767,6 +767,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768210624945937395, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3848688201841040033, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_PreserveAspect
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4182672942904932314, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -3904,6 +3908,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661655711}
   m_CullTransparentMesh: 1
+--- !u!1 &667146798 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2680999012508629255, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+  m_PrefabInstance: {fileID: 2125236617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &682277882
 GameObject:
   m_ObjectHideFlags: 0
@@ -5349,6 +5358,10 @@ PrefabInstance:
     - target: {fileID: 3972275456197700801, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 3.295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4001827044272359953, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.66
       objectReference: {fileID: 0}
     - target: {fileID: 4213363537414109044, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -8481,10 +8494,9 @@ MonoBehaviour:
   timeScript: {fileID: 1847882215}
   fishingLocation: 0
   lowestFishDifficulty: 1
-  highestFishDifficulty: 3
+  highestFishDifficulty: 5
   isInfested: 0
-  overrideFishList:
-  - {fileID: 11400000, guid: c14dc72ea904b8e4381311e826f772c5, type: 2}
+  overrideFishList: []
 --- !u!114 &1455977958 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7408674872728082327, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -9653,7 +9665,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071396889}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18f3a7df1bc68ed438761a9f48ce7da7, type: 3}
@@ -11453,11 +11465,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041148611}
   m_CullTransparentMesh: 1
---- !u!1 &2071396889 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4518172318511371622, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-  m_PrefabInstance: {fileID: 2125236617}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2083460396 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2702599287491368083, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
@@ -11696,7 +11703,7 @@ PrefabInstance:
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[1]'
       value: 
-      objectReference: {fileID: 2071396889}
+      objectReference: {fileID: 667146798}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[2]'
       value: 
@@ -11788,6 +11795,14 @@ PrefabInstance:
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fishFollowArrow
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: catchBoxMaxXCord
+      value: 278.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: catchBoxMinXCord
+      value: -278.7
       objectReference: {fileID: 0}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: suddenDeathTimer
