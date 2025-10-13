@@ -22,10 +22,15 @@ namespace FishingGame
         [Tooltip("The text that shows statuses")]
         private TextMeshProUGUI reelingThrowLineText;
 
+        [SerializeField]
+        [Tooltip("The text that shows default notifications")]
+        private TextMeshProUGUI defaultNotificationText;
+
         private void OnEnable()
         {
             GameManager.Instance.GameEvents.OnWithinItemPickupRange += SetInteractionText;
-            GameManager.Instance.GameEvents.OnShowStatusText += SetStatusText;
+            GameManager.Instance.GameEvents.OnShowStatusText += SetFadeAwayStatusText;
+            GameManager.Instance.GameEvents.OnShowDefaultNotificationText += SetDefaultNotificationText;
         }
 
         /// <summary>
@@ -49,13 +54,29 @@ namespace FishingGame
         /// <param name="textToSet">What the text should display</param>
         /// <param name="timeToShowFor">How long should text be displayed for</param>
         /// <param name="colorToUse">Color to use for the text</param>
-        private void SetStatusText(string textToSet, float timeToShowFor, Color colorToUse)
+        private void SetFadeAwayStatusText(string textToSet, float timeToShowFor, Color colorToUse)
         {
             reelingThrowLineText.text = textToSet;
             reelingThrowLineText.gameObject.SetActive(true);
             reelingThrowLineText.color = colorToUse;
             reelingThrowLineText.GetComponent<Animator>().SetTrigger("TextIsActive");
-            StartCoroutine(HideStatusText(timeToShowFor));
+            StartCoroutine(HideStatusText(timeToShowFor, reelingThrowLineText));
+        }
+
+        /// <summary>
+        /// Reveals and display the text used to show default notifcations
+        /// Has inputed string variable which represents what text to set
+        /// Float variable represents how long hte text should stay active for
+        /// </summary>
+        /// <param name="textToSet">Text to be set</param>
+        /// <param name="timeToShowFor">Time to show it for in seconds</param>
+        /// <param name="colorToUse">Color to use</param>
+        private void SetDefaultNotificationText(string textToSet, float timeToShowFor, Color colorToUse)
+        {
+            defaultNotificationText.text = textToSet;
+            defaultNotificationText.gameObject.SetActive(true);
+            defaultNotificationText.color = colorToUse;
+            StartCoroutine(HideStatusText(timeToShowFor, defaultNotificationText));
         }
 
         /// <summary>
@@ -63,10 +84,10 @@ namespace FishingGame
         /// </summary>
         /// <param name="timeUntilHide">How long until this text should be hidden</param>
         /// <returns>Hides the status text</returns>
-        private IEnumerator HideStatusText(float timeUntilHide)
+        private IEnumerator HideStatusText(float timeUntilHide, TextMeshProUGUI textoToHide)
         {
             yield return new WaitForSeconds(timeUntilHide);
-            reelingThrowLineText.gameObject.SetActive(false);
+            textoToHide.gameObject.SetActive(false);
         }
 
 

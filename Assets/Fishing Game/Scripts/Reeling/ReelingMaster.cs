@@ -177,8 +177,7 @@ namespace FishingGame.Reeling
         {
             string textToDisplay = $"The {fishingLocation.gameObject.name} is empty of fish!";
 
-            fishingFinishedText.text = textToDisplay;
-            fishingFinishedText.gameObject.SetActive(true);
+            GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
             fishingHook.PullBackHook();
             StartCoroutine(HideUIAfterCatch(2));
         }
@@ -333,7 +332,6 @@ namespace FishingGame.Reeling
         /// </summary>
         private void HideReelFinishedUI()
         {
-            fishingFinishedText.gameObject.SetActive(false);
             caughtFishImage.gameObject.SetActive(false);
         }       
 
@@ -360,16 +358,15 @@ namespace FishingGame.Reeling
             {
                 string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetName()}!";
 
+                GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.green);
                 caughtFishImage.sprite = fishData.GetTexture();
-                fishingFinishedText.text = textToDisplay;
                 caughtFishImage.gameObject.SetActive(true);
-                fishingFinishedText.gameObject.SetActive(true);
             }
             else
             {
                 string textToDisplay = $"The {fishData.GetName()} got away!";
-                fishingFinishedText.text = textToDisplay;
-                fishingFinishedText.gameObject.SetActive(true);
+
+                GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
             }
 
         }

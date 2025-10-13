@@ -84,6 +84,8 @@ namespace FishingGame.GameManagement
 
         public event Action<string, float, Color> OnShowStatusText;
 
+        public event Action<string, float, Color> OnShowDefaultNotificationText;
+
         #endregion
 
         /// <summary>
@@ -269,9 +271,21 @@ namespace FishingGame.GameManagement
         /// </summary>
         /// <param name="textToShow">The text to be shown</param>
         /// <param name="durationToShow">How long in seconds should this text stay up for</param>
+        /// <param name="colorToUse">The color to use for the text</param>
         public void ShowStatusText(string textToShow, float durationToShow, Color colorToUse)
         {
             OnShowStatusText?.Invoke(textToShow, durationToShow, colorToUse);
+        }
+
+        /// <summary>
+        /// This can be run when a script wants to display a default notification through the main canvas
+        /// </summary>
+        /// <param name="textToShow">The text to be shown</param>
+        /// <param name="durationToShow">How long in seconds should this text stay up for</param>
+        /// <param name="colorToUse">The color to use for the text</param>
+        public void ShowNotificationText(string textToShow, float durationToShow, Color colorToUse)
+        {
+            OnShowDefaultNotificationText?.Invoke(textToShow, durationToShow, colorToUse);
         }
     }
 }
