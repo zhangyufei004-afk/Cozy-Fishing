@@ -508,7 +508,6 @@ namespace FishingGame.Reeling
         {
             if (Mathf.Approximately(fishImage.transform.localPosition.y, _fishMoveGoal.y))
             {
-                Debug.Log("Wandering");
                 Wander();
             }
 
@@ -536,7 +535,7 @@ namespace FishingGame.Reeling
         private void Wander()
         {
             float wanderValue = Random.Range(-_wanderRange, _wanderRange);
-            float wanderSpeed = _speedToUse / 4;
+            float wanderSpeed = _speedToUse / 2;
 
             Vector3 currentPosition = fishImage.transform.localPosition;
             Vector3 newGoal = new Vector3(currentPosition.x, currentPosition.y + wanderValue, currentPosition.z);
