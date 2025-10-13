@@ -134,7 +134,7 @@ namespace FishingGame.Reeling
         private float _speedToUse;
         private float _defaultSuddenDeathTime;
 
-        private int _wanderRange = 5;
+        private int _wanderRange = 20;
         private float _atGoalRange = 0.2f;
 
         private float _catchMax = 100;
@@ -465,10 +465,14 @@ namespace FishingGame.Reeling
         /// </summary>
         private void UpdateFishLocation()
         {
-            if (fishImage.transform.position.y < _fishMoveGoal.y + _wanderRange && fishImage.transform.position.y < _fishMoveGoal.y + -_wanderRange)
+            // fishImage.transform.position.y < _fishMoveGoal.y + _atGoalRange && fishImage.transform.position.y > _fishMoveGoal.y + -_atGoalRange
+
+            // Debug.Log("Fish move goal: " + _fishMoveGoal + "Current location: " + fishImage.transform.localPosition);
+            
+            if (fishImage.transform.localPosition.y == _fishMoveGoal.y)
             {
                 Debug.Log("Wandering");
-                Wander();
+                //Wander();
             }
 
             if (_isGoingLeft)
@@ -495,10 +499,12 @@ namespace FishingGame.Reeling
         private void Wander()
         {
             float wanderValue = Random.Range(-_wanderRange, _wanderRange);
+            float wanderSpeed = _speedToUse / 4;
 
             Vector3 currentPosition = fishImage.transform.localPosition;
-            Vector3 newGoal = new Vector3(currentPosition.x, wanderValue, currentPosition.z);
+            Vector3 newGoal = new Vector3(currentPosition.x, currentPosition.y + wanderValue, currentPosition.z);
             FishSetGoal(newGoal);
+            FishSetSpeed(wanderSpeed);
         }
 
 

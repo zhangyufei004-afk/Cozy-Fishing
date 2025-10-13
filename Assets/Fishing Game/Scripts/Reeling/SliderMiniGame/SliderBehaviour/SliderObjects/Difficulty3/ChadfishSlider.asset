@@ -17,7 +17,7 @@ MonoBehaviour:
   - timeToSpendOnGoal: 2
     locationToMoveTo: -215
     speedToUse: 150
-  - timeToSpendOnGoal: 1
+  - timeToSpendOnGoal: 2
     locationToMoveTo: -141
     speedToUse: 0
   - timeToSpendOnGoal: 1
