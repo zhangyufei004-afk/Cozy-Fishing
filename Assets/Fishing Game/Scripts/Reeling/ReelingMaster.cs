@@ -85,6 +85,10 @@ namespace FishingGame.Reeling
         [Tooltip("The UI button that allows the player to exit from fishing")]
         private Button cancelButton;
 
+        [SerializeField]
+        [Tooltip("The sliders animator")]
+        private Animator sliderAnimator;
+
         [Header("Misc")]
 
         [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
@@ -121,6 +125,7 @@ namespace FishingGame.Reeling
 
             _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
             _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
+            sliderAnimator.SetBool("isGameActive", true);
             SetNextMiniGame();
         }
 
@@ -201,6 +206,8 @@ namespace FishingGame.Reeling
         {
             SetCancelButtonVisibilty(false);
             fishingHook.ClearCollidingFishAndPool();
+            sliderAnimator.SetBool("isGameActive", false);
+            fishingRodScript.HideCharger();
 
             if (IsFishing == true) { _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame(); }
             else
@@ -288,6 +295,8 @@ namespace FishingGame.Reeling
             initiationScript.ShouldEnableFishPerspective(false);
             fishingHook.PullBackHook();
             SetCancelButtonVisibilty(false);
+            sliderAnimator.SetBool("isGameActive", false);
+            fishingRodScript.HideCharger();
 
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);

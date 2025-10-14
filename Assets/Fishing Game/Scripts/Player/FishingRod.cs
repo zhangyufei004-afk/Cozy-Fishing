@@ -111,6 +111,7 @@ namespace FishingGame.Reeling
 
         private IBait _currentlyEquipedBait;
         private bool _isBusy = false;
+        private float _defaultMaxSliderValue;
 
         private void OnEnable()
         {
@@ -123,6 +124,8 @@ namespace FishingGame.Reeling
             _castAction = playerActionMap.FindAction("Reel");
 
             if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new NullBait(); }
+
+            _defaultMaxSliderValue = chargeSlider.maxValue;
 
             _castAction.started += CastInputUsed;
             _castAction.canceled += CastInputReleased;
@@ -196,9 +199,16 @@ namespace FishingGame.Reeling
         /// </summary>
         public void ResetCharge()
         {
-            chargeSlider.gameObject.SetActive(false);
             chargeSlider.value = 0;
             _chargePower = 0;
+        }
+
+        /// <summary>
+        /// Hides teh charger slider
+        /// </summary>
+        public void HideCharger()
+        {
+            chargeSlider.gameObject.SetActive(false);
         }
 
         #region Charging_and_throwing_line
@@ -209,6 +219,7 @@ namespace FishingGame.Reeling
         private void BeginCharge()
         {
             chargeSlider.gameObject.SetActive(true);
+            chargeSlider.maxValue = _defaultMaxSliderValue;
             chargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
