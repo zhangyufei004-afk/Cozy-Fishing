@@ -5492,8 +5492,8 @@ MonoBehaviour:
   populationLowerable: 1
   timeScript: {fileID: 0}
   fishingLocation: 1
-  lowestFishDifficulty: 6
-  highestFishDifficulty: 10
+  lowestFishDifficulty: 5
+  highestFishDifficulty: 6
   isInfested: 0
   overrideFishList: []
 --- !u!1 &2196273732152114161
@@ -5960,8 +5960,8 @@ MonoBehaviour:
   populationLowerable: 0
   timeScript: {fileID: 0}
   fishingLocation: 1
-  lowestFishDifficulty: 4
-  highestFishDifficulty: 9
+  lowestFishDifficulty: 5
+  highestFishDifficulty: 6
   isInfested: 0
   overrideFishList: []
 --- !u!114 &1356375164679254699
@@ -16819,7 +16819,7 @@ MonoBehaviour:
   timeScript: {fileID: 0}
   fishingLocation: 1
   lowestFishDifficulty: 1
-  highestFishDifficulty: 5
+  highestFishDifficulty: 3
   isInfested: 0
   overrideFishList: []
 --- !u!65 &1390644988093315118
@@ -27118,9 +27118,6 @@ PrefabInstance:
       addedObject: {fileID: 330148220783377997}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a88e6be2bf0997cc89d96189f1401391, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4557646425361534842}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a88e6be2bf0997cc89d96189f1401391, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8081838981872715871}
   m_SourcePrefab: {fileID: 100100000, guid: a88e6be2bf0997cc89d96189f1401391, type: 3}
 --- !u!4 &75119919666339265 stripped
@@ -27155,28 +27152,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -462981019419857548, guid: a88e6be2bf0997cc89d96189f1401391, type: 3}
---- !u!114 &4557646425361534842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738926272540100475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cbcf56cc513d4b4d84f9c5111c259b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amountOfFishHeld: 20
-  amountOfTrash: 8
-  maxAmountOfPopulation: 0
-  populationLowerable: 0
-  timeScript: {fileID: 0}
-  fishingLocation: 0
-  lowestFishDifficulty: 1
-  highestFishDifficulty: 10
-  isInfested: 0
-  overrideFishList: []
 --- !u!114 &8081838981872715871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27196,7 +27171,7 @@ MonoBehaviour:
   timeScript: {fileID: 0}
   fishingLocation: 0
   lowestFishDifficulty: 1
-  highestFishDifficulty: 10
+  highestFishDifficulty: 3
   isInfested: 0
   overrideFishList: []
 --- !u!1001 &470247473450437632
@@ -41939,8 +41914,8 @@ MonoBehaviour:
   populationLowerable: 0
   timeScript: {fileID: 0}
   fishingLocation: 0
-  lowestFishDifficulty: 4
-  highestFishDifficulty: 8
+  lowestFishDifficulty: 2
+  highestFishDifficulty: 4
   isInfested: 0
   overrideFishList:
   - {fileID: 11400000, guid: 41e32878341444e4a9469e39b26457b2, type: 2}
@@ -49138,7 +49113,7 @@ MonoBehaviour:
   timeScript: {fileID: 0}
   fishingLocation: 3
   lowestFishDifficulty: 1
-  highestFishDifficulty: 4
+  highestFishDifficulty: 2
   isInfested: 0
   overrideFishList: []
 --- !u!65 &8960467325478125543
@@ -87859,8 +87834,8 @@ MonoBehaviour:
   populationLowerable: 0
   timeScript: {fileID: 0}
   fishingLocation: 3
-  lowestFishDifficulty: 2
-  highestFishDifficulty: 8
+  lowestFishDifficulty: 4
+  highestFishDifficulty: 5
   isInfested: 0
   overrideFishList: []
 --- !u!1001 &8184363817928111989

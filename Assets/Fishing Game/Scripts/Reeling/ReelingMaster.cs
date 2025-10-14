@@ -151,6 +151,7 @@ namespace FishingGame.Reeling
 
             _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
             _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
+            sliderAnimator.SetBool("isGameActive", true);
             SetNextMiniGame();
         }
 
