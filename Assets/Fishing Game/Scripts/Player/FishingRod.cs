@@ -64,6 +64,10 @@ namespace FishingGame.Reeling
         [Tooltip("Layer that water is set to")]
         LayerMask waterLayer;
 
+        [SerializeField]
+        [Tooltip("Layer that environment is set to")]
+        LayerMask blockFishingLayers;
+
         private int _aimingYOffset = 5;
         private bool _reverseDirection = false;
         private bool _allowControls = true;
@@ -73,6 +77,7 @@ namespace FishingGame.Reeling
         private float _chargePowerMinimum = 1f;
         private float _chargePowerAverageMaxValue = 3f;
         private float _chargePowerGoodMaxValue = 6f;
+        private int _blockFishingRayCastDistance = 10;
 
         private float _amazingFishMinWaitTime = 1;
         private float _amazingFishMaxWaitTime = 2;
@@ -82,6 +87,7 @@ namespace FishingGame.Reeling
         private Vector3 _targetLocation;
         private Vector3 _aimStartPoint;
         private Vector3 _aimDirection;
+        private Vector3 _aimLoaction;
 
         private InputAction _castAction;
 
@@ -253,8 +259,8 @@ namespace FishingGame.Reeling
             }
 
             chargeSlider.value = _chargePower;
-            Vector3 aimLocation = modifiedStartAimLocation + (_aimDirection * _chargePower);
-            SetAimPoint(aimLocation);
+            _aimLoaction = modifiedStartAimLocation + (_aimDirection * _chargePower);
+            SetAimPoint(_aimLoaction);
         }
 
         /// <summary>
@@ -280,6 +286,18 @@ namespace FishingGame.Reeling
         {
             if (_chargePower >= _chargePowerMinimum)
             {
+                /// TODO: THIS NEEDS TO CHECK FOR WHAT LAYER IS HIGHER DO THIS WHEN NOT TIRED
+                RaycastHit blockedHit;
+                if (Physics.Raycast(_aimLoaction, Vector3.down, out blockedHit, _blockFishingRayCastDistance, blockFishingLayers))
+                {
+                    
+                }
+
+                if (Physics.Raycast(_aimLoaction, Vector3.down, out blockedHit, fishingRange, waterLayer))
+                {
+                    
+                }
+
                 GameManager.Instance.GameEvents.SetPlayerOccupied(true);
                 _targetLocation = rodBobber.transform.position;
                 characterAnimator.SetTrigger("ThrowTrigger");
