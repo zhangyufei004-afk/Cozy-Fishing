@@ -50,9 +50,10 @@ half3 LightingPhysicallyBased(BRDFData brdfData, BRDFData brdfDataClearCoat,
     half3 normalWS, half3 viewDirectionWS,
     half clearCoatMask, bool specularHighlightsOff)
 {
-
     float stepLighting = 0.25;
-    if(lightAttenuation > 0.25) {
+    float normalDot = dot(normalWS, lightDirectionWS);
+
+    if(lightAttenuation > _ShadowLevel && normalDot > _NormalShadowLevel) {
         stepLighting = 0.5;
     }
     half3 radiance = lightColor * stepLighting;

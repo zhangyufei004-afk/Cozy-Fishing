@@ -301,6 +301,7 @@ namespace FishingGame.Reeling
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
             characterAnimator.SetBool("isReeling", false);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobbing", false);
             Destroy(_current3DObject);
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
