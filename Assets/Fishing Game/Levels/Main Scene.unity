@@ -647,11 +647,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 963141656346053713, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.0285
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 963141656346053713, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -278.7
+      value: -139
       objectReference: {fileID: 0}
     - target: {fileID: 1173777083803444639, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -733,6 +733,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -557
       objectReference: {fileID: 0}
+    - target: {fileID: 3161722780194304756, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8e156587f32321947883afb0a868440c, type: 3}
     - target: {fileID: 3161722780194304756, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -971,7 +975,7 @@ PrefabInstance:
       objectReference: {fileID: 1731090800}
     - target: {fileID: 8821759457862353717, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8932022348629044288, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1127,7 +1131,7 @@ GameObject:
   - component: {fileID: 117444970}
   - component: {fileID: 117444969}
   m_Layer: 5
-  m_Name: ReelingThrowLineText
+  m_Name: FadeAwayStatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1867,11 +1871,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 275876975484378811, guid: 1c1df9a0042c9d643b31874bbb0600ae, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 275876975484378811, guid: 1c1df9a0042c9d643b31874bbb0600ae, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3455865899737867392, guid: 1c1df9a0042c9d643b31874bbb0600ae, type: 3}
       propertyPath: m_Value
@@ -7479,6 +7483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionText: {fileID: 383748389}
   reelingThrowLineText: {fileID: 117444970}
+  defaultNotificationText: {fileID: 2041148613}
 --- !u!114 &1144155983 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4743088915911596234, guid: 2fadcdbc72c88ed40a4b0094735f6ea2, type: 3}
@@ -9673,7 +9678,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2071396889}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18f3a7df1bc68ed438761a9f48ce7da7, type: 3}
@@ -11349,12 +11354,12 @@ GameObject:
   - component: {fileID: 2041148614}
   - component: {fileID: 2041148613}
   m_Layer: 5
-  m_Name: FadeAwayStatusText
+  m_Name: DefaultNotificationText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2041148612
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11371,7 +11376,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -211, y: 305}
+  m_AnchoredPosition: {x: 2.2, y: 368}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2041148613
@@ -11421,14 +11426,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.91
+  m_fontSize: 46.7
   m_fontSizeBase: 45.91
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -11459,7 +11464,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -406.75598, w: 0}
+  m_margin: {x: -96.087746, y: 0, z: -61.703606, w: -20.805225}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -11473,6 +11478,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041148611}
   m_CullTransparentMesh: 1
+--- !u!1 &2071396889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4518172318511371622, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+  m_PrefabInstance: {fileID: 2125236617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2083460396 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2702599287491368083, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
@@ -11702,7 +11712,7 @@ PrefabInstance:
       objectReference: {fileID: 2146182197}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: miniGameTypes.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[0]'
@@ -11715,7 +11725,7 @@ PrefabInstance:
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[2]'
       value: 
-      objectReference: {fileID: 1229696457}
+      objectReference: {fileID: 2071396889}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: normalSpeed
       value: 450
