@@ -206,9 +206,9 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Hides teh charger slider
         /// </summary>
-        public void HideCharger()
+        public void SetChargerVisibility(bool isVisible)
         {
-            chargeSlider.gameObject.SetActive(false);
+            chargeSlider.gameObject.SetActive(isVisible);
         }
 
         #region Charging_and_throwing_line
@@ -292,7 +292,7 @@ namespace FishingGame.Reeling
                 else { _throwLineResult = ECastingResult.Average; }
                 SetChargeResultData();
             }
-            else { _isCharging = false; ResetCharge(); }
+            else { _isCharging = false; SetChargerVisibility(false); ResetCharge(); }
         }
 
         /// <summary>

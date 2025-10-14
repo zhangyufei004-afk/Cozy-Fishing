@@ -89,6 +89,10 @@ namespace FishingGame.Reeling
         [Tooltip("The sliders animator")]
         private Animator sliderAnimator;
 
+        [SerializeField]
+        [Tooltip("The slider for minigame progress")]
+        private Slider minigameProgressSlider;
+
         [Header("Misc")]
 
         [Tooltip("This is a public variable that can be referenced to check if the player is currently fishing")]
@@ -122,11 +126,11 @@ namespace FishingGame.Reeling
             DisableControls(true);
             initiationScript.InitiateFishingPerspective();
             SetDefaultVariables();
-
+            
             _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
             _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
             sliderAnimator.SetBool("isGameActive", true);
-            SetNextMiniGame();
+            SetFirstMiniGame();
         }
 
         /// <summary>
@@ -152,7 +156,7 @@ namespace FishingGame.Reeling
             _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
             _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
             sliderAnimator.SetBool("isGameActive", true);
-            SetNextMiniGame();
+            SetFirstMiniGame();
         }
 
         /// <summary>
@@ -208,7 +212,7 @@ namespace FishingGame.Reeling
             SetCancelButtonVisibilty(false);
             fishingHook.ClearCollidingFishAndPool();
             sliderAnimator.SetBool("isGameActive", false);
-            fishingRodScript.HideCharger();
+            fishingRodScript.SetChargerVisibility(false);
 
             if (IsFishing == true) { _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame(); }
             else
@@ -228,6 +232,25 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Sets the visibility of the minigame progress slider
+        /// True makes it visible false makes it not visible
+        /// </summary>
+        /// <param name="isVisible">True will set the slider to visible, otherwise false</param>
+        public void SetMiniGameProgressVisibility(bool isVisible)
+        {
+            minigameProgressSlider.gameObject.SetActive(isVisible);
+        }
+
+        /// <summary>
+        /// This will only need to be called to start the first minigame,
+        /// every future minigame will start the next minigame itself
+        /// </summary>
+        public void StartMiniGame()
+        {
+            _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
+        }
+
+        /// <summary>
         /// Returns the current 3D object representing the fish being reeled
         /// </summary>
         /// <returns>The 3D object of the current fish</returns>
@@ -240,6 +263,21 @@ namespace FishingGame.Reeling
         public FishingRod GetCurrentFishingRod() { return fishingRodScript; }
 
         #endregion
+
+        /// <summary>
+        /// Randomly selects the next minigame that will be played and then initializes and begins it
+        /// The same minigame can not be player two times in a row
+        /// </summary>
+        private void SetFirstMiniGame()
+        {
+            int index = Random.Range(0, _currentPoolOfMiniGames.Count);
+
+            GameObject nextMiniGame = _currentPoolOfMiniGames[index];
+
+            nextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingObject);
+            _currentPoolOfMiniGames.Remove(nextMiniGame);
+            _currentMinigame = nextMiniGame;
+        }
 
         /// <summary>
         /// Randomly selects the next minigame that will be played and then initializes and begins it
@@ -297,7 +335,7 @@ namespace FishingGame.Reeling
             fishingHook.PullBackHook();
             SetCancelButtonVisibilty(false);
             sliderAnimator.SetBool("isGameActive", false);
-            fishingRodScript.HideCharger();
+            SetMiniGameProgressVisibility(false);
 
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);

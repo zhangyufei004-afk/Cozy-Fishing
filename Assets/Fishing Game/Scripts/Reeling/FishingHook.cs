@@ -209,7 +209,7 @@ namespace FishingGame.Reeling
             reelingMaster.DisableControls(false);
             initiationScript.SetIsReelingAnimation(false);
             fishingRodScript.ResetCharge();
-            fishingRodScript.HideCharger();
+            fishingRodScript.SetChargerVisibility(false);
         }
 
         /// <summary>
