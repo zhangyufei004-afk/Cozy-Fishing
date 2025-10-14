@@ -177,9 +177,9 @@ namespace FishingGame.Reeling
         {
             string textToDisplay = $"The {fishingLocation.gameObject.name} is empty of fish!";
 
-            GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
+            GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.red);
             fishingHook.PullBackHook();
-            StartCoroutine(HideUIAfterCatch(2));
+            StartCoroutine(HideUIAfterCatch(3));
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace FishingGame.Reeling
             if (didWin == false)
             {
                 DisplayFishingResult(_currentlyReelingObject, false);
-                StartCoroutine(HideUIAfterCatch(4));
+                StartCoroutine(HideUIAfterCatch(3));
                 _currentlyReelingObject = null;
             }
             else
@@ -312,7 +312,7 @@ namespace FishingGame.Reeling
                 DisplayFishingResult(_currentlyReelingObject, true);
 
                 _currentlyReelingObject = null;
-                StartCoroutine(HideUIAfterCatch(2));
+                StartCoroutine(HideUIAfterCatch(3));
             }
         }
 
@@ -358,7 +358,7 @@ namespace FishingGame.Reeling
             {
                 string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetName()}!";
 
-                GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.green);
+                GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.green);
                 caughtFishImage.sprite = fishData.GetTexture();
                 caughtFishImage.gameObject.SetActive(true);
             }
@@ -366,7 +366,7 @@ namespace FishingGame.Reeling
             {
                 string textToDisplay = $"The {fishData.GetName()} got away!";
 
-                GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
+                GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.red);
             }
 
         }

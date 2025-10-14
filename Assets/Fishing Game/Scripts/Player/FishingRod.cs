@@ -325,8 +325,9 @@ namespace FishingGame.Reeling
                 else
                 {
                     initiationScript.CancelStageOne();
-                    tooSoonText.gameObject.SetActive(true);
-                    StartCoroutine(HideTooSoonText());
+                    string textToDisplay = "There were no fish attatched!";
+
+                    GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
                 }
                 return;
             }
@@ -343,16 +344,6 @@ namespace FishingGame.Reeling
         {
             if (_isCharging == true) { SetThrowAnimation();}
             _isCharging = false;
-        }
-
-        /// <summary>
-        /// Hides the fish was caught too soon text
-        /// </summary>
-        /// <returns>Hides the text</returns>
-        private IEnumerator HideTooSoonText()
-        {
-            yield return new WaitForSeconds(2f);
-            tooSoonText.gameObject.SetActive(false);
         }
 
         #endregion
