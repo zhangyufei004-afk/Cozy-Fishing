@@ -408,7 +408,6 @@ namespace FishingGame.Reeling
         private void ModifyProgress(float progressValue)
         {
             if (_suddenDeath) { progressValue *= _suddenDeathMultiplier; }
-            Debug.Log(progressValue);
             _currentProgress += progressValue;
             progressSlider.value = _currentProgress;
         }
