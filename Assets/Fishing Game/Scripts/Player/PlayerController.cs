@@ -223,7 +223,7 @@ namespace FishingGame.Player
 
                 animator.SetFloat(_speed, animationSpeed);
 
-                if (!CanWalkInDirection() && _previousSafePlace == Vector3.zero)
+                if (!CanWalkInDirection(Mathf.Abs(characterController.velocity.y)) && _previousSafePlace == Vector3.zero)
                 {
                     _previousSafePlace = transform.position;
                 }
@@ -318,14 +318,14 @@ namespace FishingGame.Player
         }
 
 
-        private bool CanWalkInDirection()
+        private bool CanWalkInDirection(float yVelocityAbs)
         {
-            Vector3 startPositionOffset = transform.position + playerBody.transform.forward * 2f + Vector3.up * 2f;
+            Vector3 startPositionOffset = transform.position + playerBody.transform.forward * 3.5f + Vector3.up * 2f;
             Debug.DrawRay(startPositionOffset, Vector3.down * 10f, Color.green, Time.deltaTime);
 
             if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 20f, _raycastLayerMask))
             {
-                if (1 << hitInfo.transform.gameObject.layer == waterLayerMask)
+                if (1 << hitInfo.transform.gameObject.layer == waterLayerMask || yVelocityAbs > 0.25f)
                 {   
                     return false;
                 }

@@ -19,6 +19,8 @@ namespace FishingGame.GameManagement
         private static GameManager _instance;
         private GameEvents _gameEvents;
 
+        [Header("Fishing Properties")]
+        
         [SerializeField]
         [Tooltip("A list of all potential fish in this level")]
         private List<FishScriptableObject> potentialFishTypes;
@@ -26,12 +28,17 @@ namespace FishingGame.GameManagement
         [SerializeField]
         [Tooltip("A list of all potential trash in this level")]
         private List<TrashScriptable> potentialTrashTypes;
+        
+        [Header("Loading Screen Properties")]
+
+        [SerializeField] private List<String> toolTips;
 
         private Dictionary<FishScriptableObject, int> _fishTimesCaught;
         private Dictionary<FishScriptableObject, float> _fishBiggestCatch;
 
         private void OnEnable()
         {
+            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
             if (_instance != null && _instance != this)
             {
                 Destroy(this.gameObject);
@@ -104,7 +111,11 @@ namespace FishingGame.GameManagement
         /// <returns>The string of the death tip.</returns>
         public string GetRandomDeathTip()
         {
-            return "Baits increase your chances of catching certain fish.";
+            if (toolTips.Count == 0)
+            {
+                return "Baits increase your chances of catching certain fish";
+            }
+            return toolTips[UnityEngine.Random.Range(0, toolTips.Count)];
         }
 
         /// <summary>
