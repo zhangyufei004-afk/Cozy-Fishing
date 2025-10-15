@@ -7,36 +7,52 @@ namespace FishingGame
     {
         [SerializeField]
         private ReelingMaster reelingMaster;
+
         [SerializeField]
         private Transform playerPos;
         [SerializeField]
         private Terrain terrain;
+
         [SerializeField]
         private AudioSource castSound;
         [SerializeField]
         private AudioSource reelingSound;
         [SerializeField]
+        private AudioClip[] reelingSounds;
+        [SerializeField]
+        private float reelingPitch;
+
+        [SerializeField]
         private AudioSource footsteps;
         [SerializeField]
         private AudioClip[] grassFootsteps;
-        [SerializeField]
-        private GameObject sliderCanvas;
+
         [SerializeField]
         private SliderMiniGame sliderMiniGame;
+        [SerializeField]
+        private GameObject sliderCanvas;
+
+        [SerializeField]
+        private RealisticMiniGameMaster realisticMiniGame;
+        [SerializeField]
+        private GameObject realisticCanvas;
+
 
         private bool _reelPlaying = false;
         private int _grassFootstepNum = 0;
+        private AudioClip _currentClip;
 
-        private enum SurfaceType { Grass, Sand, Water, Path}
+        /*private enum SurfaceType { Grass, Sand, Water, Path}
         [SerializeField]
         private SurfaceType[] textureToSurfaceMap;
         private Vector3 _terrainPos;
-        private Vector3 _terrainSize;
+        private Vector3 _terrainSize;*/
 
         private void Start()
         {
-            _terrainPos = terrain.transform.position;
-            _terrainSize = terrain.terrainData.size;
+            //_terrainPos = terrain.transform.position;
+            //_terrainSize = terrain.terrainData.size;
+            reelingSound.clip = reelingSounds[1];
         }
         private void Update()
         {
@@ -48,17 +64,30 @@ namespace FishingGame
 
             _reelPlaying = reelingMaster.IsFishing;
 
+            AudioClip newClip = null;
+
             if (sliderCanvas.activeSelf)
             {
-                if (sliderMiniGame.GetInput())
-                    reelingSound.pitch = 1.2f;
-                else
-                    reelingSound.pitch = 0.8f;
+                newClip = sliderMiniGame.GetInput() ? reelingSounds[2] : reelingSounds[0];
+            }
+            else if (realisticCanvas.activeSelf)
+            {
+                newClip = realisticMiniGame.IsProgressing() ? reelingSounds[2] : reelingSounds[0];
             }
             else
-                reelingSound.pitch = 1;
-            
-            
+            {
+                newClip = reelingSounds[1];
+            }
+
+            if(newClip != _currentClip)
+            {
+                _currentClip = newClip;
+                reelingSound.clip = _currentClip;
+
+                if (_reelPlaying)
+                    reelingSound.Play();
+            }
+
         }
 
         /// <summary>
@@ -82,7 +111,7 @@ namespace FishingGame
 
             footsteps.Play();
 
-            SurfaceType surface = GetSurfaceAtPosition(playerPos.position);
+            //SurfaceType surface = GetSurfaceAtPosition(playerPos.position);
             //Debug.Log(surface);
         }
 
@@ -91,7 +120,7 @@ namespace FishingGame
         /// </summary>
         /// <param name="worldPos"></param>
         /// <returns></returns>
-        private SurfaceType GetSurfaceAtPosition(Vector3 worldPos)
+        /*private SurfaceType GetSurfaceAtPosition(Vector3 worldPos)
         {
             float normX = (worldPos.x - _terrainPos.x) / _terrainSize.x;
             float normZ = (worldPos.z - _terrainSize.z) / _terrainSize.z;
@@ -127,6 +156,6 @@ namespace FishingGame
                 return textureToSurfaceMap[maxIndex];
             else
                 return SurfaceType.Grass; 
-        }
+        }*/
     }
 }

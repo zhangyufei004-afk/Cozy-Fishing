@@ -80,6 +80,7 @@ namespace FishingGame.Reeling
         private float _progressMaxValue;
         private float _timeSinceLastDirectionChange;
         private float _directionRollTimerMax = 8f;
+        private bool _progressing;
 
 
         private ERealisticDirection _currentDirection;
@@ -174,6 +175,15 @@ namespace FishingGame.Reeling
             return centerPoint;
         }
 
+        /// <summary>
+        /// return progressing for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public bool IsProgressing()
+        {
+            return _progressing;
+        }
+
         #endregion
 
         #region Runtime Functions
@@ -185,6 +195,7 @@ namespace FishingGame.Reeling
         /// <param name="progressToAdd">The amount of progress to add</param>
         private void AddToProgressSlider(float progressToAdd)
         {
+            _progressing = true;
             // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
             progressToAdd *= 3;
             if (_currentDirection == ERealisticDirection.Clockwise)
@@ -207,6 +218,7 @@ namespace FishingGame.Reeling
         /// <param name="progressToRemove">Value of progress to remove</param>
         private void RemoveFromProgressSlider(float progressToRemove)
         {
+            _progressing = false;
             progressSlider.value -= progressToRemove;
             _progressValue -= progressToRemove;
         }

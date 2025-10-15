@@ -104,6 +104,14 @@ namespace FishingGame.Reeling
         [Tooltip("Rate of spawn during a wave")]
         private float waveSpawnTime;
 
+        [SerializeField]
+        private AudioSource rightSound;
+
+        [SerializeField]
+        private AudioSource wrongSound;
+        [SerializeField]
+        private AudioClip[] wrongSounds;
+
         private IFishAble _currentlyReelingObject;
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
@@ -129,6 +137,8 @@ namespace FishingGame.Reeling
         private InputAction _downAction;
         private InputAction _leftAction;
         private InputAction _rightAction;
+
+        private int _wrongSoundIndex = 0;
 
 
         private void OnEnable()
@@ -278,6 +288,12 @@ namespace FishingGame.Reeling
         /// <param name="arrowFailed"></param>
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
+            if (_wrongSoundIndex == wrongSounds.Length)
+                _wrongSoundIndex = 0;
+            wrongSound.clip = wrongSounds[_wrongSoundIndex];
+            wrongSound.Play();
+            _wrongSoundIndex++;
+
             AddOrRemoveActiveArrow(arrowFailed, false);
             ModifyProgress(-defaultProgressModify * _timeModifier);
             if (CheckIfFailed()) { LoseMiniGame(); }
@@ -381,6 +397,7 @@ namespace FishingGame.Reeling
         /// <param name="arrowCompleted">The arrow being modified</param>
         private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
+            rightSound.Play();
             AddOrRemoveActiveArrow(arrowCompleted, false);
             ModifyProgress(defaultProgressModify * _timeModifier);
             if (CheckIfEnoughProgress()) { WinMiniGame(); }

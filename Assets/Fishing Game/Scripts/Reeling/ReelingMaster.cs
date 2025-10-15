@@ -94,6 +94,9 @@ namespace FishingGame.Reeling
         [Tooltip("The animator attatched to the player")]
         private Animator characterAnimator;
 
+        [SerializeField]
+        private AudioSource winSound;
+
         #endregion
 
         #region Public Methods
@@ -434,6 +437,8 @@ namespace FishingGame.Reeling
         {
             if (didCatch)
             {
+                winSound.Play();
+
                 string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetName()}!";
 
                 caughtFishImage.sprite = fishData.GetTexture();
