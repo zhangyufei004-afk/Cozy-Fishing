@@ -130,7 +130,10 @@ namespace FishingGame.Reeling
             _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
             _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
             sliderAnimator.SetBool("isGameActive", true);
-            SetFirstMiniGame();
+            SetMiniGameProgressVisibility(true);
+            fishingRodScript.SetChargerVisibility(false);
+
+            SetNextMiniGame();
         }
 
         /// <summary>
@@ -156,7 +159,10 @@ namespace FishingGame.Reeling
             _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
             _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
             sliderAnimator.SetBool("isGameActive", true);
-            SetFirstMiniGame();
+            SetMiniGameProgressVisibility(true);
+            fishingRodScript.SetChargerVisibility(false);
+
+            SetNextMiniGame();
         }
 
         /// <summary>
@@ -188,8 +194,8 @@ namespace FishingGame.Reeling
             string textToDisplay = $"The {fishingLocation.gameObject.name} is empty of fish!";
 
             GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.red);
-            fishingHook.PullBackHook();
-            StartCoroutine(HideUIAfterCatch(3));
+            fishingHook.PullBackHook(false);
+            StartCoroutine(HideUIAfterCatch(2));
         }
 
         /// <summary>
@@ -242,15 +248,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// This will only need to be called to start the first minigame,
-        /// every future minigame will start the next minigame itself
-        /// </summary>
-        public void StartMiniGame()
-        {
-            _currentMinigame.GetComponent<IReelingMinigame>().BeginMiniGame();
-        }
-
-        /// <summary>
         /// Returns the current 3D object representing the fish being reeled
         /// </summary>
         /// <returns>The 3D object of the current fish</returns>
@@ -263,21 +260,6 @@ namespace FishingGame.Reeling
         public FishingRod GetCurrentFishingRod() { return fishingRodScript; }
 
         #endregion
-
-        /// <summary>
-        /// Randomly selects the next minigame that will be played and then initializes and begins it
-        /// The same minigame can not be player two times in a row
-        /// </summary>
-        private void SetFirstMiniGame()
-        {
-            int index = Random.Range(0, _currentPoolOfMiniGames.Count);
-
-            GameObject nextMiniGame = _currentPoolOfMiniGames[index];
-
-            nextMiniGame.GetComponent<IReelingMinigame>().InitializeMiniGame(_currentlyReelingObject);
-            _currentPoolOfMiniGames.Remove(nextMiniGame);
-            _currentMinigame = nextMiniGame;
-        }
 
         /// <summary>
         /// Randomly selects the next minigame that will be played and then initializes and begins it
@@ -329,14 +311,12 @@ namespace FishingGame.Reeling
             IsFishing = false;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
-            DisableControls(false);
-            fishingRodScript.AreReelingControlsActive(true);
             initiationScript.ShouldEnableFishPerspective(false);
-            fishingHook.PullBackHook();
+            fishingHook.PullBackHook(true);
             SetCancelButtonVisibilty(false);
             sliderAnimator.SetBool("isGameActive", false);
             SetMiniGameProgressVisibility(false);
-
+            StartCoroutine(ControlsAreDisabledAfterTime(false, 1));
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
             characterAnimator.SetBool("isReeling", false);
@@ -347,7 +327,7 @@ namespace FishingGame.Reeling
             if (didWin == false)
             {
                 DisplayFishingResult(_currentlyReelingObject, false);
-                StartCoroutine(HideUIAfterCatch(3));
+                StartCoroutine(HideUIAfterCatch(2));
                 _currentlyReelingObject = null;
             }
             else
@@ -361,7 +341,7 @@ namespace FishingGame.Reeling
                 DisplayFishingResult(_currentlyReelingObject, true);
 
                 _currentlyReelingObject = null;
-                StartCoroutine(HideUIAfterCatch(3));
+                StartCoroutine(HideUIAfterCatch(2));
             }
         }
 
@@ -392,6 +372,18 @@ namespace FishingGame.Reeling
         {
             yield return new WaitForSeconds(secondsToWait);
             HideReelFinishedUI();
+        }
+
+        /// <summary>
+        /// Starts a timer to disable or reenable controls
+        /// </summary>
+        /// <param name="disable">True to disable controls</param>
+        /// <param name="secondssToWait">Amount of seconds to wait before disabling or enabling</param>
+        /// <returns></returns>
+        private IEnumerator ControlsAreDisabledAfterTime(bool disable, int secondssToWait)
+        {
+            yield return new WaitForSeconds(secondssToWait);
+            DisableControls(disable);
         }
 
         /// <summary>

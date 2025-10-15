@@ -118,7 +118,7 @@ namespace FishingGame.Reeling
                     }
                     else
                     {
-                        PullBackHook();
+                        PullBackHook(false);
                     }
                 }
             }
@@ -194,19 +194,20 @@ namespace FishingGame.Reeling
             else
             {
                 Debug.Log("Hook was not colliding with an object with a fishing pool script");
-                PullBackHook();
+                PullBackHook(false);
             }
         }
 
         /// <summary>
-        /// Pulls the fishing hook back and reenables controls
+        /// Pulls the fishing hook back and reenables controls if bool parameter is set to false
         /// </summary>
-        public void PullBackHook()
+        /// <param name="areControlsDisabled">True means controls should be disabled</param>
+        public void PullBackHook(bool areControlsDisabled)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             SetupHookTravelBack();
             ResetHookSpot();
-            reelingMaster.DisableControls(false);
+            reelingMaster.DisableControls(areControlsDisabled);
             initiationScript.SetIsReelingAnimation(false);
             fishingRodScript.ResetCharge();
             fishingRodScript.SetChargerVisibility(false);

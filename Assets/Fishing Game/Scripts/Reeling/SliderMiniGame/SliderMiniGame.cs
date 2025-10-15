@@ -136,7 +136,6 @@ namespace FishingGame.Reeling
         private float _defaultSuddenDeathTime;
 
         private int _wanderRange = 50;
-        private float _atGoalRange = 0.2f;
 
         private float _catchMax = 100;
 
@@ -295,6 +294,12 @@ namespace FishingGame.Reeling
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
             {
                 _catchBoxVelocity = 0;
+            }
+
+            // Increase fight back if right at right edge
+            if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMaxXCord))
+            {
+                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
             }
 
             _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);

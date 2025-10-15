@@ -286,24 +286,11 @@ namespace FishingGame.Reeling
         {
             if (_chargePower >= _chargePowerMinimum)
             {
-                /// TODO: THIS NEEDS TO CHECK FOR WHAT LAYER IS HIGHER DO THIS WHEN NOT TIRED
-                RaycastHit blockedHit;
-                if (Physics.Raycast(_aimLoaction, Vector3.down, out blockedHit, _blockFishingRayCastDistance, blockFishingLayers))
-                {
-                    
-                }
-
-                if (Physics.Raycast(_aimLoaction, Vector3.down, out blockedHit, fishingRange, waterLayer))
-                {
-                    
-                }
-
                 GameManager.Instance.GameEvents.SetPlayerOccupied(true);
                 _targetLocation = rodBobber.transform.position;
                 characterAnimator.SetTrigger("ThrowTrigger");
                 characterAnimator.SetBool("isReeling", true);
                 reelingMasterScript.DisableControls(true);
-                AreReelingControlsActive(false);
 
                 if (_chargePower > _chargePowerGoodMaxValue) { _throwLineResult = ECastingResult.Amazing; }
                 else if (_chargePower > _chargePowerAverageMaxValue) { _throwLineResult = ECastingResult.Good; ; }
@@ -362,6 +349,8 @@ namespace FishingGame.Reeling
             }
 
             if (_isBusy) {  return; }
+
+            if (!_allowControls) { return; }
 
             if (_isCharging != true) { BeginCharge(); }
         }

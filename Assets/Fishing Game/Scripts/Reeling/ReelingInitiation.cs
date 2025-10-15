@@ -204,7 +204,7 @@ namespace FishingGame.Reeling
             fishingRod.ResetCharge();
 
             _isStageOne = false;
-            fishingHook.PullBackHook();
+            fishingHook.PullBackHook(false);
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
         }
 
