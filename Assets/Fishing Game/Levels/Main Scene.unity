@@ -17654,7 +17654,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf16239ea3af9594c834d98f45ab04f2, type: 2}
   - {fileID: 11400000, guid: 250cd2d7ab7835742bcc7f40c75cdada, type: 2}
   - {fileID: 11400000, guid: 3f88db39fb4b0bf42bf4c256f50bce96, type: 2}
-  loadingScreenUI: {fileID: 0}
+  toolTips:
+  - Baits increase your chances of catching certain fish.
+  - 'Some fish are harder to catch than others. '
+  - Different fish live in different areas. Try fishing in the river.
+  - There are less fish in the rivers than the ocean.
+  - Overfishing can lead to population loss. Fish responsibly.
+  - 'Fish can be sold at the shop. '
+  - 'Baits can be purchased at the shop. '
+  - My Jelly Romance's can only be fished from the ocean.
+  - The lake is the Toxic Puffers only home.
+  - Pink Glubfish love the fast flowing water of the rivers.
+  - The one-eyed wangfish calls the lake home.
+  - The divine light is invasive, and can only be fished from the ocean/
 --- !u!4 &1272523031
 Transform:
   m_ObjectHideFlags: 0
