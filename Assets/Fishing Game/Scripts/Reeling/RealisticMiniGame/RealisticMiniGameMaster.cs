@@ -418,7 +418,7 @@ namespace FishingGame.Reeling
         {
             _progressMaxValue = defaultProgressMax + (defaultProgressScaleValue * _fishDifficulty);
             progressSlider.maxValue = _progressMaxValue;
-            _progressValue = Mathf.Clamp(20f, _progressMaxValue / _fishDifficulty, 10000f);
+            _progressValue = Mathf.Clamp(20f, _progressMaxValue / (_fishDifficulty + 1), 10000f);
             progressSlider.value = _progressValue;
         }
 
