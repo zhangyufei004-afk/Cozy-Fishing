@@ -354,9 +354,16 @@ namespace FishingGame.Reeling
 
             if (Physics.Raycast(locationPoint, Vector3.down, out hit, maxDistance, _layerMask))
             {
-                Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
+                // Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
 
-                if (overlapingBlockObjects.Count() != 0)
+                // if (overlapingBlockObjects.Count() != 0)
+                // {
+                //     ResetCharge();
+                //     SetChargerVisibility(false);
+                //     return false;
+                // }
+
+                if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
                 {
                     ResetCharge();
                     SetChargerVisibility(false);
