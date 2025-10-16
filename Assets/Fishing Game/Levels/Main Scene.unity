@@ -17666,7 +17666,7 @@ MonoBehaviour:
   - The lake is the Toxic Puffers only home.
   - Pink Glubfish love the fast flowing water of the rivers.
   - The one-eyed wangfish calls the lake home.
-  - The divine light is invasive, and can only be fished from the ocean/
+  - The divine light is invasive, and can only be fished from the ocean.
 --- !u!4 &1272523031
 Transform:
   m_ObjectHideFlags: 0
@@ -20692,7 +20692,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.525, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 497.93884, y: -10.699768}
+  m_AnchoredPosition: {x: 497.93887, y: -10.699768}
   m_SizeDelta: {x: 302.12173, y: -21.399475}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1963978131
