@@ -21,6 +21,11 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingInitiation : MonoBehaviour
     {
+        private static readonly int FishBite = Animator.StringToHash("FishBite");
+        private static readonly int IsBobbing = Animator.StringToHash("isBobbing");
+        private static readonly int IsReeling = Animator.StringToHash("isReeling");
+        private static readonly int IsFishing = Animator.StringToHash("IsFishing");
+
         #region Private Fields
         [Header("Reeling Scripts")]
 
@@ -132,7 +137,8 @@ namespace FishingGame.Reeling
         public void FishAtHook()
         {
             _fishAtHook = true;
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", true);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, true);
+            characterAnimator.SetBool(FishBite, true);
 
             StartCoroutine(FishCatchTimer(2));
         }
@@ -150,7 +156,7 @@ namespace FishingGame.Reeling
                 _isStageOne = false;
                 Destroy(_fishSwim);
                 StopAllCoroutines();
-                fishingHook.AttempToFishFromCurrentLocation();
+                fishingHook.AttemptToFishFromCurrentLocation();
             }
             else
             {
@@ -172,7 +178,7 @@ namespace FishingGame.Reeling
         /// <param name="isReeling">True if the animation should player</param>
         public void SetIsReelingAnimation(bool isReeling)
         {
-            characterAnimator.SetBool("isReeling", isReeling);
+            characterAnimator.SetBool(IsReeling, isReeling);
         }
 
         /// <summary>
@@ -199,8 +205,9 @@ namespace FishingGame.Reeling
         {
             fishingHook.ClearCollidingFishAndPool();
             StopAllCoroutines();
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, false);
             SetIsReelingAnimation(false);
+            characterAnimator.SetBool(IsFishing, false);
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
@@ -227,6 +234,24 @@ namespace FishingGame.Reeling
         public bool IsFishAtHook()
         {
             return _fishAtHook;
+        }
+
+        /// <summary>
+        /// Sets the fish biting animation boolean to be <c>isFishBiting</c>
+        /// </summary>
+        /// <param name="isFishBiting">Whether the fish is currently biting</param>
+        public void SetFishBitingAnim(bool isFishBiting)
+        {
+            characterAnimator.SetBool(FishBite, isFishBiting);
+        }
+
+        /// <summary>
+        /// Sets the IsFishing animation boolean to be <c>isFishing</c>
+        /// </summary>
+        /// <param name="isFishing">Whether the player is currently fishing</param>
+        public void SetIsFishing(bool isFishing)
+        {
+            characterAnimator.SetBool(IsFishing, isFishing);
         }
 
         #endregion
@@ -266,7 +291,8 @@ namespace FishingGame.Reeling
         private void FishGotAway()
         {
             _fishAtHook = false;
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, false);
+            characterAnimator.SetBool(FishBite, false);
 
             _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
             StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));

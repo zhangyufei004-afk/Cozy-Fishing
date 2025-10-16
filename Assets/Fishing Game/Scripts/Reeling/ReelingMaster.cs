@@ -21,6 +21,9 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
+        private static readonly int Fishing = Animator.StringToHash("isFishing");
+        private static readonly int IsReeling = Animator.StringToHash("isReeling");
+
         #region Private Variables
 
         [Header("Script References")]
@@ -107,6 +110,7 @@ namespace FishingGame.Reeling
         public void BeginCatchFish(Fish fishCaught, GameObject visual3DObject, FishingPool fishPool)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            
 
             _currentlyReelingObject = fishCaught;
             _currentFishPool = fishPool;
@@ -360,7 +364,8 @@ namespace FishingGame.Reeling
 
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
-            characterAnimator.SetBool("isReeling", false);
+            characterAnimator.SetBool(IsReeling, false);
+            characterAnimator.SetBool(Fishing, false);
             Destroy(_current3DObject);
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);

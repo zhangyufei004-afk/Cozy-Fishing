@@ -16,6 +16,11 @@ namespace FishingGame.Reeling
     /// </summary>
     public class FishingRod : MonoBehaviour
     {
+        private static readonly int ThrowTrigger = Animator.StringToHash("ThrowTrigger");
+        private static readonly int FishBite = Animator.StringToHash("FishBite");
+        private static readonly int CastTrigger = Animator.StringToHash("CastTrigger");
+        private static readonly int IsFishing = Animator.StringToHash("IsFishing");
+
         [Header("Scrip References")]
 
         [SerializeField]
@@ -181,6 +186,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void BeginCharge()
         {
+            characterAnimator.SetTrigger(ThrowTrigger);
+            characterAnimator.SetBool(IsFishing, true);
             chargeSlider.gameObject.SetActive(true);
             chargeSlider.value = 0;
             _chargePower = 0;
@@ -204,13 +211,17 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Holding down right click charges the cast line of the rod.
         /// This will update the ui element representing the charge
-        /// and also show the tragectory line if the player were to release
+        /// and also show the trajectory line if the player were to release
         /// </summary>
         private void ChargeLine()
         {
             _aimDirection = characterModel.transform.forward;
             _aimStartPoint = characterParent.transform.position;
+            
+            characterAnimator.SetBool(FishBite, false);
 
+            
+            
             if (!_reverseDirection)
             {
                 _chargePower += Time.deltaTime * chargeScalar;
@@ -258,12 +269,11 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Makes the throw line animation play
         /// </summary>
-        private void SetThrowAnimation()
+        private void SetCastAnimation()
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _targetLocation = rodBobber.transform.position;
-            characterAnimator.SetTrigger("ThrowTrigger");
-            characterAnimator.SetBool("isReeling", true);
+            characterAnimator.SetTrigger(CastTrigger);
             reelingMasterScript.DisableControls(true);
             AreReelingControlsActive(false);
         }
@@ -306,7 +316,7 @@ namespace FishingGame.Reeling
         {
             if (_isCharging == true)
             {
-                SetThrowAnimation();
+                SetCastAnimation();
             }
             ResetCharge();
         }
