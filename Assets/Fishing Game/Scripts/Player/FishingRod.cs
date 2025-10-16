@@ -10,6 +10,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using System.ComponentModel.Design;
 using FishingGame.Inventory;
+using UnityEditor.UIElements;
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine.UIElements;
+using System.Linq;
 
 namespace FishingGame.Reeling
 {
@@ -142,6 +147,7 @@ namespace FishingGame.Reeling
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+
             _layerMask = waterLayer | blockFishingLayers;
         }
 
@@ -340,6 +346,29 @@ namespace FishingGame.Reeling
             }
         }
 
+        private bool CanThrowToLocation()
+        {
+            RaycastHit hit;
+            Vector3 locationPoint = _aimLoaction;
+            float maxDistance = fishingRange;
+
+            if (Physics.Raycast(locationPoint, Vector3.down, out hit, maxDistance, _layerMask))
+            {
+                Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
+
+                if (overlapingBlockObjects.Count() != 0)
+                {
+                    ResetCharge();
+                    SetChargerVisibility(false);
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region MouseControlFunctions
@@ -369,11 +398,14 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Releasing right click will reset the current charge and throw the rod
+        /// Releasing left click will reset the current charge and throw the rod
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true) { SetThrowAnimation();}
+            if (_isCharging == true && CanThrowToLocation()) 
+            {
+                SetThrowAnimation();
+            }
             _isCharging = false;
         }
 
