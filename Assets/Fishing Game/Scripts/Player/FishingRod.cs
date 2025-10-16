@@ -8,9 +8,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using System.ComponentModel.Design;
+using FishingGame.Inventory;
+using UnityEditor.UIElements;
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine.UIElements;
+using System.Linq;
 
 namespace FishingGame.Reeling
 {
+    /// <summary>
+    /// Used to set the text and influence how fast fish is attracted to line, based on the throw power
+    /// </summary>
+    internal enum ECastingResult
+    {
+        None = 0,
+        Average = 1,
+        Good = 2,
+        Amazing = 3
+    }
+
     /// <summary>
     /// Contains the logic for charging and throwing the initial fishing line
     /// </summary>
@@ -53,15 +71,34 @@ namespace FishingGame.Reeling
         [Tooltip("Rodbobber shows exactly where the line will be cast to, attatched to the fishing rod")]
         private GameObject rodBobber;
 
+        [SerializeField]
+        [Tooltip("Layer that water is set to")]
+        LayerMask waterLayer;
+
+        [SerializeField]
+        [Tooltip("Layer that environment is set to")]
+        LayerMask blockFishingLayers;
+
+        private int _aimingYOffset = 5;
         private bool _reverseDirection = false;
         private bool _allowControls = true;
         private bool _isCharging = false;
         private float _chargePower = 0;
         private float _maxCharge = 8;
+        private float _chargePowerMinimum = 1f;
+        private float _chargePowerAverageMaxValue = 3f;
+        private float _chargePowerGoodMaxValue = 6f;
+        private int _blockFishingRayCastDistance = 10;
+
+        private float _amazingFishMinWaitTime = 1;
+        private float _amazingFishMaxWaitTime = 2;
+
+        private ECastingResult _throwLineResult;
 
         private Vector3 _targetLocation;
         private Vector3 _aimStartPoint;
         private Vector3 _aimDirection;
+        private Vector3 _aimLoaction;
 
         private InputAction _castAction;
 
@@ -79,7 +116,6 @@ namespace FishingGame.Reeling
         [Tooltip("The text that shows if you reel in too soon")]
         private TextMeshProUGUI tooSoonText;
 
-
         [Header("Misc")]
 
         [SerializeField]
@@ -92,6 +128,8 @@ namespace FishingGame.Reeling
 
         private IBait _currentlyEquipedBait;
         private bool _isBusy = false;
+        private float _defaultMaxSliderValue;
+        private LayerMask _layerMask;
 
         private void OnEnable()
         {
@@ -105,11 +143,17 @@ namespace FishingGame.Reeling
 
             if (_currentlyEquipedBait == null) { _currentlyEquipedBait = new NullBait(); }
 
+            _defaultMaxSliderValue = chargeSlider.maxValue;
+
             _castAction.started += CastInputUsed;
             _castAction.canceled += CastInputReleased;
 
+            GameManager.Instance.GameEvents.OnBaitEquiped += EquipBait;
+
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+
+            _layerMask = waterLayer | blockFishingLayers;
         }
 
         private void OnDisable()
@@ -132,7 +176,14 @@ namespace FishingGame.Reeling
         /// <param name="baitToEquip">The bait item to equip</param>
         public void EquipBait(IBait baitToEquip)
         {
+            ItemData baitAsObject = baitToEquip as ItemData;
+
+            if (baitAsObject == null) { return; }
+
+            if (_currentlyEquipedBait != null && _currentlyEquipedBait.GetType() != typeof(NullBait))  { baitAsObject.UnEquipItem(); }
+
             _currentlyEquipedBait = baitToEquip;
+            baitToEquip.SetActiveFishingRod(this);
         }
 
         /// <summary>
@@ -150,14 +201,8 @@ namespace FishingGame.Reeling
         /// <param name="enable">Enables controls if set to true otherwise disables controls</param>
         public void AreReelingControlsActive(bool enable)
         {
-            if (enable)
-            {
-                _allowControls = true;
-            }
-            else
-            {
-                _allowControls = false;
-            }
+            if (enable) { _allowControls = true; } 
+            else { _allowControls = false; }
         }
 
         /// <summary>
@@ -167,7 +212,6 @@ namespace FishingGame.Reeling
         public void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-
             fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
         }
 
@@ -177,6 +221,23 @@ namespace FishingGame.Reeling
         public void RemoveBait()
         {
             _currentlyEquipedBait = new NullBait();
+        }
+
+        /// <summary>
+        /// Hides the fishing charge slider
+        /// </summary>
+        public void ResetCharge()
+        {
+            chargeSlider.value = 0;
+            _chargePower = 0;
+        }
+
+        /// <summary>
+        /// Hides teh charger slider
+        /// </summary>
+        public void SetChargerVisibility(bool isVisible)
+        {
+            chargeSlider.gameObject.SetActive(isVisible);
         }
 
         #region Charging_and_throwing_line
@@ -189,23 +250,11 @@ namespace FishingGame.Reeling
             characterAnimator.SetTrigger(ThrowTrigger);
             characterAnimator.SetBool(IsFishing, true);
             chargeSlider.gameObject.SetActive(true);
+            chargeSlider.maxValue = _defaultMaxSliderValue;
             chargeSlider.value = 0;
             _chargePower = 0;
             _isCharging = true;
-            rodBobber.SetActive(true);
             _reverseDirection = false;
-        }
-
-        /// <summary>
-        /// Resets the variables when a cast is cancelled or completed
-        /// </summary>
-        private void ResetCharge()
-        {
-            chargeSlider.gameObject.SetActive(false);
-            _isCharging = false;
-            chargeSlider.value = 0;
-            _chargePower = 0;
-            rodBobber.SetActive(false);
         }
 
         /// <summary>
@@ -220,8 +269,8 @@ namespace FishingGame.Reeling
             
             characterAnimator.SetBool(FishBite, false);
 
-            
-            
+            Vector3 modifiedStartAimLocation = new Vector3(_aimStartPoint.x, _aimStartPoint.y + _aimingYOffset, _aimStartPoint.z);
+
             if (!_reverseDirection)
             {
                 _chargePower += Time.deltaTime * chargeScalar;
@@ -243,8 +292,8 @@ namespace FishingGame.Reeling
             }
 
             chargeSlider.value = _chargePower;
-            Vector3 aimLocation = _aimStartPoint + (_aimDirection * _chargePower);
-            SetAimPoint(aimLocation);
+            _aimLoaction = modifiedStartAimLocation + (_aimDirection * _chargePower);
+            SetAimPoint(_aimLoaction);
         }
 
         /// <summary>
@@ -255,12 +304,10 @@ namespace FishingGame.Reeling
         {
             RaycastHit hit;
             float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
-
             Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
 
 
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _layerMask))
             {
                 rodBobber.transform.position = hit.point;
             }
@@ -271,20 +318,100 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetCastAnimation()
         {
-            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-            _targetLocation = rodBobber.transform.position;
-            characterAnimator.SetTrigger(CastTrigger);
-            reelingMasterScript.DisableControls(true);
-            AreReelingControlsActive(false);
+            if (_chargePower >= _chargePowerMinimum)
+            {
+                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+                _targetLocation = rodBobber.transform.position;
+                characterAnimator.SetTrigger(CastTrigger);
+                reelingMasterScript.DisableControls(true);
+                AreReelingControlsActive(false);
+
+                if (_chargePower > _chargePowerGoodMaxValue)
+                {
+                    _throwLineResult = ECastingResult.Amazing;
+                }
+                else if (_chargePower > _chargePowerAverageMaxValue)
+                {
+                    _throwLineResult = ECastingResult.Good;
+                    ;
+                }
+                else
+                {
+                    _throwLineResult = ECastingResult.Average;
+                }
+
+                SetChargeResultData();
+            }
+            else
+            {
+                _isCharging = false; 
+                SetChargerVisibility(false); 
+                ResetCharge();
+            }
         }
 
+        /// <summary>
+        /// Runs the game event that shows the status text based on the ECastingResult enum
+        /// Also sets the reeling initation scripts wait time based on this value
+        /// </summary>
+        private void SetChargeResultData()
+        {
+            switch (_throwLineResult)
+            {
+                case ECastingResult.Amazing:
+                    GameManager.Instance.GameEvents.ShowStatusText("Amazing!", 2f, Color.green);
+                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime, _amazingFishMaxWaitTime);
+                    break;
+                case ECastingResult.Good:
+                    GameManager.Instance.GameEvents.ShowStatusText("Good!", 2f, Color.green);
+                    initiationScript.SetFishWaitTimes((_amazingFishMinWaitTime + 1) * 2, (_amazingFishMaxWaitTime + 1) * 2);
+                    break;
+                case ECastingResult.Average:
+                    GameManager.Instance.GameEvents.ShowStatusText("Average", 2f, Color.yellow);
+                    initiationScript.SetFishWaitTimes((_amazingFishMinWaitTime + 1) * 2.5f, (_amazingFishMaxWaitTime + 1) * 2.5f);
+                    break;
+                default:
+                    GameManager.Instance.GameEvents.ShowStatusText("You bugged something this is a default case!", 2f, Color.green);
+                    initiationScript.SetFishWaitTimes(_amazingFishMinWaitTime, _amazingFishMaxWaitTime);
+                    break;
+            }
+        }
 
+        private bool CanThrowToLocation()
+        {
+            RaycastHit hit;
+            Vector3 locationPoint = _aimLoaction;
+            float maxDistance = fishingRange;
+
+            if (Physics.Raycast(locationPoint, Vector3.down, out hit, maxDistance, _layerMask))
+            {
+                // Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
+
+                // if (overlapingBlockObjects.Count() != 0)
+                // {
+                //     ResetCharge();
+                //     SetChargerVisibility(false);
+                //     return false;
+                // }
+
+                if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
+                {
+                    ResetCharge();
+                    SetChargerVisibility(false);
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
         #endregion
 
         #region MouseControlFunctions
         /// <summary>
-        /// Using right click will begin a charge if there is not one ongoing
+        /// Using left click will begin a charge if there is not one ongoing
         /// </summary>
         private void CastInputUsed(InputAction.CallbackContext inputAction)
         {
@@ -294,37 +421,30 @@ namespace FishingGame.Reeling
                 else
                 {
                     initiationScript.CancelStageOne();
-                    tooSoonText.gameObject.SetActive(true);
-                    StartCoroutine(HideTooSoonText());
-                }
+                    string textToDisplay = "There were no fish attatched!";
 
+                    GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
+                }
                 return;
             }
 
             if (_isBusy) {  return; }
 
-            if (_isCharging != true)
-            {
-                BeginCharge();
-            }
+            if (!_allowControls) { return; }
+
+            if (_isCharging != true) { BeginCharge(); }
         }
 
         /// <summary>
-        /// Releasing right click will reset the current charge and throw the rod
+        /// Releasing left click will reset the current charge and throw the rod
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true)
+            if (_isCharging == true && CanThrowToLocation()) 
             {
                 SetCastAnimation();
             }
-            ResetCharge();
-        }
-
-        private IEnumerator HideTooSoonText()
-        {
-            yield return new WaitForSeconds(2f);
-            tooSoonText.gameObject.SetActive(false);
+            _isCharging = false;
         }
 
         #endregion

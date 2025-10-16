@@ -46,6 +46,10 @@ namespace FishingGame.Reeling
         [Tooltip("Reference to the reeling initation script attatched to the player.")]
         private ReelingInitiation initiationScript;
 
+        [SerializeField]
+        [Tooltip("Reference to the fishing rod")]
+        private FishingRod fishingRodScript;
+
         [Header("Runtime Variables")]
 
         
@@ -87,6 +91,9 @@ namespace FishingGame.Reeling
         // There is a small chance for multipile fish to collide at once so I have made _collidingFish a list
         private List<GameObject> _collidingFish;
         private FishingPool _collidingPool;
+
+        private float _velocity;
+
         #endregion
 
         private void OnEnable()
@@ -102,6 +109,10 @@ namespace FishingGame.Reeling
         {
             if (_headingToFishSpot)
             {
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_fishingLocation.x, transform.position.y, _fishingLocation.z), castHookSpeed * Time.deltaTime);
+                transform.position += new Vector3(0, _velocity, 0);
+
+                _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, _initialRotation, MaxRotationDegrees * Time.deltaTime);
                 transform.position = Vector3.MoveTowards(transform.position, _fishingLocation, castHookSpeed * Time.deltaTime);
 
@@ -117,7 +128,7 @@ namespace FishingGame.Reeling
                     }
                     else
                     {
-                        PullBackHook();
+                        PullBackHook(false);
                     }
                 }
             }
@@ -126,6 +137,7 @@ namespace FishingGame.Reeling
                 transform.rotation = _initialRotation;
                 Vector3 target = _initialParent.TransformPoint(_hookResetSpot);
                 transform.position = Vector3.MoveTowards(transform.position, target, hookReturnSpeed * Time.deltaTime);
+                _velocity = 0;
                 if (transform.position == target)
                 {
                     _headingBackToHook = false;
@@ -195,21 +207,24 @@ namespace FishingGame.Reeling
             else
             {
                 Debug.Log("Hook was not colliding with an object with a fishing pool script");
-                PullBackHook();
+                PullBackHook(false);
             }
         }
 
         /// <summary>
-        /// Pulls the fishing hook back and reenables controls
+        /// Pulls the fishing hook back and reenables controls if bool parameter is set to false
         /// </summary>
-        public void PullBackHook()
+        /// <param name="areControlsDisabled">True means controls should be disabled</param>
+        public void PullBackHook(bool areControlsDisabled)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             SetupHookTravelBack();
             ResetHookSpot();
-            reelingMaster.DisableControls(false);
+            reelingMaster.DisableControls(areControlsDisabled);
             initiationScript.SetIsReelingAnimation(false);
             initiationScript.SetIsFishing(false);
+            fishingRodScript.ResetCharge();
+            fishingRodScript.SetChargerVisibility(false);
         }
 
         /// <summary>
