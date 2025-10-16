@@ -21,7 +21,7 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
-        private static readonly int Fishing = Animator.StringToHash("isFishing");
+        private static readonly int Fishing = Animator.StringToHash("IsFishing");
         private static readonly int IsReeling = Animator.StringToHash("isReeling");
 
         #region Private Variables
