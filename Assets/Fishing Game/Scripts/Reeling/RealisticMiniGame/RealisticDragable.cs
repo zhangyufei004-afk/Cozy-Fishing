@@ -74,48 +74,38 @@ namespace FishingGame.Reeling
 
         private void Update()
         {
-            if (CheckIfMouseIsHolding())
+            SetPositionToMouse();
+            Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                transform.parent as RectTransform,
+                mousePosition,
+                null,
+                out Vector2 localMousePos
+            );
+                
+            Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
+            Vector2 previousDirection = (_lastPosition - center).normalized;
+            Vector2 newDirection = (localMousePos - center).normalized;
+
+            
+
+            if (_lastPosition !=  Vector2.zero)
             {
-                // TODO: This needs to be made much cleaner later on with it properly being a circle bounds instead of a scuffed square
-                if (CheckIfMouseIsWithinCircle(_dragAbleLayer, _dragAbleTag) != true)
-                {
-                    _currentSpeed = 0;
-                    _isMoving = false;
-                    return;
-                }
-                _isMoving = true;
-                SetPositionToMouse();
-                Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
-
-                
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    transform.parent as RectTransform,
-                    mousePosition,
-                    null,
-                    out Vector2 localMousePos
-                );
-
-                
-                Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
-                Vector2 previousDirection = (_lastPosition - center).normalized;
-                Vector2 newDirection = (localMousePos - center).normalized;
-
-                if (_lastPosition != Vector2.zero)
-                {
-                    _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
-                    _angleTotal += _currentSpeed;
-                    DetermineCurrentDirection();
-                    DirectionChangeLogic(_currentSpeed);
-                }
-
-                _lastPosition = localMousePos;
-                
+                _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
+                _angleTotal += _currentSpeed;
+                DetermineCurrentDirection();
+                DirectionChangeLogic(_currentSpeed);
             }
-            else 
-            { 
-                _isMoving = false;
-                _currentDirection = ERealisticDirection.Stop; 
+
+            if (_lastPosition == localMousePos)
+            {
+                _currentDirection = ERealisticDirection.Stop;
             }
+
+
+            _lastPosition = localMousePos;
+
+
         }
 
         #region Public Functions
@@ -231,7 +221,8 @@ namespace FishingGame.Reeling
         private void SetPositionToMouse()
         {
             Vector2 newMousePosition = _realisticStickAction.ReadValue<Vector2>();
-            transform.position = newMousePosition;
+            Vector2 closestPoint = minigameMaster.GetClosestPoint(newMousePosition);
+            transform.position = closestPoint;
         }
 
         /// <summary>
@@ -241,23 +232,6 @@ namespace FishingGame.Reeling
         private void ClampAngleTotal()
         {
             _directionChangeTracker = Mathf.Clamp(_directionChangeTracker, lowestAngleTotalValue, highestAngleTotalValue);
-        }
-
-        /// <summary>
-        /// Returns true if mouse is pressed and over the dragable object
-        /// </summary>
-        /// <returns>True if mouse is pressed and over the dragable object otherwise false</returns>
-        private bool CheckIfMouseIsHolding()
-        {
-            if (_mouseInput.IsPressed())
-            {
-                if (IsPointerOverUIElement(GetEventSystemRaycastResults(), _uILayer, _realisticTag))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>

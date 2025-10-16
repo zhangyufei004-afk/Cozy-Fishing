@@ -33,11 +33,10 @@ namespace FishingGame.Items.Bait
         /// </summary>
         /// <param name="baitBase">The Scriptable object this is created from</param>
         /// <param name="fishingRod">The players fishing rod</param>
-        public FishTypeBait(FishTypeBaitScriptable baitBase, FishingRod fishingRod) : base(baitBase)
+        public FishTypeBait(FishTypeBaitScriptable baitBase) : base(baitBase)
         {
             _baitBase = baitBase;
             _fishThisCatches = _baitBase.FishAttractType;
-            _activeFishingRod = fishingRod;
 
             _baitCharge = UnityEngine.Random.Range(baitBase.MinBaitCharge, baitBase.MaxBaitCharge);
         }
@@ -47,10 +46,9 @@ namespace FishingGame.Items.Bait
         /// Updates the currently active fishing rod to be what this is applied to
         /// </summary>
         /// <param name="rodToApplyTo">The fishing rod being applied to</param>
-        public void ApplyBait(FishingRod rodToApplyTo)
+        public void SetActiveFishingRod(FishingRod rodToApplyTo)
         {
             _activeFishingRod = rodToApplyTo;
-            _activeFishingRod.EquipBait(this);
         }
 
         /// <summary>
@@ -87,8 +85,8 @@ namespace FishingGame.Items.Bait
         /// </summary>
         public void UsedUpBait()
         {
-            GameManager.Instance.GameEvents.ItemUsedUp(this);
             _activeFishingRod.RemoveBait();
+            UnEquipItem();
         }
 
         /// <summary>
@@ -100,12 +98,15 @@ namespace FishingGame.Items.Bait
         public override void UseItem()
         {
             base.UseItem();
-            if (_activeFishingRod.GetCurrentBait() == this)
+
+            if (!_currentlyEquiped) 
             {
                 _activeFishingRod.RemoveBait();
                 UnEquipItem();
+                return;
             }
-            else { ApplyBait(_activeFishingRod); }
+
+            GameManager.Instance.GameEvents.EquipBait(this);
         }
 
         /// <summary>

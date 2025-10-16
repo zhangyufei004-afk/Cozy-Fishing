@@ -45,26 +45,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reelingMaster: {fileID: 6051403347699497060}
+  uiCatchBoxScript: {fileID: 0}
   sliderCanvas: {fileID: 0}
-  _catchBoxVelocity: 0
-  _fishMoveGoal: {x: 0, y: 0, z: 0}
+  progressSlider: {fileID: 0}
+  fishImage: {fileID: 0}
+  rightArrow: {fileID: 0}
+  catchBox: {fileID: 0}
+  catchboxYStartLocation: -19.5
   catchIncreaseAmount: 25
   catchDecreaseAmount: -10
-  boxSpeedScalar: 3
-  progressSlider: {fileID: 0}
-  uiCatchBoxScript: {fileID: 0}
-  catchBox: {fileID: 0}
+  boxSpeedScalar: 5
+  fightBackSpeed: -4
   middleBarPoint: 23.3
-  fightBackSpeed: -2
-  catchBoxMaxReverseSpeed: -2
-  catchBoxForwardMaxSpeed: 10
-  fishImage: {fileID: 0}
-  defaultSpeed: 40
+  defaultSpeed: 100
   fishMaxYCord: 297.6
   fishMinYCord: -297.3
-  catchBoxMaxXCord: 292
-  catchBoxMinXCord: -291.4
-  rightArrow: {fileID: 0}
+  catchBoxMaxXCord: 278.9
+  catchBoxMinXCord: -278.7
+  suddenDeathTimer: 30
+  catchBoxMaxReverseSpeed: -3
+  catchBoxForwardMaxSpeed: 10
+  initialTimeToWait: 1
 --- !u!1 &2680999012508629255
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,16 +124,14 @@ MonoBehaviour:
   fishingCanvas: {fileID: 0}
   progressSlider: {fileID: 0}
   spawnableArrow: {fileID: 4431288592897344608, guid: 5282c0cd72789f44fa68d1f2c93bca3a, type: 3}
-  slowSpeed: 50
-  mediumSpeed: 100
-  fastSpeed: 320
+  normalSpeed: 450
   minTimeBetweenArrows: 0.1
   maxTimeBetweenArrows: 3
   maxArrowVariance: 6
   minProgressModify: 5
   defaultProgressModify: 15
   defaultProgressMax: 80
-  maxTimeBeforeModify: 8
+  suddenDeathTimerDuration: 30
   waveSpawnTime: 0.6
 --- !u!1 &2981733044875708283
 GameObject:
@@ -219,7 +218,15 @@ MonoBehaviour:
   progressSlider: {fileID: 0}
   centerPoint: {fileID: 0}
   textDirectionHolder: {fileID: 0}
-  defaultDecayValue: 2
+  directionImage: {fileID: 0}
+  stopImage: {fileID: 0}
+  defaultDecayValue: 10
+  defaultProgressMax: 80
+  defaultProgressScaleValue: 20
+  timeScaleMaxSeconds: 12
+  amountOfPointsInBounds: 40
+  radius: 280
+  tempObject: {fileID: 0}
 --- !u!1 &5300646475322154039
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,12 +274,15 @@ MonoBehaviour:
   initiationScript: {fileID: 0}
   fishingHook: {fileID: 0}
   inventoryScript: {fileID: 0}
+  characterController: {fileID: 0}
+  fishingRodScript: {fileID: 0}
   miniGameTypes:
   - {fileID: 313023259972732001}
   - {fileID: 2680999012508629255}
   - {fileID: 4518172318511371622}
-  characterController: {fileID: 0}
   caughtFishImage: {fileID: 0}
   fishingFinishedText: {fileID: 0}
   timerObject: {fileID: 0}
   cancelButton: {fileID: 0}
+  sliderAnimator: {fileID: 0}
+  characterAnimator: {fileID: 0}

@@ -5,23 +5,17 @@ using FishingGame.Inventory;
 using FishingGame.Items;
 using FishingGame.SaveGame;
 using Random = UnityEngine.Random;
+using FishingGame.Reeling;
 
 namespace FishingGame.FishSystem
 {
     /// <summary>
-    /// Represents a runtime fish object.
-    /// Stores dynamic data including base info, weight, caught time, and location.
+    /// <para>Represents a runtime fish object.</para>
+    /// <para>Stores dynamic data including base info, length, weight, caught time, and location.</para>
     /// </summary>
-    public class Fish : IStorable, IFishAble
+    public class Fish : Fishable
     {
-        private ECatchableType catchAbleType;
         private FishScriptableObject _fishBase;
-        private string _speciesName;
-        private float _weight;
-        private ETimeOfDay _caughtTime;
-        private string _caughtLocation;
-        private int _fishCatchDifficulty;
-        private Sprite _fishTexture;
 
         /// <summary>
         /// Constructor for generating a new fish instance.
@@ -31,96 +25,59 @@ namespace FishingGame.FishSystem
         /// <param name="location">Location where the fish was caught</param>
         public Fish(FishScriptableObject newFishBase, ETimeOfDay time, string location)
         {
-            catchAbleType = ECatchableType.Fish;
             _fishBase = newFishBase;
-            _weight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
-            _weight = Mathf.Round(_weight * 100) / 100;
+
+            _fishableName = _fishBase.SpeciesName;
+            _fishableWeight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
+            _fishableWeight = Mathf.Round(_fishableWeight * 100) / 100;
+            _fishableDifficultyLevel = _fishBase.FishCatchDifficulty;
             _caughtTime = time;
             _caughtLocation = location;
-            _fishCatchDifficulty = _fishBase.FishCatchDifficulty;
-            _fishTexture = _fishBase.Texture;
-            _speciesName = _fishBase.SpeciesName;
+            _fishableType = ECatchableType.Fish;
+            _fishableSprite = _fishBase.Texture;
+            _arrowMinigameBehaviour = _fishBase.ArrowMiniGameBehaviour;
+            _sliderMinigameBehaviour = _fishBase.SliderMiniGameBehaviour;
+            _fishableItemType = EItemType.Fish;
         }
 
         /// <summary>
-        /// Gets the base ScriptableObject of the fish.
+        /// Outputs the type as FishScriptableObject and returns this fishes base
         /// </summary>
-        public FishScriptableObject GetFishBase() => _fishBase;
-
-        /// <summary>
-        /// Gets the time of day the fish was caught.
-        /// </summary>
-        public ETimeOfDay GetCaughtTime() => _caughtTime;
-
-        /// <summary>
-        /// Gets the location where the fish was caught.
-        /// </summary>
-        public string GetCaughtLocation() => _caughtLocation;
-
-        /// <summary>
-        /// Gets the weight of the fish.
-        /// </summary>
-        public float GetWeight() => _weight;
-
-        /// <summary>
-        /// Returns EItemType.Fish.
-        /// </summary>
-        public EItemType GetItemType() => EItemType.Fish;
-
-        /// <summary>
-        /// Get the data object for the item. The Data Object is a ScriptableObject, which can be serialized. It stores static
-        /// non-runtime data.
-        /// </summary>
-        public SerializableObject GetDataObject(out Type dataClassType)
+        /// <param name="dataClassType">The type of scriptableobject this is</param>
+        /// <returns>The scriptable object</returns>
+        public override SerializableObject GetDataObject(out Type dataClassType)
         {
             dataClassType = typeof(FishScriptableObject);
             return _fishBase;
         }
 
         /// <summary>
-        /// Gets the fish catch difficulty.
+        /// Gets the base ScriptableObject of the fish.
         /// </summary>
-        public int GetCatchDifficulty() => _fishCatchDifficulty;
-
-        /// <summary>
-        /// Gets the fish texture.
-        /// </summary>
-        public Sprite GetTexture() => _fishTexture;
-
-        /// <summary>
-        /// Gets the species name.
-        /// </summary>
-        public string GetName() => _speciesName;
-
-        /// <summary>
-        /// Gets the catchable type of this object.
-        /// </summary>
-        public ECatchableType GetCatchType() => catchAbleType;
-
-        /// <summary>
-        /// Returns the selling price of the fish.
-        /// Example: price based on weight and difficulty.
-        /// </summary>
-        public int GetSellPrice()
+        public FishScriptableObject GetFishBase()
         {
-            return Mathf.CeilToInt(_weight * 10 + _fishCatchDifficulty * 2);
+            return _fishBase;
         }
 
         /// <summary>
-        /// Not used for Fish.
+        /// Gets the time of day the fish was caught.
         /// </summary>
-        public ItemScriptable GetItemBase() => throw new NotImplementedException();
+        public ETimeOfDay GetCaughtTime()
+        {
+            return _caughtTime;
+        }
 
         /// <summary>
-        /// Not used for Fish.
+        /// Gets the location where the fish was caught.
         /// </summary>
-        public string GetItemName() => throw new NotImplementedException();
+        public string GetCaughtLocation()
+        {
+            return _caughtLocation;
+        }
 
-        /// <summary>
-        /// Uses the item
-        /// Not used for Fish
-        /// </summary>
-        public void UseItem() => throw new NotImplementedException();
+        public override void UseItem()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-

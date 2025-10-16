@@ -1,4 +1,5 @@
 using FishingGame.GameTime;
+using FishingGame.Reeling;
 using FishingGame.SaveGame;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -29,6 +30,9 @@ namespace FishingGame.FishSystem
         public bool IsInvasive;
 
         public int BasePrice = 10;
+
+        public ArrowWaveSO ArrowMiniGameBehaviour;
+        public SliderSO SliderMiniGameBehaviour;
 
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {

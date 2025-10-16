@@ -243,7 +243,7 @@ namespace FishingGame.UI.Inventory
             useItemButton.GetComponentInChildren<TextMeshProUGUI>().text = entryClicked.IsCurrentlyEquiped() ? "Unequip item" : "Equip item";
             
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
-            if (itemNameText) itemNameText.text = entryClicked.GetItemName();
+            if (itemNameText) itemNameText.text = entryClicked.GetName();
             if (weight) weight.text = entryClicked.GetWeight() + "kg";
             if (lengthLabel) lengthLabel.text = "Charges:";
             if (timeLabel) timeLabel.text = "Item description:";

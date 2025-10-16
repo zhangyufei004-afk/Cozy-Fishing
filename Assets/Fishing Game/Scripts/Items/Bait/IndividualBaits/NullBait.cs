@@ -19,7 +19,7 @@ namespace FishingGame.Items.Bait
         /// It then sets the current active fishing rod to the inputed one
         /// </summary>
         /// <param name="rodToApplyTo">The fishing rod</param>
-        public void ApplyBait(FishingRod rodToApplyTo)
+        public void SetActiveFishingRod(FishingRod rodToApplyTo)
         {
             _activeFishingRod = rodToApplyTo;
             _activeFishingRod.EquipBait(this);
