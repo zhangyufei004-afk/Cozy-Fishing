@@ -12,11 +12,6 @@ namespace FishingGame.MainMenu
         [SerializeField] private GameObject settingsPanel; // Assign SettingsCanvas in Inspector
         [SerializeField] private GameObject mainMenuPanel; // Assign MainMenuCanvas in Inspector
 
-        public void OnStartGame()
-        {
-            SceneManager.LoadScene("PlayerSetting");
-        }
-
         public void OnOpenSettings()
         {
             if (settingsPanel != null && mainMenuPanel != null)
