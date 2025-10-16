@@ -24485,7 +24485,7 @@ PrefabInstance:
       objectReference: {fileID: 1189930303}
     - target: {fileID: 3084148419534240405, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: blockFishingLayers.m_Bits
-      value: 1
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 3202228334828553634, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: m_Layer
