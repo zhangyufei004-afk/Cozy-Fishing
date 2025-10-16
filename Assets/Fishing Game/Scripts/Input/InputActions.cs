@@ -717,15 +717,6 @@ namespace FishingGame.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ArrowMiniGame"",
-                    ""type"": ""Button"",
-                    ""id"": ""ad80eda9-74ed-4869-8d38-23c4d2796628"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""RealisticStickMovement"",
                     ""type"": ""Value"",
                     ""id"": ""ee11ea54-b866-44cc-a970-c2dacf91e7d3"",
@@ -1336,138 +1327,6 @@ namespace FishingGame.Input
                     ""action"": ""NumberKeys"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""56ccf06c-4907-473e-9944-dee9b4e80329"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""72e3b7be-018a-48a8-be92-115f3c277b39"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""64b21b9e-29aa-430e-99ee-b95795ae5b07"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale"",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""14d93e4c-3280-48af-8f26-8155c2a4e058"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=2)"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""92071107-0973-4cd7-9c5d-7baa3fafe54e"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=2)"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d1c27e5c-bbcf-4c74-8651-e4008bfc3802"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=2)"",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4861da2c-24e1-4a89-8713-cd89f0cba519"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=3)"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a608d5d0-9a41-4786-bddb-12cadd0bfd9e"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=3)"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8bccf6f2-60d5-46de-b454-ef3ed6d4c27d"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=3)"",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""072708bf-c127-4f82-8cc3-f563b86cfcbe"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=4)"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bb4e0876-fe23-4d9a-ba93-46a17054050e"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=4)"",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e49b90d3-6647-4c10-9aeb-15de03cdd709"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": ""Scale(factor=4)"",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ArrowMiniGame"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1646,6 +1505,95 @@ namespace FishingGame.Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""RealisticMiniGame"",
+            ""id"": ""d2ab1c40-0075-4c3f-82cc-40b3796c9fb3"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""3491fbf7-357d-4926-b05f-2148c4493eb2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a4aa592a-8221-42db-b5e3-3dbe618368e2"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""SliderMiniGame"",
+            ""id"": ""3aee1a1e-2da0-4e5e-a61a-cba3eb2ab82e"",
+            ""actions"": [
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""7616b6ff-3fef-426e-bb79-68d4aaa7d9e0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a963def6-ce4d-4795-b06a-ecd2307c937d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8abb2bd2-dc0f-49cc-bd21-e169c748e845"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10cd5f79-705f-4149-9754-15e176f51c59"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""506bc0c2-a675-4869-8e3f-099918c19b15"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1738,7 +1686,6 @@ namespace FishingGame.Input
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
             m_UI_ContinueDialogue = m_UI.FindAction("ContinueDialogue", throwIfNotFound: true);
-            m_UI_ArrowMiniGame = m_UI.FindAction("ArrowMiniGame", throwIfNotFound: true);
             m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
             m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
@@ -1748,6 +1695,12 @@ namespace FishingGame.Input
             m_ArrowMiniGame_Down = m_ArrowMiniGame.FindAction("Down", throwIfNotFound: true);
             m_ArrowMiniGame_Left = m_ArrowMiniGame.FindAction("Left", throwIfNotFound: true);
             m_ArrowMiniGame_Right = m_ArrowMiniGame.FindAction("Right", throwIfNotFound: true);
+            // RealisticMiniGame
+            m_RealisticMiniGame = asset.FindActionMap("RealisticMiniGame", throwIfNotFound: true);
+            m_RealisticMiniGame_Newaction = m_RealisticMiniGame.FindAction("New action", throwIfNotFound: true);
+            // SliderMiniGame
+            m_SliderMiniGame = asset.FindActionMap("SliderMiniGame", throwIfNotFound: true);
+            m_SliderMiniGame_LeftClick = m_SliderMiniGame.FindAction("LeftClick", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -1755,6 +1708,8 @@ namespace FishingGame.Input
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputActions.Player.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_ArrowMiniGame.enabled, "This will cause a leak and performance issues, InputActions.ArrowMiniGame.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_RealisticMiniGame.enabled, "This will cause a leak and performance issues, InputActions.RealisticMiniGame.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_SliderMiniGame.enabled, "This will cause a leak and performance issues, InputActions.SliderMiniGame.Disable() has not been called.");
         }
 
         /// <summary>
@@ -2058,7 +2013,6 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_TrackedDevicePosition;
         private readonly InputAction m_UI_TrackedDeviceOrientation;
         private readonly InputAction m_UI_ContinueDialogue;
-        private readonly InputAction m_UI_ArrowMiniGame;
         private readonly InputAction m_UI_RealisticStickMovement;
         private readonly InputAction m_UI_Back;
         private readonly InputAction m_UI_NumberKeys;
@@ -2117,10 +2071,6 @@ namespace FishingGame.Input
             /// Provides access to the underlying input action "UI/ContinueDialogue".
             /// </summary>
             public InputAction @ContinueDialogue => m_Wrapper.m_UI_ContinueDialogue;
-            /// <summary>
-            /// Provides access to the underlying input action "UI/ArrowMiniGame".
-            /// </summary>
-            public InputAction @ArrowMiniGame => m_Wrapper.m_UI_ArrowMiniGame;
             /// <summary>
             /// Provides access to the underlying input action "UI/RealisticStickMovement".
             /// </summary>
@@ -2192,9 +2142,6 @@ namespace FishingGame.Input
                 @ContinueDialogue.started += instance.OnContinueDialogue;
                 @ContinueDialogue.performed += instance.OnContinueDialogue;
                 @ContinueDialogue.canceled += instance.OnContinueDialogue;
-                @ArrowMiniGame.started += instance.OnArrowMiniGame;
-                @ArrowMiniGame.performed += instance.OnArrowMiniGame;
-                @ArrowMiniGame.canceled += instance.OnArrowMiniGame;
                 @RealisticStickMovement.started += instance.OnRealisticStickMovement;
                 @RealisticStickMovement.performed += instance.OnRealisticStickMovement;
                 @RealisticStickMovement.canceled += instance.OnRealisticStickMovement;
@@ -2248,9 +2195,6 @@ namespace FishingGame.Input
                 @ContinueDialogue.started -= instance.OnContinueDialogue;
                 @ContinueDialogue.performed -= instance.OnContinueDialogue;
                 @ContinueDialogue.canceled -= instance.OnContinueDialogue;
-                @ArrowMiniGame.started -= instance.OnArrowMiniGame;
-                @ArrowMiniGame.performed -= instance.OnArrowMiniGame;
-                @ArrowMiniGame.canceled -= instance.OnArrowMiniGame;
                 @RealisticStickMovement.started -= instance.OnRealisticStickMovement;
                 @RealisticStickMovement.performed -= instance.OnRealisticStickMovement;
                 @RealisticStickMovement.canceled -= instance.OnRealisticStickMovement;
@@ -2422,6 +2366,198 @@ namespace FishingGame.Input
         /// Provides a new <see cref="ArrowMiniGameActions" /> instance referencing this action map.
         /// </summary>
         public ArrowMiniGameActions @ArrowMiniGame => new ArrowMiniGameActions(this);
+
+        // RealisticMiniGame
+        private readonly InputActionMap m_RealisticMiniGame;
+        private List<IRealisticMiniGameActions> m_RealisticMiniGameActionsCallbackInterfaces = new List<IRealisticMiniGameActions>();
+        private readonly InputAction m_RealisticMiniGame_Newaction;
+        /// <summary>
+        /// Provides access to input actions defined in input action map "RealisticMiniGame".
+        /// </summary>
+        public struct RealisticMiniGameActions
+        {
+            private @InputActions m_Wrapper;
+
+            /// <summary>
+            /// Construct a new instance of the input action map wrapper class.
+            /// </summary>
+            public RealisticMiniGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            /// <summary>
+            /// Provides access to the underlying input action "RealisticMiniGame/Newaction".
+            /// </summary>
+            public InputAction @Newaction => m_Wrapper.m_RealisticMiniGame_Newaction;
+            /// <summary>
+            /// Provides access to the underlying input action map instance.
+            /// </summary>
+            public InputActionMap Get() { return m_Wrapper.m_RealisticMiniGame; }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+            public void Enable() { Get().Enable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+            public void Disable() { Get().Disable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+            public bool enabled => Get().enabled;
+            /// <summary>
+            /// Implicitly converts an <see ref="RealisticMiniGameActions" /> to an <see ref="InputActionMap" /> instance.
+            /// </summary>
+            public static implicit operator InputActionMap(RealisticMiniGameActions set) { return set.Get(); }
+            /// <summary>
+            /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <param name="instance">Callback instance.</param>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+            /// </remarks>
+            /// <seealso cref="RealisticMiniGameActions" />
+            public void AddCallbacks(IRealisticMiniGameActions instance)
+            {
+                if (instance == null || m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces.Add(instance);
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+
+            /// <summary>
+            /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <remarks>
+            /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+            /// </remarks>
+            /// <seealso cref="RealisticMiniGameActions" />
+            private void UnregisterCallbacks(IRealisticMiniGameActions instance)
+            {
+                @Newaction.started -= instance.OnNewaction;
+                @Newaction.performed -= instance.OnNewaction;
+                @Newaction.canceled -= instance.OnNewaction;
+            }
+
+            /// <summary>
+            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="RealisticMiniGameActions.UnregisterCallbacks(IRealisticMiniGameActions)" />.
+            /// </summary>
+            /// <seealso cref="RealisticMiniGameActions.UnregisterCallbacks(IRealisticMiniGameActions)" />
+            public void RemoveCallbacks(IRealisticMiniGameActions instance)
+            {
+                if (m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            /// <summary>
+            /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+            /// </summary>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+            /// </remarks>
+            /// <seealso cref="RealisticMiniGameActions.AddCallbacks(IRealisticMiniGameActions)" />
+            /// <seealso cref="RealisticMiniGameActions.RemoveCallbacks(IRealisticMiniGameActions)" />
+            /// <seealso cref="RealisticMiniGameActions.UnregisterCallbacks(IRealisticMiniGameActions)" />
+            public void SetCallbacks(IRealisticMiniGameActions instance)
+            {
+                foreach (var item in m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        /// <summary>
+        /// Provides a new <see cref="RealisticMiniGameActions" /> instance referencing this action map.
+        /// </summary>
+        public RealisticMiniGameActions @RealisticMiniGame => new RealisticMiniGameActions(this);
+
+        // SliderMiniGame
+        private readonly InputActionMap m_SliderMiniGame;
+        private List<ISliderMiniGameActions> m_SliderMiniGameActionsCallbackInterfaces = new List<ISliderMiniGameActions>();
+        private readonly InputAction m_SliderMiniGame_LeftClick;
+        /// <summary>
+        /// Provides access to input actions defined in input action map "SliderMiniGame".
+        /// </summary>
+        public struct SliderMiniGameActions
+        {
+            private @InputActions m_Wrapper;
+
+            /// <summary>
+            /// Construct a new instance of the input action map wrapper class.
+            /// </summary>
+            public SliderMiniGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            /// <summary>
+            /// Provides access to the underlying input action "SliderMiniGame/LeftClick".
+            /// </summary>
+            public InputAction @LeftClick => m_Wrapper.m_SliderMiniGame_LeftClick;
+            /// <summary>
+            /// Provides access to the underlying input action map instance.
+            /// </summary>
+            public InputActionMap Get() { return m_Wrapper.m_SliderMiniGame; }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+            public void Enable() { Get().Enable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+            public void Disable() { Get().Disable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+            public bool enabled => Get().enabled;
+            /// <summary>
+            /// Implicitly converts an <see ref="SliderMiniGameActions" /> to an <see ref="InputActionMap" /> instance.
+            /// </summary>
+            public static implicit operator InputActionMap(SliderMiniGameActions set) { return set.Get(); }
+            /// <summary>
+            /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <param name="instance">Callback instance.</param>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+            /// </remarks>
+            /// <seealso cref="SliderMiniGameActions" />
+            public void AddCallbacks(ISliderMiniGameActions instance)
+            {
+                if (instance == null || m_Wrapper.m_SliderMiniGameActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_SliderMiniGameActionsCallbackInterfaces.Add(instance);
+                @LeftClick.started += instance.OnLeftClick;
+                @LeftClick.performed += instance.OnLeftClick;
+                @LeftClick.canceled += instance.OnLeftClick;
+            }
+
+            /// <summary>
+            /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <remarks>
+            /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+            /// </remarks>
+            /// <seealso cref="SliderMiniGameActions" />
+            private void UnregisterCallbacks(ISliderMiniGameActions instance)
+            {
+                @LeftClick.started -= instance.OnLeftClick;
+                @LeftClick.performed -= instance.OnLeftClick;
+                @LeftClick.canceled -= instance.OnLeftClick;
+            }
+
+            /// <summary>
+            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="SliderMiniGameActions.UnregisterCallbacks(ISliderMiniGameActions)" />.
+            /// </summary>
+            /// <seealso cref="SliderMiniGameActions.UnregisterCallbacks(ISliderMiniGameActions)" />
+            public void RemoveCallbacks(ISliderMiniGameActions instance)
+            {
+                if (m_Wrapper.m_SliderMiniGameActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            /// <summary>
+            /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+            /// </summary>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+            /// </remarks>
+            /// <seealso cref="SliderMiniGameActions.AddCallbacks(ISliderMiniGameActions)" />
+            /// <seealso cref="SliderMiniGameActions.RemoveCallbacks(ISliderMiniGameActions)" />
+            /// <seealso cref="SliderMiniGameActions.UnregisterCallbacks(ISliderMiniGameActions)" />
+            public void SetCallbacks(ISliderMiniGameActions instance)
+            {
+                foreach (var item in m_Wrapper.m_SliderMiniGameActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_SliderMiniGameActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        /// <summary>
+        /// Provides a new <see cref="SliderMiniGameActions" /> instance referencing this action map.
+        /// </summary>
+        public SliderMiniGameActions @SliderMiniGame => new SliderMiniGameActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         /// <summary>
         /// Provides access to the input control scheme.
@@ -2664,13 +2800,6 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnContinueDialogue(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "ArrowMiniGame" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnArrowMiniGame(InputAction.CallbackContext context);
-            /// <summary>
             /// Method invoked when associated input action "RealisticStickMovement" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -2727,6 +2856,36 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnRight(InputAction.CallbackContext context);
+        }
+        /// <summary>
+        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "RealisticMiniGame" which allows adding and removing callbacks.
+        /// </summary>
+        /// <seealso cref="RealisticMiniGameActions.AddCallbacks(IRealisticMiniGameActions)" />
+        /// <seealso cref="RealisticMiniGameActions.RemoveCallbacks(IRealisticMiniGameActions)" />
+        public interface IRealisticMiniGameActions
+        {
+            /// <summary>
+            /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnNewaction(InputAction.CallbackContext context);
+        }
+        /// <summary>
+        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "SliderMiniGame" which allows adding and removing callbacks.
+        /// </summary>
+        /// <seealso cref="SliderMiniGameActions.AddCallbacks(ISliderMiniGameActions)" />
+        /// <seealso cref="SliderMiniGameActions.RemoveCallbacks(ISliderMiniGameActions)" />
+        public interface ISliderMiniGameActions
+        {
+            /// <summary>
+            /// Method invoked when associated input action "LeftClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnLeftClick(InputAction.CallbackContext context);
         }
     }
 }

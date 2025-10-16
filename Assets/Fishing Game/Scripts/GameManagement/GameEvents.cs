@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
+using FishingGame.Items.Bait;
 using FishingGame.QuestSystem;
 using UnityEditor;
+using UnityEngine;
 
 namespace FishingGame.GameManagement
 {
@@ -33,6 +35,7 @@ namespace FishingGame.GameManagement
         public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
         public event Action<IStorable> OnItemUsedUp;
+        public event Action<IBait> OnBaitEquiped;
 
         #endregion
 
@@ -81,10 +84,16 @@ namespace FishingGame.GameManagement
 
         public event Action<bool, string> OnToggleNPCMovement;
 
+        #endregion
 
+        #region UI Events
+
+        public event Action<string, float, Color> OnShowStatusText;
+
+        public event Action<string, float, Color> OnShowDefaultNotificationText;
 
         #endregion
-        
+
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
@@ -261,6 +270,37 @@ namespace FishingGame.GameManagement
         public void ItemUsedUp(IStorable itemUsedUp)
         {
             OnItemUsedUp?.Invoke(itemUsedUp);
+        }
+
+        /// <summary>
+        /// This can be run when a script wants to display some status text due to an event
+        /// </summary>
+        /// <param name="textToShow">The text to be shown</param>
+        /// <param name="durationToShow">How long in seconds should this text stay up for</param>
+        /// <param name="colorToUse">The color to use for the text</param>
+        public void ShowStatusText(string textToShow, float durationToShow, Color colorToUse)
+        {
+            OnShowStatusText?.Invoke(textToShow, durationToShow, colorToUse);
+        }
+
+        /// <summary>
+        /// This can be run when a script wants to display a default notification through the main canvas
+        /// </summary>
+        /// <param name="textToShow">The text to be shown</param>
+        /// <param name="durationToShow">How long in seconds should this text stay up for</param>
+        /// <param name="colorToUse">The color to use for the text</param>
+        public void ShowNotificationText(string textToShow, float durationToShow, Color colorToUse)
+        {
+            OnShowDefaultNotificationText?.Invoke(textToShow, durationToShow, colorToUse);
+        }
+
+        /// <summary>
+        /// This is run when a bait is attempted to be equiped
+        /// </summary>
+        /// <param name="baitToEquip">The item to equip</param>
+        public void EquipBait(IBait baitToEquip)
+        {
+            OnBaitEquiped?.Invoke(baitToEquip);
         }
 
         /// <summary>

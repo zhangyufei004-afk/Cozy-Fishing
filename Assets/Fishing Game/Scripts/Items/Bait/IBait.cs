@@ -17,7 +17,7 @@ namespace FishingGame.Items.Bait
         /// and then set that rods current bait to be this bait
         /// </summary>
         /// <param name="rodToApplyTo">The rod being applied to</param>
-        public void ApplyBait(FishingRod rodToApplyTo);
+        public void SetActiveFishingRod(FishingRod rodToApplyTo);
 
         /// <summary>
         /// This method should use up a baits charge

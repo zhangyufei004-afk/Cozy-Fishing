@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9127c648a74c9f46aa3422f756eaaf9, type: 3}
+  m_Name: DivineLightWave
+  m_EditorClassIdentifier: 
+  persistentID: 0
+  ArrowEntrys:
+  - timeToSpawnInSeconds: 0.5
+    arrowTypeToSpawn: 0
+    isDouble: 0
+  - timeToSpawnInSeconds: 1
+    arrowTypeToSpawn: 1
+    isDouble: 0
+  - timeToSpawnInSeconds: 1.5
+    arrowTypeToSpawn: 0
+    isDouble: 0
+  - timeToSpawnInSeconds: 2
+    arrowTypeToSpawn: 1
+    isDouble: 0
+  - timeToSpawnInSeconds: 2.25
+    arrowTypeToSpawn: 2
+    isDouble: 0
+  - timeToSpawnInSeconds: 2.5
+    arrowTypeToSpawn: 3
+    isDouble: 0
+  - timeToSpawnInSeconds: 2.75
+    arrowTypeToSpawn: 0
+    isDouble: 0
+  - timeToSpawnInSeconds: 3
+    arrowTypeToSpawn: 1
+    isDouble: 0
+  - timeToSpawnInSeconds: 3.5
+    arrowTypeToSpawn: 0
+    isDouble: 1
+  - timeToSpawnInSeconds: 3.5
+    arrowTypeToSpawn: 1
+    isDouble: 1
+  SuddenDeathTimer: 30
+  PointsNeededToPass: 350
+  PointsPerArrow: 10
+  MinigameSpeed: 500
