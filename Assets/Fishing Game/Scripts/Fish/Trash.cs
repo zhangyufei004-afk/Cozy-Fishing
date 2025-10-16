@@ -13,18 +13,9 @@ namespace FishingGame.FishSystem
     /// They are almost exactly like fish
     /// Implement IStoreable and IFishable
     /// </summary>
-    public class Trash : IStorable, IFishAble
+    public class Trash : Fishable
     {
-        private ECatchableType _catchAbleType;
         private TrashScriptable _trashBase;
-        private string _trashName;
-        private float _weight;
-        private ETimeOfDay _caughtTime;
-        private string _caughtLocation;
-        private int _trashCatchDifficulty;
-        private Sprite _trashTexture;
-        private ArrowWaveSO _arrowMiniGameBehaviour;
-        private SliderSO _sliderMiniGameBehaviour;
 
         /// <summary>
         /// Trash is made from trash scriptable objects
@@ -36,40 +27,36 @@ namespace FishingGame.FishSystem
         /// <param name="location">The location this was caught at</param>
         public Trash(TrashScriptable newTrashBase, ETimeOfDay time, string location)
         {
-            _catchAbleType = ECatchableType.Trash;
             _trashBase = newTrashBase;
-            _weight = UnityEngine.Random.Range(_trashBase.MinMaxWeight.x, _trashBase.MinMaxWeight.y);
-            // Round weight to 2 decimal places
-            _weight = Mathf.Round(_weight * 100) / 100;
+
+            _fishableName = _trashBase.TrashName;
+            _fishableWeight = UnityEngine.Random.Range(_trashBase.MinMaxWeight.x, _trashBase.MinMaxWeight.y);
+            _fishableWeight = Mathf.Round(_fishableWeight * 100) / 100;
+            _fishableDifficultyLevel = _trashBase.TrashDifficulty;
             _caughtTime = time;
             _caughtLocation = location;
-            _trashCatchDifficulty = _trashBase.TrashDifficulty;
-            _trashTexture = _trashBase.Texture;
-            _trashName = _trashBase.TrashName;
-            _arrowMiniGameBehaviour = _trashBase.ArrowMiniGameBehaviour;
-            _sliderMiniGameBehaviour = _trashBase.SliderMiniGameBehaviour;
+            _fishableType = ECatchableType.Trash;
+            _fishableSprite = _trashBase.Texture;
+            _arrowMinigameBehaviour = _trashBase.ArrowMiniGameBehaviour;
+            _sliderMinigameBehaviour = _trashBase.SliderMiniGameBehaviour;
+            _fishableItemType = EItemType.Trash;
         }
 
-        /// <summary>
-        /// Gets the catchtype of the object
-        /// </summary>
-        /// <returns>The catchtype of object</returns>
-        public ECatchableType GetCatchType()
+        public override SerializableObject GetDataObject(out Type dataClassType)
         {
-            return _catchAbleType;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets the base ScriptableObject of the trash.
+        /// Gets the base ScriptableObject of the fish.
         /// </summary>
-        /// <returns>The base ScriptableObject of object</returns>
         public TrashScriptable GetTrashBase()
         {
             return _trashBase;
         }
 
         /// <summary>
-        /// Gets the time of day the trash was caught.
+        /// Gets the time of day the fish was caught.
         /// </summary>
         public ETimeOfDay GetCaughtTime()
         {
@@ -77,106 +64,16 @@ namespace FishingGame.FishSystem
         }
 
         /// <summary>
-        /// Gets the location where the trash was caught.
+        /// Gets the location where the fish was caught.
         /// </summary>
         public string GetCaughtLocation()
         {
             return _caughtLocation;
         }
 
-        /// <summary>
-        /// Gets the weight of the trash.
-        /// </summary>
-        public float GetWeight()
-        {
-            return _weight;
-        }
-
-        /// <summary>
-        /// Returns the type of item this is
-        /// </summary>
-        /// <returns>The type of item this is</returns>
-        public EItemType GetItemType()
-        {
-            return EItemType.Trash;
-        }
-
-        /// <summary>
-        /// Returns the type of scriptable object base this is
-        /// </summary>
-        /// <param name="dataClassType"></param>
-        /// <returns>The type of scriptable object</returns>
-        public SerializableObject GetDataObject(out Type dataClassType)
-        {
-            dataClassType = typeof(TrashScriptable);
-            return _trashBase;
-        }
-
-        /// <summary>
-        /// Gets the trash catch difficulty.
-        /// </summary>
-        public int GetCatchDifficulty()
-        {
-            return _trashCatchDifficulty;
-        }
-
-        /// <summary>
-        /// Gets the trash texture
-        /// </summary>
-        public Sprite GetTexture()
-        {
-            return _trashTexture;
-        }
-
-        /// <summary>
-        /// Gets the trash name
-        /// </summary>
-        public string GetName()
-        {
-            return _trashName;
-        }
-
-        /// <summary>
-        /// Not implemented for Trash
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException">Not implemented for Trash</exception>
-        public ItemScriptable GetItemBase()
+        public override void UseItem()
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Not implemented for Trash
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException">Not implemented for Trash</exception>
-        public string GetItemName()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Not implemented for Trash
-        /// </summary>
-        /// <exception cref="NotImplementedException">Not implemented for Trash</exception>
-        public void UseItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Returns this fishes arrow minigame behaviour
-        /// </summary>
-        /// <returns>This fishes arrow minigame behaviour</returns>
-        public ArrowWaveSO GetArrowMinigameBehaviour()
-        {
-            return _arrowMiniGameBehaviour;
-        }
-
-        public SliderSO GetSliderMinigameBehaviour()
-        {
-            return _sliderMiniGameBehaviour;
         }
     }
 }

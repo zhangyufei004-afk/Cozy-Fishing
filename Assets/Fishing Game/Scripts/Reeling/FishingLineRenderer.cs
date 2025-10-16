@@ -13,8 +13,8 @@ namespace FishingGame.Reeling
         // Public Variables
 
         // Serialized Private Variables
-        [SerializeField] private AnimationCurve _lineCurve;
-        [SerializeField] [Range(2, 100)] private int _lineSegmentCount;
+        [SerializeField] private AnimationCurve lineCurve;
+        [SerializeField] [Range(2, 100)] private int lineSegmentCount;
         [SerializeField] private Transform startTransform;
         [SerializeField] private Transform endTransform;
 
@@ -26,7 +26,7 @@ namespace FishingGame.Reeling
         {
             lineRenderer = GetComponent<LineRenderer>();
 
-            lineRenderer.positionCount = _lineSegmentCount;
+            lineRenderer.positionCount = lineSegmentCount;
         }
 
         void Update()
@@ -34,12 +34,12 @@ namespace FishingGame.Reeling
             if (!startTransform || !endTransform) return;
             if (!lineRenderer) lineRenderer = GetComponent<LineRenderer>();
 
-            lineRenderer.positionCount = _lineSegmentCount;
+            lineRenderer.positionCount = lineSegmentCount;
 
-            for (int segmentIndex = 0; segmentIndex < _lineSegmentCount; segmentIndex++)
+            for (int segmentIndex = 0; segmentIndex < lineSegmentCount; segmentIndex++)
             {
-                float t = (float) segmentIndex / (float) (_lineSegmentCount - 1);
-                Vector3 positionModifier = new Vector3(0, _lineCurve.Evaluate(t), 0);
+                float t = (float) segmentIndex / (float) (lineSegmentCount - 1);
+                Vector3 positionModifier = new Vector3(0, lineCurve.Evaluate(t), 0);
                 lineRenderer.SetPosition(segmentIndex, Vector3.Lerp(startTransform.position, endTransform.position, t) + positionModifier);
             }
         }

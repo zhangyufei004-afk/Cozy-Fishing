@@ -119,7 +119,7 @@ namespace FishingGame.UI.Inventory
             TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
 
             image.sprite = itemUpdating.GetTexture();
-            nameText.text = itemUpdating.GetItemName();
+            nameText.text = itemUpdating.GetName();
             weightText.text = $"{itemUpdating.GetWeight():0.00}kg";
             lengthText.text = itemUpdating.GetCurrentUseCharge().ToString();
             caughtTimeText.text = itemUpdating.GetTooltip();

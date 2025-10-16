@@ -22,8 +22,6 @@ namespace FishingGame.Inventory
     /// </summary>
     public interface IStorable
     {
-        public ItemScriptable GetItemBase();
-
         /// <summary>
         /// Gets the weight of the item.
         /// </summary>
@@ -40,7 +38,7 @@ namespace FishingGame.Inventory
         /// Returns the item name
         /// </summary>
         /// <returns>The item name</returns>
-        public String GetItemName();
+        public String GetName();
 
         /// <summary>
         /// Gets the item type.
@@ -62,6 +60,6 @@ namespace FishingGame.Inventory
         /// </summary>
         /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
         /// <returns>The SerializableObject that the Data is stored in.</returns>
-        public SerializableObject GetDataObject(out Type dataClassType);
+        public abstract SerializableObject GetDataObject(out Type dataClassType);
     }
 }

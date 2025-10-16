@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using System.ComponentModel.Design;
+using FishingGame.Inventory;
 
 namespace FishingGame.Reeling
 {
@@ -136,6 +137,8 @@ namespace FishingGame.Reeling
             _castAction.started += CastInputUsed;
             _castAction.canceled += CastInputReleased;
 
+            GameManager.Instance.GameEvents.OnBaitEquiped += EquipBait;
+
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
@@ -160,7 +163,14 @@ namespace FishingGame.Reeling
         /// <param name="baitToEquip">The bait item to equip</param>
         public void EquipBait(IBait baitToEquip)
         {
+            ItemData baitAsObject = baitToEquip as ItemData;
+
+            if (baitAsObject == null) { return; }
+
+            if (_currentlyEquipedBait != null && _currentlyEquipedBait.GetType() != typeof(NullBait))  { baitAsObject.UnEquipItem(); }
+
             _currentlyEquipedBait = baitToEquip;
+            baitToEquip.SetActiveFishingRod(this);
         }
 
         /// <summary>

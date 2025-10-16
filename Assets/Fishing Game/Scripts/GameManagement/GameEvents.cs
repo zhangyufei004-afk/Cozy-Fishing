@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
+using FishingGame.Items.Bait;
 using FishingGame.QuestSystem;
 using UnityEditor;
 using UnityEngine;
@@ -34,6 +35,7 @@ namespace FishingGame.GameManagement
         public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
         public event Action<IStorable> OnItemUsedUp;
+        public event Action<IBait> OnBaitEquiped;
 
         #endregion
 
@@ -286,6 +288,15 @@ namespace FishingGame.GameManagement
         public void ShowNotificationText(string textToShow, float durationToShow, Color colorToUse)
         {
             OnShowDefaultNotificationText?.Invoke(textToShow, durationToShow, colorToUse);
+        }
+
+        /// <summary>
+        /// This is run when a bait is attempted to be equiped
+        /// </summary>
+        /// <param name="baitToEquip">The item to equip</param>
+        public void EquipBait(IBait baitToEquip)
+        {
+            OnBaitEquiped?.Invoke(baitToEquip);
         }
     }
 }

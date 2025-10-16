@@ -15,8 +15,6 @@ namespace FishingGame.Items.Bait
     {
         public FishScriptableObject FishAttractType;
 
-
-
         internal FishTypeBaitScriptable(int persistentID) : base(persistentID)
         {
         }
