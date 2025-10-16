@@ -40,6 +40,10 @@ namespace FishingGame.FishSystem
             _fishableItemType = EItemType.Fish;
         }
 
+        public override void UseItem()
+        {
+        }
+
         /// <summary>
         /// Outputs the type as FishScriptableObject and returns this fishes base
         /// </summary>
@@ -75,9 +79,13 @@ namespace FishingGame.FishSystem
             return _caughtLocation;
         }
 
-        public override void UseItem()
+        /// <summary>
+        /// Gets the sell price 
+        /// </summary>
+        /// <returns>An integer of the sell price</returns>
+        public int GetSellPrice()
         {
-            throw new NotImplementedException();
+            return _fishBase.BasePrice;
         }
     }
 }

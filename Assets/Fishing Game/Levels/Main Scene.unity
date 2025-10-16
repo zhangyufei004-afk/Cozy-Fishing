@@ -1045,7 +1045,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 6401191450671153408, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}]
+    m_RemovedComponents:
+    - {fileID: 6401191450671153408, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9031331516391147190, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
@@ -5222,11 +5223,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779705934}
   m_CullTransparentMesh: 1
---- !u!4 &793200209 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6041522805385096430, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-  m_PrefabInstance: {fileID: 2991282359923290821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &791582345
 GameObject:
   m_ObjectHideFlags: 0
@@ -5297,6 +5293,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -35.811, z: 0}
+--- !u!4 &793200209 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6041522805385096430, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+  m_PrefabInstance: {fileID: 2991282359923290821}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &799336862
 GameObject:
   m_ObjectHideFlags: 0
@@ -15777,14 +15778,14 @@ PrefabInstance:
       objectReference: {fileID: 1847882215}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: highestFishDifficulty
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: overrideFishList.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
-      propertyPath: overrideFishList.Array.data[0]
+      propertyPath: 'overrideFishList.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}
     - target: {fileID: 8082501405363325958, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
@@ -23268,35 +23269,35 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1910628927}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: spawnPoints.Array.data[0]
+      propertyPath: 'spawnPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1599957795}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: spawnPoints.Array.data[1]
+      propertyPath: 'spawnPoints.Array.data[1]'
       value: 
       objectReference: {fileID: 1455977958}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: spawnPoints.Array.data[2]
+      propertyPath: 'spawnPoints.Array.data[2]'
       value: 
       objectReference: {fileID: 157760850}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: spawnPoints.Array.data[3]
+      propertyPath: 'spawnPoints.Array.data[3]'
       value: 
       objectReference: {fileID: 1800906368}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: arrowGoalPoints.Array.data[0]
+      propertyPath: 'arrowGoalPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1265588939}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: arrowGoalPoints.Array.data[1]
+      propertyPath: 'arrowGoalPoints.Array.data[1]'
       value: 
       objectReference: {fileID: 1951527271}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: arrowGoalPoints.Array.data[2]
+      propertyPath: 'arrowGoalPoints.Array.data[2]'
       value: 
       objectReference: {fileID: 1345452473}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
-      propertyPath: arrowGoalPoints.Array.data[3]
+      propertyPath: 'arrowGoalPoints.Array.data[3]'
       value: 
       objectReference: {fileID: 756369778}
     - target: {fileID: 7509907826693546763, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
@@ -24677,7 +24678,7 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1640468214970351350, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 33c3e908be0c34d429d8e9491303ac7c, type: 2}
     - target: {fileID: 1655799286011580002, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
@@ -25425,63 +25426,63 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 5d2560d44ce7b3d47a318f197a8d861e, type: 3}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[0]
+      propertyPath: 'catchFishButtons.Array.data[0]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[1]
+      propertyPath: 'catchFishButtons.Array.data[1]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[2]
+      propertyPath: 'catchFishButtons.Array.data[2]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[3]
+      propertyPath: 'catchFishButtons.Array.data[3]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[4]
+      propertyPath: 'catchFishButtons.Array.data[4]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[5]
+      propertyPath: 'catchFishButtons.Array.data[5]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[6]
+      propertyPath: 'catchFishButtons.Array.data[6]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[7]
+      propertyPath: 'catchFishButtons.Array.data[7]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[8]
+      propertyPath: 'catchFishButtons.Array.data[8]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[9]
+      propertyPath: 'catchFishButtons.Array.data[9]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[10]
+      propertyPath: 'catchFishButtons.Array.data[10]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[11]
+      propertyPath: 'catchFishButtons.Array.data[11]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[12]
+      propertyPath: 'catchFishButtons.Array.data[12]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[13]
+      propertyPath: 'catchFishButtons.Array.data[13]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7995134455285706066, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
-      propertyPath: catchFishButtons.Array.data[14]
+      propertyPath: 'catchFishButtons.Array.data[14]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8100281056296382329, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
@@ -25534,9 +25535,16 @@ PrefabInstance:
     - {fileID: 2008722758051366086, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
     - {fileID: 9060755280324173250, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: [{targetCorrespondingSourceObject: {fileID: 2355182950940953632, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}, insertIndex: 0, addedObject: {fileID: 567095434}},
-      {targetCorrespondingSourceObject: {fileID: 472651439177434521, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}, insertIndex: -1, addedObject: {fileID: 180999108}},
-      {targetCorrespondingSourceObject: {fileID: 6041522805385096430, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}, insertIndex: -1, addedObject: {fileID: 432750711}}]
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2355182950940953632, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 567095434}
+    - targetCorrespondingSourceObject: {fileID: 472651439177434521, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 180999108}
+    - targetCorrespondingSourceObject: {fileID: 6041522805385096430, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 432750711}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1401072083829625495, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       insertIndex: -1

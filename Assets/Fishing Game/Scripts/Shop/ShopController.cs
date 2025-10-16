@@ -21,12 +21,18 @@ namespace FishingGame.Shop
 
         private bool _isOpen = false;
 
+        /// <summary>
+        /// Opens the Shop UI
+        /// </summary>
         public void OpenShopUI()
         {
             shopUI?.SetActive(true);
             _isOpen = true;
         }
 
+        /// <summary>
+        /// Closes the shop UI
+        /// </summary>
         public void CloseShopUI()
         {
             shopUI?.SetActive(false);
@@ -55,15 +61,15 @@ namespace FishingGame.Shop
             if (!EconomySystem.Instance.SpendMoney(price))
                 return false;
 
-            // Create runtime ItemData from ItemScriptable
-            ItemData itemData = new ItemData(itemScriptable);
-
+            ItemData itemData;
+            
             if (itemScriptable is BaitScriptable)
             {
-                int currentCharge = itemData.GetCurrentUseCharge();
-                var field = typeof(ItemData).GetField("_itemCharge", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (field != null)
-                    field.SetValue(itemData, currentCharge + 1);
+                itemData = new FishTypeBait(itemScriptable as FishTypeBaitScriptable);
+            }
+            else
+            {
+                itemData = new ItemData(itemScriptable);
             }
 
             playerInventory.AddItem(itemData);
