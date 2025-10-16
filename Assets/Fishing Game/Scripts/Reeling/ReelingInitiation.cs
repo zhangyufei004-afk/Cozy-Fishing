@@ -21,6 +21,8 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingInitiation : MonoBehaviour
     {
+        public bool StageOne = false;
+
         #region Private Fields
         [Header("Reeling Scripts")]
 
@@ -85,6 +87,9 @@ namespace FishingGame.Reeling
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
 
+        [SerializeField]
+        private AudioSource catchSound;
+
         private bool _isBusy = false;
         
         #endregion
@@ -102,6 +107,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginStageOne()
         {
+            StageOne = true;
             SetupVariables();
             
             StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
@@ -146,6 +152,8 @@ namespace FishingGame.Reeling
         {
             if (_fishAtHook)
             {
+                catchSound.Play();
+
                 _fishAtHook = false;
                 _isStageOne = false;
                 Destroy(_fishSwim);

@@ -7,25 +7,29 @@ namespace FishingGame
     {
         [SerializeField]
         private ReelingMaster reelingMaster;
-
         [SerializeField]
-        private Transform playerPos;
-        [SerializeField]
-        private Terrain terrain;
-
+        private ReelingInitiation reelingInitiation;
         [SerializeField]
         private AudioSource castSound;
+        [SerializeField]
+        private AudioSource lineCastSound;
+        [SerializeField]
+        private AudioSource splashesSound;
         [SerializeField]
         private AudioSource reelingSound;
         [SerializeField]
         private AudioClip[] reelingSounds;
-        [SerializeField]
-        private float reelingPitch;
 
         [SerializeField]
-        private AudioSource footsteps;
+        private GroundCheck groundCheck;
+        [SerializeField]
+        private AudioSource grassFootstep;
+        [SerializeField]
+        private AudioSource woodFootstep;
         [SerializeField]
         private AudioClip[] grassFootsteps;
+        [SerializeField]
+        private AudioClip[] woodFootsteps;
 
         [SerializeField]
         private SliderMiniGame sliderMiniGame;
@@ -37,24 +41,92 @@ namespace FishingGame
         [SerializeField]
         private GameObject realisticCanvas;
 
+        [SerializeField]
+        private Animator playerAnimator;
+
 
         private bool _reelPlaying = false;
+        private bool _splashesPlaying = false;
         private int _grassFootstepNum = 0;
+        private int _woodFootstepNum = 0;
         private AudioClip _currentClip;
 
-        /*private enum SurfaceType { Grass, Sand, Water, Path}
-        [SerializeField]
-        private SurfaceType[] textureToSurfaceMap;
-        private Vector3 _terrainPos;
-        private Vector3 _terrainSize;*/
+
 
         private void Start()
         {
-            //_terrainPos = terrain.transform.position;
-            //_terrainSize = terrain.terrainData.size;
             reelingSound.clip = reelingSounds[1];
         }
         private void Update()
+        {
+            MiniGameSounds();
+
+            if (lineCastSound.isPlaying && reelingInitiation.StageOne)
+            {
+                lineCastSound.Stop();
+            }
+            else if (lineCastSound.isPlaying && playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                lineCastSound.Stop();
+            }
+
+            if (reelingInitiation.StageOne)
+            {
+                reelingInitiation.StageOne = false;
+            }
+
+            if (reelingInitiation.IsFishAtHook() && !_splashesPlaying)
+            {
+                _splashesPlaying = true;
+                splashesSound.Play();
+            }
+
+            if (!reelingInitiation.IsFishAtHook())
+                _splashesPlaying = false;
+
+        }
+
+        /// <summary>
+        /// is called from animation trigger, plays cast sound
+        /// </summary>
+        public void CastSound()
+        {
+            castSound.Play();
+
+            lineCastSound.Play();
+        }
+
+        /// <summary>
+        /// is called from animation trigger, plays random footstep sound based on what player is walking on
+        /// </summary>
+        public void FootStep()
+        {
+            if (groundCheck.OnWood)
+            {
+                if (_woodFootstepNum == woodFootsteps.Length)
+                    _woodFootstepNum = 0;
+
+                woodFootstep.clip = woodFootsteps[_woodFootstepNum];
+                _woodFootstepNum++;
+
+                woodFootstep.Play();
+            }
+            else
+            {
+                if (_grassFootstepNum == grassFootsteps.Length)
+                    _grassFootstepNum = 0;
+
+                grassFootstep.clip = grassFootsteps[_grassFootstepNum];
+                _grassFootstepNum++;
+
+                grassFootstep.Play();
+            }
+        }
+
+        /// <summary>
+        /// Handles minigame reeling sounds
+        /// </summary>
+        private void MiniGameSounds()
         {
             if (reelingMaster.IsFishing && !_reelPlaying)
                 reelingSound.Play();
@@ -79,7 +151,7 @@ namespace FishingGame
                 newClip = reelingSounds[1];
             }
 
-            if(newClip != _currentClip)
+            if (newClip != _currentClip)
             {
                 _currentClip = newClip;
                 reelingSound.clip = _currentClip;
@@ -87,75 +159,6 @@ namespace FishingGame
                 if (_reelPlaying)
                     reelingSound.Play();
             }
-
         }
-
-        /// <summary>
-        /// is called from animation trigger, plays cast sound
-        /// </summary>
-        public void CastSound()
-        {
-            castSound.Play();
-        }
-
-        /// <summary>
-        /// is called from animation trigger, plays random footstep sound based on what player is walking on
-        /// </summary>
-        public void FootStep()
-        {
-            if (_grassFootstepNum == grassFootsteps.Length) 
-                _grassFootstepNum = 0;
-
-            footsteps.clip = grassFootsteps[_grassFootstepNum];
-            _grassFootstepNum++;
-
-            footsteps.Play();
-
-            //SurfaceType surface = GetSurfaceAtPosition(playerPos.position);
-            //Debug.Log(surface);
-        }
-
-        /// <summary>
-        /// Determines what surface the player is standing on by converting player world position to terrain coordinates
-        /// </summary>
-        /// <param name="worldPos"></param>
-        /// <returns></returns>
-        /*private SurfaceType GetSurfaceAtPosition(Vector3 worldPos)
-        {
-            float normX = (worldPos.x - _terrainPos.x) / _terrainSize.x;
-            float normZ = (worldPos.z - _terrainSize.z) / _terrainSize.z;
-
-            normX = Mathf.Clamp01(normX);
-            normZ = Mathf.Clamp01(normZ);
-
-            int mapX = Mathf.FloorToInt(normX * terrain.terrainData.alphamapWidth);
-            int mapZ = Mathf.FloorToInt(normZ * terrain.terrainData.alphamapHeight);
-
-            float[,,] splatMapData = terrain.terrainData.GetAlphamaps(mapX, mapZ, 1, 1);
-
-            int maxIndex = 0;
-            float maxMix = 0;
-
-            string weights = "Weights: ";
-            for (int i = 0; i < splatMapData.GetLength(2); i++)
-            {
-                weights += $"[{i}]={splatMapData[0, 0, i]:F2} ";
-            }
-            Debug.Log(weights);
-
-            for (int i = 0; i < splatMapData.GetLength(2); i++)
-            {
-                if (splatMapData[0,0,i] > maxMix)
-                {
-                    maxIndex = i;
-                    maxMix = splatMapData[0,0,i];
-                }
-            }
-
-            if (maxIndex < textureToSurfaceMap.Length)
-                return textureToSurfaceMap[maxIndex];
-            else
-                return SurfaceType.Grass; 
-        }*/
     }
 }
