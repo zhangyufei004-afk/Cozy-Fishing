@@ -194,27 +194,9 @@ namespace FishingGame.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""GrappleUp"",
+                    ""name"": ""New action"",
                     ""type"": ""Button"",
-                    ""id"": ""58ded00b-57a6-497e-b441-2c305dc59a4c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""GrappleDown"",
-                    ""type"": ""Button"",
-                    ""id"": ""c6a386be-8d46-43ed-9dff-f568ed10b137"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""GrappleCancel"",
-                    ""type"": ""Button"",
-                    ""id"": ""c7b999c6-0151-4ae3-a17f-aca366f11169"",
+                    ""id"": ""d98007f3-9035-4617-9269-ed5955bc6094"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -620,67 +602,12 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""686d37fc-fa34-45eb-83c4-2f62d6b390d4"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""GrappleUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""72e7d5eb-4589-4f92-a238-a6e73dc17d27"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""GrappleUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f90ec433-6b46-4f57-a4aa-809ea7dd18ec"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""GrappleDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8a291bcc-3317-431b-b58e-3c90bfd88f98"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""GrappleDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7d53974c-a76f-49aa-b8ee-9e34b0426947"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""eb9f5aa8-8ac4-4faf-9a77-3377a610afb6"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""GrappleCancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""866d62bd-6a18-41ca-986f-3a8f6573d247"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""GrappleCancel"",
+                    ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1797,9 +1724,7 @@ namespace FishingGame.Input
             m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
             m_Player_MouseDelta = m_Player.FindAction("MouseDelta", throwIfNotFound: true);
             m_Player_MousePress = m_Player.FindAction("MousePress", throwIfNotFound: true);
-            m_Player_GrappleUp = m_Player.FindAction("GrappleUp", throwIfNotFound: true);
-            m_Player_GrappleDown = m_Player.FindAction("GrappleDown", throwIfNotFound: true);
-            m_Player_GrappleCancel = m_Player.FindAction("GrappleCancel", throwIfNotFound: true);
+            m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1916,9 +1841,7 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_ToggleQuestLog;
         private readonly InputAction m_Player_MouseDelta;
         private readonly InputAction m_Player_MousePress;
-        private readonly InputAction m_Player_GrappleUp;
-        private readonly InputAction m_Player_GrappleDown;
-        private readonly InputAction m_Player_GrappleCancel;
+        private readonly InputAction m_Player_Newaction;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1975,17 +1898,9 @@ namespace FishingGame.Input
             /// </summary>
             public InputAction @MousePress => m_Wrapper.m_Player_MousePress;
             /// <summary>
-            /// Provides access to the underlying input action "Player/GrappleUp".
+            /// Provides access to the underlying input action "Player/Newaction".
             /// </summary>
-            public InputAction @GrappleUp => m_Wrapper.m_Player_GrappleUp;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/GrappleDown".
-            /// </summary>
-            public InputAction @GrappleDown => m_Wrapper.m_Player_GrappleDown;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/GrappleCancel".
-            /// </summary>
-            public InputAction @GrappleCancel => m_Wrapper.m_Player_GrappleCancel;
+            public InputAction @Newaction => m_Wrapper.m_Player_Newaction;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -2045,15 +1960,9 @@ namespace FishingGame.Input
                 @MousePress.started += instance.OnMousePress;
                 @MousePress.performed += instance.OnMousePress;
                 @MousePress.canceled += instance.OnMousePress;
-                @GrappleUp.started += instance.OnGrappleUp;
-                @GrappleUp.performed += instance.OnGrappleUp;
-                @GrappleUp.canceled += instance.OnGrappleUp;
-                @GrappleDown.started += instance.OnGrappleDown;
-                @GrappleDown.performed += instance.OnGrappleDown;
-                @GrappleDown.canceled += instance.OnGrappleDown;
-                @GrappleCancel.started += instance.OnGrappleCancel;
-                @GrappleCancel.performed += instance.OnGrappleCancel;
-                @GrappleCancel.canceled += instance.OnGrappleCancel;
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
             }
 
             /// <summary>
@@ -2098,15 +2007,9 @@ namespace FishingGame.Input
                 @MousePress.started -= instance.OnMousePress;
                 @MousePress.performed -= instance.OnMousePress;
                 @MousePress.canceled -= instance.OnMousePress;
-                @GrappleUp.started -= instance.OnGrappleUp;
-                @GrappleUp.performed -= instance.OnGrappleUp;
-                @GrappleUp.canceled -= instance.OnGrappleUp;
-                @GrappleDown.started -= instance.OnGrappleDown;
-                @GrappleDown.performed -= instance.OnGrappleDown;
-                @GrappleDown.canceled -= instance.OnGrappleDown;
-                @GrappleCancel.started -= instance.OnGrappleCancel;
-                @GrappleCancel.performed -= instance.OnGrappleCancel;
-                @GrappleCancel.canceled -= instance.OnGrappleCancel;
+                @Newaction.started -= instance.OnNewaction;
+                @Newaction.performed -= instance.OnNewaction;
+                @Newaction.canceled -= instance.OnNewaction;
             }
 
             /// <summary>
@@ -2669,26 +2572,12 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnMousePress(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "GrappleUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnGrappleUp(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "GrappleDown" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnGrappleDown(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "GrappleCancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnGrappleCancel(InputAction.CallbackContext context);
+            void OnNewaction(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

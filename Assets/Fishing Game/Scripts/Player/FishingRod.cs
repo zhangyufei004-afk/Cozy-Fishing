@@ -87,6 +87,7 @@ namespace FishingGame.Reeling
 
         private IBait _currentlyEquipedBait;
         private bool _isBusy = false;
+        private LayerMask _layerMask;
 
         private void OnEnable()
         {
@@ -105,6 +106,8 @@ namespace FishingGame.Reeling
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+            
+            _layerMask = LayerMask.GetMask("Terrain", "Water");
         }
 
         private void OnDisable()
@@ -244,12 +247,11 @@ namespace FishingGame.Reeling
         {
             RaycastHit hit;
             float maxDistance = fishingRange;
-            LayerMask whatToHit = 1;
 
             Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
 
 
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, whatToHit))
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _layerMask))
             {
                 rodBobber.transform.position = hit.point;
             }

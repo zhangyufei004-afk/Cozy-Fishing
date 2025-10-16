@@ -71,6 +71,10 @@ namespace FishingGame.GameManagement
 
         public event Action OnAttemptItemPickup;
 
+        public event Action OnPlayerDeath;
+
+        public event Action<bool> OnPlayerDeathScreenActive;
+
         #endregion
 
         #region AI Events
@@ -80,7 +84,7 @@ namespace FishingGame.GameManagement
 
 
         #endregion
-
+        
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
@@ -257,6 +261,23 @@ namespace FishingGame.GameManagement
         public void ItemUsedUp(IStorable itemUsedUp)
         {
             OnItemUsedUp?.Invoke(itemUsedUp);
+        }
+
+        /// <summary>
+        /// Invokes the OnPlayerDeath event to do things when the player dies.
+        /// </summary>
+        public void PlayerDied()
+        {
+            OnPlayerDeath?.Invoke();
+        }
+
+        /// <summary>
+        /// Invokes the OnPlayerDeathScreenActive event to indicate the death screen <c>isActive</c>
+        /// </summary>
+        /// <param name="isActive">Boolean indicating whether the screen is active or not</param>
+        public void PlayerDeathScreenActive(bool isActive)
+        {
+            OnPlayerDeathScreenActive?.Invoke(isActive);
         }
     }
 }
