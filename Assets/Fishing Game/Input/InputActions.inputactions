@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputActions",
     "maps": [
         {
@@ -105,15 +106,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "d98007f3-9035-4617-9269-ed5955bc6094",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "GrappleUp",
                     "type": "Button",
                     "id": "58ded00b-57a6-497e-b441-2c305dc59a4c",
@@ -126,6 +118,15 @@
                     "name": "GrappleDown",
                     "type": "Button",
                     "id": "c6a386be-8d46-43ed-9dff-f568ed10b137",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GrappleCancel",
+                    "type": "Button",
+                    "id": "c7b999c6-0151-4ae3-a17f-aca366f11169",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -531,17 +532,6 @@
                 },
                 {
                     "name": "",
-                    "id": "eb9f5aa8-8ac4-4faf-9a77-3377a610afb6",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "686d37fc-fa34-45eb-83c4-2f62d6b390d4",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -581,6 +571,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "GrappleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d53974c-a76f-49aa-b8ee-9e34b0426947",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GrappleCancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "866d62bd-6a18-41ca-986f-3a8f6573d247",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GrappleCancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

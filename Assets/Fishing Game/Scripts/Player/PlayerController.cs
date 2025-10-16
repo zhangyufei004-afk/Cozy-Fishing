@@ -62,6 +62,11 @@ namespace FishingGame.Player
 
         private bool _isInGrappleZone;
 
+        // Input Actions
+        private InputAction _grappleUpAction;
+        private InputAction _grappleDownAction;
+        private InputAction _grappleCancelAction;
+
         // === Properties ===
         public bool HasGrappleHook => hasGrapple;
         public FishingRod CurrentFishingRod => currentFishingRod;
@@ -78,6 +83,19 @@ namespace FishingGame.Player
             playerActionMap.FindAction("Crouch").performed += ToggleGrapple;
             playerActionMap.FindAction("Reel").performed += Fire;
             playerActionMap.FindAction("Interact").performed += AttemptToPickupItem;
+
+            // Grapple Up / Down / Cancel
+            _grappleUpAction = playerActionMap.FindAction("GrappleUp");
+            _grappleDownAction = playerActionMap.FindAction("GrappleDown");
+            _grappleCancelAction = playerActionMap.FindAction("GrappleCancel");
+
+            if (_grappleUpAction != null) _grappleUpAction.Enable();
+            if (_grappleDownAction != null) _grappleDownAction.Enable();
+            if (_grappleCancelAction != null)
+            {
+                _grappleCancelAction.performed += ctx => CancelGrapple();
+                _grappleCancelAction.Enable();
+            }
 
             _initialMovementSpeed = movementSpeed;
             _initialRotationSpeed = rotationSpeed;
@@ -102,14 +120,9 @@ namespace FishingGame.Player
 
             // Camera & Mesh visibility
             if (brain.IsBlending)
-            {
                 playerMesh.SetActive(true);
-            }
             else
-            {
-                ICinemachineCamera activeCam = brain.ActiveVirtualCamera;
-                playerMesh.SetActive(activeCam.Name != fpsCamera.name);
-            }
+                playerMesh.SetActive(brain.ActiveVirtualCamera.Name != fpsCamera.name);
         }
 
         // === Movement ===
@@ -117,8 +130,6 @@ namespace FishingGame.Player
         {
             if (!_grappleMode && !_isGrappling)
             {
-                Cursor.lockState = CursorLockMode.None;
-
                 Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
                 characterController.SimpleMove(directionNormalized * movementSpeed);
 
@@ -133,7 +144,6 @@ namespace FishingGame.Player
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 animator.SetFloat(_speed, 0);
                 characterController.SimpleMove(Vector3.down);
             }
@@ -167,24 +177,18 @@ namespace FishingGame.Player
             {
                 Vector3 direction = (_grappleAnchor - transform.position).normalized;
 
+                // === 垂直输入 ===
                 float verticalInput = 0f;
-                if (Keyboard.current.wKey.isPressed) verticalInput = 1f;
-                else if (Keyboard.current.sKey.isPressed) verticalInput = -1f;
+                if (_grappleUpAction != null && _grappleUpAction.IsPressed()) verticalInput = 1f;
+                else if (_grappleDownAction != null && _grappleDownAction.IsPressed() && !_isGrounded()) verticalInput = -1f;
 
                 _currentRopeLength -= verticalInput * Time.deltaTime *
                                       (verticalInput > 0 ? grappleAscendSpeed : grappleDescendSpeed);
                 _currentRopeLength = Mathf.Clamp(_currentRopeLength, 1f, grappleRange);
 
+                // 平滑移动
                 Vector3 targetPosition = _grappleAnchor - direction * _currentRopeLength;
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * grappleSpeed);
-
-                // Cancel grapple
-                if (Keyboard.current.spaceKey.wasPressedThisFrame)
-                {
-                    _isGrappling = false;
-                    _targetHooked = false;
-                    _grappleMode = false;
-                }
+                characterController.Move((targetPosition - transform.position) * (grappleSpeed * Time.deltaTime));
             }
         }
 
@@ -193,15 +197,8 @@ namespace FishingGame.Player
         {
             if (grapplePromptText == null) return;
 
-            if (_isInGrappleZone && hasGrapple)
-            {
-                grapplePromptText.text = "Press X to Grapple";
-                grapplePromptText.enabled = true;
-            }
-            else
-            {
-                grapplePromptText.enabled = false;
-            }
+            grapplePromptText.enabled = _isInGrappleZone && hasGrapple;
+            if (_isInGrappleZone && hasGrapple) grapplePromptText.text = "Press X to Grapple";
         }
 
         // === Grapple Line Renderer ===
@@ -224,17 +221,14 @@ namespace FishingGame.Player
         // === Input Handlers ===
         private void ToggleGrapple(InputAction.CallbackContext context)
         {
-            // Only allow toggling in GrappleZone
             if (context.performed && hasGrapple && !_isCurrentlyEngaged && _isInGrappleZone)
             {
                 _grappleMode = !_grappleMode;
-                Debug.Log($"GrappleMode toggled: {_grappleMode}");
             }
         }
 
         private void Fire(InputAction.CallbackContext context)
         {
-            // Only allow firing if in zone and grapple mode
             if (context.performed && _grappleMode && _isInGrappleZone)
             {
                 _fireGrapple = true;
@@ -256,7 +250,19 @@ namespace FishingGame.Player
             _moveInput = Vector2.zero;
         }
 
+        private void CancelGrapple()
+        {
+            if (_isGrappling)
+            {
+                _isGrappling = false;
+                _targetHooked = false;
+                _grappleMode = false;
+            }
+        }
+
         // === Utility ===
+        private bool _isGrounded() => characterController.isGrounded;
+
         public void EnableGrapple() => hasGrapple = true;
 
         public void DisableGrapple()
@@ -281,6 +287,3 @@ namespace FishingGame.Player
         }
     }
 }
-
-
-
