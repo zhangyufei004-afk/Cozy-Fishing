@@ -13,7 +13,7 @@ namespace FishingGame.UI
     public class DeathScreenManager : MonoBehaviour
     {
         private const float DeathScreenFadeDuration = 0.5f;
-        private const float DeathMessageReadTime = 3.5f;
+        private const float DeathMessageReadTime = 2.5f;
         
         [SerializeField] private Image deathScreenBackground;
         [SerializeField] private TextMeshProUGUI deathScreenText;
@@ -45,7 +45,7 @@ namespace FishingGame.UI
             }
         }
 
-        IEnumerator FadeDeathScreen(string deathMessage)
+        private IEnumerator FadeDeathScreen(string deathMessage)
         {
             _isRoutineRunning = true;
             deathScreenBackground.gameObject.SetActive(true);

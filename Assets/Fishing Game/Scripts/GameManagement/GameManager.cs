@@ -31,7 +31,7 @@ namespace FishingGame.GameManagement
         
         [Header("Loading Screen Properties")]
 
-        [SerializeField] private List<String> toolTips;
+        [SerializeField] private List<String> toolTips = new List<string>{"Baits increase your chances of catching certain fish"};
 
         private Dictionary<FishScriptableObject, int> _fishTimesCaught;
         private Dictionary<FishScriptableObject, float> _fishBiggestCatch;
@@ -111,10 +111,6 @@ namespace FishingGame.GameManagement
         /// <returns>The string of the death tip.</returns>
         public string GetRandomDeathTip()
         {
-            if (toolTips.Count == 0)
-            {
-                return "Baits increase your chances of catching certain fish";
-            }
             return toolTips[UnityEngine.Random.Range(0, toolTips.Count)];
         }
 

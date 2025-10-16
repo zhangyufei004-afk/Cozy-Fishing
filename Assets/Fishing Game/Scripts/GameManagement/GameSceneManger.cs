@@ -62,7 +62,7 @@ namespace FishingGame.Fishing_Game.Scripts.GameManagement
             StartCoroutine(FadeToScene());
         }
 
-        IEnumerator FadeToScene()
+        private IEnumerator FadeToScene()
         {
             yield return new WaitForSeconds(0.25f);
             while (_loadingScreenCanvasGroup.alpha > 0.1f)
@@ -73,7 +73,7 @@ namespace FishingGame.Fishing_Game.Scripts.GameManagement
             loadingScreen.SetActive(false);
         }
 
-        IEnumerator FadeToLoadingScreen()
+        private IEnumerator FadeToLoadingScreen()
         {
             loadingScreen.SetActive(true);
             loadingScreenText.text = "Loading 0%";
@@ -87,7 +87,7 @@ namespace FishingGame.Fishing_Game.Scripts.GameManagement
 
         }
 
-        IEnumerator LoadSceneAsync(string sceneName)
+        private IEnumerator LoadSceneAsync(string sceneName)
         {
             yield return FadeToLoadingScreen();
             AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(sceneName);
