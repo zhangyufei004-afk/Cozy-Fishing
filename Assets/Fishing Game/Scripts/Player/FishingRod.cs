@@ -119,6 +119,7 @@ namespace FishingGame.Reeling
         private IBait _currentlyEquipedBait;
         private bool _isBusy = false;
         private float _defaultMaxSliderValue;
+        private LayerMask _layerMask;
 
         private void OnEnable()
         {
@@ -141,6 +142,7 @@ namespace FishingGame.Reeling
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+            _layerMask = waterLayer | blockFishingLayers;
         }
 
         private void OnDisable()
@@ -283,7 +285,8 @@ namespace FishingGame.Reeling
             float maxDistance = fishingRange;
             Vector3 locationWithYOffset = new Vector3(locationToUse.x, locationToUse.y, locationToUse.z);
 
-            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, waterLayer))
+
+            if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _layerMask))
             {
                 rodBobber.transform.position = hit.point;
             }
