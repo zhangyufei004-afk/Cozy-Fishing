@@ -29,6 +29,8 @@ namespace FishingGame.FishSystem
         public List<ETimeOfDay> TimesFound;
         public bool IsInvasive;
 
+        public int BasePrice = 10;
+
         public ArrowWaveSO ArrowMiniGameBehaviour;
         public SliderSO SliderMiniGameBehaviour;
 
