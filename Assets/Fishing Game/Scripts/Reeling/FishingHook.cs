@@ -105,16 +105,21 @@ namespace FishingGame.Reeling
         }
         
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (_headingToFishSpot)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector3(_fishingLocation.x, transform.position.y, _fishingLocation.z), castHookSpeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_fishingLocation.x, transform.position.y, _fishingLocation.z), castHookSpeed * Time.fixedDeltaTime);
                 transform.position += new Vector3(0, _velocity, 0);
 
-                _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, _initialRotation, MaxRotationDegrees * Time.deltaTime);
-                transform.position = Vector3.MoveTowards(transform.position, _fishingLocation, castHookSpeed * Time.deltaTime);
+                // float adjustmentPercent = Vector3.Distance(transform.position, _fishingLocation) / Vector3.Distance(_fishingLocation, _initialParent.transform.position);
+                
+                _velocity += Mathf.Clamp(Time.deltaTime * 0.06125f * (transform.position.y > _fishingLocation.y ? Physics.gravity.y/2f : -(Physics.gravity.y/2.1f)) 
+                                         / Vector3.Distance(transform.position, _initialParent.transform.position), -1f, 1f);
+                
+                // _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
+                
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, _initialRotation, MaxRotationDegrees * Time.fixedDeltaTime);
 
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
@@ -136,7 +141,7 @@ namespace FishingGame.Reeling
             {
                 transform.rotation = _initialRotation;
                 Vector3 target = _initialParent.TransformPoint(_hookResetSpot);
-                transform.position = Vector3.MoveTowards(transform.position, target, hookReturnSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, target, hookReturnSpeed * Time.fixedDeltaTime);
                 _velocity = 0;
                 if (transform.position == target)
                 {
@@ -158,6 +163,7 @@ namespace FishingGame.Reeling
             if (CheckIfPool(other.gameObject))
             {
                 _collidingPool = other.gameObject.GetComponent<FishingPool>();
+                _velocity *= 0.3f;
             }
             else if (CheckIfFish(other.gameObject))
             {
@@ -170,7 +176,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void OnTriggerExit(Collider other)
         {
-            if (other == _collidingPool)
+            if (_collidingPool != null && other.gameObject == _collidingPool.gameObject && transform.position.y > _fishingLocation.y)
             {
                 _collidingPool = null;
             }
@@ -223,7 +229,7 @@ namespace FishingGame.Reeling
             reelingMaster.DisableControls(areControlsDisabled);
             initiationScript.SetIsReelingAnimation(false);
             initiationScript.SetIsFishing(false);
-            fishingRodScript.ResetCharge();
+            fishingRodScript.ResetCharge(true);
             fishingRodScript.SetChargerVisibility(false);
         }
 

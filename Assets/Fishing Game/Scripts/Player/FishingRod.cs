@@ -226,10 +226,12 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Hides the fishing charge slider
         /// </summary>
-        public void ResetCharge()
+        /// <param name="fishingEnded">Whether to reset the charge since the player is no longer fishing.</param>
+        public void ResetCharge(bool fishingEnded)
         {
             chargeSlider.value = 0;
             _chargePower = 0;
+            characterAnimator.SetBool(IsFishing, !fishingEnded);
         }
 
         /// <summary>
@@ -346,7 +348,7 @@ namespace FishingGame.Reeling
             {
                 _isCharging = false; 
                 SetChargerVisibility(false); 
-                ResetCharge();
+                ResetCharge(true);
             }
         }
 
@@ -396,7 +398,7 @@ namespace FishingGame.Reeling
 
                 if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
                 {
-                    ResetCharge();
+                    ResetCharge(true);
                     SetChargerVisibility(false);
                     return false;
                 }

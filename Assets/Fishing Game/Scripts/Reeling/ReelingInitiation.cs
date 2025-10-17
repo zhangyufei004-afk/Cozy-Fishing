@@ -152,7 +152,7 @@ namespace FishingGame.Reeling
                 Destroy(_fishSwim);
                 StopAllCoroutines();
                 fishingHook.AttemptToFishFromCurrentLocation();
-                fishingRod.ResetCharge();
+                fishingRod.ResetCharge(false);
             }
             else
             {
@@ -208,7 +208,7 @@ namespace FishingGame.Reeling
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
             SetIsReelingAnimation(false);
-            fishingRod.ResetCharge();
+            fishingRod.ResetCharge(true);
 
             _isStageOne = false;
             fishingHook.PullBackHook(false);
