@@ -116,14 +116,12 @@ namespace FishingGame.Reeling
         private float initialTimeToWait;
 
         private bool _inputHeld = false;
-        private bool _goingLeft = true;
         private bool _suddenDeath = false;
 
         private bool _behaviourLoaded = false;
         private SliderData _sliderData;
         private List<SliderBehaviour> _sliderBehaviourList;
         private int _currentBehaviourIndex = 0;
-        private int _initialPointScalar = 5;
 
         private float _catchProgress = 50f;
         private float _timeSinceLastGoal = 0f;
@@ -649,8 +647,8 @@ namespace FishingGame.Reeling
             _behaviourLoaded = false;
 
             int decideDirection = Random.Range(0, 2);
-            if (decideDirection == 0) { _goingLeft = true; }
-            else {  _goingLeft = false; }
+            if (decideDirection == 0) { _isGoingLeft = true; }
+            else {  _isGoingLeft = false; }
         }
 
         #endregion

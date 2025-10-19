@@ -55,7 +55,6 @@ namespace FishingGame.Reeling
         private float _maxFishWaitTime;
         private float _minFishWaitTime;
 
-        private bool _gameActive = false;
         private bool _isStageOne = false;
         private bool _fishAtHook = false;
 

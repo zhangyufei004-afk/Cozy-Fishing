@@ -83,7 +83,6 @@ namespace FishingGame.Reeling
         private float _chargePowerMinimum = 1f;
         private float _chargePowerAverageMaxValue = 3f;
         private float _chargePowerGoodMaxValue = 6f;
-        private int _blockFishingRayCastDistance = 10;
 
         private float _amazingFishMinWaitTime = 1;
         private float _amazingFishMaxWaitTime = 2;

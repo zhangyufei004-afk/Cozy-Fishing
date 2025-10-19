@@ -97,7 +97,6 @@ namespace FishingGame.Reeling
         private Vector2[] _boundsPoints;
         private int _previousBoundsPoint = 0;
         private int _currentBoundsPoint = 0;
-        private bool _dragableMoving = false;
 
         private int _fishDifficulty;
 

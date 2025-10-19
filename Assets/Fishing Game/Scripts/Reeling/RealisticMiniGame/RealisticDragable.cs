@@ -26,11 +26,6 @@ namespace FishingGame.Reeling
 
         private Image _centerImage;
 
-        private int _uILayer;
-        private int _dragAbleLayer;
-        private string _realisticTag;
-        private string _dragAbleTag;
-
         private PlayerInput _playerInput;
         private InputAction _mouseInput;
         private InputAction _realisticStickAction;
@@ -55,12 +50,6 @@ namespace FishingGame.Reeling
 
         private void OnEnable()
         {
-            _uILayer = LayerMask.NameToLayer("UI");
-            _dragAbleLayer = LayerMask.NameToLayer("Dragable");
-
-            _dragAbleTag = "DragableUI";
-            _realisticTag = "RealisticGoal";
-
             _centerImage = minigameMaster.GetCentreImage();
 
 
