@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
@@ -196,8 +197,11 @@ namespace FishingGame.Reeling
             SetFishDirection();
             
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
-            { ModifyCatchProgress(_catchIncreaseValueToUse); }
-            else { ModifyCatchProgress(_catchDecreaseValueToUse); }
+            { 
+                ModifyCatchProgress(_catchIncreaseValueToUse);
+                IsCatchBoxGreen(true);
+            }
+            else { ModifyCatchProgress(_catchDecreaseValueToUse); IsCatchBoxGreen(false); }
 
             if (_isMiniGamePaused) { return; }
 
@@ -557,6 +561,16 @@ namespace FishingGame.Reeling
         private void UnPauseCatchboxMovement()
         {
             _isMiniGamePaused = false;
+        }
+
+        /// <summary>
+        /// Sets the color of catchbox to green if inputted bool is true, otherwise red
+        /// </summary>
+        /// <param name="isGreen">True makes the catchbox color green, false makes it red</param>
+        private void IsCatchBoxGreen(bool isGreen)
+        {
+            if (isGreen) { catchBox.GetComponent<Image>().color = Color.green; }
+            else { catchBox.GetComponent <Image>().color = Color.red; }
         }
 
         /// <summary>
