@@ -21,6 +21,7 @@ namespace FishingGame.Dialogue
             if (other.CompareTag("Player"))
             {
                 GameManager.Instance.GameEvents.WithinDialogueRange(true, npcName);
+                GameManager.Instance.GameEvents.NpcFocus(npcName, transform.parent.position);
             }
         }
 #if UNITY_EDITOR
@@ -31,6 +32,7 @@ namespace FishingGame.Dialogue
             {
                 GameManager.Instance.GameEvents.WithinDialogueRange(false, npcName);
                 GameManager.Instance.GameEvents.NPCInteraction(false, npcName);
+                GameManager.Instance.GameEvents.ResetNpcFocus();
             }
         }
 #endif
