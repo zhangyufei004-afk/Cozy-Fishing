@@ -49,8 +49,18 @@ namespace FishingGame.Reeling
         private Image centerPoint;
 
         [SerializeField]
-        [Tooltip("The Fish iamge that moves")]
-        private Image fishImage;
+        [Tooltip("The Direction indicator for what way a player needs to spin the reel")]
+        private Image textDirectionHolder;
+
+        [SerializeField]
+        [Tooltip("The image that shows what direction to spin in")]
+        private Image directionImage;
+
+        [SerializeField]
+        [Tooltip("The image that shows the player to stop")]
+        private Image stopImage;
+
+        private float _directionAntiClockWiseRotation = 180;
 
         [Header("GameData")]
 
@@ -82,25 +92,20 @@ namespace FishingGame.Reeling
         [Tooltip("temp")]
         private GameObject tempObject;
 
-        [SerializeField]
-        [Tooltip("The reset spot for the fish UI image at the start of the game")]
-        private Vector3 fishResetSpot;
-
         private Vector2[] _boundsPoints;
         private int _previousBoundsPoint = 0;
         private int _currentBoundsPoint = 0;
 
         private int _fishDifficulty;
 
+        private GameObject _currentFish3D;
         private float _currentTimeScale;
         private float _currentScaleTimerValue;
         private float _progressValue;
         private float _progressMaxValue;
-        private float _speedScalar = 20f;
+        private float _timeSinceLastDirectionChange;
+        private float _directionRollTimerMax = 8f;
 
-        private IFishAble _fishedObject;
-
-        private float _fishWeight = 10f;
 
         private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
@@ -118,15 +123,34 @@ namespace FishingGame.Reeling
 
             if (CheckIfLost()) { EndMiniGame(false); return; }
 
-            float speedToAdd = (dragableScript.GetSpeed() * _speedScalar) * Time.deltaTime;
+            // Triples the addition to timer if stop is current direction
+            if (_currentDirection == ERealisticDirection.Stop) { _timeSinceLastDirectionChange += (Time.deltaTime * 3) * _currentTimeScale; }
+            else { _timeSinceLastDirectionChange += Time.deltaTime * _currentTimeScale; }
+            
 
-            Vector3 fishCurrentPosition = fishImage.transform.localPosition;
-            Vector3 newFishPosition = new Vector3(fishCurrentPosition.x, fishCurrentPosition.y + speedToAdd, fishCurrentPosition.z);
-            fishImage.transform.localPosition = newFishPosition;
+            if (_timeSinceLastDirectionChange >= _directionRollTimerMax)
+            {
+                DecideDirection();
+            }
 
             if (_currentScaleTimerValue >= timeScaleMaxSeconds)
             {
                 UpdateTimeScale();
+            }
+
+            if (CheckIfDragableInRightDirection())
+            {
+                if (_currentDirection == ERealisticDirection.Stop)
+                {
+                    AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
+                    return;
+                }
+                float speed = (dragableScript.GetSpeed() * Time.deltaTime) * _currentTimeScale;
+                AddToProgressSlider(speed);
+            }
+            else
+            {
+                RemoveFromProgressSlider(defaultDecayValue * Time.deltaTime);
             }
         }
 
@@ -138,9 +162,9 @@ namespace FishingGame.Reeling
         /// <param name="fishScriptable">Data of fish being caught</param>
         public void InitializeMiniGame(IFishAble fishScriptable)
         {
-            _fishedObject = fishScriptable;
-            _fishDifficulty = _fishedObject.GetCatchDifficulty();
+            _fishDifficulty = fishScriptable.GetCatchDifficulty();
             realisticCanvas.SetActive(true);
+            _currentFish3D = reelingMaster.GetCurrent3DFishObject();
 
             InitializeRunTimeData();
         }
@@ -256,6 +280,79 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// Sets the initial direction to either clockwise or anti clockwise
+        /// Does not have stop as an option
+        /// </summary>
+        private void SetInitialDirection()
+        {
+            int rolledNumber = UnityEngine.Random.Range(0, 2);
+            _currentDirection = (ERealisticDirection)rolledNumber;
+            SetTextAndAnimationForDirection();
+        }
+
+        /// <summary>
+        /// Decides what direction player must spin in by rolling a random value between 0 and enum value count
+        /// </summary>
+        private void DecideDirection()
+        {
+            Array enumValues = Enum.GetValues(typeof(ERealisticDirection));
+            int directionSize = enumValues.Length;
+
+            int rolledNumber = UnityEngine.Random.Range(0, directionSize);
+            _currentDirection = (ERealisticDirection)rolledNumber;
+
+            _timeSinceLastDirectionChange = 0f;
+            SetTextAndAnimationForDirection();
+        }
+
+        /// <summary>
+        /// Sets the text and animation that tells the player what direction to spin in
+        /// Paremeter bool is used to decide what text to set
+        /// true = Clockwise, False = anti-clockwise
+        /// </summary>
+        /// <param name="isClockwise">True = clockwise, false = anti-clockwise</param>
+        private void SetTextAndAnimationForDirection()
+        {
+            switch (_currentDirection)
+            {
+                case ERealisticDirection.Clockwise:
+                    directionImage.GameObject().SetActive(true);
+                    directionImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    stopImage.GameObject().SetActive(false);
+                    break;
+                case ERealisticDirection.AntiClockwise:
+                    directionImage.GameObject().SetActive(true);
+                    Quaternion currentRotation = directionImage.transform.rotation;
+                    directionImage.transform.rotation = Quaternion.Euler(currentRotation.x, _directionAntiClockWiseRotation, currentRotation.z);
+                    stopImage.GameObject().SetActive(false);
+                    break;
+                case ERealisticDirection.Stop:
+                    stopImage.GameObject().SetActive(true);
+                    directionImage.GameObject().SetActive(false);
+                    break;
+                default:
+                    directionImage.GameObject().SetActive(true);
+                    directionImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the dragable is currently being dragged in the right direction
+        /// </summary>
+        /// <returns>True if dragged in right direction otherwise false</returns>
+        private bool CheckIfDragableInRightDirection()
+        {
+            ERealisticDirection dragableCurrentDirection = (ERealisticDirection)dragableScript.GetCurrentDirectionAsInt();
+
+            if (dragableCurrentDirection == _currentDirection)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Checks if the progress value is equal to the max progress value, if so return true
         /// </summary>
         /// <returns>True if enough progress has been met</returns>
@@ -296,6 +393,7 @@ namespace FishingGame.Reeling
         {
             ResetGameTimeVariables();
             DifficultyScalars();
+            SetInitialDirection();
         }
 
         /// <summary>
@@ -306,9 +404,8 @@ namespace FishingGame.Reeling
             SetBounds();
             _currentTimeScale = 1.0f;
             _progressValue = 0f;
+            _timeSinceLastDirectionChange = 0f;
             progressSlider.value = _progressValue;
-            fishImage.transform.localPosition = fishResetSpot;
-            fishImage.sprite = _fishedObject.GetTexture();
         }
 
         /// <summary>
