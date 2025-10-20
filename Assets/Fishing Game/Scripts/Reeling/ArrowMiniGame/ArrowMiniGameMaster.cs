@@ -114,6 +114,7 @@ namespace FishingGame.Reeling
         private bool _suddenDeath = false;
         private float _minigameLoopDuration;
         private int _failedArrowModifier = 4;
+        private float _initialWaitTime = 1f;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
@@ -180,7 +181,7 @@ namespace FishingGame.Reeling
             fishingCanvas.SetActive(true);
             SetUpArrowKeys();
             ResetRuntimeVariables();
-            SetupArrowgameBehaviour();
+            
 
             int i = 0;
             foreach (ArrowSpawner spawner in spawnPoints)
@@ -195,15 +196,8 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginMiniGame()
         {
-            _gameActive = true;
-
-            foreach (ArrowSpawner spawner in spawnPoints)
-            {
-                spawner.ActivateOrDeactivateSpawner(true);
-            }
-
-            if (!_arrowMiniGameBehaviourActive) { SpawnArrowNormal(); }
-            else { CustomArrowBehaviourBegin(); }
+            StartCoroutine(BeginGameDelay(_initialWaitTime));
+            SetupArrowgameBehaviour();
         }
 
         /// <summary>
@@ -743,6 +737,25 @@ namespace FishingGame.Reeling
                 _currentProgress = defaultProgressModify * 4;
                 progressSlider.value = _currentProgress;
             }
+        }
+
+        /// <summary>
+        /// This timer begins the minigame after inputed time to wait
+        /// </summary>
+        /// <param name="delayTime">Amount of time to wait</param>
+        /// <returns>The minigame begins</returns>
+        private IEnumerator BeginGameDelay(float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+            _gameActive = true;
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(true);
+            }
+
+            if (!_arrowMiniGameBehaviourActive) { SpawnArrowNormal(); }
+            else { CustomArrowBehaviourBegin(); }
         }
 
         /// <summary>
