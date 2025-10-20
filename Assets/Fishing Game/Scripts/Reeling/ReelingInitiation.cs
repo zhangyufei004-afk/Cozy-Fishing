@@ -145,6 +145,8 @@ namespace FishingGame.Reeling
         /// </summary>
         public void FishCaught()
         {
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, false);
+
             if (_fishAtHook)
             {
                 _fishAtHook = false;

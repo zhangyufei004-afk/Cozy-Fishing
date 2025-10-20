@@ -25,7 +25,7 @@ namespace FishingGame.Reeling
     /// </summary>
     public class FishingHook : MonoBehaviour
     {
-        private const float MaxRotationDegrees = 40f;
+        private const float MaxRotationDegrees = 200f;
         
         #region Public Variables
 
@@ -114,12 +114,11 @@ namespace FishingGame.Reeling
 
                 // float adjustmentPercent = Vector3.Distance(transform.position, _fishingLocation) / Vector3.Distance(_fishingLocation, _initialParent.transform.position);
                 
-                _velocity += Mathf.Clamp(Time.deltaTime * 0.06125f * (transform.position.y > _fishingLocation.y ? Physics.gravity.y/2f : -(Physics.gravity.y/2.1f)) 
-                                         / Vector3.Distance(transform.position, _initialParent.transform.position), -1f, 1f);
+                _velocity += Mathf.Clamp(Time.deltaTime * 0.06125f * (transform.position.y > _fishingLocation.y ? Physics.gravity.y/3.5f : -(Physics.gravity.y/3.6f)), -1f, 1f);
                 
                 // _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
                 
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, _initialRotation, MaxRotationDegrees * Time.fixedDeltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 1, 0)), MaxRotationDegrees * Time.fixedDeltaTime);
 
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
@@ -163,7 +162,7 @@ namespace FishingGame.Reeling
             if (CheckIfPool(other.gameObject))
             {
                 _collidingPool = other.gameObject.GetComponent<FishingPool>();
-                _velocity *= 0.3f;
+                // _velocity *= 0.3f;
             }
             else if (CheckIfFish(other.gameObject))
             {
@@ -240,7 +239,7 @@ namespace FishingGame.Reeling
         public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
         {
             transform.parent = null;
-            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y -1f, targetLocation.z);
+            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
 
             _fishingLocation = newPosition;
             _headingToFishSpot = true;
