@@ -407,7 +407,6 @@ namespace FishingGame.Reeling
             FishSetGoal(newGoal);
             FishSetSpeed(_speedToUse);
             if (_speedToUse == 0) { _speedToUse = defaultSpeed; }
-            Debug.Log("GOal: " + newGoal);
             StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
 
             _currentBehaviourIndex++;
