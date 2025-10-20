@@ -21,8 +21,6 @@ namespace FishingGame.Reeling
     /// The player has to spin the reel either clockwise or anti clockwise by clicking and dragging a dragable UI image
     /// That dragable is tied to this class through the dragableScript
     /// This class controls the progress and backend data logic
-    /// NOTE: THIS IS A WIP, it functions but there is a lot of work to still go into this minigame
-    /// Several inefficient functions currently present to get this working in a low amount of time
     /// </summary>
     public class RealisticMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
