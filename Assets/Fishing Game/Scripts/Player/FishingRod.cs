@@ -247,6 +247,7 @@ namespace FishingGame.Reeling
             _chargePower = 0;
             _isCharging = true;
             _reverseDirection = false;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
         }
 
         /// <summary>
@@ -304,7 +305,6 @@ namespace FishingGame.Reeling
         {
             if (_chargePower >= _chargePowerMinimum)
             {
-                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
                 _targetLocation = rodBobber.transform.position;
                 characterAnimator.SetTrigger("ThrowTrigger");
                 characterAnimator.SetBool("isReeling", true);
@@ -411,8 +411,13 @@ namespace FishingGame.Reeling
             if (_isCharging == true && CanThrowToLocation()) 
             {
                 SetThrowAnimation();
+                _isCharging = false;
+                return;
             }
+
+
             _isCharging = false;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
         }
 
         #endregion
