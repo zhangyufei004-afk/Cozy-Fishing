@@ -197,7 +197,6 @@ namespace FishingGame.Reeling
             fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobbing", false);
             SetIsReelingAnimation(false);
             Destroy(_fishSwim);
-            reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
             SetIsReelingAnimation(false);
             fishingRod.ResetCharge();
@@ -321,9 +320,6 @@ namespace FishingGame.Reeling
             _fishAtHook = false;
             FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
             _stageOneDifficulty = currentPool.GetADifficultyInRange();
-
-            reelingMasterScript.SetCancelButtonVisibilty(true);
-
 
             _catchSecondsToWait = UnityEngine.Random.Range(_minFishWaitTime, _maxFishWaitTime);
         }

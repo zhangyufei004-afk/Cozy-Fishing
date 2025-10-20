@@ -40,6 +40,6 @@ MonoBehaviour:
     speedToUse: 80
   StartingLocation: -234
   SuddenDeathTimer: 30
-  PointsNeededToPass: 100
-  PointsPerSecond: 10
-  PointsToStartWith: 20
+  PointsNeededToPass: 90
+  PointsPerSecond: 15
+  PointsToStartWith: 30

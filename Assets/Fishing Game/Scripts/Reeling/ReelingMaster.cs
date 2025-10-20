@@ -110,59 +110,32 @@ namespace FishingGame.Reeling
 
         /// <summary>
         /// BeginCatchFish is run once a player succsesfully lands the fishing rod on a pool
+        /// There are too versions of this function, one that takes a fish and one that takes a trash object instead
+        /// This is the fish version
         /// </summary>
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
         /// <param name="visual3DObject">The 3D object of the fish</param>
         /// <param name="fishPool">The fish pool being fished from</param>
-        public void BeginCatchFish(Fish fishCaught, GameObject visual3DObject, FishingPool fishPool)
+        public void BeginCatch(Fish fishCaught, GameObject visual3DObject, FishingPool fishPool)
         {
-            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-
             _currentlyReelingObject = fishCaught;
-            _currentFishPool = fishPool;
-            _current3DObject = visual3DObject;
-            _current3DObject.GetComponent<Animator>().SetBool("Active", true);
 
-            DisableControls(true);
-            initiationScript.InitiateFishingPerspective();
-            SetDefaultVariables();
-            
-            _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
-            _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
-            sliderAnimator.SetBool("isGameActive", true);
-            SetMiniGameProgressVisibility(true);
-            fishingRodScript.SetChargerVisibility(false);
-
-            SetNextMiniGame();
+            ConsistentBeginCatchLogic(visual3DObject, fishPool);
         }
 
         /// <summary>
         /// This is run once a player succsesfully completes the initial stage of reeling
-        /// This version is run when the caught object has been decided to be a piece of trash
+        /// There are too versions of this function, one that takes a fish and one that takes a trash object instead
+        /// This is the trash version
         /// </summary>
         /// <param name="trashCaught">The data of the trash caught</param>
         /// <param name="visual3DObject">Visual 3D object of what is being reeled</param>
         /// <param name="fishPool">The pool this was caught from</param>
-        public void BeginCatchTrash(Trash trashCaught, GameObject visual3DObject, FishingPool fishPool)
+        public void BeginCatch(Trash trashCaught, GameObject visual3DObject, FishingPool fishPool)
         {
-            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-
             _currentlyReelingObject = trashCaught;
-            _currentFishPool = fishPool;
-            _current3DObject = visual3DObject;
-            _current3DObject.GetComponent<Animator>().SetBool("Active", true);
 
-            DisableControls(true);
-            initiationScript.InitiateFishingPerspective();
-            SetDefaultVariables();
-
-            _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
-            _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
-            sliderAnimator.SetBool("isGameActive", true);
-            SetMiniGameProgressVisibility(true);
-            fishingRodScript.SetChargerVisibility(false);
-
-            SetNextMiniGame();
+            ConsistentBeginCatchLogic(visual3DObject, fishPool);
         }
 
         /// <summary>
@@ -226,15 +199,6 @@ namespace FishingGame.Reeling
                 if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
                 initiationScript.CancelStageOne();
             }
-        }
-
-        /// <summary>
-        /// Sets the cancel button to be visible if parameter is true, otherwise nonvisible
-        /// </summary>
-        /// <param name="isVisible">If true the button will be visisble, otherwise it will be hidden</param>
-        public void SetCancelButtonVisibilty(bool isVisible)
-        {
-            cancelButton.gameObject.SetActive(isVisible);
         }
 
         /// <summary>
@@ -346,6 +310,34 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// This function is run by both overload methods of begin catch, it runs code that sets up variables/data
+        /// that dosen't change based on what type of fishable is caught
+        /// </summary>
+        /// <param name="visual3DObject">Visual 3D object of what is being reeled</param>
+        /// <param name="fishPool">The pool this was caught from</param>
+        private void ConsistentBeginCatchLogic(GameObject visual3DObject, FishingPool fishPool)
+        {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+
+            _currentFishPool = fishPool;
+            _current3DObject = visual3DObject;
+            _current3DObject.GetComponent<Animator>().SetBool("Active", true);
+
+            DisableControls(true);
+            initiationScript.InitiateFishingPerspective();
+            SetDefaultVariables();
+
+            _miniGameWinsRequired = GetMiniGamesRequired(_catchDifficulty);
+            _currentPoolOfMiniGames = new List<GameObject>(miniGameTypes);
+            sliderAnimator.SetBool("isGameActive", true);
+            SetMiniGameProgressVisibility(true);
+            fishingRodScript.SetChargerVisibility(false);
+            SetCancelButtonVisibilty(true);
+
+            SetNextMiniGame();
+        }
+
+        /// <summary>
         /// Sets the default variables that dont require parameters
         /// </summary>
         private void SetDefaultVariables()
@@ -409,7 +401,15 @@ namespace FishingGame.Reeling
 
                 GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.red);
             }
+        }
 
+        /// <summary>
+        /// Sets the cancel button to be visible if parameter is true, otherwise nonvisible
+        /// </summary>
+        /// <param name="isVisible">If true the button will be visisble, otherwise it will be hidden</param>
+        private void SetCancelButtonVisibilty(bool isVisible)
+        {
+            cancelButton.gameObject.SetActive(isVisible);
         }
     }
 }
