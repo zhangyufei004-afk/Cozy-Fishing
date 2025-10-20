@@ -34,6 +34,11 @@ namespace FishingGame.Reeling
     /// </summary>
     public class FishingRod : MonoBehaviour
     {
+        private static readonly int ThrowTrigger = Animator.StringToHash("ThrowTrigger");
+        private static readonly int FishBite = Animator.StringToHash("FishBite");
+        private static readonly int CastTrigger = Animator.StringToHash("CastTrigger");
+        private static readonly int IsFishing = Animator.StringToHash("IsFishing");
+
         [Header("Scrip References")]
 
         [SerializeField]
@@ -221,10 +226,12 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Hides the fishing charge slider
         /// </summary>
-        public void ResetCharge()
+        /// <param name="fishingEnded">Whether to reset the charge since the player is no longer fishing.</param>
+        public void ResetCharge(bool fishingEnded)
         {
             chargeSlider.value = 0;
             _chargePower = 0;
+            characterAnimator.SetBool(IsFishing, !fishingEnded);
         }
 
         /// <summary>
@@ -242,6 +249,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void BeginCharge()
         {
+            characterAnimator.SetTrigger(ThrowTrigger);
+            characterAnimator.SetBool(IsFishing, true);
             chargeSlider.gameObject.SetActive(true);
             chargeSlider.maxValue = _defaultMaxSliderValue;
             chargeSlider.value = 0;
@@ -253,12 +262,14 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Holding down right click charges the cast line of the rod.
         /// This will update the ui element representing the charge
-        /// and also show the tragectory line if the player were to release
+        /// and also show the trajectory line if the player were to release
         /// </summary>
         private void ChargeLine()
         {
             _aimDirection = characterModel.transform.forward;
             _aimStartPoint = characterParent.transform.position;
+            
+            characterAnimator.SetBool(FishBite, false);
 
             Vector3 modifiedStartAimLocation = new Vector3(_aimStartPoint.x, _aimStartPoint.y + _aimingYOffset, _aimStartPoint.z);
 
@@ -267,13 +278,19 @@ namespace FishingGame.Reeling
                 _chargePower += Time.deltaTime * chargeScalar;
                 _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
 
-                if (_chargePower == _maxCharge) { _reverseDirection = true; }
+                if (_chargePower == _maxCharge)
+                {
+                    _reverseDirection = true;
+                }
             }
             else
             {
                 _chargePower -= Time.deltaTime * chargeScalar;
                 _chargePower = Mathf.Clamp(_chargePower, 0, _maxCharge);
-                if (_chargePower == 0) { _reverseDirection = false; }
+                if (_chargePower == 0)
+                {
+                    _reverseDirection = false;
+                }
             }
 
             chargeSlider.value = _chargePower;
@@ -301,22 +318,38 @@ namespace FishingGame.Reeling
         /// <summary>
         /// Makes the throw line animation play
         /// </summary>
-        private void SetThrowAnimation()
+        private void SetCastAnimation()
         {
             if (_chargePower >= _chargePowerMinimum)
             {
                 GameManager.Instance.GameEvents.SetPlayerOccupied(true);
                 _targetLocation = rodBobber.transform.position;
-                characterAnimator.SetTrigger("ThrowTrigger");
-                characterAnimator.SetBool("isReeling", true);
+                characterAnimator.SetTrigger(CastTrigger);
                 reelingMasterScript.DisableControls(true);
+                AreReelingControlsActive(false);
 
-                if (_chargePower > _chargePowerGoodMaxValue) { _throwLineResult = ECastingResult.Amazing; }
-                else if (_chargePower > _chargePowerAverageMaxValue) { _throwLineResult = ECastingResult.Good; ; }
-                else { _throwLineResult = ECastingResult.Average; }
+                if (_chargePower > _chargePowerGoodMaxValue)
+                {
+                    _throwLineResult = ECastingResult.Amazing;
+                }
+                else if (_chargePower > _chargePowerAverageMaxValue)
+                {
+                    _throwLineResult = ECastingResult.Good;
+                    ;
+                }
+                else
+                {
+                    _throwLineResult = ECastingResult.Average;
+                }
+
                 SetChargeResultData();
             }
-            else { _isCharging = false; SetChargerVisibility(false); ResetCharge(); }
+            else
+            {
+                _isCharging = false; 
+                SetChargerVisibility(false); 
+                ResetCharge(true);
+            }
         }
 
         /// <summary>
@@ -365,7 +398,7 @@ namespace FishingGame.Reeling
 
                 if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
                 {
-                    ResetCharge();
+                    ResetCharge(true);
                     SetChargerVisibility(false);
                     return false;
                 }
@@ -411,7 +444,7 @@ namespace FishingGame.Reeling
         {
             if (_isCharging == true && CanThrowToLocation()) 
             {
-                SetThrowAnimation();
+                SetCastAnimation();
             }
             _isCharging = false;
         }
