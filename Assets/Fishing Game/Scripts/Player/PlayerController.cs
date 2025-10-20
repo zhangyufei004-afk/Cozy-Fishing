@@ -113,9 +113,6 @@ namespace FishingGame.Player
                 return;
             }
             
-            Movement();
-            Grappling();
-
             if (brain.IsBlending)
             {
                 playerMesh.SetActive(true);
@@ -130,6 +127,9 @@ namespace FishingGame.Player
                 }
                 else playerMesh.SetActive(true);
             }
+            
+            Movement();
+            Grappling();
         }
 
         /// <summary>
@@ -213,7 +213,8 @@ namespace FishingGame.Player
             {
                 return;
             }
-            if (!_grappleMode)
+            
+            if (!_grappleMode && !brain.IsBlending)
             {
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
 
