@@ -65,7 +65,7 @@ namespace FishingGame.Items
             if (other.gameObject == playerControllerScript.gameObject)
             {
                 _playerInInteractionRange = false;
-                GameManager.Instance.GameEvents.PickupItemRange(false, "Press E to picskup " + _itemData.GetName());
+                GameManager.Instance.GameEvents.PickupItemRange(false, "Press E to pickup " + _itemData.GetName());
             }
         }
 
