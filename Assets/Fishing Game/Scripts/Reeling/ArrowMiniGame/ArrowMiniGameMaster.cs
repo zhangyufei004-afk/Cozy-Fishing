@@ -152,11 +152,6 @@ namespace FishingGame.Reeling
             _initialSuddenDeathTimer = suddenDeathTimerDuration;
         }
 
-        private void OnDisable()
-        {
-            DisableArrowKeys();
-        }
-
         private void Update()
         {
             if (_gameActive != true) { return; }
