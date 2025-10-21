@@ -1408,7 +1408,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""7300c51c-0b04-467c-9172-e0c3eaa53348"",
-                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1441,7 +1441,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""6a3253b2-8be9-4e1e-8c66-b7908e8e6070"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1474,7 +1474,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""eecd96e8-7279-4755-85ef-f6fa04484ed1"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1496,7 +1496,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""44ca26e9-a7c4-4f61-a654-120c785ae09d"",
-                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
