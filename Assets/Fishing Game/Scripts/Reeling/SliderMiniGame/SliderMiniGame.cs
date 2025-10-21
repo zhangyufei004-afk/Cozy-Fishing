@@ -1,4 +1,6 @@
 using FishingGame.FishSystem;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -99,7 +101,7 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         [Tooltip("How many seconds required to increase time scalar")]
-        private float timeRequiredForScalar;
+        private float suddenDeathTimer;
 
         [SerializeField]
         [Tooltip("The max speed going left the catchbox can go")]
@@ -113,14 +115,29 @@ namespace FishingGame.Reeling
         [Tooltip("The time buffer the player is given before the catchbox starts to move")]
         private float initialTimeToWait;
 
+        private bool _inputHeld = false;
+        private bool _goingLeft = true;
+        private bool _suddenDeath = false;
+
+        private bool _behaviourLoaded = false;
+        private SliderData _sliderData;
+        private List<SliderBehaviour> _sliderBehaviourList;
+        private int _currentBehaviourIndex = 0;
+        private int _initialPointScalar = 5;
+
         private float _catchProgress = 50f;
         private float _timeSinceLastGoal = 0f;
         private float _maxTimeBetweenGoals = 0f;
         private float _catchBoxVelocity = 0f;
         private float _timePassed;
+        private float _catchIncreaseValueToUse;
+        private float _catchDecreaseValueToUse;
+        private float _speedToUse;
+        private float _defaultSuddenDeathTime;
 
-        private int _catchMax = 100;
-        private int _currentTimeScalar;
+        private int _wanderRange = 50;
+
+        private float _catchMax = 100;
 
 
         private IFishAble _reelingObjectData;
@@ -128,7 +145,7 @@ namespace FishingGame.Reeling
         private bool _isMiniGamePaused = false;
         private bool _isGoingLeft;
 
-        private InputAction _directionAction;
+        private InputAction _clickAction;
 
         private Vector3 _fishMoveGoal = Vector3.zero;
         #endregion
@@ -136,23 +153,29 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
+            InputActionMap uiActionMap = inputActions.FindActionMap("SliderMiniGame");
             uiActionMap.Enable();
-            _directionAction = uiActionMap.FindAction("Navigate");
+            _clickAction = uiActionMap.FindAction("LeftClick");
+
+            _defaultSuddenDeathTime = suddenDeathTimer;
+        }
+
+        private void OnDisable()
+        {
+            if (_clickAction == null) { return; }
+            _clickAction.started -= MouseDown;
+            _clickAction.canceled -= MouseUp;
         }
 
         public void Update()
         {
-            if (_isMinigameActive == false)
-            {
-                return;
-            }
+            if (_isMinigameActive == false) { return; }
 
             if (_isMiniGamePaused == true) { CheckInitialBufferTimer(); }
 
 
             // Right movement
-            if (_directionAction.ReadValue<Vector2>().x > 0)
+            if (_inputHeld)
             {
                 UnPauseCatchboxMovement();
                 rightArrow.color = Color.green;
@@ -173,19 +196,14 @@ namespace FishingGame.Reeling
             DetermineIfNeedGoal();
             UpdateFishLocation();
             SetFishDirection();
-
+            
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
-            {
-                ModifyCatchProgress(catchIncreaseAmount);
-            }
-            else
-            {
-                ModifyCatchProgress(catchDecreaseAmount);
-            }
+            { ModifyCatchProgress(_catchIncreaseValueToUse); }
+            else { ModifyCatchProgress(_catchDecreaseValueToUse); }
 
             if (_isMiniGamePaused) { return; }
 
-            if (_directionAction.ReadValue<Vector2>().x == 0 || _directionAction.ReadValue<Vector2>().x < 0)
+            if (!_inputHeld)
             {
                 rightArrow.color = Color.white;
                 MovementFightBack();
@@ -208,21 +226,9 @@ namespace FishingGame.Reeling
         {
             _reelingObjectData = fishScriptable;
 
-            fishImage.sprite = _reelingObjectData.GetTexture();
-            sliderCanvas.SetActive(true);
-            _maxTimeBetweenGoals = 1;
-            Vector3 startLocation = CreateGoalLocation();
-            fishImage.transform.localPosition = startLocation;
-            Vector3 newFishGoal = CreateGoalLocation();
-            FishSetGoal(newFishGoal);
-            _timePassed = 0f;
-            _currentTimeScalar = 1;
-            catchBox.transform.localPosition = new Vector3(catchBox.transform.localPosition.x, catchboxYStartLocation, catchBox.transform.localPosition.z);
+            InitializeVariables();
+            DetermineBehaviour();            
             _isMiniGamePaused = true;
-
-            // Scaling variables based on difficulty
-            progressSlider.maxValue = _catchMax;
-            _catchProgress = Mathf.Clamp(55 - 5 * fishScriptable.GetCatchDifficulty(), 40, 100);
         }
 
         /// <summary>
@@ -239,6 +245,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void WinMiniGame()
         {
+            StopAllCoroutines();
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(true);
@@ -250,6 +257,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void LoseMiniGame()
         {
+            StopAllCoroutines();
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
@@ -276,9 +284,22 @@ namespace FishingGame.Reeling
         private void MovementFightBack()
         {
             _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
+            // Doubles the Fight back if catchbox is going forward
             if (_catchBoxVelocity > 0)
             {
-                _catchBoxVelocity /= 2;
+                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
+            }
+
+            // Resets velocity if catchbox is against the left edge
+            if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
+            {
+                _catchBoxVelocity = 0;
+            }
+
+            // Increase fight back if right at right edge
+            if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMaxXCord))
+            {
+                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
             }
 
             _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
@@ -291,6 +312,12 @@ namespace FishingGame.Reeling
         /// <param name="moveValue">The value for how far to move</param>
         private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
         {
+            // Resets velocity if catchbox is against the left edge
+            if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
+            {
+                _catchBoxVelocity = 0;
+            }
+
             _catchBoxVelocity += accelerationValue * Time.deltaTime;
         }
 
@@ -306,10 +333,119 @@ namespace FishingGame.Reeling
             catchBox.localPosition = newPosition;
         }
 
+        /// <summary>
+        /// Sets input held to true
+        /// Run when the mouse is pressed down
+        /// </summary>
+        private void MouseDown(InputAction.CallbackContext inputAction)
+        {
+            _inputHeld = true;
+        }
+
+        /// <summary>
+        /// Sets input held to false
+        /// Run when the mouse is released
+        /// </summary>
+        private void MouseUp(InputAction.CallbackContext inputAction)
+        {
+            _inputHeld = false;
+        }
+
 
         #endregion
 
-        #region FishMovement
+        #region FishMovementCustomBehaviour
+
+        /// <summary>
+        /// Setsup the custom slider behaviour
+        /// </summary>
+        private void SetupCustomBehaviour()
+        {
+            _behaviourLoaded = true;
+            _currentBehaviourIndex = 0;
+
+            _sliderData = new SliderData(_reelingObjectData.GetSliderMinigameBehaviour());
+            _sliderBehaviourList = _sliderData.GetSliderBehaviours();
+
+            _catchIncreaseValueToUse = _sliderData.GetPointPerSecond();
+            _catchDecreaseValueToUse = -_sliderData.GetPointPerSecond() / 2;
+
+            suddenDeathTimer = _sliderData.GetSuddenDeathTimer();
+
+            // Starting Locations
+            Vector3 currentPosition = fishImage.transform.localPosition;
+            Vector3 startingLocation = new Vector3(currentPosition.x, _sliderData.GetStartingLocation(), currentPosition.z);
+            fishImage.transform.localPosition = startingLocation;
+
+            // Scaling variables based on difficulty
+            _catchMax = _sliderData.GetMaxPointsNeeded();
+            progressSlider.maxValue = _catchMax;
+            _catchProgress = _sliderData.GetPointsToStartWith();
+
+
+            float initialFishGoal = _sliderBehaviourList[_currentBehaviourIndex].GetLocationToMoveTo();
+            Vector3 newGoal = new Vector3(currentPosition.x, initialFishGoal, currentPosition.z);
+            _speedToUse = _sliderBehaviourList[_currentBehaviourIndex].GetSpeedToUse();
+            if (_speedToUse == 0) { _speedToUse = defaultSpeed; }
+            FishSetGoal(newGoal);
+            FishSetSpeed(_speedToUse);
+            StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
+            _currentBehaviourIndex++;
+        }
+
+        /// <summary>
+        /// Sets the next behaviour point that the fish should move to, starts a timer based on this entrys time to spend on goal
+        /// </summary>
+        private void SetNextBehaviourPoint()
+        {
+            Vector3 currentPosition = fishImage.transform.localPosition;
+            float newFishGoal = _sliderBehaviourList[_currentBehaviourIndex].GetLocationToMoveTo();
+            Vector3 newGoal = new Vector3(currentPosition.x, newFishGoal, currentPosition.z);
+            _speedToUse = _sliderBehaviourList[_currentBehaviourIndex].GetSpeedToUse();
+            FishSetGoal(newGoal);
+            FishSetSpeed(_speedToUse);
+            if (_speedToUse == 0) { _speedToUse = defaultSpeed; }
+            Debug.Log("GOal: " + newGoal);
+            StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
+
+            _currentBehaviourIndex++;
+            if (_currentBehaviourIndex >= _sliderBehaviourList.Count) {  _currentBehaviourIndex = 0; }
+        }
+
+        /// <summary>
+        /// A timer for how long until the next behaviour point should be set
+        /// </summary>
+        /// <param name="timeToWait">How long to wait</param>
+        /// <returns>Sets the new behaviour point</returns>
+        private IEnumerator CustomBehaviourTime(float timeToWait)
+        {
+            yield return new WaitForSeconds(timeToWait);
+            SetNextBehaviourPoint();
+        }
+
+        #endregion
+
+        #region FishMovementDefaultBehaviour
+
+        /// <summary>
+        /// Setsup the games default behaviour if no behaviour data was inputed
+        /// </summary>
+        private void SetupDefaultBehaviour()
+        {
+            suddenDeathTimer = _defaultSuddenDeathTime;
+            _maxTimeBetweenGoals = 1;
+            Vector3 startLocation = CreateGoalLocation();
+            fishImage.transform.localPosition = startLocation;
+            Vector3 newFishGoal = CreateGoalLocation();
+            FishSetGoal(newFishGoal);
+
+            _catchIncreaseValueToUse = catchIncreaseAmount;
+            _catchDecreaseValueToUse = catchDecreaseAmount;
+
+            // Scaling variables based on difficulty
+            progressSlider.maxValue = _catchMax;
+            _catchProgress = Mathf.Clamp(55 - 5 * _reelingObjectData.GetCatchDifficulty(), 40, 100);
+        }
 
         /// <summary>
         /// Checks the time since last goal was set to determine if it has been long enough to set a new goal
@@ -318,6 +454,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void DetermineIfNeedGoal()
         {
+            if (_behaviourLoaded == true) { return; }
+
             if (_timeSinceLastGoal >= _maxTimeBetweenGoals)
             {
                 Vector3 newFishGoal = CreateGoalLocation();
@@ -373,14 +511,14 @@ namespace FishingGame.Reeling
         /// </summary>
         private void UpdateFishLocation()
         {
-            if (fishImage.transform.position.y == _fishMoveGoal.y)
+            if (Mathf.Approximately(fishImage.transform.localPosition.y, _fishMoveGoal.y))
             {
-                return;
+                Wander();
             }
 
             if (_isGoingLeft)
             {
-                int speedValue = defaultSpeed * _reelingObjectData.GetCatchDifficulty();
+                float speedValue = _speedToUse * _reelingObjectData.GetCatchDifficulty();
 
                 Vector3 currentPosition = fishImage.transform.localPosition;
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);
@@ -388,12 +526,26 @@ namespace FishingGame.Reeling
             }
             else
             {
-                int speedValue = defaultSpeed * _reelingObjectData.GetCatchDifficulty();
+                float speedValue = _speedToUse * _reelingObjectData.GetCatchDifficulty();
 
                 Vector3 currentPosition = fishImage.transform.localPosition;
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, _fishMoveGoal, speedValue * Time.deltaTime);
                 fishImage.transform.localPosition = newPosition;
             }
+        }
+
+        /// <summary>
+        /// This is run when the fish is at its goal, it causes it to wander a small bit until it gets a new goal
+        /// </summary>
+        private void Wander()
+        {
+            float wanderValue = Random.Range(-_wanderRange, _wanderRange);
+            float wanderSpeed = _speedToUse / 2;
+
+            Vector3 currentPosition = fishImage.transform.localPosition;
+            Vector3 newGoal = new Vector3(currentPosition.x, currentPosition.y + wanderValue, currentPosition.z);
+            FishSetGoal(newGoal);
+            FishSetSpeed(wanderSpeed);
         }
 
 
@@ -418,13 +570,12 @@ namespace FishingGame.Reeling
         {
             if (_isMiniGamePaused) { valueToAdd = valueToAdd / 2; }
 
-            _catchProgress += (valueToAdd * Time.deltaTime) * _currentTimeScalar;
+            if (_suddenDeath) { valueToAdd *= 4; }
+
+            _catchProgress += (valueToAdd * Time.deltaTime);
             progressSlider.value = _catchProgress;
 
-            if (CheckIfCatchWon())
-            {
-                WinMiniGame();
-            }
+            if (CheckIfCatchWon()) { WinMiniGame(); }
         }
 
         /// <summary>
@@ -437,15 +588,23 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Checks if the time passed is equal to the time required for scalar, if so increase scalar by 1 and reset time passed
+        /// Checks if the time passed is equal to the time required for sudden death, if so sudden death is set to true
         /// </summary>
         private void CheckTimePassed()
         {
-            if (_timePassed >= timeRequiredForScalar)
+            if (_timePassed >= suddenDeathTimer && _suddenDeath != true)
             {
-                _currentTimeScalar += 1;
-                _timePassed = 0;
+                _suddenDeath = true;
             }
+        }
+
+        /// <summary>
+        /// Sets the speed of the fish based on inputed float
+        /// </summary>
+        /// <param name="speedToSet">The speed to set the fish to</param>
+        private void FishSetSpeed(float speedToSet)
+        {
+            _speedToUse = speedToSet;
         }
 
         /// <summary>
@@ -457,6 +616,41 @@ namespace FishingGame.Reeling
             {
                 UnPauseCatchboxMovement();
             }
+        }
+
+        /// <summary>
+        /// Determines if this will use a custom behaviour or a default behaviour
+        /// </summary>
+        private void DetermineBehaviour()
+        {
+            if (_reelingObjectData.GetSliderMinigameBehaviour() == null) { SetupDefaultBehaviour(); }
+            else { SetupCustomBehaviour(); }
+        }
+
+        /// <summary>
+        /// Setsup default variables that are needed
+        /// </summary>
+        private void InitializeVariables()
+        {
+            fishImage.sprite = _reelingObjectData.GetTexture();
+            sliderCanvas.SetActive(true);
+
+            _clickAction.started += MouseDown;
+            _clickAction.canceled += MouseUp;
+
+            catchBox.transform.localPosition = new Vector3(catchBox.transform.localPosition.x, catchboxYStartLocation, catchBox.transform.localPosition.z);
+            _timePassed = 0f;
+            _timeSinceLastGoal = 0f;
+            _suddenDeath = false;
+            _catchBoxVelocity = 0f;
+            FishSetSpeed(defaultSpeed);
+            _inputHeld = false;
+
+            _behaviourLoaded = false;
+
+            int decideDirection = Random.Range(0, 2);
+            if (decideDirection == 0) { _goingLeft = true; }
+            else {  _goingLeft = false; }
         }
 
         #endregion
