@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MutatedFengalWorm
   m_EditorClassIdentifier: 
   persistentID: 0
-  Texture: {fileID: 21300000, guid: 3032385d02f31f642b7760451236371a, type: 3}
+  Texture: {fileID: 21300000, guid: 1dc9aa4e7db69284b811e7a973fd2983, type: 3}
   Id: 1
   MinMaxWeight: {x: 0, y: 0}
   SpeciesName: Mutated Fengal Worm
@@ -25,5 +25,6 @@ MonoBehaviour:
   LocationsFound: 02000000
   TimesFound: 0000000002000000
   IsInvasive: 0
+  BasePrice: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: a8ffa21d46b121f43a6644a972d0842e, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: c801366b79f093642a7934b99864765f, type: 2}
