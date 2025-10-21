@@ -15871,12 +15871,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: overrideFishList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: 'overrideFishList.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 108d93d163237d74b9798d2728357ce3, type: 2}
+      objectReference: {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}
     - target: {fileID: 8082501405363325958, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -23372,8 +23372,12 @@ PrefabInstance:
       objectReference: {fileID: 1910628927}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: miniGameTypes.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: 'miniGameTypes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1137502027}
     - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'miniGameTypes.Array.data[1]'
       value: 

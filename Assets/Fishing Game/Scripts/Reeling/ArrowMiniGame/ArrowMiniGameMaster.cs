@@ -439,7 +439,7 @@ namespace FishingGame.Reeling
             _currentWaveIndex = 0;
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
             CheckTimePassed();
-            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            float timeToWait = _nextEntryToSpawn.GetTimeToWaitForNextArrow();
             StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
             
         }
@@ -474,12 +474,12 @@ namespace FishingGame.Reeling
         private void SetupNextCustomArrow()
         {
             _currentWaveIndex++;
+            
             if (_currentWaveIndex >= _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
 
             CheckTimePassed();
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
-            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            if (_currentWaveIndex == _activeArrowWaveBehaviourList.Count - 1 && _nextEntryToSpawn.GetIsDouble()) { timeToWait = 0; }
+            float timeToWait = _nextEntryToSpawn.GetTimeToWaitForNextArrow();
             StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
         }
 
@@ -622,10 +622,6 @@ namespace FishingGame.Reeling
             {
                 _suddenDeath = true;
             }
-            if (_currentTimePassed >= _minigameLoopDuration)
-            {
-                _currentTimePassed = 0;
-            }
         }
 
         /// <summary>
@@ -719,9 +715,7 @@ namespace FishingGame.Reeling
                 _arrowMiniGameBehaviour = new ArrowWaveData(_currentlyReelingObject.GetArrowMinigameBehaviour());
                 _arrowMiniGameBehaviourActive = true;
                 _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
-                _minigameLoopDuration = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
                 _initialSuddenDeathTimer = _arrowMiniGameBehaviour.GetSuddenDeathTimer();
-                _activeArrowWaveBehaviourList.Sort();
 
                 _roundSpeed = _arrowMiniGameBehaviour.GetSpeedOfGame();
                 if (_roundSpeed == 0) { _roundSpeed = normalSpeed; }
