@@ -129,6 +129,7 @@ namespace FishingGame.Player
 
         private void ToggleDialogueCamera(bool enableCamera)
         {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(enableCamera);
             dialogCamera.gameObject.SetActive(enableCamera);
         }
 
