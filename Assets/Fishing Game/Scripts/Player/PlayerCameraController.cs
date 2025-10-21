@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using FishingGame.GameManagement;
 using FishingGame.NPC;
@@ -9,8 +8,8 @@ using UnityEngine.InputSystem;
 namespace FishingGame.Player
 {
     /// <summary>
-    /// Class containing methods which control the cameras used by the player. Useful for switching to a close up camera
-    /// or a fist person camera for looking up. 
+    /// Handles dialogue and general camera transitions for the player.
+    /// Grapple camera support is disabled since grappling now uses predefined anchors.
     /// </summary>
     public class PlayerCameraController : MonoBehaviour
     {
@@ -19,7 +18,7 @@ namespace FishingGame.Player
         
         [Header("Cameras")]
         [SerializeField] private CinemachineCamera dialogCamera;
-        [SerializeField] private CinemachineCamera grappleCamera;
+        [SerializeField] private CinemachineCamera topDownCamera;
 
         [Header("Player")]
         [SerializeField] private PlayerController player;
@@ -32,54 +31,40 @@ namespace FishingGame.Player
         private string _npcName;
         private bool _isCurrentlyEngaged;
         private Vector3 _npcPosition;
-        private bool _changePlayerRotation;
-        
+
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
             playerActionMap.Enable();
             playerActionMap.FindAction("Interact").started += SwitchToDialogueCamera;
-            playerActionMap.FindAction("Crouch").started += ToggleGrappleCamera;
-            
 
             GameManager.Instance.GameEvents.OnToggleDialogueCamera += ToggleDialogueCamera;
-            GameManager.Instance.GameEvents.OnToggleGrappleCamera += ToggleGrappleCamera;
-            GameManager.Instance.GameEvents.OnBecomeOccupied += isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
+            GameManager.Instance.GameEvents.OnBecomeOccupied += isEngaged => _isCurrentlyEngaged = isEngaged;
             GameManager.Instance.GameEvents.OnWithinDialogueRange += SetInDialogueRange;
+            GameManager.Instance.GameEvents.OnNPCFocus += SetNpcFocus;
 
             _npcName = "";
-
-            GameManager.Instance.GameEvents.OnNPCFocus += SetNpcFocus;
         }
 
         /// <summary>
-        /// Switches from the current camera back to the top-down camera. 
+        /// Resets to the default camera view (top-down).
         /// </summary>
         public void SwitchToTopDownCamera()
         {
-            grappleCamera?.gameObject.SetActive(false);
-            dialogCamera.gameObject.SetActive(false);
+            dialogCamera?.gameObject.SetActive(false);
+            topDownCamera?.gameObject.SetActive(true);
             GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             _isInDialogueRange = false;
         }
 
         /// <summary>
-        /// Sets the in range of NPC with dialogue boolen.
+        /// Updates whether the player is within NPC dialogue range.
         /// </summary>
-        /// <param name="isInDialogueRange">Whether we are in range of an NPC.</param>
-        /// <param name="npcName">The name of the NPC we are close to.</param>
         public void SetInDialogueRange(bool isInDialogueRange, string npcName)
         {
             _isInDialogueRange = isInDialogueRange;
-            if (!isInDialogueRange)
-            {
-                _npcName = "";
-            }
-            else
-            {
-                _npcName = npcName;
-            }
+            _npcName = isInDialogueRange ? npcName : "";
 
             if (!isInDialogueRange)
             {
@@ -94,34 +79,11 @@ namespace FishingGame.Player
                 _npcPosition = npcPosition;
             }
         }
-        
-        private void ToggleGrappleCamera(InputAction.CallbackContext context)
-        {
-            ToggleGrappleCamera(!grappleCamera.gameObject.activeSelf);
-        }
-
-        private void ToggleGrappleCamera(bool isCameraEnabled)
-        {
-            if (player.HasGrappleHook && !_isCurrentlyEngaged)
-            {
-                // grappleCamera.transform.rotation = player.GetPlayerBodyRotation();
-                grappleCamera.gameObject.SetActive(isCameraEnabled);
-                if (isCameraEnabled)
-                {
-                    grappleCamera.GetComponent<CinemachinePanTilt>()
-                        .ForceCameraPosition(grappleCamera.transform.position, player.GetPlayerBodyRotation());
-
-                }
-
-                dialogCamera.gameObject.SetActive(false);
-                grappleTargetUI.SetActive(isCameraEnabled);
-            }
-        }
 
         private void SwitchToDialogueCamera(InputAction.CallbackContext context)
         {
             GameManager.Instance.GameEvents.NPCInteraction(true, _npcName);
-            if (_npcName != "" && _npcPosition != Vector3.zero)
+            if (!string.IsNullOrEmpty(_npcName) && _npcPosition != Vector3.zero)
             {
                 StartCoroutine(RotateTowardsNPC());
             }
@@ -131,12 +93,18 @@ namespace FishingGame.Player
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(enableCamera);
             dialogCamera.gameObject.SetActive(enableCamera);
+            if (topDownCamera != null)
+                topDownCamera.gameObject.SetActive(!enableCamera);
         }
 
+        /// <summary>
+        /// Smoothly rotates the player toward the NPC during dialogue.
+        /// </summary>
         private IEnumerator RotateTowardsNPC()
         {
             Vector3 direction = _npcPosition - transform.position;
             Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+
             while (!IsAtRotation(characterBody.rotation, toRotation))
             {
                 yield return null;
@@ -147,7 +115,7 @@ namespace FishingGame.Player
         private bool IsAtRotation(Quaternion currentRotation, Quaternion targetRotation)
         {
             return Mathf.Abs(currentRotation.eulerAngles.x - targetRotation.eulerAngles.x) < RotationComparisonThreshold 
-                    && Mathf.Abs(currentRotation.eulerAngles.z - targetRotation.eulerAngles.z) < RotationComparisonThreshold;
+                   && Mathf.Abs(currentRotation.eulerAngles.z - targetRotation.eulerAngles.z) < RotationComparisonThreshold;
         }
     }
 }
