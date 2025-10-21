@@ -14,25 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   ArrowEntrys:
-  - timeToSpawnInSeconds: 0.5
+  - timeUntilNextArrow: 0.8
     arrowTypeToSpawn: 0
-    isDouble: 0
-  - timeToSpawnInSeconds: 1
+  - timeUntilNextArrow: 0.8
     arrowTypeToSpawn: 1
-    isDouble: 0
-  - timeToSpawnInSeconds: 2
+  - timeUntilNextArrow: 0.5
     arrowTypeToSpawn: 0
-    isDouble: 1
-  - timeToSpawnInSeconds: 2
-    arrowTypeToSpawn: 3
-    isDouble: 1
-  - timeToSpawnInSeconds: 2.5
+  - timeUntilNextArrow: 0.5
+    arrowTypeToSpawn: 1
+  - timeUntilNextArrow: 1
     arrowTypeToSpawn: 2
-    isDouble: 1
-  - timeToSpawnInSeconds: 2.5
-    arrowTypeToSpawn: 1
-    isDouble: 1
+  - timeUntilNextArrow: 0.3
+    arrowTypeToSpawn: 2
   SuddenDeathTimer: 30
-  PointsNeededToPass: 160
+  PointsNeededToPass: 200
   PointsPerArrow: 10
   MinigameSpeed: 500
