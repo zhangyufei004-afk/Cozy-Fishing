@@ -178,7 +178,7 @@ namespace FishingGame.Reeling
             {
                 UnPauseCatchboxMovement();
                 rightArrow.color = Color.green;
-                SetPlayerVelocity(boxSpeedScalar, false);
+                SetPlayerVelocity(boxSpeedScalar);
             }
 
             _timePassed += Time.deltaTime;
@@ -285,34 +285,34 @@ namespace FishingGame.Reeling
         /// </summary>
         private void MovementFightBack()
         {
-            _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
-            // Doubles the Fight back if catchbox is going forward
+            float _modifiedFightBackSpeed = fightBackSpeed;
+            // Increase the fight back speed by a quarter if currently traveling forward
             if (_catchBoxVelocity > 0)
             {
-                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
+                _modifiedFightBackSpeed *= 2f;
             }
 
             // Resets velocity if catchbox is against the left edge
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
             {
-                _catchBoxVelocity = 0;
+                _modifiedFightBackSpeed = 0;
             }
 
             // Increase fight back if right at right edge
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMaxXCord))
             {
-                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
+                _modifiedFightBackSpeed *= 2;
             }
 
-            _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
+            _catchBoxVelocity += _modifiedFightBackSpeed * Time.deltaTime;
         }
 
         /// <summary>
         /// Move the catchbox ui element based on player input
         /// Limits the y position based on the catchbox min and max values
         /// </summary>
-        /// <param name="moveValue">The value for how far to move</param>
-        private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
+        /// <param name="accelerationValue">The value for how far to move</param>
+        private void SetPlayerVelocity(float accelerationValue)
         {
             // Resets velocity if catchbox is against the left edge
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
@@ -329,6 +329,7 @@ namespace FishingGame.Reeling
         private void MoveCatchBox()
         {
             Vector3 currentPosition = catchBox.transform.localPosition;
+            _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
             float yPosition = currentPosition.y += _catchBoxVelocity;
             yPosition = Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
