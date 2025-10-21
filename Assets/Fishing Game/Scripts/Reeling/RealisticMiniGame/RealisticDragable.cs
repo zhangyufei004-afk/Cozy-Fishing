@@ -2,19 +2,19 @@ using FishingGame.Reeling;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace FishingGame.Reeling
 {
     /// <summary>
     /// This script controls the logic and behaviour behind the dragable component of the realistic minigame
     /// It also contains a reference to the minigame master
-    /// NOTE: THIS IS A WIP, it functions but there is a lot of work to still go into this minigame
-    /// Several inefficient functions currently present to get this working in a low amount of time
     /// </summary>
     public class RealisticDragable : MonoBehaviour
     {
@@ -24,10 +24,12 @@ namespace FishingGame.Reeling
         [Tooltip("The master script for this minigame")]
         private RealisticMiniGameMaster minigameMaster;
 
-        private Image _centerImage;
+        [SerializeField]
+        [Tooltip("The camera that loads the UI")]
+        private CinemachineCamera minigameCamera;
 
-        private PlayerInput _playerInput;
-        private InputAction _mouseInput;
+        private UnityEngine.UI.Image _centerImage;
+
         private InputAction _realisticStickAction;
 
         private ERealisticDirection _currentDirection;
@@ -47,7 +49,6 @@ namespace FishingGame.Reeling
         [Tooltip("The highest possible value of the accumulated angle value")]
         private int highestAngleTotalValue;
 
-
         private void OnEnable()
         {
             _centerImage = minigameMaster.GetCentreImage();
@@ -57,13 +58,10 @@ namespace FishingGame.Reeling
             InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
             uiActionMap.Enable();
             _realisticStickAction = uiActionMap.FindAction("RealisticStickMovement");
-            _mouseInput = uiActionMap.FindAction("Click");
-            _playerInput = GetComponent<PlayerInput>();
         }
 
         private void Update()
         {
-            SetPositionToMouse();
             Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 transform.parent as RectTransform,
@@ -76,7 +74,10 @@ namespace FishingGame.Reeling
             Vector2 previousDirection = (_lastPosition - center).normalized;
             Vector2 newDirection = (localMousePos - center).normalized;
 
-            
+
+            Vector2 direction = localMousePos - ((RectTransform)_centerImage.transform).anchoredPosition;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
 
             if (_lastPosition !=  Vector2.zero)
             {
@@ -93,8 +94,7 @@ namespace FishingGame.Reeling
 
 
             _lastPosition = localMousePos;
-
-
+            gameObject.GetComponent<UnityEngine.UI.Image>().rectTransform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
         #region Public Functions
@@ -188,23 +188,6 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// Checks if the mouse is currently within the reeling circle, returns true if so otherwise false
-        /// Takes parameters for the layer to check and tag to check
-        /// </summary>
-        /// <param name="layerToCheck">The layer of the ui object being checked</param>
-        /// <param name="tagToCheck">The tag of the ui object being checked</param>
-        /// <returns>True if mouse is within circle otherwise false</returns>
-        private bool CheckIfMouseIsWithinCircle(int layerToCheck, string tagToCheck)
-        {
-            if (IsPointerOverUIElement(GetEventSystemRaycastResults(), layerToCheck, tagToCheck))
-            {
-                return true;
-            }
-            else
-            { return false; }
-        }
-
-        /// <summary>
         /// Sets the position of the mouse to the input action
         /// </summary>
         private void SetPositionToMouse()
@@ -223,36 +206,7 @@ namespace FishingGame.Reeling
             _directionChangeTracker = Mathf.Clamp(_directionChangeTracker, lowestAngleTotalValue, highestAngleTotalValue);
         }
 
-        /// <summary>
-        /// Returns true if raycast from mouse touches a ui element matching the layer and tag inputed
-        /// </summary>
-        /// <param name="eventSystemRaysastResults">A raycast result</param>
-        /// <param name="layerToCheck">The layer that the UI object should have</param>
-        /// <param name="tagToCheck">The tag that the UI object should have</param>
-        /// <returns></returns>
-        private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults, int layerToCheck, string tagToCheck)
-        {
-            for (int index = 0; index < eventSystemRaysastResults.Count; index++)
-            {
-                RaycastResult curRaysastResult = eventSystemRaysastResults[index];
-                if (curRaysastResult.gameObject.layer == layerToCheck && curRaysastResult.gameObject.CompareTag(tagToCheck))
-                    return true;
-            }
-            return false;
-        }
 
-        /// <summary>
-        /// Gets all event system raycast results of current mouse or touch position.
-        /// </summary>
-        /// <returns>The raycast results</returns>
-        private static List<RaycastResult> GetEventSystemRaycastResults()
-        {
-            PointerEventData eventData = new PointerEventData(EventSystem.current);
-            eventData.position = UnityEngine.Input.mousePosition;
-            List<RaycastResult> raycastResults = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, raycastResults);
-            return raycastResults;
-        }
         #endregion
     }
 }
