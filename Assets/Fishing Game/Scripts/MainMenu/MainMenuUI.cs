@@ -17,7 +17,6 @@ namespace FishingGame.MainMenu
             if (settingsPanel != null && mainMenuPanel != null)
             {
                 settingsPanel.SetActive(true);
-                mainMenuPanel.SetActive(false);
             }
         }
 
@@ -26,7 +25,6 @@ namespace FishingGame.MainMenu
             if (settingsPanel != null && mainMenuPanel != null)
             {
                 settingsPanel.SetActive(false);
-                mainMenuPanel.SetActive(true);
             }
             EventSystem.current.SetSelectedGameObject(mainMenuPanel.transform.GetChild(0).gameObject);
         }
