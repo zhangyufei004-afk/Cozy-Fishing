@@ -1,8 +1,7 @@
-using Unity.Burst;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FishingGame.GameManagement;
-using UnityEngine.UIElements;
 using Unity.Cinemachine;
 using FishingGame.Reeling;
 
@@ -16,37 +15,27 @@ namespace FishingGame.Player
         private readonly int _speed = Animator.StringToHash("Speed");
 
         public bool HasGrappleHook => hasGrapple;
-        
-        [SerializeField]
-        private GameObject playerBody;
-        [SerializeField]
-        private GameObject playerMesh;
-        [SerializeField]
-        private CharacterController characterController;
-        [SerializeField]
-        private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
-        [SerializeField]
-        private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20    
-        [SerializeField] 
-        private Animator animator;
-        [SerializeField]
-        private CinemachineBrain brain;
-        [SerializeField]
-        private GameObject fpsCamera;
-        [SerializeField]
-        private LayerMask rayLayerMask;
-        [SerializeField]
-        private float grappleRange;
-        [SerializeField]
-        private float grappleSpeed;
 
-        [SerializeField]
-        private bool hasGrapple;
+        [SerializeField] private GameObject playerBody;
+        [SerializeField] private GameObject playerMesh;
+        [SerializeField] private CharacterController characterController;
+        [SerializeField] private float movementSpeed; // NOTE: BEST VALUE SEEMED LIKE 6
+        [SerializeField] private float rotationSpeed; // NOTE BEST VALUE SEEMED LIKE 20    
+        [SerializeField] private Animator animator;
+        [SerializeField] private CinemachineBrain brain;
+        [SerializeField] private GameObject fpsCamera;
+        [SerializeField] private float grappleRange;
+        [SerializeField] private float grappleSpeed;
+        [SerializeField] private LayerMask grappleLayer;
+        [SerializeField] private LayerMask waterLayerMask;
+        [SerializeField] private LayerMask terrainLayerMask;
+
+        [SerializeField] private bool hasGrapple;
 
         private Vector2 _moveInput;
         private float _initialMovementSpeed;
         private float _initialRotationSpeed;
-        
+
         // Grapple Variables
         private bool _grappleMode;
         private bool _fireGrapple;
@@ -57,11 +46,17 @@ namespace FishingGame.Player
         private Vector3 _grappleTarget;
         private bool _isCurrentlyEngaged;
 
-        [Tooltip("A reference to the fishingRod script")]
-        [SerializeField] private FishingRod currentFishingRod;
-        
+        [Tooltip("A reference to the fishingRod script")] [SerializeField]
+        private FishingRod currentFishingRod;
+
         public FishingRod CurrentFishingRod => currentFishingRod;
 
+        // Anti Water Walking Properties
+        private int _raycastLayerMask;
+        private Vector3 _previousSafePlace;
+        private bool _isRespawnRoutineRunning;
+        private bool _isDead;
+        
         /// <summary>
         /// Enables or disables the characters movement
         /// </summary>
@@ -78,7 +73,7 @@ namespace FishingGame.Player
             movementSpeed = 0;
             rotationSpeed = 0;
         }
-        
+
         private void OnEnable()
         {
             InputActionAsset inputActions = InputSystem.actions;
@@ -98,14 +93,26 @@ namespace FishingGame.Player
             GameManager.Instance.GameEvents.OnTogglePlayerMovement += ToggleMovement;
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                 isCurrentlyEngaged => _isCurrentlyEngaged = isCurrentlyEngaged;
+            GameManager.Instance.GameEvents.OnPlayerDeathScreenActive += RespawnPlayer;
 
+            _raycastLayerMask = waterLayerMask | terrainLayerMask;
+            _previousSafePlace = Vector3.zero;
         }
 
         private void Update()
         {
-            Movement();
-            Grappling();
-
+            if (IsInWater() && !_isDead)
+            {
+                _isDead = true;
+                GameManager.Instance.GameEvents.PlayerDied();
+                characterController.SimpleMove(Vector3.zero);
+                animator.SetFloat(_speed, 0);
+            }
+            if (_isDead)
+            {
+                return;
+            }
+            
             if (brain.IsBlending)
             {
                 playerMesh.SetActive(true);
@@ -120,6 +127,9 @@ namespace FishingGame.Player
                 }
                 else playerMesh.SetActive(true);
             }
+            
+            Movement();
+            Grappling();
         }
 
         /// <summary>
@@ -144,6 +154,30 @@ namespace FishingGame.Player
         public Quaternion GetPlayerBodyRotation()
         {
             return playerBody.transform.rotation;
+        }
+        
+        private void RespawnPlayer(bool deathScreenActive)
+        {
+            switch (_isDead)
+            {
+                case true when deathScreenActive:
+                    characterController.enabled = false;
+                    transform.position = _previousSafePlace;
+                    animator.SetFloat(_speed, 0);
+                    _previousSafePlace = Vector3.zero;
+                    characterController.enabled = true;
+                    ToggleMovement(false);
+                    GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+                    break;
+                case true when !deathScreenActive:
+                    ToggleMovement(true);
+                    GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                    _isDead = false;
+                    break;
+                default:
+                    Debug.LogError($"Attempted to Respawn player while the player is not dead!");
+                    break;
+            }
         }
 
         /// <summary>
@@ -175,18 +209,28 @@ namespace FishingGame.Player
         /// </summary>
         private void Movement()
         {
-            if (!_grappleMode)
+            if (!characterController.enabled)
+            {
+                return;
+            }
+            
+            if (!_grappleMode && !brain.IsBlending)
             {
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
 
                 Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
 
-                characterController.SimpleMove(directionNormalized * movementSpeed);
-
                 float animationSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, min: 0, max: 2f);
 
                 animator.SetFloat(_speed, animationSpeed);
 
+                if (!CanWalkInDirection(Mathf.Abs(characterController.velocity.y)) && _previousSafePlace == Vector3.zero)
+                {
+                    _previousSafePlace = transform.position;
+                }
+
+                characterController.SimpleMove(directionNormalized * movementSpeed);
+                
                 if (_moveInput != Vector2.zero)
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
@@ -209,7 +253,8 @@ namespace FishingGame.Player
         private void Grappling()
         {
             RaycastHit hit;
-            if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, grappleRange, rayLayerMask) && _grappleMode)
+            if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, grappleRange, grappleLayer) 
+                && _grappleMode)
             {
                 if (_fireGrapple && !_targetHooked)
                 {
@@ -273,7 +318,28 @@ namespace FishingGame.Player
             _moveInput = Vector2.zero;
         }
 
-        
 
+        private bool CanWalkInDirection(float yVelocityAbs)
+        {
+            Vector3 startPositionOffset = transform.position + playerBody.transform.forward * 3.5f + Vector3.up * 2f;
+            Debug.DrawRay(startPositionOffset, Vector3.down * 10f, Color.green, Time.deltaTime);
+
+            if (Physics.Raycast(startPositionOffset, Vector3.down, out RaycastHit hitInfo, 20f, _raycastLayerMask))
+            {
+                if (1 << hitInfo.transform.gameObject.layer == waterLayerMask || yVelocityAbs > 0.25f)
+                {   
+                    return false;
+                }
+                _previousSafePlace = Vector3.zero;
+            }
+
+            return true;
+        }
+
+        private bool IsInWater()
+        {
+            Debug.DrawRay(transform.position + Vector3.up * 1.5f, Vector3.down*0.2f, Color.green);
+            return Physics.Raycast(transform.position + Vector3.up * 1.5f, Vector3.down, 0.2f, waterLayerMask);
+        }
     }
 }

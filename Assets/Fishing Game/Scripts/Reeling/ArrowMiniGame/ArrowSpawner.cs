@@ -35,12 +35,6 @@ namespace FishingGame.Reeling
             _activeArrows = new List<MovingArrow>();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
-
         #region PublicFunctions
 
         /// <summary>
@@ -131,7 +125,6 @@ namespace FishingGame.Reeling
         {
             return masterScript;
         }
-
         #endregion
 
         #region Checks

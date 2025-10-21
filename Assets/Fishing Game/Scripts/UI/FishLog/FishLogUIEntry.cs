@@ -35,6 +35,19 @@ namespace FishingGame.FishLog
             fishName.text = caught ? fishData.SpeciesName : "???";
         }
 
+
+        // For DEBUG purposes only
+        [ContextMenu("Show")]
+        public void Show()
+        {
+            MarkAsCaught(true);
+        }
+        [ContextMenu("Hide")]
+        public void Hide()
+        {
+            MarkAsCaught(false);
+        }
+
         /// <summary>
         /// Run when this UI element is pressed, this will cause the fish log UI to display the clicked fish
         /// </summary>
