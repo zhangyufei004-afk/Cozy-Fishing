@@ -136,12 +136,15 @@ namespace FishingGame.UI.Inventory
 
         /// <summary>
         /// Refreshes the inventory UI with the latest list of items.
+        /// Updates the Size of the inventory container to allow scrolling
         /// </summary>
         /// <param name="itemList">The list of items to display.</param>
         public void RefreshInventoryUI(List<IStorable> itemList)
         {
             _currentlyDisplayedItem = null;
             ClearInventoryUI();
+
+            ((RectTransform)fishListContainer).offsetMin = new Vector2(0, -215 * Mathf.Max(0, Mathf.Ceil((float)itemList.Count / 2) - 3));
 
             foreach (var storable in itemList)
             {
