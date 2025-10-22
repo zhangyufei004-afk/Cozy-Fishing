@@ -39,7 +39,7 @@ MonoBehaviour:
     To: Follow 55 Degree Camera
     Blend:
       Style: 1
-      Time: 0.8
+      Time: 1.2
       CustomCurve:
         serializedVersion: 2
         m_Curve: []
