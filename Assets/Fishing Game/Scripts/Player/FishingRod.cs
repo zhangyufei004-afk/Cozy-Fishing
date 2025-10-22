@@ -1,20 +1,10 @@
-using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Items;
-using System.Collections;
-using System.Runtime.CompilerServices;
 using FishingGame.Items.Bait;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-using System.ComponentModel.Design;
-using FishingGame.Inventory;
-using UnityEditor.UIElements;
-using NUnit.Framework;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
-using System.Linq;
+
 
 namespace FishingGame.Reeling
 {
