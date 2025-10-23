@@ -126,7 +126,7 @@ namespace FishingGame.Reeling
 
         private float _catchProgress = 50f;
         private float _timeSinceLastGoal = 0f;
-        private float _maxTimeBetweenGoals = 0f;
+        private float _maxTimeBetweenGoals = 1f;
         private float _catchBoxVelocity = 0f;
         private float _timePassed;
         private float _catchIncreaseValueToUse;
@@ -436,7 +436,6 @@ namespace FishingGame.Reeling
         {
             _behaviourLoaded = false;
             suddenDeathTimer = _defaultSuddenDeathTime;
-            _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
             fishImage.transform.localPosition = startLocation;
             Vector3 newFishGoal = CreateGoalLocation();
@@ -463,6 +462,7 @@ namespace FishingGame.Reeling
             {
                 Vector3 newFishGoal = CreateGoalLocation();
                 FishSetGoal(newFishGoal);
+                FishSetSpeed(defaultSpeed);
             }
         }
 
