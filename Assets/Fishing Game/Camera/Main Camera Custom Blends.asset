@@ -38,13 +38,49 @@ MonoBehaviour:
   - From: FollowHookCamera
     To: Follow 55 Degree Camera
     Blend:
-      Style: 1
-      Time: 1.2
+      Style: 7
+      Time: 2.5
       CustomCurve:
         serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.30136704
+          value: 0.5984166
+          inSlope: 1.7969458
+          outSlope: 1.7969458
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.21654178
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.6148404
+          value: 0.9136085
+          inSlope: 0.43841314
+          outSlope: 0.43841314
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.49338827
+          outWeight: 0.46579415
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
         m_RotationOrder: 4
   - From: Dialog Camera
     To: Follow 55 Degree Camera

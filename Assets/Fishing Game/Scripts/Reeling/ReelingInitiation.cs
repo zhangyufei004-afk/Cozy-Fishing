@@ -192,6 +192,7 @@ namespace FishingGame.Reeling
             }
             else
             {
+                GameManager.Instance.GameEvents.RemoveCameraParent(fishCamera.name);
                 fishCamera.gameObject.SetActive(false);
             }
         }
