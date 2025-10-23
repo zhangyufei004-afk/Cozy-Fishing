@@ -434,6 +434,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetupDefaultBehaviour()
         {
+            _behaviourLoaded = false;
             suddenDeathTimer = _defaultSuddenDeathTime;
             _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
