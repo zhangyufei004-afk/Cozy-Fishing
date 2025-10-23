@@ -15,6 +15,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using System.Linq;
+using FishingGame.Player;
 
 namespace FishingGame.Reeling
 {
@@ -43,6 +44,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("A reference to the initiation script attatched to player.")]
         private ReelingInitiation initiationScript;
+
+        [SerializeField]
+        [Tooltip("Reference to the player controller script")]
+        private PlayerController playerController;
 
         [SerializeField]
         [Tooltip("A reference to the fishing hook script which is attatched to a fishing rod.")]
@@ -247,6 +252,8 @@ namespace FishingGame.Reeling
             _chargePower = 0;
             _isCharging = true;
             _reverseDirection = false;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            playerController.ToggleMovement(false);
         }
 
         /// <summary>
@@ -353,25 +360,14 @@ namespace FishingGame.Reeling
 
             if (Physics.Raycast(locationPoint, Vector3.down, out hit, maxDistance, _layerMask))
             {
-                // Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
-
-                // if (overlapingBlockObjects.Count() != 0)
-                // {
-                //     ResetCharge();
-                //     SetChargerVisibility(false);
-                //     return false;
-                // }
-
                 if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
                 {
                     ResetCharge();
                     SetChargerVisibility(false);
                     return false;
                 }
-
                 return true;
             }
-
             return false;
         }
 
@@ -408,11 +404,18 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true && CanThrowToLocation()) 
+            if (_isCharging == true && CanThrowToLocation())
             {
                 SetThrowAnimation();
+                _isCharging = false;
             }
-            _isCharging = false;
+            else
+            {
+                _isCharging = false;
+                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                playerController.ToggleMovement(true);
+            }
+            
         }
 
         #endregion

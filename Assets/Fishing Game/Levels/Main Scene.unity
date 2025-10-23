@@ -13134,6 +13134,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 193100724}
     - target: {fileID: 3084148419534240405, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 1175047035}
+    - target: {fileID: 3084148419534240405, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       propertyPath: characterAnimator
       value: 
       objectReference: {fileID: 193100722}
