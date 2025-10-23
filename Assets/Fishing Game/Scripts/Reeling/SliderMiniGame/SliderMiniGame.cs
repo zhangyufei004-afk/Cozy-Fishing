@@ -545,6 +545,8 @@ namespace FishingGame.Reeling
             float wanderValue = Random.Range(-_wanderRange, _wanderRange);
             float wanderSpeed = _speedToUse / 2;
 
+            wanderValue = Mathf.Clamp(wanderValue, fishMinYCord, fishMaxYCord);
+
             Vector3 currentPosition = fishImage.transform.localPosition;
             Vector3 newGoal = new Vector3(currentPosition.x, currentPosition.y + wanderValue, currentPosition.z);
             FishSetGoal(newGoal);
