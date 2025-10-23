@@ -621,6 +621,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1189930303}
+    - target: {fileID: 4262184282624356546, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6703619312514077927, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: masterScript
       value: 
@@ -5285,12 +5289,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1847882215}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfTrash
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: amountOfFishHeld
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: overrideFishList.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: 'overrideFishList.Array.data[0]'

@@ -404,6 +404,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
+            if (!_allowControls) { return; }
+
             if (_isCharging == true && CanThrowToLocation())
             {
                 SetThrowAnimation();
