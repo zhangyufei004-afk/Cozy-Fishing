@@ -38,8 +38,8 @@ MonoBehaviour:
   - timeToSpendOnGoal: 0.75
     locationToMoveTo: 234
     speedToUse: 200
-  StartingLocation: 138
+  StartingLocation: 87
   SuddenDeathTimer: 30
-  PointsNeededToPass: 100
-  PointsPerSecond: 10
-  PointsToStartWith: 20
+  PointsNeededToPass: 150
+  PointsPerSecond: 30
+  PointsToStartWith: 40
