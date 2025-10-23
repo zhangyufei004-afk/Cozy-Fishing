@@ -60,50 +60,16 @@ namespace FishingGame.UI.Inventory
         }
 
         /// <summary>
-        /// Adds a fish to the inventory UI as a new card.
+        /// Adds an IStorable object to the inventory as a new card.
         /// </summary>
-        /// <param name="fish">Fish object to be displayed.</param>
-        public void AddFishToUI(Fish fish)
+        /// <param name="objectToAdd">The IStorable Object to add</param>
+        public void AddStorableToUI(IStorable objectToAdd)
         {
             GameObject card = Instantiate(fishCardPrefab, fishListContainer);
             InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
             if (inventoryUIEntry)
             {
-                inventoryUIEntry.Item = fish;
-                inventoryUIEntry.InventoryUIController = this;
-                inventoryUIEntry.UpdateVisuals();
-            }
-            _currentItemCards.Add(card);
-        }
-
-        /// <summary>
-        /// Adds a trash item to the inventory UI as a new card.
-        /// </summary>
-        /// <param name="trash">The item to be displayed</param>
-        public void AddTrashToUI(Trash trash)
-        {
-            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
-            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
-            if (inventoryUIEntry)
-            {
-                inventoryUIEntry.Item = trash;
-                inventoryUIEntry.InventoryUIController = this;
-                inventoryUIEntry.UpdateVisuals();
-            }
-            _currentItemCards.Add(card);
-        }
-
-        /// <summary>
-        /// Adds a trash item to the inventory UI as a new card.
-        /// </summary>
-        /// <param name="trash">The item to be displayed</param>
-        public void AddAttatchmentToUI(ItemData itemToAdd)
-        {
-            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
-            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
-            if (inventoryUIEntry)
-            {
-                inventoryUIEntry.Item = itemToAdd;
+                inventoryUIEntry.Item = objectToAdd;
                 inventoryUIEntry.InventoryUIController = this;
                 inventoryUIEntry.UpdateVisuals();
             }
@@ -148,29 +114,7 @@ namespace FishingGame.UI.Inventory
 
             foreach (var storable in itemList)
             {
-                switch (storable.GetItemType())
-                {
-                    case EItemType.Fish:
-                        Fish fish = storable as Fish;
-                        AddFishToUI(fish);
-                        break;
-                    case EItemType.Rod:
-                        Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
-                        break;
-                    case EItemType.RodAttachment:
-                        ItemData item = storable as ItemData;
-                        AddAttatchmentToUI(item);
-                        break;
-                    case EItemType.Money:
-                        Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
-                        break;
-                    case EItemType.Trash:
-                        Trash trash = storable as Trash;
-                        AddTrashToUI(trash);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                AddStorableToUI(storable);
             }
         }
 
