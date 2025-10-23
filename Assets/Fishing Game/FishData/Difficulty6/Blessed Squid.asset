@@ -23,4 +23,6 @@ MonoBehaviour:
   LocationsFound: 030000000000000001000000
   TimesFound: 
   IsInvasive: 0
+  BasePrice: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 71987ecf91de16e4099202ad56ecb617, type: 2}
+  SliderMiniGameBehaviour: {fileID: 11400000, guid: f029ad79a26af2a469d29c9cde92ac85, type: 2}
