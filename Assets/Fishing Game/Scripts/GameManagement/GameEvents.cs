@@ -35,7 +35,7 @@ namespace FishingGame.GameManagement
         public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
         public event Action<IStorable> OnItemUsedUp;
-        public event Action<IBait> OnBaitEquiped;
+        public event Action<IBait> OnBaitEquipped;
 
         #endregion
 
@@ -320,7 +320,7 @@ namespace FishingGame.GameManagement
         /// <param name="baitToEquip">The item to equip</param>
         public void EquipBait(IBait baitToEquip)
         {
-            OnBaitEquiped?.Invoke(baitToEquip);
+            OnBaitEquipped?.Invoke(baitToEquip);
         }
 
         /// <summary>
