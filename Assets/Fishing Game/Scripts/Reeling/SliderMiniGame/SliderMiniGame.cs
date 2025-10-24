@@ -140,7 +140,7 @@ namespace FishingGame.Reeling
         private float _catchMax = 100;
 
 
-        private IFishAble _reelingObjectData;
+        private Fishable _reelingObjectData;
         private bool _isMinigameActive = false;
         private bool _isMiniGamePaused = false;
         private bool _isGoingLeft;
@@ -222,7 +222,7 @@ namespace FishingGame.Reeling
         /// The initial catch progress is 55, each level of difficulty reduces the initial progress by 5 i.e a difficulty of 2 will result in an initial progress of 45
         /// </summary>
         /// <param name="fishScriptable">The data of fish object being caught</param>
-        public void InitializeMiniGame(IFishAble fishScriptable) 
+        public void InitializeMiniGame(Fishable fishScriptable) 
         {
             _reelingObjectData = fishScriptable;
 

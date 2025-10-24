@@ -96,7 +96,7 @@ namespace FishingGame.Reeling
         [Tooltip("Rate of spawn during a wave")]
         private float waveSpawnTime;
 
-        private IFishAble _currentlyReelingObject;
+        private Fishable _currentlyReelingObject;
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
         private int _currentArrowCount;
@@ -172,7 +172,7 @@ namespace FishingGame.Reeling
         /// Setsup all the required logic for the minigame
         /// </summary>
         /// <param name="fishScriptable">The data of the fish being caught</param>
-        public void InitializeMiniGame(IFishAble fishScriptable)
+        public void InitializeMiniGame(Fishable fishScriptable)
         {
             _arrowMiniGameBehaviour = null;
             _currentlyReelingObject = fishScriptable;

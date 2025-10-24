@@ -163,7 +163,7 @@ namespace FishingGame.Reeling
         /// Initializes the minigame, setting the catchdifficulty and runs the initiation functions
         /// </summary>
         /// <param name="fishScriptable">Data of fish being caught</param>
-        public void InitializeMiniGame(IFishAble fishScriptable)
+        public void InitializeMiniGame(Fishable fishScriptable)
         {
             _fishDifficulty = fishScriptable.GetCatchDifficulty();
             realisticCanvas.SetActive(true);

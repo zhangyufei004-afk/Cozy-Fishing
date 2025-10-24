@@ -144,7 +144,10 @@ namespace FishingGame.GameManagement
         /// <param name="fishToAddTo">Fish being caught</param>
         private void AddToTimesCaught(Fish fishToAddTo)
         {
-            _fishTimesCaught[fishToAddTo.GetFishBase()] += 1;
+            if (fishToAddTo.GetBase() is FishScriptableObject fishData)
+            {
+                _fishTimesCaught[fishData] += 1;
+            }
         }
 
         /// <summary>
@@ -154,10 +157,10 @@ namespace FishingGame.GameManagement
         /// <param name="newFish">The fish being caught</param>
         private void CheckBiggestCatch(Fish newFish)
         {
-           if (newFish.GetWeight() > _fishBiggestCatch[newFish.GetFishBase()])
-            {
-                _fishBiggestCatch[newFish.GetFishBase()] = newFish.GetWeight();
-            }
+           if (newFish.GetBase() is FishScriptableObject fishData && newFish.GetWeight() > _fishBiggestCatch[fishData])
+           {
+                _fishBiggestCatch[fishData] = newFish.GetWeight();
+           }
         }
 
     }
