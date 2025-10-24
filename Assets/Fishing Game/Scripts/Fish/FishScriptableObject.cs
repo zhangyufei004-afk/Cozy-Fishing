@@ -23,7 +23,13 @@ namespace FishingGame.FishSystem
         private string _id;
         private static int _idNumber;
 
-        public string ID => _id;
+        public string ID => Name;
+
+        public FishScriptableObject() : this(0)
+        {
+            // _id = Name + $"{_idNumber}";
+            // _idNumber++;
+        }
         
         internal FishScriptableObject(int persistentID) : base(persistentID)
         {
