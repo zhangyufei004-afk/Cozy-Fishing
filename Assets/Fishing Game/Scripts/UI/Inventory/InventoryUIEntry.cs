@@ -39,7 +39,10 @@ namespace FishingGame.UI.Inventory
             set => _inventoryUIController = value;
         }
 
-        private void OnEnable()
+        /// <summary>
+        /// Initialises all the variables of the Entry
+        /// </summary>
+        public void Initialise()
         {
             _image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
             _nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();

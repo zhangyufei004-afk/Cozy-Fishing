@@ -72,6 +72,7 @@ namespace FishingGame.UI.Inventory
             InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
             if (inventoryUIEntry)
             {
+                inventoryUIEntry.Initialise();
                 inventoryUIEntry.Item = objectToAdd;
                 inventoryUIEntry.InventoryUIController = this;
                 inventoryUIEntry.UpdateVisuals();
