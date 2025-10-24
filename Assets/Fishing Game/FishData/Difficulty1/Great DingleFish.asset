@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 2108a73fd4062814ab56d6df91ff8788, type: 3}
-  Id: 3
-  MinMaxWeight: {x: 0.3, y: 0.6}
-  SpeciesName: Great Dinglefish
-  FishCatchDifficulty: 1
-  FishBio: ???
+  Name: Great Dinglefish
+  WeightRange:
+    MinWeight: 0.3
+    MaxWeight: 0.6
+  Difficulty: 1
+  Biography: ???
   LocationsFound: 0300000000000000
   TimesFound: 0200000003000000
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: d20d3ad82588fb24396674b0cc954425, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: e9cace5d04a9ad044b8f6479e59cfe5d, type: 2}
+  IsInvasive: 0
+  BasePrice: 5

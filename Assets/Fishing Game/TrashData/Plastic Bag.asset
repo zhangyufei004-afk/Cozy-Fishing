@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 1
   Texture: {fileID: 21300000, guid: 20340f570de30fd44a9d2b6eb5e54065, type: 3}
-  Id: 1
-  MinMaxWeight: {x: 0.05, y: 0.1}
-  TrashName: Plastic Bag
-  TrashDifficulty: 3
-  TrashBio: '"It said it was Bio-Degradable'
+  Name: Plastic Bag
+  WeightRange:
+    MinWeight: 0.05
+    MaxWeight: 0.1
+  Difficulty: 3
+  Biography: Not very biodegradable!
   LocationsFound: 00000000010000000200000003000000
   TimesFound: 00000000010000000200000003000000
+  ArrowMiniGameBehaviour: {fileID: 0}
+  SliderMiniGameBehaviour: {fileID: 0}

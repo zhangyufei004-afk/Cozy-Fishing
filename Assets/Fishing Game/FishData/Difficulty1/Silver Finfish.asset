@@ -14,16 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 3aee3a9821425e944906f691bb3aead9, type: 3}
-  Id: 5
-  MinMaxWeight: {x: 0.15, y: 0.6}
-  SpeciesName: Silver Finfish
-  FishCatchDifficulty: 1
-  FishBio: 'With its shimmering blue body and distinct silver dorsal fins, the Silver
+  Name: Silver Finfish
+  WeightRange:
+    MinWeight: 0.15
+    MaxWeight: 0.6
+  Difficulty: 1
+  Biography: With its shimmering blue body and distinct silver dorsal fins, the Silver
     Finfish is often mistaken for a magical creature. Local fishermen believe it
     brings good luck if caught under the moonlight. Despite its fragile appearance,
-    it is quite agile in the water. '
+    it is quite agile in the water.
   LocationsFound: 0100000003000000
   TimesFound: 00000000010000000200000003000000
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 3ce0b14e96ca0e44f9b8220779d98ea4, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: e3c8b964b6dcede4e97be13c9ebc77ea, type: 2}
+  IsInvasive: 0
+  BasePrice: 5

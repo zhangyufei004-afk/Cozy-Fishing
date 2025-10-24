@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 2
   Texture: {fileID: 21300000, guid: e59f32a801f070142bad4d19b8684d8d, type: 3}
-  Id: 2
-  MinMaxWeight: {x: 0.16, y: 0.4}
-  TrashName: Tin Can
-  TrashDifficulty: 3
-  TrashBio: Looking at this makes you want beans
+  Name: Tin Can
+  WeightRange:
+    MinWeight: 0.16
+    MaxWeight: 0.4
+  Difficulty: 3
+  Biography: Someone had a nice meal from this!
   LocationsFound: 000000000100000003000000
   TimesFound: 00000000010000000200000003000000
+  ArrowMiniGameBehaviour: {fileID: 0}
+  SliderMiniGameBehaviour: {fileID: 0}

@@ -32,7 +32,7 @@ namespace FishingGame.FishLog
         public void MarkAsCaught(bool caught)
         {
             fishImage.color = caught ? Color.white : Color.black;
-            fishName.text = caught ? fishData.SpeciesName : "???";
+            fishName.text = caught ? fishData.Name : "???";
         }
 
 

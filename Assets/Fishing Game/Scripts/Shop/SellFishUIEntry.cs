@@ -55,7 +55,7 @@ namespace FishingGame.UI.Shop
         {
             if (_fish == null) return;
 
-            if (fishImage) fishImage.sprite = _fish.GetFishBase().Texture;
+            if (fishImage) fishImage.sprite = _fish.GetBase().Texture;
             if (speciesNameText) speciesNameText.text = _fish.GetName();
             if (weightText) weightText.text = $"{_fish.GetWeight():0.00}kg";
             if (locationText) locationText.text = _fish.GetCaughtLocation();
