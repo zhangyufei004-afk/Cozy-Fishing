@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 50f87bda998defe42bd3e6061f254995, type: 3}
-  Id: 14
-  MinMaxWeight: {x: 2, y: 6}
-  SpeciesName: Blessed Squid
-  FishCatchDifficulty: 6
-  FishBio: Species blessed by the heavens to bring holiness to the foodweb. Small
-    and mighty but can migrate long distances to spread the holy spirit.
+  Name: Blessed Squid
+  WeightRange:
+    MinWeight: 2
+    MaxWeight: 6
+  Difficulty: 6
+  Biography: 'Species blessed by the heavens to bring holiness to the foodweb. Small    
+    and mighty but can migrate long distances to spread the holy spirit. '
   LocationsFound: 030000000000000001000000
   TimesFound: 
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 71987ecf91de16e4099202ad56ecb617, type: 2}
+  SliderMiniGameBehaviour: {fileID: 0}
+  IsInvasive: 0
+  BasePrice: 30
