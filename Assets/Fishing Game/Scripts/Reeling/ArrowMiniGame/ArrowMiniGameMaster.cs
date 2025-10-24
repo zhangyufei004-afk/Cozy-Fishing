@@ -121,6 +121,7 @@ namespace FishingGame.Reeling
         private List<MovingArrow> _arrowsToRemove;
         private InputAction _directionAction;
         private EMovementDirection _arrowType;
+        private EMovementDirection _lastArrowType;
         private InputActionMap _uiActionMap;
 
         private InputAction _upAction;
@@ -521,9 +522,20 @@ namespace FishingGame.Reeling
         {
             if (HasReachedMaxArrowSpawned()) { return; }
 
-            int chosenSpawner = Random.Range(0, spawnPoints.Count);
+            List<ArrowSpawner> availableSpawners = new List<ArrowSpawner>(spawnPoints);
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {   
+                if (spawner.GetSpawnerTypeAsInt() == (int)_lastArrowType)
+                {
+                    availableSpawners.Remove(spawner);
+                }
+            }
 
-            spawnPoints[chosenSpawner].SpawnArrow(normalSpeed);
+            int chosenSpawner = Random.Range(0, availableSpawners.Count);
+
+            availableSpawners[chosenSpawner].SpawnArrow(normalSpeed);
+
+            _lastArrowType = (EMovementDirection)spawnPoints[chosenSpawner].GetSpawnerTypeAsInt();
 
             if (_waveActive)
             {

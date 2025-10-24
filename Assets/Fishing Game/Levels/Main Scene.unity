@@ -11445,6 +11445,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1450029355}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: normalSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fishingCanvas
       value: 
       objectReference: {fileID: 550031424}
@@ -11452,6 +11456,14 @@ PrefabInstance:
       propertyPath: progressSlider
       value: 
       objectReference: {fileID: 1910628927}
+    - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: maxTimeBetweenArrows
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: minTimeBetweenArrows
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
       value: 
