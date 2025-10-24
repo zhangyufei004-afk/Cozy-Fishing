@@ -94,6 +94,8 @@ namespace FishingGame.GameManagement
 
         public event Action<string, float, Color> OnShowDefaultNotificationText;
 
+        public event Action<string> OnElementAddedToScrollbox;
+
         #endregion
 
         /// <summary>
@@ -338,6 +340,15 @@ namespace FishingGame.GameManagement
         public void PlayerDeathScreenActive(bool isActive)
         {
             OnPlayerDeathScreenActive?.Invoke(isActive);
+        }
+
+        /// <summary>
+        /// Invokes the OnElementAddedToScrollbox event to tell subscribing classes that an element has been added to the scroll box <c>scrollBoxName</c>
+        /// </summary>
+        /// <param name="scrollBoxName">The name of the scrollbox gameobject</param>
+        public void ElementAddedToScrollbox(string scrollBoxName)
+        {
+            OnElementAddedToScrollbox?.Invoke(scrollBoxName);
         }
     }
 }
