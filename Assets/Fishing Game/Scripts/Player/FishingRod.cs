@@ -148,7 +148,7 @@ namespace FishingGame.Reeling
             _castAction.started += CastInputUsed;
             _castAction.canceled += CastInputReleased;
 
-            GameManager.Instance.GameEvents.OnBaitEquiped += EquipBait;
+            GameManager.Instance.GameEvents.OnBaitEquipped += EquipBait;
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
