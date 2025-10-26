@@ -106,6 +106,8 @@ namespace FishingGame.Reeling
 
         [SerializeField]
         private AudioSource rightSound;
+        [SerializeField]
+        private AudioClip[] rightSounds;
 
         [SerializeField]
         private AudioSource wrongSound;
@@ -138,6 +140,7 @@ namespace FishingGame.Reeling
         private InputAction _leftAction;
         private InputAction _rightAction;
 
+        private int _rightSoundIndex = 0;
         private int _wrongSoundIndex = 0;
 
 
@@ -397,7 +400,12 @@ namespace FishingGame.Reeling
         /// <param name="arrowCompleted">The arrow being modified</param>
         private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
+            if (_rightSoundIndex == rightSounds.Length)
+                _rightSoundIndex = 0;
+            rightSound.clip = rightSounds[_rightSoundIndex];
             rightSound.Play();
+            _rightSoundIndex++;
+
             AddOrRemoveActiveArrow(arrowCompleted, false);
             ModifyProgress(defaultProgressModify * _timeModifier);
             if (CheckIfEnoughProgress()) { WinMiniGame(); }

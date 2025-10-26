@@ -16,9 +16,9 @@ namespace FishingGame
         [SerializeField]
         private AudioSource splashesSound;
         [SerializeField]
-        private AudioSource reelingSound;
+        private AudioSource realisticReelingSound;
         [SerializeField]
-        private AudioClip[] reelingSounds;
+        private AudioSource sliderReelingSound;
 
         [SerializeField]
         private GroundCheck groundCheck;
@@ -45,21 +45,17 @@ namespace FishingGame
         private Animator playerAnimator;
 
 
-        private bool _reelPlaying = false;
+        private bool _realisticReelPlaying = false;
+        private bool _sliderReelPlaying = false;
         private bool _splashesPlaying = false;
         private int _grassFootstepNum = 0;
         private int _woodFootstepNum = 0;
-        private AudioClip _currentClip;
 
 
-
-        private void Start()
-        {
-            reelingSound.clip = reelingSounds[1];
-        }
         private void Update()
         {
-            MiniGameSounds();
+            RealisticMiniGameAudio();
+            SliderMiniGame();
 
             if (lineCastSound.isPlaying && reelingInitiation.StageOne)
             {
@@ -82,7 +78,11 @@ namespace FishingGame
             }
 
             if (!reelingInitiation.IsFishAtHook())
+            {
                 _splashesPlaying = false;
+                splashesSound.Stop();
+            }
+                
 
         }
 
@@ -124,40 +124,62 @@ namespace FishingGame
         }
 
         /// <summary>
-        /// Handles minigame reeling sounds
+        /// Handles realistic minigame reeling sounds
         /// </summary>
-        private void MiniGameSounds()
+        private void RealisticMiniGameAudio()
         {
-            if (reelingMaster.IsFishing && !_reelPlaying)
-                reelingSound.Play();
+            if (realisticCanvas.activeSelf)
+            {
+                bool isProgressing = realisticMiniGame.IsProgressing();
 
-            else if (!reelingMaster.IsFishing && _reelPlaying)
-                reelingSound.Stop();
+                if (isProgressing)
+                {
+                    if (!_realisticReelPlaying)
+                    {
+                        realisticReelingSound.Play();
+                        _realisticReelPlaying = true;
+                    }
+                }
+                else if (_realisticReelPlaying)
+                {
+                    realisticReelingSound.Stop();
+                    _realisticReelPlaying = false;
+                }
+            }
+            else if (_realisticReelPlaying)
+            {
+                realisticReelingSound.Stop();
+                _realisticReelPlaying = false;
+            }
+        }
 
-            _reelPlaying = reelingMaster.IsFishing;
-
-            AudioClip newClip = null;
-
+        /// <summary>
+        /// Handles slider mini game audio
+        /// </summary>
+        private void SliderMiniGame()
+        {
             if (sliderCanvas.activeSelf)
             {
-                newClip = sliderMiniGame.GetInput() ? reelingSounds[2] : reelingSounds[0];
-            }
-            else if (realisticCanvas.activeSelf)
-            {
-                newClip = realisticMiniGame.IsProgressing() ? reelingSounds[2] : reelingSounds[0];
-            }
-            else
-            {
-                newClip = reelingSounds[1];
-            }
+                bool input = sliderMiniGame.GetInput();
 
-            if (newClip != _currentClip)
+                if (input)
+                {
+                    if (!_sliderReelPlaying)
+                    {
+                        sliderReelingSound.Play();
+                        _sliderReelPlaying = true;
+                    }
+                }
+                else if (_sliderReelPlaying)
+                {
+                    sliderReelingSound.Stop();
+                    _sliderReelPlaying = false;
+                }
+            }
+            else if (_sliderReelPlaying)
             {
-                _currentClip = newClip;
-                reelingSound.clip = _currentClip;
-
-                if (_reelPlaying)
-                    reelingSound.Play();
+                sliderReelingSound.Stop();
+                _sliderReelPlaying = false;
             }
         }
     }
