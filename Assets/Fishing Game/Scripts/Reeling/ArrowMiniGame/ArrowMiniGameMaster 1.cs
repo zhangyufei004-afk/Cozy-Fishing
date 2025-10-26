@@ -1,4 +1,4 @@
-/*using FishingGame.FishSystem;
+using FishingGame.FishSystem;
 using FishingGame.Input;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,13 +13,13 @@ namespace FishingGame.Reeling
     /// <summary>
     /// The type of direction an arrow will represent
     /// </summary>
-     internal enum EMovementDirection
-    {
+     public enum EMovementDirection
+     {
         Left = 0,
         Right = 1,
         Up = 2,
         Down = 3
-    };
+     };
     
     /// <summary>
     /// This minigame involves arrows falling down the screen
@@ -28,7 +28,7 @@ namespace FishingGame.Reeling
     /// Doing so correctly results in progress gain
     /// This is the master script
     /// </summary>
-    public class ArrowMiniGameMaster1 : MonoBehaviour, IReelingMinigame
+    public class ArrowMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
         [Header("Major Script References")]
 
@@ -61,16 +61,8 @@ namespace FishingGame.Reeling
         private GameObject spawnableArrow;
 
         [SerializeField]
-        [Tooltip("Default slow speed value for arrows")]
-        private int slowSpeed;
-
-        [SerializeField]
-        [Tooltip("Default medium speed value for arrows")]
-        private int mediumSpeed;
-
-        [SerializeField]
-        [Tooltip("Default fast speed value for arrows")]
-        private int fastSpeed;
+        [Tooltip("Default speed value for arrows")]
+        private int normalSpeed;
 
         [SerializeField]
         [Tooltip("The minimum amount of time needed inbetween arrow spawns, regardless of difficulty. Stops arrows overlapping exactly even at highest difficulty levels")]
@@ -97,22 +89,12 @@ namespace FishingGame.Reeling
         private float defaultProgressMax;
 
         [SerializeField]
-        [Tooltip("The amount of time it takes for the time scaler to increase")]
-        private float maxTimeBeforeModify;
+        [Tooltip("The amount of time it takes for sudden death")]
+        private float suddenDeathTimerDuration;
 
         [SerializeField]
         [Tooltip("Rate of spawn during a wave")]
         private float waveSpawnTime;
-
-        [SerializeField]
-        private AudioSource rightSound;
-        [SerializeField]
-        private AudioClip[] rightSounds;
-
-        [SerializeField]
-        private AudioSource wrongSound;
-        [SerializeField]
-        private AudioClip[] wrongSounds;
 
         private IFishAble _currentlyReelingObject;
         private int _fishDifficulty;
@@ -120,13 +102,18 @@ namespace FishingGame.Reeling
         private int _currentArrowCount;
         private float _currentProgress;
         private float _currentTimePassed;
-        private int _timeModifier;
+        private float _suddenDeathTimePassed;
         private float _maxProgress;
         private int _waveArrowCount = 0;
         private bool _gameActive = false;
         private bool _waveActive = false;
         private int _maxRangeWaveChance = 10;
         private int _currentWaveChance = 0;
+        private float _initialSuddenDeathTimer;
+        private int _suddenDeathMultiplier = 4;
+        private bool _suddenDeath = false;
+        private float _minigameLoopDuration;
+        private int _failedArrowModifier = 4;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
@@ -140,8 +127,15 @@ namespace FishingGame.Reeling
         private InputAction _leftAction;
         private InputAction _rightAction;
 
-        private int _rightSoundIndex = 0;
-        private int _wrongSoundIndex = 0;
+        // Custom Arrow Behaviour Variables
+
+        private ArrowWaveData _arrowMiniGameBehaviour;
+        private bool _arrowMiniGameBehaviourActive = false;
+        private List<ArrowWaveEntry> _activeArrowWaveBehaviourList;
+        private int _currentWaveIndex = 0;
+        private float _roundSpeed;
+
+        private ArrowWaveEntry _nextEntryToSpawn;
 
 
         private void OnEnable()
@@ -149,9 +143,12 @@ namespace FishingGame.Reeling
             _activeArrows = new List<MovingArrow>();
             _arrowsAvailableToBePressed = new List<MovingArrow>();
             _arrowsToRemove = new List<MovingArrow>();
+            _activeArrowWaveBehaviourList = new List<ArrowWaveEntry>();
 
             InputActionAsset inputAction = InputSystem.actions;
             _uiActionMap = inputAction.FindActionMap("ArrowMiniGame");
+
+            _initialSuddenDeathTimer = suddenDeathTimerDuration;
         }
 
         private void OnDisable()
@@ -164,15 +161,9 @@ namespace FishingGame.Reeling
             if (_gameActive != true) { return; }
 
             _currentTimePassed += Time.deltaTime;
+            _suddenDeathTimePassed += Time.deltaTime;
 
-            CheckTimePassed();
-
-
-
-            if (_activeArrows.Count == 0)
-            {
-                EmergencySpawnArrow();
-            }
+            if (!_arrowMiniGameBehaviourActive) { DefaultArrowBehaviour(); }
         }
 
         #region Public Functions
@@ -183,13 +174,13 @@ namespace FishingGame.Reeling
         /// <param name="fishScriptable">The data of the fish being caught</param>
         public void InitializeMiniGame(IFishAble fishScriptable)
         {
+            _arrowMiniGameBehaviour = null;
             _currentlyReelingObject = fishScriptable;
             _fishDifficulty = _currentlyReelingObject.GetCatchDifficulty();
             fishingCanvas.SetActive(true);
             SetUpArrowKeys();
-
             ResetRuntimeVariables();
-            SetDifficultyModifiers();
+            SetupArrowgameBehaviour();
 
             int i = 0;
             foreach (ArrowSpawner spawner in spawnPoints)
@@ -211,7 +202,8 @@ namespace FishingGame.Reeling
                 spawner.ActivateOrDeactivateSpawner(true);
             }
 
-            SpawnArrow();
+            if (!_arrowMiniGameBehaviourActive) { SpawnArrowNormal(); }
+            else { CustomArrowBehaviourBegin(); }
         }
 
         /// <summary>
@@ -291,14 +283,10 @@ namespace FishingGame.Reeling
         /// <param name="arrowFailed"></param>
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
-            if (_wrongSoundIndex == wrongSounds.Length)
-                _wrongSoundIndex = 0;
-            wrongSound.clip = wrongSounds[_wrongSoundIndex];
-            wrongSound.Play();
-            _wrongSoundIndex++;
+            if (_gameActive == false) { return; }
 
             AddOrRemoveActiveArrow(arrowFailed, false);
-            ModifyProgress(-defaultProgressModify * _timeModifier);
+            ModifyProgress(-defaultProgressModify * _failedArrowModifier);
             if (CheckIfFailed()) { LoseMiniGame(); }
         }
 
@@ -307,6 +295,11 @@ namespace FishingGame.Reeling
 
         #region CoreGameTimeFunctions
 
+        /// <summary>
+        /// Takes a paremeter that represents what arrow key was pressed
+        /// Checks if that arrowkey aligns with a pressable arrow
+        /// </summary>
+        /// <param name="inputedDirection">The direction that was inputed</param>
         private void InputLogic(EMovementDirection inputedDirection)
         {
             if (CheckIfThereAreArrowsPressable())
@@ -326,7 +319,7 @@ namespace FishingGame.Reeling
                     ArrowSuccsessfullyPressed(arrow);
                     RemoveArrowFromPressList(arrow);
                     arrow.DeactivateArrow();
-                    arrow.StartFadeAway(true);
+                    arrow.StartFadeAwayOnSuccess(false);
                 }
                 _arrowsToRemove.Clear();
             }
@@ -400,15 +393,134 @@ namespace FishingGame.Reeling
         /// <param name="arrowCompleted">The arrow being modified</param>
         private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
-            if (_rightSoundIndex == rightSounds.Length)
-                _rightSoundIndex = 0;
-            rightSound.clip = rightSounds[_rightSoundIndex];
-            rightSound.Play();
-            _rightSoundIndex++;
+            float distanceModifier = arrowCompleted.GetPointModfiierFromGoal();
 
             AddOrRemoveActiveArrow(arrowCompleted, false);
-            ModifyProgress(defaultProgressModify * _timeModifier);
+            ModifyProgress(defaultProgressModify * distanceModifier);
             if (CheckIfEnoughProgress()) { WinMiniGame(); }
+        }
+
+        /// <summary>
+        /// Modifys the current progress based on the inputed value
+        /// Updates the slider UI to properly reflect the progress
+        /// </summary>
+        /// <param name="progressValue"></param>
+        private void ModifyProgress(float progressValue)
+        {
+            if (_suddenDeath) { progressValue *= _suddenDeathMultiplier; }
+            _currentProgress += progressValue;
+            progressSlider.value = _currentProgress;
+        }
+
+        /// <summary>
+        /// Deactivates the minigame
+        /// Has a bool parameter that is used for changing logic based on if the minigame was won or lost
+        /// </summary>
+        /// <param name="didWin">Was the minigame won or lost, true if won, otherwise false</param>
+        private void DeactivateMiniGame(bool didWin)
+        {
+            _gameActive = false;
+            DisableArrowKeys();
+
+            foreach (MovingArrow arrow in _activeArrows)
+            {
+                arrow.DeactivateArrow();
+                arrow.StartFadeAwayOnSuccess(didWin);
+            }
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(false);
+            }
+
+            StopAllCoroutines();
+
+            StartCoroutine(UIDissapear(didWin));
+        }
+
+        #endregion
+
+        #region CustomBehaviour Functions
+
+        /// <summary>
+        /// Sets up the variables and cycle for the custom behaviour for the arrow minigame
+        /// </summary>
+        private void CustomArrowBehaviourBegin()
+        {
+            _currentWaveIndex = 0;
+            _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
+            CheckTimePassed();
+            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
+            
+        }
+
+        /// <summary>
+        /// Spawns an arrow at inputed speed
+        /// </summary>
+        /// <param name="speedToUse">Speed the arrow should go at, if 0 this resorts to defaultspeed</param>
+        private void SpawnCustomArrow(float speedToUse)
+        {
+            int i = 0;
+            ArrowSpawner spawnerToUse = null;
+            while (spawnerToUse == null)
+            {
+                if (i > spawnPoints.Count) { break; }
+                if (spawnPoints[i].GetSpawnerTypeAsInt() == (int)_nextEntryToSpawn.GetArrowType())
+                {
+                    spawnerToUse = spawnPoints[i];
+                }
+                else { i++; }
+
+                if (i > spawnPoints.Count) { break; };
+            }
+
+            spawnerToUse.SpawnArrow(speedToUse);
+            SetupNextCustomArrow();
+        }
+
+        /// <summary>
+        /// Sets up the next arrow to be spawned, starting a timer for when it was will spawned
+        /// </summary>
+        private void SetupNextCustomArrow()
+        {
+            _currentWaveIndex++;
+            if (_currentWaveIndex >= _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
+
+            CheckTimePassed();
+            _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
+            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            if (_currentWaveIndex == _activeArrowWaveBehaviourList.Count - 1 && _nextEntryToSpawn.GetIsDouble()) { timeToWait = 0; }
+            StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
+        }
+
+        /// <summary>
+        /// After timer is run this calls for the arrow to be spawned
+        /// </summary>
+        /// <param name="timeToWait">How long to wait until spawning arrow</param>
+        /// <param name="speedToUse">The speed the arrow should move at</param>
+        /// <returns></returns>
+        private IEnumerator CustomArrowTime(float timeToWait, float speedToUse)
+        {
+            yield return new WaitForSeconds(timeToWait);
+            if (speedToUse == 0) { speedToUse = normalSpeed; }
+            SpawnCustomArrow(speedToUse);
+        }
+
+        #endregion
+
+        #region StandardBehaviour Functions
+        /// <summary>
+        /// Logic that is only run for default version of arrow minigame
+        /// This checks time passed and spawns an arrow if current arrows are at 0
+        /// </summary>
+        private void DefaultArrowBehaviour()
+        {
+            CheckTimePassed();
+            if (_activeArrows.Count == 0)
+            {
+                EmergencySpawnArrow();
+            }
         }
 
         /// <summary>
@@ -416,13 +528,13 @@ namespace FishingGame.Reeling
         /// Starts a timer for when this will next be run
         /// Chooses a random spawner each time to spawn the arrow
         /// </summary>
-        private void SpawnArrow()
+        private void SpawnArrowNormal()
         {
             if (HasReachedMaxArrowSpawned()) { return; }
 
             int chosenSpawner = Random.Range(0, spawnPoints.Count);
 
-            spawnPoints[chosenSpawner].SpawnArrow(fastSpeed);
+            spawnPoints[chosenSpawner].SpawnArrow(normalSpeed);
 
             if (_waveActive)
             {
@@ -452,18 +564,7 @@ namespace FishingGame.Reeling
         {
             int chosenSpawner = Random.Range(0, spawnPoints.Count);
 
-            spawnPoints[chosenSpawner].SpawnArrow(fastSpeed);
-        }
-
-        /// <summary>
-        /// Modifys the current progress based on the inputed value
-        /// Updates the slider UI to properly reflect the progress
-        /// </summary>
-        /// <param name="progressValue"></param>
-        private void ModifyProgress(float progressValue)
-        {
-            _currentProgress += progressValue;
-            progressSlider.value = _currentProgress;
+            spawnPoints[chosenSpawner].SpawnArrow(normalSpeed);
         }
 
         /// <summary>
@@ -481,29 +582,6 @@ namespace FishingGame.Reeling
                 _waveActive = true;
             }
             else { _currentWaveChance++; }
-        }
-
-        /// <summary>
-        /// Deactivates the minigame
-        /// Has a bool parameter that is used for changing logic based on if the minigame was won or lost
-        /// </summary>
-        /// <param name="didWin">Was the minigame won or lost, true if won, otherwise false</param>
-        private void DeactivateMiniGame(bool didWin)
-        {
-            _gameActive = false;
-            DisableArrowKeys();
-
-            foreach (MovingArrow arrow in _activeArrows)
-            {
-                arrow.StartFadeAway(didWin);
-            }
-
-            foreach (ArrowSpawner spawner in spawnPoints)
-            {
-                spawner.ActivateOrDeactivateSpawner(false);
-            }
-
-            StartCoroutine(UIDissapear(didWin));
         }
 
         #endregion
@@ -546,14 +624,18 @@ namespace FishingGame.Reeling
 
         /// <summary>
         /// Checks if enough time has past since the last time the time modifier was changed
-        /// If so, increases the time modified by 1
+        /// If so, activated sudden death
+        /// Also checks minigame loop duration and if true sets it back to 0
         /// </summary>
         private void CheckTimePassed()
         {
-            if (_currentTimePassed >= maxTimeBeforeModify)
+            if (_suddenDeathTimePassed >= suddenDeathTimerDuration && !_suddenDeath)
+            {
+                _suddenDeath = true;
+            }
+            if (_currentTimePassed >= _minigameLoopDuration)
             {
                 _currentTimePassed = 0;
-                _timeModifier += 1;
             }
         }
 
@@ -602,7 +684,7 @@ namespace FishingGame.Reeling
         private IEnumerator SpawnCoolDown(float timeToWait)
         {
             yield return new WaitForSeconds(timeToWait);
-            SpawnArrow();
+            SpawnArrowNormal();
         }
 
         /// <summary>
@@ -630,6 +712,38 @@ namespace FishingGame.Reeling
         #endregion
 
         #region Initilization_Functions
+
+        /// <summary>
+        /// Checks if the current fishing object has an arrow minigame behaviour
+        /// If so it sets up the required variables and functions
+        /// Otherwise this sets up default minigame behaviour variables
+        /// </summary>
+        private void SetupArrowgameBehaviour()
+        {
+            if (_currentlyReelingObject.GetArrowMinigameBehaviour() == null)
+            {
+                _arrowMiniGameBehaviourActive = false;
+                SetDifficultyModifiers();
+            }
+            else
+            {
+                _arrowMiniGameBehaviour = new ArrowWaveData(_currentlyReelingObject.GetArrowMinigameBehaviour());
+                _arrowMiniGameBehaviourActive = true;
+                _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
+                _minigameLoopDuration = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
+                _initialSuddenDeathTimer = _arrowMiniGameBehaviour.GetSuddenDeathTimer();
+                _activeArrowWaveBehaviourList.Sort();
+
+                _roundSpeed = _arrowMiniGameBehaviour.GetSpeedOfGame();
+                if (_roundSpeed == 0) { _roundSpeed = normalSpeed; }
+                _maxProgress = _arrowMiniGameBehaviour.GetMaxPointsNeeded();
+                progressSlider.maxValue = _maxProgress;
+                progressSlider.value = _currentProgress;
+                defaultProgressModify = _arrowMiniGameBehaviour.GetPointPerArrow();
+                _currentProgress = defaultProgressModify * 4;
+                progressSlider.value = _currentProgress;
+            }
+        }
 
         /// <summary>
         /// Subscribes arrow key actions to their relevant functions
@@ -665,6 +779,7 @@ namespace FishingGame.Reeling
 
         /// <summary>
         /// Runs the functions that set variables based on the current difficulty
+        /// This is only run for default arrow behaviour
         /// </summary>
         private void SetDifficultyModifiers()
         {
@@ -702,7 +817,10 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetRuntimeVariables()
         {
-            _timeModifier = 1;
+            _initialSuddenDeathTimer = suddenDeathTimerDuration;
+            _currentTimePassed = 0;
+            _suddenDeathTimePassed = 0;
+            _suddenDeath = false;
             _currentArrowCount = 0;
             _currentProgress = defaultProgressModify * 4;
             _activeArrows.Clear();
@@ -711,8 +829,12 @@ namespace FishingGame.Reeling
             _currentWaveChance = 0;
             _arrowsToRemove.Clear();
             _arrowsAvailableToBePressed.Clear();
+            _activeArrowWaveBehaviourList.Clear();
+            suddenDeathTimerDuration = _initialSuddenDeathTimer;
+            _currentWaveIndex = 0;
+            _currentTimePassed = 0;
         }
 
         #endregion
     }
-}*/
+}

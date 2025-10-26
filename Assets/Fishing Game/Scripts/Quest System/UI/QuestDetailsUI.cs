@@ -14,7 +14,6 @@ namespace FishingGame.QuestSystem.UI
     {
         [Header("UI Elements")] 
         [SerializeField] private TextMeshProUGUI titleText;
-        [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private Button setActiveQuestButton;
         [SerializeField] private GameObject questStageContentParent;
         [SerializeField] private GameObject questRewardContentParent;
@@ -41,7 +40,6 @@ namespace FishingGame.QuestSystem.UI
             }
             _questName = quest.GetName();
             titleText.text = _questName;
-            descriptionText.text = quest.GetDescription();
             setActiveQuestButton.onClick.AddListener(() =>
             {
                 GameManager.Instance.GameEvents.ChangeActiveQuest(_questName);

@@ -1,7 +1,8 @@
-/*using FishingGame.FishSystem;
+using FishingGame.FishSystem;
 using System;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +24,7 @@ namespace FishingGame.Reeling
     /// NOTE: THIS IS A WIP, it functions but there is a lot of work to still go into this minigame
     /// Several inefficient functions currently present to get this working in a low amount of time
     /// </summary>
-    public class RealisticMiniGameMaster1 : MonoBehaviour, IReelingMinigame
+    public class RealisticMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
         [Header("Script References")]
 
@@ -46,12 +47,22 @@ namespace FishingGame.Reeling
         private Slider progressSlider;
 
         [SerializeField]
-        [Tooltip("The centerpoint of the rod in the UI")]
+        [Tooltip("The centerpoint of the rod in the UI used for calculating radius and showing the direction")]
         private Image centerPoint;
 
         [SerializeField]
         [Tooltip("The Direction indicator for what way a player needs to spin the reel")]
         private Image textDirectionHolder;
+
+        [SerializeField]
+        [Tooltip("The image that shows what direction to spin in")]
+        private Image directionImage;
+
+        [SerializeField]
+        [Tooltip("The image that shows the player to stop")]
+        private Image stopImage;
+
+        private float _directionAntiClockWiseRotation = 180;
 
         [Header("GameData")]
 
@@ -71,6 +82,23 @@ namespace FishingGame.Reeling
         [Tooltip("The value for how many seconds until the time scale is increased")]
         private int timeScaleMaxSeconds;
 
+        [SerializeField]
+        [Tooltip("How many points should the circle bounds have, the higher the points the greater the accurarcy but the worse the performance")]
+        private int amountOfPointsInBounds;
+
+        [SerializeField]
+        [Tooltip("The radius of the bounds circle")]
+        private float radius;
+
+        [SerializeField]
+        [Tooltip("temp")]
+        private GameObject tempObject;
+
+        private Vector2[] _boundsPoints;
+        private int _previousBoundsPoint = 0;
+        private int _currentBoundsPoint = 0;
+        private bool _dragableMoving = false;
+
         private int _fishDifficulty;
 
         private GameObject _currentFish3D;
@@ -80,11 +108,17 @@ namespace FishingGame.Reeling
         private float _progressMaxValue;
         private float _timeSinceLastDirectionChange;
         private float _directionRollTimerMax = 8f;
-        private bool _progressing;
 
 
         private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
+
+        private void OnEnable()
+        {
+            _boundsPoints = new Vector2[amountOfPointsInBounds];
+            SetBounds();
+        }
+
 
         private void Update()
         {
@@ -109,8 +143,6 @@ namespace FishingGame.Reeling
 
             if (CheckIfDragableInRightDirection())
             {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
-
                 if (_currentDirection == ERealisticDirection.Stop)
                 {
                     AddToProgressSlider(((defaultDecayValue) * Time.deltaTime) * _currentTimeScale);
@@ -121,7 +153,6 @@ namespace FishingGame.Reeling
             }
             else
             {
-                textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().color = Color.red;
                 RemoveFromProgressSlider(defaultDecayValue * Time.deltaTime);
             }
         }
@@ -176,12 +207,30 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
-        /// return progressing for audio cues
+        /// Returns the closest circle point to the mouses position
         /// </summary>
-        /// <returns></returns>
-        public bool IsProgressing()
+        /// <param name="mousePosition">The mouse position</param>
+        /// <returns>The closest vector2 point of the circle bounds</returns>
+        public Vector2 GetClosestPoint(Vector2 mousePosition)
         {
-            return _progressing;
+            _previousBoundsPoint = _currentBoundsPoint;
+            Vector2 currentClosest = _boundsPoints[0];
+            float smallestDistance = 999f;
+            int i = 0;
+
+            foreach (Vector2 point in _boundsPoints)
+            {
+                float thisDistance = Vector2.Distance(point, mousePosition);
+                if (smallestDistance > thisDistance)
+                {
+                    smallestDistance = thisDistance;
+                    currentClosest = point;
+                    _currentBoundsPoint = i;
+                }
+                i++;
+            }
+
+            return currentClosest;
         }
 
         #endregion
@@ -195,7 +244,6 @@ namespace FishingGame.Reeling
         /// <param name="progressToAdd">The amount of progress to add</param>
         private void AddToProgressSlider(float progressToAdd)
         {
-            _progressing = true;
             // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
             progressToAdd *= 3;
             if (_currentDirection == ERealisticDirection.Clockwise)
@@ -218,7 +266,6 @@ namespace FishingGame.Reeling
         /// <param name="progressToRemove">Value of progress to remove</param>
         private void RemoveFromProgressSlider(float progressToRemove)
         {
-            _progressing = false;
             progressSlider.value -= progressToRemove;
             _progressValue -= progressToRemove;
         }
@@ -272,16 +319,23 @@ namespace FishingGame.Reeling
             switch (_currentDirection)
             {
                 case ERealisticDirection.Clockwise:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    directionImage.GameObject().SetActive(true);
+                    directionImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    stopImage.GameObject().SetActive(false);
                     break;
                 case ERealisticDirection.AntiClockwise:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go anti-clockwise!";
+                    directionImage.GameObject().SetActive(true);
+                    Quaternion currentRotation = directionImage.transform.rotation;
+                    directionImage.transform.rotation = Quaternion.Euler(currentRotation.x, _directionAntiClockWiseRotation, currentRotation.z);
+                    stopImage.GameObject().SetActive(false);
                     break;
                 case ERealisticDirection.Stop:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Stop spinning!";
+                    stopImage.GameObject().SetActive(true);
+                    directionImage.GameObject().SetActive(false);
                     break;
                 default:
-                    textDirectionHolder.GetComponentInChildren<TextMeshProUGUI>().text = "Go clockwise!";
+                    directionImage.GameObject().SetActive(true);
+                    directionImage.transform.rotation = Quaternion.Euler(0, 0, 0);
                     throw new InvalidOperationException("Waring: ECurrentDirection Enum was not set to an aproipreate value, has defaulted to clockwise! This happened to object: " + gameObject.name);
             }
         }
@@ -350,6 +404,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void ResetGameTimeVariables()
         {
+            SetBounds();
             _currentTimeScale = 1.0f;
             _progressValue = 0f;
             _timeSinceLastDirectionChange = 0f;
@@ -363,10 +418,33 @@ namespace FishingGame.Reeling
         {
             _progressMaxValue = defaultProgressMax + (defaultProgressScaleValue * _fishDifficulty);
             progressSlider.maxValue = _progressMaxValue;
-            _progressValue = Mathf.Clamp(20f, _progressMaxValue / _fishDifficulty, 10000f);
+            _progressValue = Mathf.Clamp(20f, _progressMaxValue / (_fishDifficulty + 1), 10000f);
             progressSlider.value = _progressValue;
+        }
+
+        /// <summary>
+        /// Calcualtes the bounds of the reeling UI
+        /// </summary>
+        private void SetBounds()
+        {
+            for (int i = 0; i < amountOfPointsInBounds; i++)
+            {
+                float pointNum = (i * 1.0f) / amountOfPointsInBounds;
+                float angle = pointNum * Mathf.PI * 2;
+
+                float floatX = Mathf.Sin(angle) * radius;
+                float floatY = Mathf.Cos(angle) * radius;
+
+                Vector3 pointPos = new Vector3(floatX, floatY) + centerPoint.transform.position;
+
+
+
+                _boundsPoints[i] = pointPos;
+                // The below line is temp for visualization sometimes when needed
+                // Instantiate(tempObject, _boundsPoints[i], Quaternion.identity);
+            }
         }
 
         #endregion
     }
-}*/
+}

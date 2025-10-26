@@ -33,7 +33,7 @@ namespace FishingGame.AI.NPC
         private static readonly int Speed = Animator.StringToHash("Speed");
 
         [Header("Resting Parameters")]
-        [Tooltip("The home which the NPC rests at.")]
+        [Tooltip("The home which the NPC rests at. When gizmos are drawing, this will show as a house.")]
         [SerializeField] private Vector3 homePosition;
         
         [Tooltip("The time the NPC goes home in the evening. \nUnits: 0-1 Representing the Decimal of the time of Day.\n"+ 
@@ -42,7 +42,7 @@ namespace FishingGame.AI.NPC
         [SerializeField] private float homeTime;
         
         [Header("Work Parameters")]
-        [Tooltip("The location the NPC works at.")]
+        [Tooltip("The location the NPC works at. When gizmos are drawing, this will show as a briefcase.")]
         [SerializeField] private Vector3 workPosition;
         
         [Tooltip("The time the NPC goes working in the morning. \nUnits: 0-1 Representing the Decimal of the time of Day.\n"+
@@ -165,6 +165,13 @@ namespace FishingGame.AI.NPC
             {
                 agent.speed = isMovementEnabled ? _initialMovementSpeed : 0f;
             }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.DrawIcon(homePosition, "../Fishing Game/Gizmos/NPC/home.png", true);
+            Gizmos.DrawIcon(workPosition, "../Fishing Game/Gizmos/NPC/work.png", true);
+
         }
     }
 }

@@ -60,8 +60,8 @@ namespace FishingGame.Reeling
         [Tooltip("This field can be used to force the pool to spawn specific fish instead of randomized")]
         private List<FishScriptableObject> overrideFishList;
 
-        private List<FishScriptableObject> baseFishList;
-        private List<TrashScriptable> baseTrashList;
+        private List<FishScriptableObject> _baseFishList;
+        private List<TrashScriptable> _baseTrashList;
 
         // The type of fish that is spawned when the location is infested
         private FishScriptableObject _infestationFish;
@@ -92,7 +92,7 @@ namespace FishingGame.Reeling
 
             if (baitFish != null)
             {
-                if (baseFishList.Contains(baitFish))
+                if (_baseFishList.Contains(baitFish))
                 {
                     Fish fishData = new Fish(baitFish, timeCaught, locationCaught);
                     return fishData;
@@ -114,17 +114,17 @@ namespace FishingGame.Reeling
 
             if (CatchFishOrTrash())
             {
-                int fishTypeAmount = baseFishList.Count;
+                int fishTypeAmount = _baseFishList.Count;
                 int fishCaughtIndex = Random.Range(0, fishTypeAmount);
-                FishScriptableObject fishCaught = baseFishList[fishCaughtIndex];
+                FishScriptableObject fishCaught = _baseFishList[fishCaughtIndex];
                 Fish fishData = new Fish(fishCaught, timeCaught, locationCaught);
                 return fishData;
             }
             else
             {
-                int trashTypeAmount = baseTrashList.Count;
+                int trashTypeAmount = _baseTrashList.Count;
                 int trashCaughtIndex = Random.Range(0, trashTypeAmount);
-                TrashScriptable trashCaught = baseTrashList[trashCaughtIndex];
+                TrashScriptable trashCaught = _baseTrashList[trashCaughtIndex];
                 Trash trashData = new Trash(trashCaught, timeCaught, locationCaught);
                 return trashData;
             }
@@ -190,7 +190,7 @@ namespace FishingGame.Reeling
         /// <param name="fishTypeToAdd">The fish type to add</param>
         public void AddToFishableFishList(FishScriptableObject fishTypeToAdd)
         {
-            baseFishList.Add(fishTypeToAdd);
+            _baseFishList.Add(fishTypeToAdd);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace FishingGame.Reeling
         /// <param name="trashTypeToAdd">The trash type to add</param>
         public void AddTrashToFishableTrashList(TrashScriptable trashTypeToAdd)
         {
-            baseTrashList.Add(trashTypeToAdd);
+            _baseTrashList.Add(trashTypeToAdd);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace FishingGame.Reeling
                 }
             }
 
-            baseFishList = fishAvailable;
+            _baseFishList = fishAvailable;
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace FishingGame.Reeling
                 }
             }
 
-            baseTrashList = trashAvailable;
+            _baseTrashList = trashAvailable;
         }
 
         /// <summary>

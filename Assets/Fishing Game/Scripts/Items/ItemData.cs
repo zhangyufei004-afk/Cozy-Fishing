@@ -11,7 +11,7 @@ namespace FishingGame.Items
     /// It uses the Istorable class
     /// Required data values are set based on ItemScriptable on construction
     /// </summary>
-    public class ItemData: IStorable
+    public class ItemData : IStorable
     {
         private ItemScriptable _itemBase;
         private EItemType _itemType;
@@ -19,7 +19,7 @@ namespace FishingGame.Items
         private float _itemWeight;
         private string _itemName;
         private int _itemCharge;
-        private bool _currentlyEquiped = false;
+        protected bool _currentlyEquiped = false;
         private string _itemToolTip;
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace FishingGame.Items
         /// Returns the item name
         /// </summary>
         /// <returns>The item name</returns>
-        public string GetItemName()
+        public string GetName()
         {
             return _itemName;
         }
@@ -104,13 +104,14 @@ namespace FishingGame.Items
         }
 
         /// <summary>
-        /// Sets currently equiped to equal true
+        /// Sets currently equiped to equal true if not currently equiped, otehrwise sets to false
         /// This can be overiden if the specific item should have additional functionality
         /// usually when overriding this function you should still call .base()
         /// </summary>
         public virtual void UseItem()
         {
-            _currentlyEquiped = true;
+            if (_currentlyEquiped) { _currentlyEquiped = false; }
+            else {  _currentlyEquiped = true; }
         }
 
         /// <summary>

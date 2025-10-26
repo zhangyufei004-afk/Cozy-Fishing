@@ -51,21 +51,21 @@ MonoBehaviour:
   fishImage: {fileID: 0}
   rightArrow: {fileID: 0}
   catchBox: {fileID: 0}
-  catchboxYStartLocation: 0
+  catchboxYStartLocation: -19.5
   catchIncreaseAmount: 25
   catchDecreaseAmount: -10
-  boxSpeedScalar: 3
-  fightBackSpeed: -2
+  boxSpeedScalar: 5
+  fightBackSpeed: -4
   middleBarPoint: 23.3
-  defaultSpeed: 40
+  defaultSpeed: 100
   fishMaxYCord: 297.6
   fishMinYCord: -297.3
-  catchBoxMaxXCord: 292
-  catchBoxMinXCord: -291.4
-  timeRequiredForScalar: 0
-  catchBoxMaxReverseSpeed: -2
+  catchBoxMaxXCord: 278.9
+  catchBoxMinXCord: -278.7
+  suddenDeathTimer: 30
+  catchBoxMaxReverseSpeed: -3
   catchBoxForwardMaxSpeed: 10
-  initialTimeToWait: 0
+  initialTimeToWait: 1
 --- !u!1 &2680999012508629255
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,8 +76,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3709708385333524940}
   - component: {fileID: 6665325489416168760}
-  - component: {fileID: 1912413306617764286}
-  - component: {fileID: 1103440520066014634}
   m_Layer: 0
   m_Name: ArrowMiniGame
   m_TagString: Untagged
@@ -126,214 +124,15 @@ MonoBehaviour:
   fishingCanvas: {fileID: 0}
   progressSlider: {fileID: 0}
   spawnableArrow: {fileID: 4431288592897344608, guid: 5282c0cd72789f44fa68d1f2c93bca3a, type: 3}
-  slowSpeed: 50
-  mediumSpeed: 100
-  fastSpeed: 320
+  normalSpeed: 450
   minTimeBetweenArrows: 0.1
   maxTimeBetweenArrows: 3
   maxArrowVariance: 6
   minProgressModify: 5
   defaultProgressModify: 15
   defaultProgressMax: 80
-  maxTimeBeforeModify: 8
+  suddenDeathTimerDuration: 30
   waveSpawnTime: 0.6
-  rightSound: {fileID: 0}
-  wrongSound: {fileID: 0}
-  wrongSounds: []
---- !u!82 &1912413306617764286
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2680999012508629255}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1241380681015106622, guid: f8e50558cd04423459f76c064122672f, type: 2}
-  m_audioClip: {fileID: 8300000, guid: b95db39a046fca643b7ca45c68c49ecb, type: 3}
-  m_Resource: {fileID: 8300000, guid: b95db39a046fca643b7ca45c68c49ecb, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.9
-  m_Pitch: 1.5
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &1103440520066014634
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2680999012508629255}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1241380681015106622, guid: f8e50558cd04423459f76c064122672f, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d90889e0ab97dfe4791980d98b3324e9, type: 3}
-  m_Resource: {fileID: 8300000, guid: d90889e0ab97dfe4791980d98b3324e9, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.7
-  m_Pitch: 1.5
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &2981733044875708283
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,10 +218,15 @@ MonoBehaviour:
   progressSlider: {fileID: 0}
   centerPoint: {fileID: 0}
   textDirectionHolder: {fileID: 0}
-  defaultDecayValue: 2
-  defaultProgressMax: 0
-  defaultProgressScaleValue: 0
-  timeScaleMaxSeconds: 0
+  directionImage: {fileID: 0}
+  stopImage: {fileID: 0}
+  defaultDecayValue: 10
+  defaultProgressMax: 80
+  defaultProgressScaleValue: 20
+  timeScaleMaxSeconds: 12
+  amountOfPointsInBounds: 40
+  radius: 280
+  tempObject: {fileID: 0}
 --- !u!1 &5300646475322154039
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +237,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7239155952378619634}
   - component: {fileID: 6051403347699497060}
-  - component: {fileID: 6104904893418026403}
   m_Layer: 0
   m_Name: ReelingMaster
   m_TagString: Untagged
@@ -481,102 +284,5 @@ MonoBehaviour:
   fishingFinishedText: {fileID: 0}
   timerObject: {fileID: 0}
   cancelButton: {fileID: 0}
+  sliderAnimator: {fileID: 0}
   characterAnimator: {fileID: 0}
-  winSound: {fileID: 0}
---- !u!82 &6104904893418026403
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5300646475322154039}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1241380681015106622, guid: f8e50558cd04423459f76c064122672f, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d13bd63f85f785549af1180343ea92ec, type: 3}
-  m_Resource: {fileID: 8300000, guid: d13bd63f85f785549af1180343ea92ec, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4

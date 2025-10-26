@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +19,12 @@ namespace FishingGame.Reeling
     /// The main functionality for stage 1 of reeling is done here, once that stage is completed
     /// the class then lets ReelingMaster.cs do the rest
     /// </summary>
-    public class ReelingInitiation1 : MonoBehaviour
+    public class ReelingInitiation : MonoBehaviour
     {
-        public bool StageOne = false;
+        private static readonly int FishBite = Animator.StringToHash("FishBite");
+        private static readonly int IsBobbing = Animator.StringToHash("isBobbing");
+        private static readonly int IsReeling = Animator.StringToHash("isReeling");
+        private static readonly int IsFishing = Animator.StringToHash("IsFishing");
 
         #region Private Fields
         [Header("Reeling Scripts")]
@@ -43,14 +46,6 @@ namespace FishingGame.Reeling
         [Header("Stageone MiniGame variables")]
 
         [SerializeField]
-        [Tooltip("The max amount of seconds a player would have to wait for a catch")]
-        private int maxFishWaitTime;
-
-        [SerializeField]
-        [Tooltip("The min amount of seconds a player would have to wait for a catch")]
-        private int minFishWaitTime;
-
-        [SerializeField]
         [Tooltip("The prefab of the object that swims up to the reel")]
         private GameObject reelSwimmerPrefab;
 
@@ -62,12 +57,15 @@ namespace FishingGame.Reeling
         
         private GameObject _fishSwim;
 
+        private float _maxFishWaitTime;
+        private float _minFishWaitTime;
+
         private bool _gameActive = false;
         private bool _isStageOne = false;
         private bool _fishAtHook = false;
 
         private int _stageOneDifficulty = 0;
-        private int _catchSecondsToWait;
+        private float _catchSecondsToWait;
 
         [Header("Misc")]
 
@@ -87,9 +85,6 @@ namespace FishingGame.Reeling
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
 
-        [SerializeField]
-        private AudioSource catchSound;
-
         private bool _isBusy = false;
         
         #endregion
@@ -107,7 +102,6 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginStageOne()
         {
-            StageOne = true;
             SetupVariables();
             
             StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
@@ -138,7 +132,8 @@ namespace FishingGame.Reeling
         public void FishAtHook()
         {
             _fishAtHook = true;
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", true);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, true);
+            characterAnimator.SetBool(FishBite, true);
 
             StartCoroutine(FishCatchTimer(2));
         }
@@ -150,15 +145,16 @@ namespace FishingGame.Reeling
         /// </summary>
         public void FishCaught()
         {
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, false);
+
             if (_fishAtHook)
             {
-                catchSound.Play();
-
                 _fishAtHook = false;
                 _isStageOne = false;
                 Destroy(_fishSwim);
                 StopAllCoroutines();
-                fishingHook.AttempToFishFromCurrentLocation();
+                fishingHook.AttemptToFishFromCurrentLocation();
+                fishingRod.ResetCharge(false);
             }
             else
             {
@@ -180,7 +176,7 @@ namespace FishingGame.Reeling
         /// <param name="isReeling">True if the animation should player</param>
         public void SetIsReelingAnimation(bool isReeling)
         {
-            characterAnimator.SetBool("isReeling", isReeling);
+            characterAnimator.SetBool(IsReeling, isReeling);
         }
 
         /// <summary>
@@ -207,15 +203,17 @@ namespace FishingGame.Reeling
         {
             fishingHook.ClearCollidingFishAndPool();
             StopAllCoroutines();
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, false);
             SetIsReelingAnimation(false);
+            characterAnimator.SetBool(IsFishing, false);
             Destroy(_fishSwim);
             reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
             SetIsReelingAnimation(false);
+            fishingRod.ResetCharge(true);
 
             _isStageOne = false;
-            fishingHook.PullBackHook();
+            fishingHook.PullBackHook(false);
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
         }
 
@@ -235,6 +233,30 @@ namespace FishingGame.Reeling
         public bool IsFishAtHook()
         {
             return _fishAtHook;
+        }
+
+        /// <summary>
+        /// Sets the fish biting animation boolean to be <c>isFishBiting</c>
+        /// </summary>
+        /// <param name="isFishBiting">Whether the fish is currently biting</param>
+        public void SetFishBitingAnim(bool isFishBiting)
+        {
+            characterAnimator.SetBool(FishBite, isFishBiting);
+        }
+
+        /// <summary>
+        /// Sets the IsFishing animation boolean to be <c>isFishing</c>
+        /// </summary>
+        /// <param name="isFishing">Whether the player is currently fishing</param>
+        public void SetIsFishing(bool isFishing)
+        {
+            characterAnimator.SetBool(IsFishing, isFishing);
+        }
+
+        public void SetFishWaitTimes(float minWaitTime, float maxWaitTime)
+        {
+            _minFishWaitTime = minWaitTime;
+            _maxFishWaitTime = maxWaitTime;
         }
 
         #endregion
@@ -274,9 +296,10 @@ namespace FishingGame.Reeling
         private void FishGotAway()
         {
             _fishAtHook = false;
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobing", false);
+            fishingHook.gameObject.GetComponent<Animator>().SetBool(IsBobbing, false);
+            characterAnimator.SetBool(FishBite, false);
 
-            _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this);
+            _fishSwim.GetComponent<StageOneSwimmer>().SetupVariables(SetFishSpawnLocation(), this, true);
             StartCoroutine(DespawnFishTimer(_fishDissapearTimeVisual));
         }
 
@@ -285,7 +308,7 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="waitTime">The amount of seconds to wait before spawning</param>
         /// <returns>Spawns the fish object</returns>
-        private IEnumerator SpawnFishTimer(int waitTime)
+        private IEnumerator SpawnFishTimer(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             SpawnFishShadow();
@@ -297,7 +320,7 @@ namespace FishingGame.Reeling
         /// </summary>a
         /// <param name="waitTime">The amount of seconds until fish swims away</param>
         /// <returns>The fish swims away</returns>
-        private IEnumerator FishCatchTimer(int waitTime)
+        private IEnumerator FishCatchTimer(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             if (_isStageOne == true) { FishGotAway(); }
@@ -310,7 +333,7 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="waitTime">The amount of seconds to wait before despawning</param>
         /// <returns>Despawns the fish and starts timer for new one to spawn</returns>
-        private IEnumerator DespawnFishTimer(int waitTime)
+        private IEnumerator DespawnFishTimer(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);
             Destroy(_fishSwim);
@@ -331,10 +354,9 @@ namespace FishingGame.Reeling
             reelingMasterScript.SetCancelButtonVisibilty(true);
 
 
-            _catchSecondsToWait = UnityEngine.Random.Range(minFishWaitTime, maxFishWaitTime);
+            _catchSecondsToWait = UnityEngine.Random.Range(_minFishWaitTime, _maxFishWaitTime);
         }
 
         #endregion
     }
 }
-*/

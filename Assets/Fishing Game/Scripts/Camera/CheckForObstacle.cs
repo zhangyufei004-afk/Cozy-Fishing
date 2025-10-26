@@ -33,10 +33,11 @@ namespace FishingGame.Camera
             yield return new WaitUntil(() => !_brain.IsBlending);
             if (_brain.ActiveVirtualCamera.Name == this.name && IsObjectInFrustum(hook))
             {
-                if (Physics.Raycast(this.transform.position,
-                        hook.transform.position - this.transform.position, out RaycastHit hit))
+                if (!Physics.Raycast(hook.transform.position,
+                        this.transform.position - hook.transform.position, out RaycastHit hit))
                 {
-                    if (hit.collider.gameObject != hook)
+                    Debug.LogError(hit.collider.gameObject.name);
+                    if (hit.collider.gameObject != this.gameObject)
                     {   // We have a collision
                         thirdPersonFollow.CameraSide = (thirdPersonFollow.CameraSide + 1) % 2;
                     }
