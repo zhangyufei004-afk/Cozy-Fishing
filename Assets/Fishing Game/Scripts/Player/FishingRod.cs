@@ -442,6 +442,7 @@ namespace FishingGame.Reeling
             if (_isCharging == true && CanThrowToLocation())
             {
                 SetCastAnimation();
+                _isCharging = false;
             }
             else
             {
