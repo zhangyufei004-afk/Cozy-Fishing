@@ -10,25 +10,23 @@ namespace FishingGame.MainMenu
     public class MainMenuUI : MonoBehaviour
     {
         [SerializeField] private GameObject settingsPanel; // Assign SettingsCanvas in Inspector
-        [SerializeField] private GameObject mainMenuPanel; // Assign MainMenuCanvas in Inspector
+        [SerializeField] private GameObject mainMenuButtons; // Assign MainMenuCanvas in Inspector
 
         public void OnOpenSettings()
         {
-            if (settingsPanel != null && mainMenuPanel != null)
+            if (settingsPanel != null && mainMenuButtons != null)
             {
                 settingsPanel.SetActive(true);
-                mainMenuPanel.SetActive(false);
             }
         }
 
         public void OnCloseSettings()
         {
-            if (settingsPanel != null && mainMenuPanel != null)
+            if (settingsPanel != null && mainMenuButtons != null)
             {
                 settingsPanel.SetActive(false);
-                mainMenuPanel.SetActive(true);
             }
-            EventSystem.current.SetSelectedGameObject(mainMenuPanel.transform.GetChild(0).gameObject);
+            EventSystem.current.SetSelectedGameObject(mainMenuButtons.transform.GetChild(0).gameObject);
         }
 
         public void OnQuitGame()

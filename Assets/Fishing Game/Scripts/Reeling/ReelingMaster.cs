@@ -21,6 +21,9 @@ namespace FishingGame.Reeling
     /// </summary>
     public class ReelingMaster : MonoBehaviour
     {
+        private static readonly int Fishing = Animator.StringToHash("IsFishing");
+        private static readonly int IsReeling = Animator.StringToHash("isReeling");
+
         #region Private Variables
 
         [Header("Script References")]
@@ -146,15 +149,26 @@ namespace FishingGame.Reeling
         /// <param name="didWin">Represents if the player won the minigame or not</param>
         public void EndCurrentMiniGame(bool didWin)
         {
-            if (didWin == false) { EndCatch(false); return; }
+            if (didWin == false)
+            {
+                EndCatch(false);
+                return;
+            }
 
             _currentMiniGameWins += 1;
             Vector3 fishPosition = _current3DObject.transform.position;
             _current3DObject.transform.position = new Vector3(fishPosition.x, fishPosition.y += 0.20f, fishPosition.z);
             _hasWon = CheckIfWonEnough();
 
-            if (_hasWon) { EndCatch(true); return; }
-            else { SetNextMiniGame(); }
+            if (_hasWon)
+            {
+                EndCatch(true);
+                return;
+            }
+            else
+            {
+                SetNextMiniGame();
+            }
         }
 
         /// <summary>
@@ -193,7 +207,10 @@ namespace FishingGame.Reeling
             sliderAnimator.SetBool("isGameActive", false);
             fishingRodScript.SetChargerVisibility(false);
 
-            if (IsFishing == true) { _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame(); }
+            if (IsFishing == true)
+            {
+                _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
+            }
             else
             {
                 if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
@@ -215,13 +232,20 @@ namespace FishingGame.Reeling
         /// Returns the current 3D object representing the fish being reeled
         /// </summary>
         /// <returns>The 3D object of the current fish</returns>
-        public GameObject GetCurrent3DFishObject() { return _current3DObject; }
+        public GameObject GetCurrent3DFishObject()
+        {
+            return _current3DObject;
+        }
 
         /// <summary>
         /// Returns the current fishing rod
         /// </summary>
         /// <returns>Returns the current fishing rod</returns>
-        public FishingRod GetCurrentFishingRod() { return fishingRodScript; }
+        public FishingRod GetCurrentFishingRod()
+        {
+            return fishingRodScript;
+        }
+
 
         #endregion
 
@@ -247,8 +271,14 @@ namespace FishingGame.Reeling
         /// <returns>Returns true if the currentMiniGamesWon variables is greater than the minigamewins required variable</returns>
         private bool CheckIfWonEnough()
         {
-            if (_currentMiniGameWins >= _miniGameWinsRequired) { return true; }
-            else { return false; }
+            if (_currentMiniGameWins >= _miniGameWinsRequired)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -283,8 +313,8 @@ namespace FishingGame.Reeling
             StartCoroutine(ControlsAreDisabledAfterTime(false, 1));
             if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
-            characterAnimator.SetBool("isReeling", false);
-            fishingHook.gameObject.GetComponent<Animator>().SetBool("isBobbing", false);
+            characterAnimator.SetBool(IsReeling, false);
+            characterAnimator.SetBool(Fishing, false);
             Destroy(_current3DObject);
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
@@ -353,6 +383,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void HideReelFinishedUI()
         {
+            fishingFinishedText.gameObject.SetActive(false);
             caughtFishImage.gameObject.SetActive(false);
         }       
 

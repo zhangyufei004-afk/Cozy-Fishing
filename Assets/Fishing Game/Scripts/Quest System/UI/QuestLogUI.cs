@@ -16,6 +16,11 @@ namespace FishingGame.QuestSystem.UI
         [SerializeField] private QuestDetailsUI questDetails;
         [SerializeField] private QuestScrollList questScrollList;
 
+        private void OnEnable()
+        {
+            GameManager.Instance.GameEvents.OnQuestStateChange += QuestStateChange;
+        }
+
         private void QuestStateChange(IQuest quest)
         {
             if (!quest.IsQuestInProgress())

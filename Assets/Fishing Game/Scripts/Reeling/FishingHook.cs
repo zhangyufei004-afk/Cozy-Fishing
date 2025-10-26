@@ -5,6 +5,7 @@ using FishingGame.SaveGame;
 using NUnit.Framework;
 using PrototypeFishingMechanics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -24,6 +25,8 @@ namespace FishingGame.Reeling
     /// </summary>
     public class FishingHook : MonoBehaviour
     {
+        private const float MaxRotationDegrees = 200f;
+        
         #region Public Variables
 
         [Tooltip("This is a public variable that should initially be set to false, it is changed by both this script and others based on if the fishin line has been cast or not.")]
@@ -49,9 +52,8 @@ namespace FishingGame.Reeling
 
         [Header("Runtime Variables")]
 
-        [SerializeField]
-        [Tooltip("The spot where the hook will default back to after casting. NOTE: For current implementation make sure the y is 0 or above.")]
-        private Vector3 hookResetSpot;
+        
+        private Vector3 _hookResetSpot;
 
         private bool _headingToFishSpot = false;
 
@@ -82,6 +84,8 @@ namespace FishingGame.Reeling
         private AnimationCurve curve;
 
         private Vector3 _fishingLocation;
+        private Transform _initialParent;
+        private Quaternion _initialRotation;
 
         // Fishing pool is not a list as there should never be two fishing pools colliding at once
         // There is a small chance for multipile fish to collide at once so I have made _collidingFish a list
@@ -95,16 +99,26 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             _collidingFish = new List<GameObject>();
+            _initialParent = transform.parent;
+            _hookResetSpot = transform.localPosition;
+            StartCoroutine(SetInitialHookRotation());
         }
+        
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (_headingToFishSpot)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector3(_fishingLocation.x, transform.position.y, _fishingLocation.z), castHookSpeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(_fishingLocation.x, transform.position.y, _fishingLocation.z), castHookSpeed * Time.fixedDeltaTime);
                 transform.position += new Vector3(0, _velocity, 0);
 
-                _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
+                // float adjustmentPercent = Vector3.Distance(transform.position, _fishingLocation) / Vector3.Distance(_fishingLocation, _initialParent.transform.position);
+                
+                _velocity += Mathf.Clamp(Time.deltaTime * 0.06125f * (transform.position.y > _fishingLocation.y ? Physics.gravity.y/3.5f : -(Physics.gravity.y/3.6f)), -1f, 1f);
+                
+                // _velocity += Time.deltaTime * 0.125f * ((transform.position.y > _fishingLocation.y) ? -1 : 1);
+                
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 1, 0)), MaxRotationDegrees * Time.fixedDeltaTime);
 
                 if (Vector3.Distance(transform.position, _fishingLocation) <= rangeFromFishSpot)
                 {
@@ -124,11 +138,14 @@ namespace FishingGame.Reeling
             }
             if (_headingBackToHook)
             {
+                transform.rotation = _initialRotation;
+                Vector3 target = _initialParent.TransformPoint(_hookResetSpot);
+                transform.position = Vector3.MoveTowards(transform.position, target, hookReturnSpeed * Time.fixedDeltaTime);
                 _velocity = 0;
-                transform.localPosition = Vector3.MoveTowards(transform.localPosition, hookResetSpot, hookReturnSpeed * Time.deltaTime);
-                if (transform.localPosition == hookResetSpot)
+                if (transform.position == target)
                 {
                     _headingBackToHook = false;
+                    transform.parent = _initialParent;
                 }
             }
 
@@ -145,6 +162,7 @@ namespace FishingGame.Reeling
             if (CheckIfPool(other.gameObject))
             {
                 _collidingPool = other.gameObject.GetComponent<FishingPool>();
+                // _velocity *= 0.3f;
             }
             else if (CheckIfFish(other.gameObject))
             {
@@ -157,7 +175,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void OnTriggerExit(Collider other)
         {
-            if (other == _collidingPool)
+            if (_collidingPool != null && other.gameObject == _collidingPool.gameObject && transform.position.y > _fishingLocation.y)
             {
                 _collidingPool = null;
             }
@@ -184,7 +202,7 @@ namespace FishingGame.Reeling
         /// Use this method to attempt to fish from where the fishing rods hook currently is
         /// If valid spot is colliding the hook will return and print a debug log
         /// </summary>
-        public void AttempToFishFromCurrentLocation()
+        public void AttemptToFishFromCurrentLocation()
         {
             if (CheckIfColliding())
             {
@@ -209,7 +227,8 @@ namespace FishingGame.Reeling
             ResetHookSpot();
             reelingMaster.DisableControls(areControlsDisabled);
             initiationScript.SetIsReelingAnimation(false);
-            fishingRodScript.ResetCharge();
+            initiationScript.SetIsFishing(false);
+            fishingRodScript.ResetCharge(true);
             fishingRodScript.SetChargerVisibility(false);
         }
 
@@ -219,7 +238,8 @@ namespace FishingGame.Reeling
         /// <param name="targetLocation">Location to move to</param>
         public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
         {
-            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y -1f, targetLocation.z);
+            transform.parent = null;
+            Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
 
             _fishingLocation = newPosition;
             _headingToFishSpot = true;
@@ -251,6 +271,7 @@ namespace FishingGame.Reeling
             }
             
         }
+        
 
         /// <summary>
         /// Sets variables to allow hook to head back to its original spot
@@ -315,6 +336,8 @@ namespace FishingGame.Reeling
             GameObject fishModel = initiationScript.CreateAndReturn3DFishModel();
             HookIsOut = false;
 
+            initiationScript.SetIsReelingAnimation(true);
+            
             if (randomPoolFish.GetCatchType() == ECatchableType.Fish)
             {
                 Fish fishCaught = (Fish)randomPoolFish;
@@ -357,6 +380,12 @@ namespace FishingGame.Reeling
             {
                 return false;
             }
+        }
+
+        private IEnumerator SetInitialHookRotation()
+        {
+            yield return new WaitForEndOfFrame();
+            _initialRotation = transform.rotation;
         }
     }
 }
