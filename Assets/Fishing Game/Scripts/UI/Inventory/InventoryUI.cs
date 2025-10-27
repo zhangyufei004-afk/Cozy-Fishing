@@ -23,7 +23,7 @@ namespace FishingGame.UI.Inventory
         [Header("Scrollbox References")]
         [SerializeField] private Transform fishListContainer;
         [SerializeField] private GameObject fishCardPrefab;
-        
+        [SerializeField] private GameObject scrollBox;
 
         [Header("Inventory Display References")]
         [SerializeField] [Tooltip("The image that shows what item is being looked at")] private Image itemImage;
@@ -78,6 +78,7 @@ namespace FishingGame.UI.Inventory
                 inventoryUIEntry.UpdateVisuals();
             }
             _currentItemCards.Add(card);
+            GameManager.Instance.GameEvents.ElementAddedToScrollbox(scrollBox.name);
         }
 
         /// <summary>

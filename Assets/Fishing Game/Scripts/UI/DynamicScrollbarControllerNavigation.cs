@@ -15,18 +15,20 @@ namespace FishingGame.UI
         [SerializeField] private Selectable selectOnRight;
         [SerializeField] private Selectable selectOnUp;
         [SerializeField] private Selectable selectOnDown;
-
+        [SerializeField] private bool setupButtonNavigation;
+        
+        [Header("UI Elements")]
+        [Tooltip("The scroll bar to apply the navigation to.")]
+        [SerializeField] private Scrollbar scrollbar;
         [SerializeField] private GameObject scrollBoxGameObject;
         [SerializeField] private GameObject scrollBoxContent;
 
-        private Scrollbar _scrollBar;
-        private bool hasNavigationBeenEstablished;
+        private bool _hasNavigationBeenEstablished;
 
         private void OnEnable()
         {
             GameManager.Instance.GameEvents.OnElementAddedToScrollbox += SetupLeftNavigation;
-            hasNavigationBeenEstablished = false;
-            _scrollBar = GetComponent<Scrollbar>();
+            _hasNavigationBeenEstablished = false;
             
             var navigation = new Navigation();
             navigation.mode = Navigation.Mode.Explicit;
@@ -35,17 +37,34 @@ namespace FishingGame.UI
             navigation.selectOnDown = selectOnDown;
             navigation.selectOnUp = selectOnUp;
             
-            _scrollBar.navigation = navigation;        
+            scrollbar.navigation = navigation;        
         }
 
         private void SetupLeftNavigation(string scrollBoxName)
         {
-            if (!hasNavigationBeenEstablished && string.Equals(scrollBoxGameObject.name, scrollBoxName))
+            if (string.Equals(scrollBoxGameObject.name, scrollBoxName))
             {
-                Navigation navigation = _scrollBar.navigation;
-                navigation.selectOnLeft = scrollBoxContent.transform.GetChild(0).GetComponent<Button>();
-                _scrollBar.navigation = navigation;
-                hasNavigationBeenEstablished = true;
+                int childCount = scrollBoxContent.transform.childCount;
+                GameObject latestEntry = scrollBoxContent.transform.GetChild(childCount - 1).gameObject;
+                Button entryButton = latestEntry.GetComponent<Button>();
+                if (setupButtonNavigation)
+                {
+                    var buttonNavigation = new Navigation
+                    {
+                        mode = Navigation.Mode.Automatic,
+                        selectOnRight = scrollbar,
+                        wrapAround = true,
+                    };
+                    entryButton.navigation = buttonNavigation;
+                }
+
+                if (!_hasNavigationBeenEstablished)
+                {
+                    Navigation navigation = scrollbar.navigation;
+                    navigation.selectOnLeft = entryButton;
+                    scrollbar.navigation = navigation;
+                    _hasNavigationBeenEstablished = true;
+                }            
             }
         }
     }
