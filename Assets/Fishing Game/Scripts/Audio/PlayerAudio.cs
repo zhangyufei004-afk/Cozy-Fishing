@@ -10,9 +10,14 @@ namespace FishingGame
         [SerializeField]
         private ReelingInitiation reelingInitiation;
         [SerializeField]
+        private FishingRod fishingRod;
+        [SerializeField]
         private AudioSource castSound;
         [SerializeField]
+        private AudioSource perfectCastSound;
+        [SerializeField]
         private AudioSource lineCastSound;
+
         [SerializeField]
         private AudioSource splashesSound;
         [SerializeField]
@@ -57,18 +62,13 @@ namespace FishingGame
             RealisticMiniGameAudio();
             SliderMiniGame();
 
-            if (lineCastSound.isPlaying && reelingInitiation.StageOne)
+            if (lineCastSound.isPlaying && reelingInitiation.IsStageOne())
             {
                 lineCastSound.Stop();
             }
             else if (lineCastSound.isPlaying && playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             {
                 lineCastSound.Stop();
-            }
-
-            if (reelingInitiation.StageOne)
-            {
-                reelingInitiation.StageOne = false;
             }
 
             if (reelingInitiation.IsFishAtHook() && !_splashesPlaying)
@@ -91,7 +91,25 @@ namespace FishingGame
         /// </summary>
         public void CastSound()
         {
-            castSound.Play();
+            if(fishingRod.GetChargeLevel() == 1)
+            {
+                castSound.pitch = 1.25f;
+                castSound.volume = 0.5f;
+                castSound.Play();
+            }
+            else if (fishingRod.GetChargeLevel() == 2)
+            {
+                castSound.pitch = 1f;
+                castSound.volume = 0.8f;
+                castSound.Play();
+            }
+            else if (fishingRod.GetChargeLevel() == 3)
+            {
+                castSound.pitch = 0.85f;
+                castSound.volume = 1;
+                castSound.Play();
+                perfectCastSound.Play();
+            }
 
             lineCastSound.Play();
         }
@@ -166,20 +184,33 @@ namespace FishingGame
                 {
                     if (!_sliderReelPlaying)
                     {
+                        sliderReelingSound.volume = 1f;
                         sliderReelingSound.Play();
                         _sliderReelPlaying = true;
                     }
+
+                    sliderReelingSound.volume = Mathf.MoveTowards(sliderReelingSound.volume, 1f, Time.deltaTime * 10f);
                 }
                 else if (_sliderReelPlaying)
                 {
-                    sliderReelingSound.Stop();
-                    _sliderReelPlaying = false;
+                    sliderReelingSound.volume = Mathf.MoveTowards(sliderReelingSound.volume, 0f, Time.deltaTime * 10f);
+
+                    if (sliderReelingSound.volume <= 0.01f)
+                    {
+                        sliderReelingSound.Stop();
+                        _sliderReelPlaying = false;
+                    }
                 }
             }
             else if (_sliderReelPlaying)
             {
-                sliderReelingSound.Stop();
-                _sliderReelPlaying = false;
+                sliderReelingSound.volume = Mathf.MoveTowards(sliderReelingSound.volume, 0f, Time.deltaTime * 10f);
+
+                if (sliderReelingSound.volume <= 0.01f)
+                {
+                    sliderReelingSound.Stop();
+                    _sliderReelPlaying = false;
+                }
             }
         }
     }

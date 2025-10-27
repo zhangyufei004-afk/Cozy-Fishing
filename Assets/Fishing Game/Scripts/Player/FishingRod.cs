@@ -242,6 +242,15 @@ namespace FishingGame.Reeling
             chargeSlider.gameObject.SetActive(isVisible);
         }
 
+        /// <summary>
+        /// Returns cast result for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public int GetChargeLevel()
+        {
+            return (int)_throwLineResult;
+        }
+
         #region Charging_and_throwing_line
 
         /// <summary>

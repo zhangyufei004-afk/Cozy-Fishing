@@ -278,7 +278,7 @@ namespace FishingGame.Reeling
         /// <returns></returns>
         public bool GetInput()
         {
-            return _directionAction.ReadValue<Vector2>().x > 0;
+            return _inputHeld;
         }
 
         #endregion
