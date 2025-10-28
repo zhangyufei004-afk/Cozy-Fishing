@@ -717,15 +717,6 @@ namespace FishingGame.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RealisticStickMovement"",
-                    ""type"": ""Value"",
-                    ""id"": ""ee11ea54-b866-44cc-a970-c2dacf91e7d3"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Back"",
                     ""type"": ""Button"",
                     ""id"": ""49d08dfe-a2a8-40d5-b9d7-c0ef1aecd265"",
@@ -1187,28 +1178,6 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""142bf383-9665-41e1-b580-efce1e52d5b3"",
-                    ""path"": ""<VirtualMouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""RealisticStickMovement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f40f5c29-87a7-4445-9097-5894dd161e9f"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""RealisticStickMovement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4f9c94bb-d9dd-4c9a-904f-15cab7cfd8c3"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
@@ -1583,7 +1552,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""8abb2bd2-dc0f-49cc-bd21-e169c748e845"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1609,6 +1578,28 @@ namespace FishingGame.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c07555b9-0bf4-42d7-bbe1-05b2769ac751"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e960158-c421-495b-b40f-8370c3ee0317"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1706,7 +1697,6 @@ namespace FishingGame.Input
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
             m_UI_ContinueDialogue = m_UI.FindAction("ContinueDialogue", throwIfNotFound: true);
-            m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
             m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
             // ArrowMiniGame
@@ -2034,7 +2024,6 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_TrackedDevicePosition;
         private readonly InputAction m_UI_TrackedDeviceOrientation;
         private readonly InputAction m_UI_ContinueDialogue;
-        private readonly InputAction m_UI_RealisticStickMovement;
         private readonly InputAction m_UI_Back;
         private readonly InputAction m_UI_NumberKeys;
         /// <summary>
@@ -2092,10 +2081,6 @@ namespace FishingGame.Input
             /// Provides access to the underlying input action "UI/ContinueDialogue".
             /// </summary>
             public InputAction @ContinueDialogue => m_Wrapper.m_UI_ContinueDialogue;
-            /// <summary>
-            /// Provides access to the underlying input action "UI/RealisticStickMovement".
-            /// </summary>
-            public InputAction @RealisticStickMovement => m_Wrapper.m_UI_RealisticStickMovement;
             /// <summary>
             /// Provides access to the underlying input action "UI/Back".
             /// </summary>
@@ -2163,9 +2148,6 @@ namespace FishingGame.Input
                 @ContinueDialogue.started += instance.OnContinueDialogue;
                 @ContinueDialogue.performed += instance.OnContinueDialogue;
                 @ContinueDialogue.canceled += instance.OnContinueDialogue;
-                @RealisticStickMovement.started += instance.OnRealisticStickMovement;
-                @RealisticStickMovement.performed += instance.OnRealisticStickMovement;
-                @RealisticStickMovement.canceled += instance.OnRealisticStickMovement;
                 @Back.started += instance.OnBack;
                 @Back.performed += instance.OnBack;
                 @Back.canceled += instance.OnBack;
@@ -2216,9 +2198,6 @@ namespace FishingGame.Input
                 @ContinueDialogue.started -= instance.OnContinueDialogue;
                 @ContinueDialogue.performed -= instance.OnContinueDialogue;
                 @ContinueDialogue.canceled -= instance.OnContinueDialogue;
-                @RealisticStickMovement.started -= instance.OnRealisticStickMovement;
-                @RealisticStickMovement.performed -= instance.OnRealisticStickMovement;
-                @RealisticStickMovement.canceled -= instance.OnRealisticStickMovement;
                 @Back.started -= instance.OnBack;
                 @Back.performed -= instance.OnBack;
                 @Back.canceled -= instance.OnBack;
@@ -2831,13 +2810,6 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnContinueDialogue(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "RealisticStickMovement" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnRealisticStickMovement(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Back" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
