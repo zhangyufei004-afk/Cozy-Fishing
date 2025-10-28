@@ -3,6 +3,8 @@ using UnityEngine;
 using FishingGame.FishSystem;
 using FishingGame.FishLog;
 using FishingGame.GameManagement;
+using FishingGame.Items;
+using FishingGame.Items.Bait;
 
 namespace FishingGame.Inventory
 {

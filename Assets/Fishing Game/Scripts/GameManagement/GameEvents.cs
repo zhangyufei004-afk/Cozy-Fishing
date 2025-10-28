@@ -37,8 +37,6 @@ namespace FishingGame.GameManagement
         public event Action<IStorable> OnItemUsedUp;
         public event Action<IBait> OnBaitEquipped;
         
-        public event Action<IBait> OnBaitConsumed;
-
         #endregion
 
         #region Quest Events
@@ -351,15 +349,6 @@ namespace FishingGame.GameManagement
         public void ElementAddedToScrollbox(string scrollBoxName)
         {
             OnElementAddedToScrollbox?.Invoke(scrollBoxName);
-        }
-
-        /// <summary>
-        /// Invokes the OnBaitConsumed event to indicate that a bait has been used up fully
-        /// </summary>
-        /// <param name="bait">The bait which has been consumed</param>
-        public void BaitConsumed(IBait bait)
-        {
-            OnBaitConsumed?.Invoke(bait);
         }
     }
 }

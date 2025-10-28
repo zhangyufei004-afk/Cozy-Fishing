@@ -220,6 +220,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void RemoveBait()
         {
+            GameManager.Instance.GameEvents.ItemUsedUp(_currentlyEquipedBait as ItemData);
             _currentlyEquipedBait = new NullBait();
         }
 
