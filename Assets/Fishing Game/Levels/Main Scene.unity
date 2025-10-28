@@ -2603,6 +2603,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1113570645}
   m_SourcePrefab: {fileID: 100100000, guid: 2fadcdbc72c88ed40a4b0094735f6ea2, type: 3}
+--- !u!1 &340580627 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4518172318511371622, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+  m_PrefabInstance: {fileID: 2125236617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &347065529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34324,7 +34329,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 340580627}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18f3a7df1bc68ed438761a9f48ce7da7, type: 3}
@@ -36061,6 +36066,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963978129}
   m_CullTransparentMesh: 1
+--- !u!1 &1966237197 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 313023259972732001, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+  m_PrefabInstance: {fileID: 2125236617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2008394925
 GameObject:
   m_ObjectHideFlags: 0
@@ -36658,6 +36668,18 @@ PrefabInstance:
       propertyPath: minigameProgressSlider
       value: 
       objectReference: {fileID: 1910628927}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: miniGameTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: 'miniGameTypes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 340580627}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: 'miniGameTypes.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1966237197}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: fishingCanvas
       value: 
@@ -37105,7 +37127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9115279488960758460, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 119.1162
+      value: 123.93008
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
