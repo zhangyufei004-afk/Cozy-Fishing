@@ -4,14 +4,18 @@ namespace FishingGame.Player
 {
     /// <summary>
     /// Defines an area where the player can use the grappling hook.
+    /// Now supports a destination point for directional grappling.
     /// Displays an optional visual indicator when the player enters the zone.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     public class GrappleZone : MonoBehaviour
     {
-        [Header("Anchor Point")]
+        [Header("Anchor & Destination Points")]
         [Tooltip("Where the rope connects when grappling.")]
         public Transform anchorPoint;
+
+        [Tooltip("Where the player will be pulled to after grappling.")]
+        public Transform destinationPoint;
 
         [Header("Zone Visuals")]
         [Tooltip("Optional visual object shown when the player is inside the zone.")]
@@ -84,17 +88,14 @@ namespace FishingGame.Player
 
         private void SetIndicatorColor(Color color)
         {
-            if (_indicatorRenderer != null)
+            if (_indicatorRenderer != null && _indicatorRenderer.material.HasProperty("_Color"))
             {
-                if (_indicatorRenderer.material.HasProperty("_Color"))
-                {
-                    _indicatorRenderer.material.color = color;
-                }
+                _indicatorRenderer.material.color = color;
             }
         }
 
 #if UNITY_EDITOR
-        // Editor gizmos (可选：辅助场景调试)
+        // Editor gizmos (visualizes zone + anchor → destination path)
         private void OnDrawGizmos()
         {
             if (zoneCollider != null)
@@ -108,6 +109,18 @@ namespace FishingGame.Player
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(anchorPoint.position, 0.2f);
                 Gizmos.DrawLine(transform.position, anchorPoint.position);
+            }
+
+            if (destinationPoint != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(destinationPoint.position, 0.2f);
+
+                if (anchorPoint != null)
+                {
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawLine(anchorPoint.position, destinationPoint.position);
+                }
             }
         }
 #endif

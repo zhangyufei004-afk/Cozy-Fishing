@@ -4,12 +4,14 @@ using FishingGame.GameManagement;
 using Unity.Cinemachine;
 using FishingGame.Reeling;
 using TMPro;
+using System.Collections;
 
 namespace FishingGame.Player
 {
     /// <summary>
-    /// Player Movement Controller.
-    /// Handles player movement, grappling, interactions, water detection, and death using CharacterController and the new Input System.
+    /// Player movement, grappling (manual control via W/S), and animation integration.
+    /// Grapple plays player throw animation, then spawns rope after a short delay.
+    /// Rope automatically conforms to terrain to prevent clipping.
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
@@ -23,15 +25,19 @@ namespace FishingGame.Player
         [SerializeField] private CinemachineBrain brain;
 
         [Header("Movement Settings")]
-        [SerializeField] private float movementSpeed;
-        [SerializeField] private float rotationSpeed;
+        [SerializeField] private float movementSpeed = 6f;
+        [SerializeField] private float rotationSpeed = 20f;
 
         [Header("Grapple Settings")]
         [SerializeField] private float grappleRange = 15f;
         [SerializeField] private float grappleSpeed = 10f;
         [SerializeField] private float grappleAscendSpeed = 3f;
         [SerializeField] private float grappleDescendSpeed = 3f;
-        [SerializeField] private bool hasGrapple;
+        [SerializeField] private bool hasGrapple = true;
+
+        [Header("Grapple Delay")]
+        [SerializeField, Tooltip("Delay before rope spawns after throw animation")]
+        private float grappleStartDelay = 0.15f;
 
         [Header("Grapple Visuals")]
         [SerializeField] private LineRenderer grappleLine;
@@ -53,18 +59,18 @@ namespace FishingGame.Player
         private float _initialRotationSpeed;
 
         private bool _isCurrentlyEngaged;
-        private bool _grappleMode;
         private bool _isGrappling;
-        private Vector3 _grappleStart;
-        private Vector3 _grappleAnchor;
-        private float _currentRopeLength;
         private bool _isInGrappleZone;
+        private bool _isThrowing;
+
+        private Vector3 _grappleAnchor;
+        private Vector3 _grappleDestination;
+        private float _currentRopeLength;
 
         private bool _isDead;
         private Vector3 _previousSafePlace;
         private int _raycastLayerMask;
 
-        // Grapple Zone reference
         private GrappleZone _currentZone;
 
         // Input Actions
@@ -72,10 +78,8 @@ namespace FishingGame.Player
         private InputAction _grappleDownAction;
         private InputAction _grappleCancelAction;
 
-        // Rope positions for LineRenderer
         private Vector3[] _ropePositions;
 
-        // === Properties ===
         public bool HasGrappleHook => hasGrapple;
         public FishingRod CurrentFishingRod => currentFishingRod;
         public bool IsInGrappleZone => _isInGrappleZone;
@@ -88,13 +92,13 @@ namespace FishingGame.Player
 
             playerActionMap.FindAction("Move").performed += Move;
             playerActionMap.FindAction("Move").canceled += CancelMove;
-            playerActionMap.FindAction("Crouch").performed += ToggleCrouch;
+            playerActionMap.FindAction("Crouch").performed += ToggleGrapple;
             playerActionMap.FindAction("Interact").performed += AttemptToPickupItem;
 
-            // Grapple Up / Down / Cancel
             _grappleUpAction = playerActionMap.FindAction("GrappleUp");
             _grappleDownAction = playerActionMap.FindAction("GrappleDown");
             _grappleCancelAction = playerActionMap.FindAction("GrappleCancel");
+
             if (_grappleUpAction != null) _grappleUpAction.Enable();
             if (_grappleDownAction != null) _grappleDownAction.Enable();
             if (_grappleCancelAction != null)
@@ -107,10 +111,9 @@ namespace FishingGame.Player
             _initialRotationSpeed = rotationSpeed;
 
             GameManager.Instance.GameEvents.OnTogglePlayerMovement += ToggleMovement;
-            GameManager.Instance.GameEvents.OnBecomeOccupied += isEngaged => _isCurrentlyEngaged = isEngaged;
+            GameManager.Instance.GameEvents.OnBecomeOccupied += engaged => _isCurrentlyEngaged = engaged;
             GameManager.Instance.GameEvents.OnPlayerDeathScreenActive += RespawnPlayer;
 
-            // Subscribe to all GrappleZones
             GrappleZone[] zones = FindObjectsOfType<GrappleZone>();
             foreach (var zone in zones)
             {
@@ -159,20 +162,19 @@ namespace FishingGame.Player
             HandleGrappleRotation();
         }
 
-        // === Movement ===
         private void Movement()
         {
-            if (!_grappleMode && !_isGrappling)
+            if (!_isGrappling && !_isThrowing)
             {
-                Vector3 directionNormalized = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
-                characterController.SimpleMove(directionNormalized * movementSpeed);
+                Vector3 direction = Vector3.ClampMagnitude(new Vector3(_moveInput.x, 0, _moveInput.y), 1);
+                characterController.SimpleMove(direction * movementSpeed);
 
-                float animationSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, 0, 2f);
-                animator.SetFloat(_speed, animationSpeed);
+                float animSpeed = Mathf.Clamp(characterController.velocity.magnitude / 2f, 0, 2f);
+                animator.SetFloat(_speed, animSpeed);
 
                 if (_moveInput != Vector2.zero)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(directionNormalized, Vector3.up);
+                    Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
                     playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 }
             }
@@ -183,81 +185,86 @@ namespace FishingGame.Player
         }
 
         // === Grapple ===
+        private void ToggleGrapple(InputAction.CallbackContext context)
+        {
+            if (!context.performed || !hasGrapple || _isCurrentlyEngaged)
+                return;
+
+            if (_isGrappling || _isThrowing)
+            {
+                CancelGrapple();
+                return;
+            }
+
+            if (_isInGrappleZone && _currentZone?.anchorPoint != null)
+            {
+                _isThrowing = true;
+                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+
+                if (animator != null)
+                {
+                    animator.ResetTrigger("CastTrigger");
+                    animator.SetTrigger("ThrowTrigger");
+                    Debug.Log("[PlayerController] Player throw animation triggered.");
+                }
+
+                StartCoroutine(StartGrappleAfterDelay());
+            }
+        }
+
+        private IEnumerator StartGrappleAfterDelay()
+        {
+            yield return new WaitForSeconds(grappleStartDelay);
+
+            _grappleAnchor = _currentZone.anchorPoint.position;
+            _grappleDestination = _currentZone.destinationPoint != null
+                ? _currentZone.destinationPoint.position
+                : _currentZone.anchorPoint.position;
+
+            _currentRopeLength = Vector3.Distance(transform.position, _grappleAnchor);
+            _isGrappling = true;
+            _isThrowing = false;
+
+            Debug.Log($"[PlayerController] Grapple started after {grappleStartDelay}s delay.");
+        }
+
+        // === Manual W/S control toward destination ===
         private void GrappleBehaviour()
         {
-            if (!hasGrapple) return;
+            if (!_isGrappling) return;
 
-            // Fire when grapple mode is activated
-            if (_grappleMode && !_isGrappling && _isInGrappleZone && _currentZone?.anchorPoint != null)
+            float verticalInput = 0f;
+            if (_grappleUpAction != null && _grappleUpAction.IsPressed()) verticalInput = 1f;
+            else if (_grappleDownAction != null && _grappleDownAction.IsPressed()) verticalInput = -1f;
+
+            if (verticalInput != 0f)
             {
-                _grappleAnchor = _currentZone.anchorPoint.position;
-                _isGrappling = true;
-                _grappleStart = transform.position;
-                _currentRopeLength = Vector3.Distance(_grappleStart, _grappleAnchor);
+                Vector3 toDestination = (_grappleDestination - transform.position).normalized;
+                float moveSpeed = verticalInput > 0 ? grappleAscendSpeed : grappleDescendSpeed;
 
-                // Player becomes occupied when grapple starts
-                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+                Vector3 moveDelta = toDestination * (moveSpeed * Time.deltaTime * verticalInput);
+                characterController.Move(moveDelta);
             }
 
-            if (_isGrappling)
+            float distToDest = Vector3.Distance(transform.position, _grappleDestination);
+            if (distToDest < 1.2f)
             {
-                Vector3 direction = (_grappleAnchor - transform.position).normalized;
-
-                float verticalInput = 0f;
-                if (_grappleUpAction != null && _grappleUpAction.IsPressed()) verticalInput = 1f;
-                else if (_grappleDownAction != null && _grappleDownAction.IsPressed() && !_isGrounded()) verticalInput = -1f;
-
-                _currentRopeLength -= verticalInput * Time.deltaTime *
-                                      (verticalInput > 0 ? grappleAscendSpeed : grappleDescendSpeed);
-                _currentRopeLength = Mathf.Clamp(_currentRopeLength, 1f, grappleRange);
-
-                Vector3 targetPosition = _grappleAnchor - direction * _currentRopeLength;
-
-                if (Physics.Raycast(targetPosition + Vector3.up * 0.1f, Vector3.down, out RaycastHit hitInfo, 5f, terrainLayerMask))
-                {
-                    float minHeight = hitInfo.point.y + 0.1f;
-                    if (targetPosition.y < minHeight)
-                        targetPosition.y = minHeight;
-                }
-
-                characterController.Move((targetPosition - transform.position) * (grappleSpeed * Time.deltaTime));
-
-                // Grapple ends: release occupied state
-                if (Vector3.Distance(transform.position, _grappleAnchor) < 1f)
-                {
-                    _isGrappling = false;
-                    _grappleMode = false;
-                    GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-                }
+                CancelGrapple();
+                Debug.Log("[PlayerController] Reached destination point.");
             }
         }
 
-        // === Player auto face grapple point ground ===
         private void HandleGrappleRotation()
         {
-            if (_isGrappling || _grappleMode)
+            if (_isGrappling)
             {
-                Vector3 target = _grappleAnchor;
-                if (Physics.Raycast(_grappleAnchor + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f, terrainLayerMask))
+                Vector3 lookTarget = new Vector3(_grappleAnchor.x, playerBody.transform.position.y, _grappleAnchor.z);
+                Vector3 dir = (lookTarget - playerBody.transform.position).normalized;
+                if (dir != Vector3.zero)
                 {
-                    target.y = hit.point.y;
+                    playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, Quaternion.LookRotation(dir), rotationSpeed * Time.deltaTime);
                 }
-
-                Vector3 lookDirection = (target - transform.position).normalized;
-                lookDirection.y = 0;
-                if (lookDirection != Vector3.zero)
-                    playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, Quaternion.LookRotation(lookDirection), rotationSpeed * Time.deltaTime);
             }
-        }
-
-        // === Grapple Prompt UI ===
-        private void HandlePromptUI()
-        {
-            if (grapplePromptText == null) return;
-
-            grapplePromptText.enabled = _isInGrappleZone && hasGrapple;
-            if (_isInGrappleZone && hasGrapple)
-                grapplePromptText.text = "Press Ctrl to Grapple";
         }
 
         // === Grapple Line Renderer with Elasticity & Collision ===
@@ -268,29 +275,29 @@ namespace FishingGame.Player
             if (_isGrappling)
             {
                 if (!grappleLine.enabled) grappleLine.enabled = true;
-
                 if (_ropePositions == null || _ropePositions.Length != ropeSegmentCount)
                     _ropePositions = new Vector3[ropeSegmentCount];
 
-                Vector3 startPoint = grappleTip.position;
-                Vector3 endPoint = _grappleAnchor;
+                Vector3 start = grappleTip.position;
+                Vector3 end = _grappleAnchor;
 
-                _ropePositions[0] = startPoint;
-                _ropePositions[_ropePositions.Length - 1] = endPoint;
+                _ropePositions[0] = start;
+                _ropePositions[_ropePositions.Length - 1] = end;
 
                 for (int i = 1; i < _ropePositions.Length - 1; i++)
                 {
                     float t = (float)i / (_ropePositions.Length - 1);
-                    Vector3 targetPos = Vector3.Lerp(startPoint, endPoint, t);
+                    Vector3 target = Vector3.Lerp(start, end, t);
+
                     float sag = Mathf.Sin(t * Mathf.PI) * 0.3f;
-                    targetPos.y -= sag;
+                    target.y -= sag;
 
-                    _ropePositions[i] = Vector3.Lerp(_ropePositions[i], targetPos, ropeElasticity);
-
-                    if (Physics.Raycast(_ropePositions[i] + Vector3.up * 0.1f, Vector3.down, out RaycastHit hitInfo, 5f, terrainLayerMask))
+                    if (Physics.Raycast(target + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 4f, terrainLayerMask))
                     {
-                        _ropePositions[i].y = Mathf.Max(_ropePositions[i].y, hitInfo.point.y + 0.05f);
+                        target.y = hit.point.y + 0.1f;
                     }
+
+                    _ropePositions[i] = Vector3.Lerp(_ropePositions[i], target, ropeElasticity);
                 }
 
                 grappleLine.positionCount = _ropePositions.Length;
@@ -302,19 +309,20 @@ namespace FishingGame.Player
             }
         }
 
-        // === Input Handlers ===
-        private void ToggleCrouch(InputAction.CallbackContext context)
+        private void HandlePromptUI()
         {
-            if (context.performed && hasGrapple && !_isCurrentlyEngaged && _isInGrappleZone)
-            {
-                _grappleMode = !_grappleMode;
+            if (grapplePromptText == null) return;
+            grapplePromptText.enabled = _isInGrappleZone && hasGrapple && !_isGrappling && !_isThrowing;
+            if (grapplePromptText.enabled)
+                grapplePromptText.text = "Press Ctrl to Grapple";
+        }
 
-                // Auto-fire the grapple when entering grapple mode inside a valid zone
-                if (_grappleMode && !_isGrappling && _currentZone?.anchorPoint != null)
-                {
-                    _isGrappling = false;
-                }
-            }
+        private void CancelGrapple()
+        {
+            _isGrappling = false;
+            _isThrowing = false;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+            Debug.Log("[PlayerController] Grapple canceled.");
         }
 
         private void AttemptToPickupItem(InputAction.CallbackContext context)
@@ -324,18 +332,6 @@ namespace FishingGame.Player
 
         private void Move(InputAction.CallbackContext context) => _moveInput = context.ReadValue<Vector2>();
         private void CancelMove(InputAction.CallbackContext context) => _moveInput = Vector2.zero;
-
-        private void CancelGrapple()
-        {
-            _isGrappling = false;
-            _grappleMode = false;
-
-            // Reset occupied state when grapple canceled
-            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-        }
-
-        // === Utility ===
-        private bool _isGrounded() => characterController.isGrounded;
 
         private bool IsInWater()
         {
@@ -356,16 +352,11 @@ namespace FishingGame.Player
         }
 
         public void EnableGrapple() => hasGrapple = true;
+        public void DisableGrapple() => hasGrapple = false;
 
-        public void DisableGrapple()
+        public void ToggleMovement(bool enabled)
         {
-            hasGrapple = false;
-            _grappleMode = false;
-        }
-
-        public void ToggleMovement(bool isMovementEnabled)
-        {
-            if (isMovementEnabled)
+            if (enabled)
             {
                 movementSpeed = _initialMovementSpeed;
                 rotationSpeed = _initialRotationSpeed;

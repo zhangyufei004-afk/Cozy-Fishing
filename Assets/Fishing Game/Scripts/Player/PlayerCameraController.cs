@@ -9,13 +9,13 @@ namespace FishingGame.Player
 {
     /// <summary>
     /// Handles dialogue and general camera transitions for the player.
-    /// Grapple camera support is disabled since grappling now uses predefined anchors.
+    /// Uses Cinemachine priority rather than enabling/disabling cameras.
     /// </summary>
     public class PlayerCameraController : MonoBehaviour
     {
         private const float RotationSpeed = 10f;
         private const float RotationComparisonThreshold = 0.1f;
-        
+
         [Header("Cameras")]
         [SerializeField] private CinemachineCamera dialogCamera;
         [SerializeField] private CinemachineCamera topDownCamera;
@@ -23,9 +23,7 @@ namespace FishingGame.Player
         [Header("Player")]
         [SerializeField] private PlayerController player;
         [SerializeField] private Transform characterBody;
-        
-        [Header("UI")]
-        [SerializeField] private GameObject grappleTargetUI;
+    
 
         private bool _isInDialogueRange;
         private string _npcName;
@@ -52,8 +50,12 @@ namespace FishingGame.Player
         /// </summary>
         public void SwitchToTopDownCamera()
         {
-            dialogCamera?.gameObject.SetActive(false);
-            topDownCamera?.gameObject.SetActive(true);
+            if (topDownCamera != null)
+                topDownCamera.Priority = 15;
+
+            if (dialogCamera != null)
+                dialogCamera.Priority = 5;
+
             GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             _isInDialogueRange = false;
         }
@@ -80,21 +82,34 @@ namespace FishingGame.Player
             }
         }
 
+        /// <summary>
+        /// Switches from the default top-down camera to the dialogue camera when interacting with an NPC.
+        /// </summary>
         private void SwitchToDialogueCamera(InputAction.CallbackContext context)
         {
+            if (!_isInDialogueRange || _isCurrentlyEngaged)
+                return;
+
             GameManager.Instance.GameEvents.NPCInteraction(true, _npcName);
+
             if (!string.IsNullOrEmpty(_npcName) && _npcPosition != Vector3.zero)
-            {
                 StartCoroutine(RotateTowardsNPC());
-            }
+
+            ToggleDialogueCamera(true);
         }
 
+        /// <summary>
+        /// Toggles between dialogue and top-down cameras using Cinemachine priority.
+        /// </summary>
         private void ToggleDialogueCamera(bool enableCamera)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(enableCamera);
-            dialogCamera.gameObject.SetActive(enableCamera);
+
+            if (dialogCamera != null)
+                dialogCamera.Priority = enableCamera ? 20 : 5;
+
             if (topDownCamera != null)
-                topDownCamera.gameObject.SetActive(!enableCamera);
+                topDownCamera.Priority = enableCamera ? 5 : 15;
         }
 
         /// <summary>
@@ -103,7 +118,8 @@ namespace FishingGame.Player
         private IEnumerator RotateTowardsNPC()
         {
             Vector3 direction = _npcPosition - transform.position;
-            Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+            direction.y = 0f;
+            Quaternion toRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
 
             while (!IsAtRotation(characterBody.rotation, toRotation))
             {
@@ -114,8 +130,8 @@ namespace FishingGame.Player
 
         private bool IsAtRotation(Quaternion currentRotation, Quaternion targetRotation)
         {
-            return Mathf.Abs(currentRotation.eulerAngles.x - targetRotation.eulerAngles.x) < RotationComparisonThreshold 
-                   && Mathf.Abs(currentRotation.eulerAngles.z - targetRotation.eulerAngles.z) < RotationComparisonThreshold;
+            return Quaternion.Angle(currentRotation, targetRotation) < RotationComparisonThreshold;
         }
     }
 }
+
