@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5003725046552932752}
   - component: {fileID: 5613007507353280893}
   m_Layer: 0
-  m_Name: Catch 5 Fish
+  m_Name: Catch2Dingle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e88b81a74104fa884fc9f3b9b2ed77a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageDialogue: Remember, I need 5 fish!
+  stageDialogue: Remember, I need 2 Great Dingles!
   questReward: {fileID: 0}
   stageName: Catch 5 fish at the dock!
-  numFishToCatch: 5
+  numFishToCatch: 2
+  typeOfFish:
+  - {fileID: 11400000, guid: 89848b98e76ecac4fb9a8692252d451e, type: 2}

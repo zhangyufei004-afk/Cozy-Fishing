@@ -10,23 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 016fbdb8e6c290b4083d63b259c7bbbb, type: 3}
-  m_Name: Tutorial Quest
+  m_Name: IntroQuest
   m_EditorClassIdentifier: 
   persistentID: 0
-  questName: Catch 5 Fish
-  questDescription: Down by the docks there are some fishing pools, try to catch
-    5 fish from them.
+  questName: IntroQuest
+  questDescription: Catch two Great Dingle Fish from the docks for a reward
   questReward: {fileID: 0}
-  questMoneyReward: 0
-  isMonetaryRewardQuest: 0
+  questMoneyReward: 5
+  isMonetaryRewardQuest: 1
   questRewardImages: []
   questStagePrefabs:
-  - {fileID: 4925909472967109011, guid: efb82dde91d74254ba44be7f5724afb8, type: 3}
   - {fileID: 2229936083515554206, guid: 72d486090f4e2274a81619817c7aa694, type: 3}
   preQuestDialogueLines:
   - So, you want to earn some money eh?
   - Well, fishing can be a great help.
-  - Head to the old ponds docks, you'll find some fish there.
+  - I happen to need some Great Dingle Fish.
+  - Head to the docks just behind you to find some.
+  - If you bring me back 2 ill make it worth your while!
   postQuestDialogueLines:
-  - Nice job catching the fish!
-  - Now you can earn heaps of money.
+  - Great job! Heres 5 bucks!
+  - Fishing is a high skill trade around these parts. Im sure others also need some
+    help!

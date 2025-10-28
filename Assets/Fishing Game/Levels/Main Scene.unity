@@ -4317,7 +4317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5181463819615615889, guid: 6cf3b190f787a674f9c46d634d798257, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8829084428081035629, guid: 6cf3b190f787a674f9c46d634d798257, type: 3}
       propertyPath: m_Pivot.x
@@ -25805,7 +25805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9115279488960758460, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 102.40008
+      value: 102.40079
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28926,6 +28926,10 @@ PrefabInstance:
     - target: {fileID: 7727843180960746151, guid: f517d64bced34ad4c8f85d852f7e8052, type: 3}
       propertyPath: workTime
       value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7727843180960746151, guid: f517d64bced34ad4c8f85d852f7e8052, type: 3}
+      propertyPath: questName
+      value: IntroQuest
       objectReference: {fileID: 0}
     - target: {fileID: 7727843180960746151, guid: f517d64bced34ad4c8f85d852f7e8052, type: 3}
       propertyPath: dialogueUI
