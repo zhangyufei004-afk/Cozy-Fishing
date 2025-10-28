@@ -1188,7 +1188,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""142bf383-9665-41e1-b580-efce1e52d5b3"",
-                    ""path"": ""<Gamepad>/rightStick"",
+                    ""path"": ""<VirtualMouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1198,7 +1198,7 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1de3a4a1-9513-4d03-9aaf-e17c8e5808a4"",
+                    ""id"": ""f40f5c29-87a7-4445-9097-5894dd161e9f"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -1511,24 +1511,44 @@ namespace FishingGame.Input
             ""id"": ""d2ab1c40-0075-4c3f-82cc-40b3796c9fb3"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
+                    ""name"": ""RealisticMouse"",
+                    ""type"": ""Value"",
                     ""id"": ""3491fbf7-357d-4926-b05f-2148c4493eb2"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RealisticController"",
+                    ""type"": ""Value"",
+                    ""id"": ""773546b5-e512-4f0e-9eab-f97418eb08d9"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""a4aa592a-8221-42db-b5e3-3dbe618368e2"",
-                    ""path"": """",
+                    ""id"": ""239bc85b-289a-4a5a-b4d6-5fb866cbd765"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""RealisticMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aab1ecf3-2b37-411e-9de9-70f14dff1385"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""RealisticController"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1697,7 +1717,8 @@ namespace FishingGame.Input
             m_ArrowMiniGame_Right = m_ArrowMiniGame.FindAction("Right", throwIfNotFound: true);
             // RealisticMiniGame
             m_RealisticMiniGame = asset.FindActionMap("RealisticMiniGame", throwIfNotFound: true);
-            m_RealisticMiniGame_Newaction = m_RealisticMiniGame.FindAction("New action", throwIfNotFound: true);
+            m_RealisticMiniGame_RealisticMouse = m_RealisticMiniGame.FindAction("RealisticMouse", throwIfNotFound: true);
+            m_RealisticMiniGame_RealisticController = m_RealisticMiniGame.FindAction("RealisticController", throwIfNotFound: true);
             // SliderMiniGame
             m_SliderMiniGame = asset.FindActionMap("SliderMiniGame", throwIfNotFound: true);
             m_SliderMiniGame_LeftClick = m_SliderMiniGame.FindAction("LeftClick", throwIfNotFound: true);
@@ -2370,7 +2391,8 @@ namespace FishingGame.Input
         // RealisticMiniGame
         private readonly InputActionMap m_RealisticMiniGame;
         private List<IRealisticMiniGameActions> m_RealisticMiniGameActionsCallbackInterfaces = new List<IRealisticMiniGameActions>();
-        private readonly InputAction m_RealisticMiniGame_Newaction;
+        private readonly InputAction m_RealisticMiniGame_RealisticMouse;
+        private readonly InputAction m_RealisticMiniGame_RealisticController;
         /// <summary>
         /// Provides access to input actions defined in input action map "RealisticMiniGame".
         /// </summary>
@@ -2383,9 +2405,13 @@ namespace FishingGame.Input
             /// </summary>
             public RealisticMiniGameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             /// <summary>
-            /// Provides access to the underlying input action "RealisticMiniGame/Newaction".
+            /// Provides access to the underlying input action "RealisticMiniGame/RealisticMouse".
             /// </summary>
-            public InputAction @Newaction => m_Wrapper.m_RealisticMiniGame_Newaction;
+            public InputAction @RealisticMouse => m_Wrapper.m_RealisticMiniGame_RealisticMouse;
+            /// <summary>
+            /// Provides access to the underlying input action "RealisticMiniGame/RealisticController".
+            /// </summary>
+            public InputAction @RealisticController => m_Wrapper.m_RealisticMiniGame_RealisticController;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -2412,9 +2438,12 @@ namespace FishingGame.Input
             {
                 if (instance == null || m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_RealisticMiniGameActionsCallbackInterfaces.Add(instance);
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
+                @RealisticMouse.started += instance.OnRealisticMouse;
+                @RealisticMouse.performed += instance.OnRealisticMouse;
+                @RealisticMouse.canceled += instance.OnRealisticMouse;
+                @RealisticController.started += instance.OnRealisticController;
+                @RealisticController.performed += instance.OnRealisticController;
+                @RealisticController.canceled += instance.OnRealisticController;
             }
 
             /// <summary>
@@ -2426,9 +2455,12 @@ namespace FishingGame.Input
             /// <seealso cref="RealisticMiniGameActions" />
             private void UnregisterCallbacks(IRealisticMiniGameActions instance)
             {
-                @Newaction.started -= instance.OnNewaction;
-                @Newaction.performed -= instance.OnNewaction;
-                @Newaction.canceled -= instance.OnNewaction;
+                @RealisticMouse.started -= instance.OnRealisticMouse;
+                @RealisticMouse.performed -= instance.OnRealisticMouse;
+                @RealisticMouse.canceled -= instance.OnRealisticMouse;
+                @RealisticController.started -= instance.OnRealisticController;
+                @RealisticController.performed -= instance.OnRealisticController;
+                @RealisticController.canceled -= instance.OnRealisticController;
             }
 
             /// <summary>
@@ -2865,12 +2897,19 @@ namespace FishingGame.Input
         public interface IRealisticMiniGameActions
         {
             /// <summary>
-            /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "RealisticMouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnNewaction(InputAction.CallbackContext context);
+            void OnRealisticMouse(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "RealisticController" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnRealisticController(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "SliderMiniGame" which allows adding and removing callbacks.

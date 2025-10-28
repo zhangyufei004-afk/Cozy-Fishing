@@ -28,6 +28,18 @@ namespace FishingGame.Reeling
         [Tooltip("The camera that loads the UI")]
         private CinemachineCamera minigameCamera;
 
+        [SerializeField]
+        [Tooltip("The image that rotates with input")]
+        private RectTransform uiJoystick;
+
+        [SerializeField]
+        [Tooltip("The speed that scales how fast the image rotates")]
+        private float rotationSpeed;
+
+        [SerializeField]
+        [Tooltip("This variable scales down the controller speed variable to try and emulate the same as the mouse input")]
+        private float controllerSpeedDescalar;
+
         private UnityEngine.UI.Image _centerImage;
 
         private InputAction _realisticStickAction;
@@ -49,52 +61,24 @@ namespace FishingGame.Reeling
         [Tooltip("The highest possible value of the accumulated angle value")]
         private int highestAngleTotalValue;
 
+        private Vector2 _lastStickDirection;
+        private float _currentAngle;
+
         private void OnEnable()
         {
             _centerImage = minigameMaster.GetCentreImage();
 
 
             InputActionAsset inputAsset = InputSystem.actions;
-            InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
+            InputActionMap uiActionMap = inputAsset.FindActionMap("RealisticMiniGame");
             uiActionMap.Enable();
-            _realisticStickAction = uiActionMap.FindAction("RealisticStickMovement");
+            // TODO: Insert a function here that figures out what control scheme is being used
+            _realisticStickAction = uiActionMap.FindAction("RealisticController");
         }
 
         private void Update()
         {
-            Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                transform.parent as RectTransform,
-                mousePosition,
-                null,
-                out Vector2 localMousePos
-            );
-                
-            Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
-            Vector2 previousDirection = (_lastPosition - center).normalized;
-            Vector2 newDirection = (localMousePos - center).normalized;
-
-
-            Vector2 direction = localMousePos - ((RectTransform)_centerImage.transform).anchoredPosition;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-
-            if (_lastPosition !=  Vector2.zero)
-            {
-                _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
-                _angleTotal += _currentSpeed;
-                DetermineCurrentDirection();
-                DirectionChangeLogic(_currentSpeed);
-            }
-
-            if (_lastPosition == localMousePos)
-            {
-                _currentDirection = ERealisticDirection.Stop;
-            }
-
-
-            _lastPosition = localMousePos;
-            gameObject.GetComponent<UnityEngine.UI.Image>().rectTransform.rotation = Quaternion.Euler(0, 0, angle);
+            MovementIfController();
         }
 
         #region Public Functions
@@ -130,6 +114,70 @@ namespace FishingGame.Reeling
         #endregion
 
         #region MovementLogic
+
+        /// <summary>
+        /// Contains the movement logic for if a mouse is being used
+        /// </summary>
+        private void MovementIfMouse()
+        {
+            Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                transform.parent as RectTransform,
+                mousePosition,
+                null,
+                out Vector2 localMousePos
+            );
+
+            Vector2 center = ((RectTransform)_centerImage.transform).anchoredPosition;
+            Vector2 previousDirection = (_lastPosition - center).normalized;
+            Vector2 newDirection = (localMousePos - center).normalized;
+
+
+            Vector2 direction = localMousePos - ((RectTransform)_centerImage.transform).anchoredPosition;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            if (_lastPosition != Vector2.zero)
+            {
+                _currentSpeed = Vector2.SignedAngle(previousDirection, newDirection);
+                _angleTotal += _currentSpeed;
+                DetermineCurrentDirection();
+                DirectionChangeLogic(_currentSpeed);
+            }
+
+            if (_lastPosition == localMousePos)
+            {
+                _currentDirection = ERealisticDirection.Stop;
+            }
+
+            _lastPosition = localMousePos;
+            gameObject.GetComponent<UnityEngine.UI.Image>().rectTransform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        /// <summary>
+        /// Contains the movement logic for if a controller is being used
+        /// </summary>
+        private void MovementIfController()
+        {
+            Vector2 stickInput = _realisticStickAction.ReadValue<Vector2>();
+
+            if (stickInput.magnitude < 0.2f)
+                return;
+
+            float stickAngle = Mathf.Atan2(stickInput.y, stickInput.x) * Mathf.Rad2Deg;
+
+            if (_lastStickDirection != Vector2.zero)
+            {
+                _currentSpeed = Vector2.SignedAngle(_lastStickDirection, stickInput);
+                _angleTotal += _currentSpeed;
+                DetermineCurrentDirection();
+                DirectionChangeLogic(_currentSpeed);
+            }
+            else { _currentDirection = ERealisticDirection.Stop; }
+
+            gameObject.GetComponent<UnityEngine.UI.Image>().rectTransform.rotation = Quaternion.Euler(0, 0, stickAngle);
+            _lastStickDirection = stickInput;
+        }
 
         /// <summary>
         /// This function can be called to check if the direction the player is spinning in has just changed

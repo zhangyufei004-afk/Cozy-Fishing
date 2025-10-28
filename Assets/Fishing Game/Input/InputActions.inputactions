@@ -1100,7 +1100,7 @@
                 {
                     "name": "",
                     "id": "142bf383-9665-41e1-b580-efce1e52d5b3",
-                    "path": "<Gamepad>/rightStick",
+                    "path": "<VirtualMouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -1110,7 +1110,7 @@
                 },
                 {
                     "name": "",
-                    "id": "1de3a4a1-9513-4d03-9aaf-e17c8e5808a4",
+                    "id": "f40f5c29-87a7-4445-9097-5894dd161e9f",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
@@ -1423,24 +1423,44 @@
             "id": "d2ab1c40-0075-4c3f-82cc-40b3796c9fb3",
             "actions": [
                 {
-                    "name": "New action",
-                    "type": "Button",
+                    "name": "RealisticMouse",
+                    "type": "Value",
                     "id": "3491fbf7-357d-4926-b05f-2148c4493eb2",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RealisticController",
+                    "type": "Value",
+                    "id": "773546b5-e512-4f0e-9eab-f97418eb08d9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "a4aa592a-8221-42db-b5e3-3dbe618368e2",
-                    "path": "",
+                    "id": "239bc85b-289a-4a5a-b4d6-5fb866cbd765",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RealisticMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aab1ecf3-2b37-411e-9de9-70f14dff1385",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "RealisticController",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
