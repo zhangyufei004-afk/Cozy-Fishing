@@ -3111,8 +3111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hatMaterial: {fileID: 2100000, guid: ff08804bcf2363442b907a049ece0e86, type: 2}
   hairMaterial: {fileID: 2100000, guid: d989351c30c99c94da18d899d3ddb246, type: 2}
-  defaultHatColor: {r: 1, g: 1, b: 1, a: 1}
-  defaultHairColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultHatColor: {r: 0.653542, g: 0.52266026, b: 0.2579519, a: 1}
+  defaultHairColor: {r: 0.5832186, g: 0.27410695, b: 0.10295746, a: 1}
   hatR: {fileID: 36101150}
   hatG: {fileID: 1355392174}
   hatB: {fileID: 711969098}
@@ -3127,20 +3127,20 @@ MonoBehaviour:
   - {fileID: 785462825}
   - {fileID: 1007699918}
   hatPresetColors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0.048704147, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0.7058824, b: 0, a: 1}
+  - {r: 0.591549, g: 0.9224583, b: 0.86665785, a: 1}
+  - {r: 0.8969122, g: 0.3605396, b: 0.47769487, a: 1}
+  - {r: 0.3998013, g: 0.3998013, b: 0.87631804, a: 1}
+  - {r: 0.31832287, g: 0.8089145, b: 0.2811925, a: 1}
   hairPresetButtons:
   - {fileID: 492972307}
   - {fileID: 834023598}
   - {fileID: 1782970074}
   - {fileID: 260181370}
   hairPresetColors:
-  - {r: 1, g: 0.5019608, b: 0, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0, b: 1, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0.5550307, g: 0.34627473, b: 0.13587497, a: 1}
+  - {r: 0.86118186, g: 0.7764429, b: 0.21760128, a: 1}
+  - {r: 0.91840863, g: 0.48208436, b: 0.046588235, a: 1}
+  - {r: 0.199027, g: 0.16572529, b: 0.14972384, a: 1}
   customizationProperties: {fileID: 908391839}
 --- !u!114 &908391839 stripped
 MonoBehaviour:
