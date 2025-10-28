@@ -2048,7 +2048,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 103511254}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -4317,7 +4317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5181463819615615889, guid: 6cf3b190f787a674f9c46d634d798257, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8829084428081035629, guid: 6cf3b190f787a674f9c46d634d798257, type: 3}
       propertyPath: m_Pivot.x
@@ -26486,7 +26486,7 @@ PrefabInstance:
       objectReference: {fileID: 1847882215}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: highestFishDifficulty
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: overrideFishList.Array.size
@@ -37105,7 +37105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9115279488960758460, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 102.4
+      value: 119.1162
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39100,6 +39100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelingMasterScript: {fileID: 1189930303}
   initiationScript: {fileID: 193100724}
+  playerController: {fileID: 1175047035}
   fishingHook: {fileID: 1895245824}
   characterParent: {fileID: 1036833401}
   characterModel: {fileID: 1518870355}
