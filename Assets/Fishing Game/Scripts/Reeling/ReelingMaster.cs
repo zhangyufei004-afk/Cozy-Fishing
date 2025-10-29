@@ -215,10 +215,9 @@ namespace FishingGame.Reeling
         public void CancelFishing(InputAction.CallbackContext inputAction)
         {
             fishingHook.ClearCollidingFishAndPool();
-            sliderAnimator.SetBool("isGameActive", false);
             fishingRodScript.SetChargerVisibility(false);
             _cancelFishingAction.performed -= CancelFishing;
-
+            StartCoroutine(AnimatorResetTimer(2));
             if (IsFishing == true)
             {
                 _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
@@ -444,6 +443,17 @@ namespace FishingGame.Reeling
 
                 GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.red);
             }
+        }
+
+        /// <summary>
+        /// A timer that does required UI functions after inputed time
+        /// </summary>
+        /// <param name="timeToWait">Time to wait</param>
+        /// <returns>Sets the slider animator to not be active</returns>
+        private IEnumerator AnimatorResetTimer(float timeToWait)
+        {
+            yield return new WaitForSeconds(timeToWait);
+            sliderAnimator.SetBool("isGameActive", false);
         }
     }
 }
