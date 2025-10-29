@@ -70,7 +70,7 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnBecomeOccupied;
 
-        public event Action<bool> OnToggleGrappleCamera;
+        public event Action<bool, Vector3> OnToggleGrapple;
 
         public event Action<bool, string> OnWithinItemPickupRange;
 
@@ -262,12 +262,13 @@ namespace FishingGame.GameManagement
         }
 
         /// <summary>
-        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// Invokes the OnToggleGrapple event to tell that grappling is occuring <c>isCameraEnabled</c>
         /// </summary>
-        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
-        public void ToggleGrappleCamera(bool isCameraEnabled)
+        /// <param name="isGrappling">Bool for if the Camera is enabled or disabled.</param>
+        /// <param name="grappleDestination">The destination we are grappling to</param>
+        public void ToggleGrappleMode(bool isGrappling, Vector3 grappleDestination)
         {
-            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
+            OnToggleGrapple?.Invoke(isGrappling, grappleDestination);
         }
 
         /// <summary>

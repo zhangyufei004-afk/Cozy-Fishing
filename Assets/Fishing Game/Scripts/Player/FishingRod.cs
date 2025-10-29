@@ -120,6 +120,7 @@ namespace FishingGame.Reeling
         private bool _isBusy = false;
         private float _defaultMaxSliderValue;
         private LayerMask _layerMask;
+        private bool _isGrappling = false;
 
         private void OnEnable()
         {
@@ -142,6 +143,8 @@ namespace FishingGame.Reeling
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+
+            GameManager.Instance.GameEvents.OnToggleGrapple += SetGrapplePoint;
 
             _layerMask = waterLayer | blockFishingLayers;
         }
@@ -202,7 +205,7 @@ namespace FishingGame.Reeling
         public void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
+            fishingHook.SetUpHookTravelToFishSpot(_targetLocation, _isGrappling);
         }
 
         /// <summary>
@@ -302,6 +305,16 @@ namespace FishingGame.Reeling
             if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _layerMask))
             {
                 rodBobber.transform.position = hit.point;
+            }
+        }
+
+        private void SetGrapplePoint(bool isGrappling, Vector3 grapplingDestination)
+        {
+            _isGrappling = isGrappling;
+            _targetLocation = grapplingDestination;
+            if (!_isGrappling)
+            {
+                fishingHook.PullBackHook(false);
             }
         }
 
@@ -440,6 +453,6 @@ namespace FishingGame.Reeling
         }
 
         #endregion
-
+        
     }
 }
