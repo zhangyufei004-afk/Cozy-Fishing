@@ -29,49 +29,31 @@ namespace FishingGame.FishSystem
         {
             _trashBase = newTrashBase;
 
-            _fishableName = _trashBase.TrashName;
-            _fishableWeight = UnityEngine.Random.Range(_trashBase.MinMaxWeight.x, _trashBase.MinMaxWeight.y);
-            _fishableWeight = Mathf.Round(_fishableWeight * 100) / 100;
-            _fishableDifficultyLevel = _trashBase.TrashDifficulty;
-            _caughtTime = time;
-            _caughtLocation = location;
-            _fishableType = ECatchableType.Trash;
-            _fishableSprite = _trashBase.Texture;
-            _arrowMinigameBehaviour = _trashBase.ArrowMiniGameBehaviour;
-            _sliderMinigameBehaviour = _trashBase.SliderMiniGameBehaviour;
-            _fishableItemType = EItemType.Trash;
+            FishableName = _trashBase.Name;
+            FishableWeight = UnityEngine.Random.Range(_trashBase.WeightRange.MinWeight, _trashBase.WeightRange.MaxWeight);
+            FishableWeight = Mathf.Round(FishableWeight * 100) / 100;
+            FishableDifficultyLevel = (int)_trashBase.Difficulty;
+            CaughtTime = time;
+            CaughtLocation = location;
+            FishableType = ECatchableType.Trash;
+            FishableSprite = _trashBase.Texture;
+            ArrowMinigameBehaviour = _trashBase.ArrowMiniGameBehaviour;
+            SliderMinigameBehaviour = _trashBase.SliderMiniGameBehaviour;
+            FishableItemType = EItemType.Trash;
         }
 
-        public override SerializableObject GetDataObject(out Type dataClassType)
+        public override Type GetDataObject(out SerializableObject dataClass)
+        {
+            dataClass = _trashBase;
+            return typeof(TrashScriptable);
+        }
+
+        public override float GetLength()
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Gets the base ScriptableObject of the fish.
-        /// </summary>
-        public TrashScriptable GetTrashBase()
-        {
-            return _trashBase;
-        }
-
-        /// <summary>
-        /// Gets the time of day the fish was caught.
-        /// </summary>
-        public ETimeOfDay GetCaughtTime()
-        {
-            return _caughtTime;
-        }
-
-        /// <summary>
-        /// Gets the location where the fish was caught.
-        /// </summary>
-        public string GetCaughtLocation()
-        {
-            return _caughtLocation;
-        }
-
-        public override void UseItem()
+        public override FishableScriptable GetBase()
         {
             throw new NotImplementedException();
         }

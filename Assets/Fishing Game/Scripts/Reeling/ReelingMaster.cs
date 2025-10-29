@@ -60,7 +60,7 @@ namespace FishingGame.Reeling
         private List<GameObject> _currentPoolOfMiniGames;
 
         private GameObject _currentMinigame;
-        private IFishAble _currentlyReelingObject;
+        private Fishable _currentlyReelingObject;
         private FishingPool _currentFishPool;
         private GameObject _current3DObject;
 
@@ -428,7 +428,7 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="fishData">The data of the fish being reeled</param>
         /// <param name="didCatch">Was the fish caught</param>
-        private void DisplayFishingResult(IFishAble fishData, bool didCatch)
+        private void DisplayFishingResult(Fishable fishData, bool didCatch)
         {
             if (didCatch)
             {

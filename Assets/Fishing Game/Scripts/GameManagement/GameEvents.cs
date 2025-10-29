@@ -35,8 +35,8 @@ namespace FishingGame.GameManagement
         public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
         public event Action<IStorable> OnItemUsedUp;
-        public event Action<IBait> OnBaitEquiped;
-
+        public event Action<IBait> OnBaitEquipped;
+        
         #endregion
 
         #region Quest Events
@@ -93,6 +93,8 @@ namespace FishingGame.GameManagement
         public event Action<string, float, Color> OnShowStatusText;
 
         public event Action<string, float, Color> OnShowDefaultNotificationText;
+
+        public event Action<string> OnElementAddedToScrollbox;
 
         #endregion
 
@@ -327,7 +329,7 @@ namespace FishingGame.GameManagement
         /// <param name="baitToEquip">The item to equip</param>
         public void EquipBait(IBait baitToEquip)
         {
-            OnBaitEquiped?.Invoke(baitToEquip);
+            OnBaitEquipped?.Invoke(baitToEquip);
         }
 
         /// <summary>
@@ -345,6 +347,15 @@ namespace FishingGame.GameManagement
         public void PlayerDeathScreenActive(bool isActive)
         {
             OnPlayerDeathScreenActive?.Invoke(isActive);
+        }
+
+        /// <summary>
+        /// Invokes the OnElementAddedToScrollbox event to tell subscribing classes that an element has been added to the scroll box <c>scrollBoxName</c>
+        /// </summary>
+        /// <param name="scrollBoxName">The name of the scrollbox gameobject</param>
+        public void ElementAddedToScrollbox(string scrollBoxName)
+        {
+            OnElementAddedToScrollbox?.Invoke(scrollBoxName);
         }
 
         /// <summary>

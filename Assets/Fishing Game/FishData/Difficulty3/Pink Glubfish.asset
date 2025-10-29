@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: aea55274f0471474ebda94119bbb6651, type: 3}
-  Id: 4
-  MinMaxWeight: {x: 2, y: 5}
-  SpeciesName: Pink Glubfish
-  FishCatchDifficulty: 3
-  FishBio: A strong tail lets this fish swim up rivers with ease. Its pink scales
+  Name: Pink Glubfish
+  WeightRange:
+    MinWeight: 2
+    MaxWeight: 5
+  Difficulty: 3
+  Biography: A strong tail lets this fish swim up rivers with ease. Its pink scales
     are often used to create a dye, leading to mass harvesting in the past, leaving
     its population scarce in most areas.
   LocationsFound: 0300000002000000
   TimesFound: 010000000200000003000000
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 1f47440e5842c824ea2dfb240186600c, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: 346fdd628743a434ea5776a8d0e069e9, type: 2}
+  IsInvasive: 0
+  BasePrice: 5

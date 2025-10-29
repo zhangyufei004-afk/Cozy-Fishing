@@ -24,24 +24,6 @@ namespace FishingGame.FishSystem
         public int GetCatchDifficulty();
 
         /// <summary>
-        /// Returns the name of this object
-        /// </summary>
-        /// <returns>The name as a string</returns>
-        public String GetName();
-
-        /// <summary>
-        /// Returns the texture used for this fishable item
-        /// </summary>
-        /// <returns>The texture used for this item</returns>
-        public Sprite GetTexture();
-
-        /// <summary>
-        /// Returns the weight of object
-        /// </summary>
-        /// <returns>The weight of this object</returns>
-        public float GetWeight();
-
-        /// <summary>
         /// Returns what type of fishable object this is
         /// </summary>
         /// <returns>Enum value represneting the catch type</returns>
@@ -58,13 +40,5 @@ namespace FishingGame.FishSystem
         /// </summary>
         /// <returns>The custom slider minigame behaviour</returns>
         public SliderSO GetSliderMinigameBehaviour();
-
-        /// <summary>
-        /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
-        /// non-runtime data. 
-        /// </summary>
-        /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
-        /// <returns>The SerializableObject that the Data is stored in.</returns>
-        public SerializableObject GetDataObject(out Type dataClassType);
     }
 }

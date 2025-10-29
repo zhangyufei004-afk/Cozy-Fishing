@@ -22,7 +22,7 @@ namespace FishingGame.FishLog
         /// </summary>
         public bool HasCaughtFish(FishScriptableObject fish)
         {
-            return _caughtFishIds.Contains(fish.Id);
+            return _caughtFishIds.Contains(fish.ID);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace FishingGame.FishLog
         /// </summary>
         public void RegisterFishCaught(FishScriptableObject fish)
         {
-            if (_caughtFishIds.Add(fish.Id))
+            if (_caughtFishIds.Add(fish.ID))
             {
                 FishCaughtForFirstTime?.Invoke(fish);
             }

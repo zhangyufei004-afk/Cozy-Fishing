@@ -815,6 +815,15 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventoryNavigation"",
+                    ""type"": ""Value"",
+                    ""id"": ""9dc0a71f-62d8-475a-98ff-a4d62f10f9d9"",
+                    ""expectedControlType"": ""Analog"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -1400,6 +1409,72 @@ namespace FishingGame.Input
                     ""action"": ""NumberKeys"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""131a31a1-9e1f-486c-8ffa-c13dd45891cd"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryNavigation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""9d938b41-2d96-4343-a821-3437bc498d54"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""InventoryNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""663248e8-e68e-4e9c-813b-ebece445e18d"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""InventoryNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""7ae72966-379c-413a-b178-e6eb7c84ce86"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryNavigation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""93546e5c-ade5-4ffd-b441-68c173728f16"",
+                    ""path"": ""<Keyboard>/pageUp"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""InventoryNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""21042023-6d45-444b-9fea-75ef8e46c0ed"",
+                    ""path"": ""<Keyboard>/pageDown"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""InventoryNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1764,6 +1839,7 @@ namespace FishingGame.Input
             m_UI_RealisticStickMovement = m_UI.FindAction("RealisticStickMovement", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
             m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
+            m_UI_InventoryNavigation = m_UI.FindAction("InventoryNavigation", throwIfNotFound: true);
             // ArrowMiniGame
             m_ArrowMiniGame = asset.FindActionMap("ArrowMiniGame", throwIfNotFound: true);
             m_ArrowMiniGame_Up = m_ArrowMiniGame.FindAction("Up", throwIfNotFound: true);
@@ -2113,6 +2189,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_RealisticStickMovement;
         private readonly InputAction m_UI_Back;
         private readonly InputAction m_UI_NumberKeys;
+        private readonly InputAction m_UI_InventoryNavigation;
         /// <summary>
         /// Provides access to input actions defined in input action map "UI".
         /// </summary>
@@ -2181,6 +2258,10 @@ namespace FishingGame.Input
             /// </summary>
             public InputAction @NumberKeys => m_Wrapper.m_UI_NumberKeys;
             /// <summary>
+            /// Provides access to the underlying input action "UI/InventoryNavigation".
+            /// </summary>
+            public InputAction @InventoryNavigation => m_Wrapper.m_UI_InventoryNavigation;
+            /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
             public InputActionMap Get() { return m_Wrapper.m_UI; }
@@ -2248,6 +2329,9 @@ namespace FishingGame.Input
                 @NumberKeys.started += instance.OnNumberKeys;
                 @NumberKeys.performed += instance.OnNumberKeys;
                 @NumberKeys.canceled += instance.OnNumberKeys;
+                @InventoryNavigation.started += instance.OnInventoryNavigation;
+                @InventoryNavigation.performed += instance.OnInventoryNavigation;
+                @InventoryNavigation.canceled += instance.OnInventoryNavigation;
             }
 
             /// <summary>
@@ -2301,6 +2385,9 @@ namespace FishingGame.Input
                 @NumberKeys.started -= instance.OnNumberKeys;
                 @NumberKeys.performed -= instance.OnNumberKeys;
                 @NumberKeys.canceled -= instance.OnNumberKeys;
+                @InventoryNavigation.started -= instance.OnInventoryNavigation;
+                @InventoryNavigation.performed -= instance.OnInventoryNavigation;
+                @InventoryNavigation.canceled -= instance.OnInventoryNavigation;
             }
 
             /// <summary>
@@ -2931,6 +3018,13 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnNumberKeys(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "InventoryNavigation" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnInventoryNavigation(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "ArrowMiniGame" which allows adding and removing callbacks.

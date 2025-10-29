@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 3536fba86a7393a4faf3c15f52af2773, type: 3}
-  Id: 11
-  MinMaxWeight: {x: 4, y: 8}
-  SpeciesName: Mutant Ray
-  FishCatchDifficulty: 6
-  FishBio: 'Lives off algea and glows mutant waves of toxic. '
+  Name: Mutant Ray
+  WeightRange:
+    MinWeight: 4
+    MaxWeight: 8
+  Difficulty: 6
+  Biography: Lives off algea and glows mutant waves of toxic material.
   LocationsFound: 0100000000000000
   TimesFound: 
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 37f6dbfcf247413458b2a8f9607236b5, type: 2}
+  SliderMiniGameBehaviour: {fileID: 0}
+  IsInvasive: 0
+  BasePrice: 50

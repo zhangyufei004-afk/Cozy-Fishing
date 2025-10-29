@@ -2,7 +2,9 @@ using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.UI.Inventory;
 using System;
+using System.Reflection.Emit;
 using FishingGame.Items;
+using FishingGame.SaveGame;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,23 +13,43 @@ namespace FishingGame.UI.Inventory
 {
     /// <summary>
     /// UI Entry for displaying a fish in the Inventory.
-    /// TODO: update this to be IStorable? probably?
     /// </summary>
     public class InventoryUIEntry : MonoBehaviour
     {
         private IStorable _item;
         private InventoryUI _inventoryUIController;
+        
+        // Entry Items
+        private Image _image;
+        private TextMeshProUGUI _nameText;
+        private TextMeshProUGUI _lengthText;
+        private TextMeshProUGUI _weightText;
+        private TextMeshProUGUI _caughtTimeText;
+        private TextMeshProUGUI _locationText;
 
         // Getters / Setters
         public IStorable Item
         {
-            get { return _item; }
-            set { _item = value; }
+            get => _item;
+            set => _item = value;
         }
 
         public InventoryUI InventoryUIController
+        { 
+            set => _inventoryUIController = value;
+        }
+
+        /// <summary>
+        /// Initialises all the variables of the Entry
+        /// </summary>
+        public void Initialise()
         {
-            set {_inventoryUIController = value; }
+            _image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
+            _nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
+            _lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
+            _weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
+            _caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
+            _locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
         }
 
         /// <summary>
@@ -39,69 +61,30 @@ namespace FishingGame.UI.Inventory
             switch(_item.GetItemType())
             {
                 case EItemType.Fish:
-                    VisualiseFish((Fish)_item);
-                    break;
-                case EItemType.Rod:
-                    Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
+                case EItemType.Trash:
+                    VisualiseFishable(_item as Fishable);
                     break;
                 case EItemType.RodAttachment:
                     VisualRodAttatchment((ItemData)_item);
                     break;
-                case EItemType.Money:
-                    Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
-                    break;
-                case EItemType.Trash:
-                    VisualiseTrash((Trash)_item);
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException($"Attempted to display the details of {_item.GetName()}, but was unable. ");
             }
         }
 
         #region Setup UI based on item type
 
-        /// <summary>
-        /// Run when the visual item is a fish
-        /// </summary>
-        /// <param name="fishUpdating">The fish data being used</param>
-        private void VisualiseFish(Fish fishUpdating)
+        private void VisualiseFishable(Fishable fishable)
         {
-            ResetTextElements();
-            Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
-            TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
+            EnableTextElements();
 
-            image.sprite = fishUpdating.GetFishBase().Texture;
-            nameText.text = fishUpdating.GetFishBase().SpeciesName;
-            lengthText.text = "temp"; // missing?
-            weightText.text = $"{fishUpdating.GetWeight():0.00}kg";
-            caughtTimeText.text = fishUpdating.GetCaughtTime().ToString();
-            locationText.text = fishUpdating.GetCaughtLocation();
-        }
-
-        /// <summary>
-        /// Run when the visual item is a trash
-        /// </summary>
-        /// <param name="trashUpdating">Trash data being used</param>
-        private void VisualiseTrash(Trash trashUpdating)
-        {
-            ResetTextElements();
-            Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
-            TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
-
-            image.sprite = trashUpdating.GetTrashBase().Texture;
-            nameText.text = trashUpdating.GetTrashBase().TrashName;
-            lengthText.text = "temp" ; // missing?
-            weightText.text = $"{trashUpdating.GetWeight():0.00}kg";
-            caughtTimeText.text = trashUpdating.GetCaughtTime().ToString();
-            locationText.text = trashUpdating.GetCaughtLocation();
+            FishableScriptable dataObject = fishable.GetBase();
+            _image.sprite = dataObject.Texture;
+            _nameText.text = dataObject.Name;
+            _lengthText.text = ""; // missing?
+            _weightText.text = $"{fishable.GetWeight():0.00}kg";
+            _caughtTimeText.text = fishable.GetCaughtTime().ToString();
+            _locationText.text = fishable.GetCaughtLocation();
         }
 
         /// <summary>
@@ -110,19 +93,13 @@ namespace FishingGame.UI.Inventory
         /// <param name="itemUpdating">The item being shown</param>
         private void VisualRodAttatchment(ItemData itemUpdating)
         {
-            ResetTextElements();
-            Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
-            TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI lengthText = transform.Find("FishLength").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI caughtTimeText = transform.Find("FishCaughtTime").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI locationText = transform.Find("FishLocation").GetComponent<TextMeshProUGUI>();
+            EnableTextElements();
 
-            image.sprite = itemUpdating.GetTexture();
-            nameText.text = itemUpdating.GetName();
-            weightText.text = $"{itemUpdating.GetWeight():0.00}kg";
-            lengthText.text = itemUpdating.GetCurrentUseCharge().ToString();
-            caughtTimeText.text = itemUpdating.GetTooltip();
+            _image.sprite = itemUpdating.GetTexture();
+            _nameText.text = itemUpdating.GetName();
+            _weightText.text = $"{itemUpdating.GetWeight():0.00}kg";
+            _lengthText.text = itemUpdating.GetCurrentUseCharge().ToString();
+            _caughtTimeText.text = itemUpdating.GetTooltip();
         }
 
         #endregion
@@ -130,15 +107,11 @@ namespace FishingGame.UI.Inventory
         /// <summary>
         /// Resets the active status of text elements to true
         /// </summary>
-        private void ResetTextElements()
+        private void EnableTextElements()
         {
-            Image image = transform.Find("FishMask").transform.Find("FishImage").GetComponent<Image>();
-            TextMeshProUGUI nameText = transform.Find("FishName").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI weightText = transform.Find("FishWeight").GetComponent<TextMeshProUGUI>();
-
-            image.gameObject.SetActive(true);
-            nameText.gameObject.SetActive(true);
-            weightText.gameObject.SetActive(true);
+            _image.gameObject.SetActive(true);
+            _nameText.gameObject.SetActive(true);
+            _weightText.gameObject.SetActive(true);
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace FishingGame.UI
 {
@@ -29,13 +31,25 @@ namespace FishingGame.UI
 
         // Private Variables
         private ETabType _currentTab = ETabType.INVENTORY;
+        private InputAction _navigateTabsAction;
 
         void OnEnable()
         {
             SetTab(0);
             DisableEnableTabs();
+            _navigateTabsAction = InputSystem.actions.FindActionMap("UI").FindAction("InventoryNavigation");
+            _navigateTabsAction.performed += SwitchTabController;
         }
 
+        private void OnDisable()
+        {
+            _navigateTabsAction.performed -= SwitchTabController;
+        }
+
+        /// <summary>
+        /// Sets the current ui tab to <c>tabType</c>
+        /// </summary>
+        /// <param name="tabType">The integer representing the ETabType to switch to.</param>
         public void SetTab(int tabType)
         {
             paperSound.Play();
@@ -48,7 +62,14 @@ namespace FishingGame.UI
             }
         }
 
-        void DisableEnableTabs()
+        private void SwitchTabController(InputAction.CallbackContext inputContext)
+        {
+            int increaseAmount = (int)inputContext.ReadValue<Single>();
+            int nextTab = ((int)_currentTab + increaseAmount) % 4;
+            SetTab(nextTab);
+        }
+
+        private void DisableEnableTabs()
         {
             inventoryTabObject.SetActive(false);
             fishLogTabObject.SetActive(false);

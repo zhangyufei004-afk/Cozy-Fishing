@@ -93,8 +93,8 @@ namespace FishingGame.FishLog
 
             fishImage.color = hasBeenCaught ? Color.white : Color.black;
 
-            speciesNameText.text = hasBeenCaught ? fishData.SpeciesName : "???";
-            speciesBioText.text = hasBeenCaught ? fishData.FishBio : "???";
+            speciesNameText.text = hasBeenCaught ? fishData.Name : "???";
+            speciesBioText.text = hasBeenCaught ? fishData.Biography : "???";
             isInvasiveText.text = hasBeenCaught ? (fishData.IsInvasive ? "Invasive: Yes" : "Invasive: No") : "Invasive: ???";
 
             location.text = hasBeenCaught ? SetupLocationTexts(fishData) : "???";
