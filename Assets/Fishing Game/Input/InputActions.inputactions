@@ -106,9 +106,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "GrappleUp",
                     "type": "Button",
-                    "id": "d98007f3-9035-4617-9269-ed5955bc6094",
+                    "id": "58ded00b-57a6-497e-b441-2c305dc59a4c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GrappleDown",
+                    "type": "Button",
+                    "id": "c6a386be-8d46-43ed-9dff-f568ed10b137",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GrappleCancel",
+                    "type": "Button",
+                    "id": "c7b999c6-0151-4ae3-a17f-aca366f11169",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -514,12 +532,67 @@
                 },
                 {
                     "name": "",
-                    "id": "eb9f5aa8-8ac4-4faf-9a77-3377a610afb6",
-                    "path": "",
+                    "id": "686d37fc-fa34-45eb-83c4-2f62d6b390d4",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "GrappleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72e7d5eb-4589-4f92-a238-a6e73dc17d27",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "GrappleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f90ec433-6b46-4f57-a4aa-809ea7dd18ec",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "GrappleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a291bcc-3317-431b-b58e-3c90bfd88f98",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "GrappleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d53974c-a76f-49aa-b8ee-9e34b0426947",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "GrappleCancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "866d62bd-6a18-41ca-986f-3a8f6573d247",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "GrappleCancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
