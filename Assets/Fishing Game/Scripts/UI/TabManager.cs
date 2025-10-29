@@ -24,6 +24,9 @@ namespace FishingGame.UI
         [SerializeField] private GameObject questsTabObject;
         [SerializeField] private GameObject settingsTabObject;
 
+        [SerializeField]
+        private AudioSource paperSound;
+
         // Private Variables
         private ETabType _currentTab = ETabType.INVENTORY;
 
@@ -35,6 +38,7 @@ namespace FishingGame.UI
 
         public void SetTab(int tabType)
         {
+            paperSound.Play();
             ETabType inTabType = (ETabType)tabType;
 
             if (_currentTab != inTabType)
