@@ -26304,6 +26304,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 7539808110283409017, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 7e477fca5c365e447bf2ea9a6c2a4682, type: 2}
     - target: {fileID: 7543755236726177039, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -32892,7 +32896,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1130377364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33297,6 +33301,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f88db39fb4b0bf42bf4c256f50bce96, type: 2}
   toolTips:
   - Baits increase your chances of catching certain fish
+  - 'Some fish are harder to catch than others. '
+  - 'Different fish live in different areas. Try fishing in the river. '
+  - 'There are less fish in the rivers than the ocean. '
+  - Overfishing can lead to population loss. Fish responsibly.
+  - Fish can be sold at the shop.
+  - Baits can be purchased at the shop.
+  - 'My Jelly Romance''s can only be fished from the ocean. '
+  - 'The lake is the Toxic Puffers only home. '
+  - 'Pink Glubfish love the fast flowing water of the rivers. '
+  - 'The one-eyed wangfish calls the lake home. '
+  - The divine light is invasive, and can only be fished from the ocean.
 --- !u!4 &1272523031
 Transform:
   m_ObjectHideFlags: 0
@@ -38929,11 +38944,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4195167557089315012, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4195167557089315012, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.82933336
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4195167557089315012, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchorMin.y
@@ -38949,15 +38964,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5248270387711137299, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5248270387711137299, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5248270387711137299, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6077023160263161432, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_Size
@@ -38973,7 +38988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9115279488960758460, guid: ae67fe2ab43e11b41a2eac4729bb5000, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 102.40007
+      value: 102.40033
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
