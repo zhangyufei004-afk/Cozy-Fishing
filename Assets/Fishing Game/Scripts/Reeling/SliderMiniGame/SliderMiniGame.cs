@@ -272,6 +272,15 @@ namespace FishingGame.Reeling
             return fishImage.GameObject().GetComponent<Animator>().GetBool("IsLeft");
         }
 
+        /// <summary>
+        /// Gets input bool for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public bool GetInput()
+        {
+            return _inputHeld;
+        }
+
         #endregion
 
         #region BoxMovement
