@@ -9,6 +9,7 @@ TagManager:
   - RealisticGoal
   - DragableUI
   - Item
+  - Wood Surface
   layers:
   - Default
   - TransparentFX
