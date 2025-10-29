@@ -96,6 +96,12 @@ namespace FishingGame.GameManagement
 
         #endregion
 
+        #region Camera Events
+
+        public event Action<string> OnCameraChangeParent;
+
+        #endregion
+
         /// <summary>
         /// Fish Caught event - invokes all OnFishCaught subscribers
         /// </summary>
@@ -339,6 +345,15 @@ namespace FishingGame.GameManagement
         public void PlayerDeathScreenActive(bool isActive)
         {
             OnPlayerDeathScreenActive?.Invoke(isActive);
+        }
+
+        /// <summary>
+        /// Invokes the OnCameraChangeParent event to change the parent of <c>cameraName</c> camera to be null.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera to change the parent of.</param>
+        public void RemoveCameraParent(string cameraName)
+        {
+            OnCameraChangeParent?.Invoke(cameraName);
         }
     }
 }
