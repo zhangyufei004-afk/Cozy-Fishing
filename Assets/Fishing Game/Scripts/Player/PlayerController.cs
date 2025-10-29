@@ -15,6 +15,8 @@ namespace FishingGame.Player
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        private static readonly int ThrowTrigger = Animator.StringToHash("ThrowTrigger");
+        private static readonly int IsGrappling = Animator.StringToHash("IsGrappling");
         private readonly int _speed = Animator.StringToHash("Speed");
 
         [Header("Player Core")]
@@ -22,7 +24,6 @@ namespace FishingGame.Player
         [SerializeField] private GameObject playerMesh;
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Animator animator;
-        [SerializeField] private CinemachineBrain brain;
 
         [Header("Movement Settings")]
         [SerializeField] private float movementSpeed = 6f;
@@ -43,11 +44,6 @@ namespace FishingGame.Player
         [SerializeField] private LineRenderer grappleLine;
         [SerializeField] private Transform grappleTip;
         [SerializeField] private TextMeshProUGUI grapplePromptText;
-        [SerializeField, Range(3, 20)] private int ropeSegmentCount = 8;
-        [SerializeField] private float ropeElasticity = 0.15f;
-
-        [Header("Fishing Reference")]
-        [SerializeField] private FishingRod currentFishingRod;
 
         [Header("Environment Layers")]
         [SerializeField] private LayerMask waterLayerMask;
@@ -77,12 +73,6 @@ namespace FishingGame.Player
         private InputAction _grappleUpAction;
         private InputAction _grappleDownAction;
         private InputAction _grappleCancelAction;
-
-        private Vector3[] _ropePositions;
-
-        public bool HasGrappleHook => hasGrapple;
-        public FishingRod CurrentFishingRod => currentFishingRod;
-        public bool IsInGrappleZone => _isInGrappleZone;
 
         private void OnEnable()
         {
@@ -158,7 +148,6 @@ namespace FishingGame.Player
             Movement();
             GrappleBehaviour();
             HandlePromptUI();
-            HandleLineRenderer();
             HandleGrappleRotation();
         }
 
@@ -196,15 +185,16 @@ namespace FishingGame.Player
                 return;
             }
 
-            if (_isInGrappleZone && _currentZone?.anchorPoint != null)
+            if (_isInGrappleZone && _currentZone?.anchorPoint)
             {
                 _isThrowing = true;
                 GameManager.Instance.GameEvents.SetPlayerOccupied(true);
 
-                if (animator != null)
+                if (animator is not null)
                 {
                     animator.ResetTrigger("CastTrigger");
-                    animator.SetTrigger("ThrowTrigger");
+                    animator.SetTrigger(ThrowTrigger);
+                    animator.SetBool(IsGrappling, true);
                     Debug.Log("[PlayerController] Player throw animation triggered.");
                 }
 
@@ -214,12 +204,12 @@ namespace FishingGame.Player
 
         private IEnumerator StartGrappleAfterDelay()
         {
+            _grappleDestination = _currentZone.destinationPoint?.position ?? _currentZone.anchorPoint.position;
+            GameManager.Instance.GameEvents.ToggleGrappleMode(true, _grappleDestination);
+            
             yield return new WaitForSeconds(grappleStartDelay);
 
             _grappleAnchor = _currentZone.anchorPoint.position;
-            _grappleDestination = _currentZone.destinationPoint != null
-                ? _currentZone.destinationPoint.position
-                : _currentZone.anchorPoint.position;
 
             _currentRopeLength = Vector3.Distance(transform.position, _grappleAnchor);
             _isGrappling = true;
@@ -267,51 +257,9 @@ namespace FishingGame.Player
             }
         }
 
-        // === Grapple Line Renderer with Elasticity & Collision ===
-        private void HandleLineRenderer()
-        {
-            if (grappleLine == null || grappleTip == null) return;
-
-            if (_isGrappling)
-            {
-                if (!grappleLine.enabled) grappleLine.enabled = true;
-                if (_ropePositions == null || _ropePositions.Length != ropeSegmentCount)
-                    _ropePositions = new Vector3[ropeSegmentCount];
-
-                Vector3 start = grappleTip.position;
-                Vector3 end = _grappleAnchor;
-
-                _ropePositions[0] = start;
-                _ropePositions[_ropePositions.Length - 1] = end;
-
-                for (int i = 1; i < _ropePositions.Length - 1; i++)
-                {
-                    float t = (float)i / (_ropePositions.Length - 1);
-                    Vector3 target = Vector3.Lerp(start, end, t);
-
-                    float sag = Mathf.Sin(t * Mathf.PI) * 0.3f;
-                    target.y -= sag;
-
-                    if (Physics.Raycast(target + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 4f, terrainLayerMask))
-                    {
-                        target.y = hit.point.y + 0.1f;
-                    }
-
-                    _ropePositions[i] = Vector3.Lerp(_ropePositions[i], target, ropeElasticity);
-                }
-
-                grappleLine.positionCount = _ropePositions.Length;
-                grappleLine.SetPositions(_ropePositions);
-            }
-            else if (grappleLine.enabled)
-            {
-                grappleLine.enabled = false;
-            }
-        }
-
         private void HandlePromptUI()
         {
-            if (grapplePromptText == null) return;
+            if (grapplePromptText is null) return;
             grapplePromptText.enabled = _isInGrappleZone && hasGrapple && !_isGrappling && !_isThrowing;
             if (grapplePromptText.enabled)
                 grapplePromptText.text = "Press Ctrl to Grapple";
@@ -323,6 +271,8 @@ namespace FishingGame.Player
             _isThrowing = false;
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             Debug.Log("[PlayerController] Grapple canceled.");
+            animator.SetBool(IsGrappling, false);
+            GameManager.Instance.GameEvents.ToggleGrappleMode(false, Vector3.zero);
         }
 
         private void AttemptToPickupItem(InputAction.CallbackContext context)

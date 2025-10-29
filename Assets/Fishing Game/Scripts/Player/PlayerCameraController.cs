@@ -104,12 +104,7 @@ namespace FishingGame.Player
         private void ToggleDialogueCamera(bool enableCamera)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(enableCamera);
-
-            if (dialogCamera != null)
-                dialogCamera.Priority = enableCamera ? 20 : 5;
-
-            if (topDownCamera != null)
-                topDownCamera.Priority = enableCamera ? 5 : 15;
+            dialogCamera.gameObject.SetActive(enableCamera);
         }
 
         /// <summary>

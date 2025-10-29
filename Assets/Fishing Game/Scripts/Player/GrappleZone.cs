@@ -96,7 +96,7 @@ namespace FishingGame.Player
 
 #if UNITY_EDITOR
         // Editor gizmos (visualizes zone + anchor → destination path)
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (zoneCollider != null)
             {
