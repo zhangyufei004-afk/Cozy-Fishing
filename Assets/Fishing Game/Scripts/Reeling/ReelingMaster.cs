@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine.UI;
 using FishingGame.Items;
 using FishingGame.Items.Bait;
+using UnityEngine.InputSystem;
 
 namespace FishingGame.Reeling
 {
@@ -85,10 +86,6 @@ namespace FishingGame.Reeling
         private GameObject timerObject;
 
         [SerializeField]
-        [Tooltip("The UI button that allows the player to exit from fishing")]
-        private Button cancelButton;
-
-        [SerializeField]
         [Tooltip("The sliders animator")]
         private Animator sliderAnimator;
 
@@ -107,7 +104,22 @@ namespace FishingGame.Reeling
         [Tooltip("The animator attatched to the player")]
         private Animator characterAnimator;
 
+        private InputAction _cancelFishingAction;
+
         #endregion
+
+        private void OnEnable()
+        {
+            InputActionAsset inputAsset = InputSystem.actions;
+            InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
+
+            _cancelFishingAction = uiActionMap.FindAction("CancelFishing");
+        }
+
+        private void OnDisable()
+        {
+            if (IsFishing) { _cancelFishingAction.performed -= CancelFishing; }
+        }
 
         #region Public Methods
 
@@ -200,12 +212,12 @@ namespace FishingGame.Reeling
         /// Run by a button, this will cancel fishing
         /// Does this differently based on fishing is in stage one or the minigame section
         /// </summary>
-        public void CancelFishing()
+        public void CancelFishing(InputAction.CallbackContext inputAction)
         {
-            SetCancelButtonVisibilty(false);
             fishingHook.ClearCollidingFishAndPool();
             sliderAnimator.SetBool("isGameActive", false);
             fishingRodScript.SetChargerVisibility(false);
+            _cancelFishingAction.performed -= CancelFishing;
 
             if (IsFishing == true)
             {
@@ -302,12 +314,12 @@ namespace FishingGame.Reeling
         /// <param name="didWin">Represents if the minigame was succsesful or not</param>
         private void EndCatch(bool didWin)
         {
+            _cancelFishingAction.performed -= CancelFishing;
             IsFishing = false;
             _currentMinigame = null;
             _currentMiniGameWins = 0;
             initiationScript.ShouldEnableFishPerspective(false);
             fishingHook.PullBackHook(true);
-            SetCancelButtonVisibilty(false);
             sliderAnimator.SetBool("isGameActive", false);
             SetMiniGameProgressVisibility(false);
             StartCoroutine(ControlsAreDisabledAfterTime(false, 1));
@@ -349,6 +361,7 @@ namespace FishingGame.Reeling
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
 
+            _cancelFishingAction.performed += CancelFishing;
             _currentFishPool = fishPool;
             _current3DObject = visual3DObject;
             _current3DObject.GetComponent<Animator>().SetBool("Active", true);
@@ -362,7 +375,6 @@ namespace FishingGame.Reeling
             sliderAnimator.SetBool("isGameActive", true);
             SetMiniGameProgressVisibility(true);
             fishingRodScript.SetChargerVisibility(false);
-            SetCancelButtonVisibilty(true);
 
             SetNextMiniGame();
         }
@@ -432,15 +444,6 @@ namespace FishingGame.Reeling
 
                 GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.red);
             }
-        }
-
-        /// <summary>
-        /// Sets the cancel button to be visible if parameter is true, otherwise nonvisible
-        /// </summary>
-        /// <param name="isVisible">If true the button will be visisble, otherwise it will be hidden</param>
-        private void SetCancelButtonVisibilty(bool isVisible)
-        {
-            cancelButton.gameObject.SetActive(isVisible);
         }
     }
 }

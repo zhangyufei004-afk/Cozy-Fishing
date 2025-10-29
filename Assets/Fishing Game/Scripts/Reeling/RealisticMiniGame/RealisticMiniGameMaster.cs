@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
@@ -106,6 +107,8 @@ namespace FishingGame.Reeling
         private float _timeSinceLastDirectionChange;
         private float _directionRollTimerMax = 8f;
 
+        private InputAction _cancelFishingAction;
+
 
         private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
@@ -114,6 +117,11 @@ namespace FishingGame.Reeling
         {
             _boundsPoints = new Vector2[amountOfPointsInBounds];
             SetBounds();
+
+            InputActionAsset inputAsset = InputSystem.actions;
+            InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
+
+            _cancelFishingAction = uiActionMap.FindAction("CancelFishing");
         }
 
 

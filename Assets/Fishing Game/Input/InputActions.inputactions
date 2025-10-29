@@ -645,6 +645,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CancelFishing",
+                    "type": "Button",
+                    "id": "2b4edc7d-8f40-44aa-bb80-47e4aca5857f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1206,6 +1215,28 @@
                     "processors": "Scale(factor=9)",
                     "groups": ";Keyboard&Mouse",
                     "action": "NumberKeys",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8c3a3d6-b353-4e3b-b340-d6e08c7fa42d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CancelFishing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "044a7d1a-f0b0-4993-8bb4-a12bfe5dd610",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "CancelFishing",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

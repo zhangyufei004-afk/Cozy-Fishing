@@ -733,6 +733,15 @@ namespace FishingGame.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CancelFishing"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b4edc7d-8f40-44aa-bb80-47e4aca5857f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1296,6 +1305,28 @@ namespace FishingGame.Input
                     ""action"": ""NumberKeys"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8c3a3d6-b353-4e3b-b340-d6e08c7fa42d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CancelFishing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""044a7d1a-f0b0-4993-8bb4-a12bfe5dd610"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CancelFishing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1699,6 +1730,7 @@ namespace FishingGame.Input
             m_UI_ContinueDialogue = m_UI.FindAction("ContinueDialogue", throwIfNotFound: true);
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
             m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
+            m_UI_CancelFishing = m_UI.FindAction("CancelFishing", throwIfNotFound: true);
             // ArrowMiniGame
             m_ArrowMiniGame = asset.FindActionMap("ArrowMiniGame", throwIfNotFound: true);
             m_ArrowMiniGame_Up = m_ArrowMiniGame.FindAction("Up", throwIfNotFound: true);
@@ -2026,6 +2058,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_ContinueDialogue;
         private readonly InputAction m_UI_Back;
         private readonly InputAction m_UI_NumberKeys;
+        private readonly InputAction m_UI_CancelFishing;
         /// <summary>
         /// Provides access to input actions defined in input action map "UI".
         /// </summary>
@@ -2089,6 +2122,10 @@ namespace FishingGame.Input
             /// Provides access to the underlying input action "UI/NumberKeys".
             /// </summary>
             public InputAction @NumberKeys => m_Wrapper.m_UI_NumberKeys;
+            /// <summary>
+            /// Provides access to the underlying input action "UI/CancelFishing".
+            /// </summary>
+            public InputAction @CancelFishing => m_Wrapper.m_UI_CancelFishing;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -2154,6 +2191,9 @@ namespace FishingGame.Input
                 @NumberKeys.started += instance.OnNumberKeys;
                 @NumberKeys.performed += instance.OnNumberKeys;
                 @NumberKeys.canceled += instance.OnNumberKeys;
+                @CancelFishing.started += instance.OnCancelFishing;
+                @CancelFishing.performed += instance.OnCancelFishing;
+                @CancelFishing.canceled += instance.OnCancelFishing;
             }
 
             /// <summary>
@@ -2204,6 +2244,9 @@ namespace FishingGame.Input
                 @NumberKeys.started -= instance.OnNumberKeys;
                 @NumberKeys.performed -= instance.OnNumberKeys;
                 @NumberKeys.canceled -= instance.OnNumberKeys;
+                @CancelFishing.started -= instance.OnCancelFishing;
+                @CancelFishing.performed -= instance.OnCancelFishing;
+                @CancelFishing.canceled -= instance.OnCancelFishing;
             }
 
             /// <summary>
@@ -2824,6 +2867,13 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnNumberKeys(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "CancelFishing" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCancelFishing(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "ArrowMiniGame" which allows adding and removing callbacks.
