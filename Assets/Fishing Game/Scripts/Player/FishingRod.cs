@@ -1,6 +1,7 @@
 using FishingGame.GameManagement;
 using FishingGame.Items;
 using FishingGame.Items.Bait;
+using FishingGame.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;

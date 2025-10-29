@@ -1,3 +1,5 @@
+using FishingGame.Fishing_Game.Scripts.GameManagement;
+using FishingGame.GameManagement;
 using FishingGame.Reeling;
 using System;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
@@ -25,12 +28,8 @@ namespace FishingGame.Reeling
         private RealisticMiniGameMaster minigameMaster;
 
         [SerializeField]
-        [Tooltip("The camera that loads the UI")]
-        private CinemachineCamera minigameCamera;
-
-        [SerializeField]
-        [Tooltip("The image that rotates with input")]
-        private RectTransform uiJoystick;
+        [Tooltip("The game manager")]
+        private GameManager gameManager;
 
         [SerializeField]
         [Tooltip("The speed that scales how fast the image rotates")]
@@ -43,6 +42,7 @@ namespace FishingGame.Reeling
         private UnityEngine.UI.Image _centerImage;
 
         private InputAction _realisticStickAction;
+        private InputAction _realisticMouseAction;
 
         private ERealisticDirection _currentDirection;
 
@@ -72,13 +72,16 @@ namespace FishingGame.Reeling
             InputActionAsset inputAsset = InputSystem.actions;
             InputActionMap uiActionMap = inputAsset.FindActionMap("RealisticMiniGame");
             uiActionMap.Enable();
-            // TODO: Insert a function here that figures out what control scheme is being used
+
             _realisticStickAction = uiActionMap.FindAction("RealisticController");
+            _realisticMouseAction = uiActionMap.FindAction("RealisticMouse");
+            
         }
 
         private void Update()
         {
-            MovementIfController();
+            if (gameManager?.GetCurrentControlScheme() is Gamepad) { MovementIfController(); }
+            else { MovementIfMouse(); } 
         }
 
         #region Public Functions
@@ -120,7 +123,9 @@ namespace FishingGame.Reeling
         /// </summary>
         private void MovementIfMouse()
         {
-            Vector2 mousePosition = _realisticStickAction.ReadValue<Vector2>();
+            Debug.Log("Mousemove");
+
+            Vector2 mousePosition = _realisticMouseAction.ReadValue<Vector2>();
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 transform.parent as RectTransform,
@@ -159,6 +164,7 @@ namespace FishingGame.Reeling
         /// </summary>
         private void MovementIfController()
         {
+            Debug.Log("ControllerMove");
             Vector2 stickInput = _realisticStickAction.ReadValue<Vector2>();
 
             if (stickInput.magnitude < 0.2f)
