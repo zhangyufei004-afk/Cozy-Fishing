@@ -14,19 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 295a2f559cbf35d42a1616c88db493ac, type: 3}
-  Id: 2
-  MinMaxWeight: {x: 0.25, y: 5}
-  SpeciesName: Dynamite Fish
-  FishCatchDifficulty: 5
-  FishBio: Although it looks like this fish has fused with some sticks of dynamite,
+  Name: Dynamite Fish
+  WeightRange:
+    MinWeight: 0.25
+    MaxWeight: 5
+  Difficulty: 5
+  Biography: 'Although it looks like this fish has fused with some sticks of dynamite,
     the cylinders around its body are actually hardened ballasts that let the dynamite
-    fish swim at great depths for its size, as well as protect from predators. The
-    dynamite fish typically comes with a symbiotic parasite that attaches to these
-    ballasts, creating an even more dynamite looking appearance. These parasites
-    leech off of the nutrient-rich ballast water, in exchange for its bio-luminescent
-    frills that attract prey for the host when in dark environments.
+    swim at great depths for its size, as well as protect from predators. The dynamite
+    fish typically comes with a symbiotic parasite that attaches to these ballasts,
+    creating an even more dynamite looking appearance. These parasites leech off
+    of the nutrient-rich ballast water, in exchange for its bio-luminescent frills
+    that attract prey for the host when in dark environments. '
   LocationsFound: 03000000
   TimesFound: 0000000001000000
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 13c918e5a77834c4382da13238e2975f, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: dd7ad9e9181dc4d4ebdc79b0cde44253, type: 2}
+  IsInvasive: 0
+  BasePrice: 15

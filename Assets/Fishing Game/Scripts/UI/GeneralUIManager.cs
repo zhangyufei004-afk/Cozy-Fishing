@@ -86,7 +86,7 @@ namespace FishingGame
         /// <returns>Hides the status text</returns>
         private IEnumerator HideStatusText(float timeUntilHide, TextMeshProUGUI textoToHide)
         {
-            yield return new WaitForSeconds(timeUntilHide);
+            yield return new WaitForSecondsRealtime(timeUntilHide);
             textoToHide.gameObject.SetActive(false);
         }
 

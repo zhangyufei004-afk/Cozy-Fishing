@@ -85,6 +85,9 @@ namespace FishingGame.Reeling
         [Tooltip("A temporary field that is currently used to general a generic 3D model for reeling visuailization")]
         private GameObject fishModelPrefab;
 
+        [SerializeField]
+        private AudioSource catchSound;
+
         private bool _isBusy = false;
         
         #endregion
@@ -151,6 +154,8 @@ namespace FishingGame.Reeling
 
             if (_fishAtHook)
             {
+                catchSound.Play();
+
                 _fishAtHook = false;
                 _isStageOne = false;
                 Destroy(_fishSwim);
@@ -194,6 +199,7 @@ namespace FishingGame.Reeling
             }
             else
             {
+                GameManager.Instance.GameEvents.RemoveCameraParent(fishCamera.name);
                 fishCamera.gameObject.SetActive(false);
             }
         }

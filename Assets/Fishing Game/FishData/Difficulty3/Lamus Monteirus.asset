@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: cd509572f84dde2428a046faf091708d, type: 3}
-  Id: 7
-  MinMaxWeight: {x: 5, y: 8}
-  SpeciesName: Lamus Monteirus
-  FishCatchDifficulty: 3
-  FishBio: The Lamus Monteirus is a vain fish species. They're always fishing for
+  Name: Lamus Monteirus
+  WeightRange:
+    MinWeight: 5
+    MaxWeight: 8
+  Difficulty: 3
+  Biography: The Lamus Monteirus is a vain fish species. They're always fishing for
     compliments.
   LocationsFound: 0100000003000000
   TimesFound: 
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 194b5b3a589099040812623ab46eebb7, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: 0e03f35043a1c7f4a886799aa38beb97, type: 2}
+  IsInvasive: 0
+  BasePrice: 5

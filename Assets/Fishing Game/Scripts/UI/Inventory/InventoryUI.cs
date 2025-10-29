@@ -16,8 +16,14 @@ namespace FishingGame.UI.Inventory
     /// </summary>
     public class InventoryUI : MonoBehaviour
     {
+        private readonly List<GameObject> _currentItemCards = new List<GameObject>();
+        private const int NumberEntriesPerRow = 2;
+        private const int EntryHeight = -215;
+        
+        [Header("Scrollbox References")]
         [SerializeField] private Transform fishListContainer;
         [SerializeField] private GameObject fishCardPrefab;
+        [SerializeField] private GameObject scrollBox;
 
         [Header("Inventory Display References")]
         [SerializeField] [Tooltip("The image that shows what item is being looked at")] private Image itemImage;
@@ -37,10 +43,7 @@ namespace FishingGame.UI.Inventory
         private Button useItemButton;
 
         private IStorable _currentlyDisplayedItem;
-
-
-        private readonly List<GameObject> _currentItemCards = new List<GameObject>();
-
+        
         private void Start()
         {
             GameManager.Instance.GameEvents.OnInventoryUpdated += RefreshInventoryUI;
@@ -60,54 +63,22 @@ namespace FishingGame.UI.Inventory
         }
 
         /// <summary>
-        /// Adds a fish to the inventory UI as a new card.
+        /// Adds an IStorable object to the inventory as a new card.
         /// </summary>
-        /// <param name="fish">Fish object to be displayed.</param>
-        public void AddFishToUI(Fish fish)
+        /// <param name="objectToAdd">The IStorable Object to add</param>
+        public void AddStorableToUI(IStorable objectToAdd)
         {
             GameObject card = Instantiate(fishCardPrefab, fishListContainer);
             InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
             if (inventoryUIEntry)
             {
-                inventoryUIEntry.Item = fish;
+                inventoryUIEntry.Initialise();
+                inventoryUIEntry.Item = objectToAdd;
                 inventoryUIEntry.InventoryUIController = this;
                 inventoryUIEntry.UpdateVisuals();
             }
             _currentItemCards.Add(card);
-        }
-
-        /// <summary>
-        /// Adds a trash item to the inventory UI as a new card.
-        /// </summary>
-        /// <param name="trash">The item to be displayed</param>
-        public void AddTrashToUI(Trash trash)
-        {
-            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
-            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
-            if (inventoryUIEntry)
-            {
-                inventoryUIEntry.Item = trash;
-                inventoryUIEntry.InventoryUIController = this;
-                inventoryUIEntry.UpdateVisuals();
-            }
-            _currentItemCards.Add(card);
-        }
-
-        /// <summary>
-        /// Adds a trash item to the inventory UI as a new card.
-        /// </summary>
-        /// <param name="trash">The item to be displayed</param>
-        public void AddAttatchmentToUI(ItemData itemToAdd)
-        {
-            GameObject card = Instantiate(fishCardPrefab, fishListContainer);
-            InventoryUIEntry inventoryUIEntry = card.GetComponent<InventoryUIEntry>();
-            if (inventoryUIEntry)
-            {
-                inventoryUIEntry.Item = itemToAdd;
-                inventoryUIEntry.InventoryUIController = this;
-                inventoryUIEntry.UpdateVisuals();
-            }
-            _currentItemCards.Add(card);
+            GameManager.Instance.GameEvents.ElementAddedToScrollbox(scrollBox.name);
         }
 
         /// <summary>
@@ -144,40 +115,22 @@ namespace FishingGame.UI.Inventory
             _currentlyDisplayedItem = null;
             ClearInventoryUI();
 
-            ((RectTransform)fishListContainer).offsetMin = new Vector2(0, -215 * Mathf.Max(0, Mathf.Ceil((float)itemList.Count / 2) - 3));
+            if (fishListContainer is RectTransform container)
+            {
+                container.offsetMin = new Vector2(0,
+                    EntryHeight * Mathf.Max(0, Mathf.Ceil((float)itemList.Count / NumberEntriesPerRow) - 3));
+            }
 
             foreach (var storable in itemList)
             {
-                switch (storable.GetItemType())
-                {
-                    case EItemType.Fish:
-                        Fish fish = storable as Fish;
-                        AddFishToUI(fish);
-                        break;
-                    case EItemType.Rod:
-                        Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
-                        break;
-                    case EItemType.RodAttachment:
-                        ItemData item = storable as ItemData;
-                        AddAttatchmentToUI(item);
-                        break;
-                    case EItemType.Money:
-                        Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
-                        break;
-                    case EItemType.Trash:
-                        Trash trash = storable as Trash;
-                        AddTrashToUI(trash);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                AddStorableToUI(storable);
             }
         }
 
         /// <summary>
         /// Updates Inventory Info display to show whatever fish was clicked
         /// </summary>
-        /// <param name="fish">The fish clicked</param>
+        /// <param name="item">The IStorable item clicked</param>
         public void InventoryEntryClicked(IStorable item)
         {
             _currentlyDisplayedItem = item;
@@ -185,46 +138,23 @@ namespace FishingGame.UI.Inventory
             switch (item.GetItemType())
             {
                 case EItemType.Fish:
-                    FishEntryClicked((Fish)item);
-                    break;
-                case EItemType.Rod:
-                    Debug.Log("TODO: Tried to add a rod to the inventory UI, but we don't have logic for that yet. ");
+                case EItemType.Trash:
+                    FishableClicked(item as Fishable);
                     break;
                 case EItemType.RodAttachment:
-                    AttatchmentEntryClicked((ItemData)item);
-                    break;
-                case EItemType.Money:
-                    Debug.Log("TODO: Tried to add money to the inventory UI, but we don't have logic for that yet. ");
-                    break;
-                case EItemType.Trash:
-                    TrashEntryClicked((Trash)item);
+                    AttatchmentEntryClicked(item as ItemData);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException($"Tried to display the details of {item.GetName()} " +
+                                                          "but couldn't. Have you passed the wrong item in?");
             }
         }
 
         /// <summary>
-        /// Run when a fish entry is clicked, sets the required display variables
+        /// Sets the correct values in the details pain for the fishable object
         /// </summary>
-        /// <param name="entryClicked">The fish that has been clicked</param>
-        private void FishEntryClicked(Fish entryClicked)
-        {
-            useItemButton.gameObject.SetActive(false);
-            if (itemImage) itemImage.sprite = entryClicked.GetTexture();
-            if (itemNameText) itemNameText.text = entryClicked.GetName();
-            if (lengthLabel) lengthLabel.text = "Length:";
-            if (weight) weight.text = entryClicked.GetWeight() + "kg";
-            if (timeLabel) timeLabel.text = "Time Found:";
-            if (location) location.text = entryClicked.GetCaughtLocation();
-            if (timeText) timeText.text = entryClicked.GetCaughtTime().ToString();
-        }
-
-        /// <summary>
-        /// Run when a trash entry is clicked, sets the required display variables
-        /// </summary>
-        /// <param name="entryClicked">The trash that has been clicked</param>
-        private void TrashEntryClicked(Trash entryClicked)
+        /// <param name="entryClicked">The entry clicked</param>
+        private void FishableClicked(Fishable entryClicked)
         {
             useItemButton.gameObject.SetActive(false);
             if (itemImage) itemImage.sprite = entryClicked.GetTexture();
@@ -239,7 +169,7 @@ namespace FishingGame.UI.Inventory
         /// <summary>
         /// Run when a Rod Attatchment entry is clicked, sets the required display variables
         /// </summary>
-        /// <param name="entryClicked">The trash that has been clicked</param>
+        /// <param name="entryClicked">The item attachment that has been clicked</param>
         private void AttatchmentEntryClicked(ItemData entryClicked)
         {
             useItemButton.gameObject.SetActive(true);

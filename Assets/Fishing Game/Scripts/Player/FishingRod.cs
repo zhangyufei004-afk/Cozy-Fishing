@@ -1,21 +1,9 @@
-using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Items;
-using System.Collections;
-using System.Runtime.CompilerServices;
 using FishingGame.Items.Bait;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-using System.ComponentModel.Design;
-using FishingGame.Inventory;
-using UnityEditor.UIElements;
-using NUnit.Framework;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
-using System.Linq;
-using FishingGame.Player;
 
 namespace FishingGame.Reeling
 {
@@ -134,6 +122,7 @@ namespace FishingGame.Reeling
         private bool _isBusy = false;
         private float _defaultMaxSliderValue;
         private LayerMask _layerMask;
+        private bool _isGrappling = false;
 
         private void OnEnable()
         {
@@ -152,10 +141,12 @@ namespace FishingGame.Reeling
             _castAction.started += CastInputUsed;
             _castAction.canceled += CastInputReleased;
 
-            GameManager.Instance.GameEvents.OnBaitEquiped += EquipBait;
+            GameManager.Instance.GameEvents.OnBaitEquipped += EquipBait;
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+
+            GameManager.Instance.GameEvents.OnToggleGrapple += SetGrapplePoint;
 
             _layerMask = waterLayer | blockFishingLayers;
         }
@@ -216,7 +207,7 @@ namespace FishingGame.Reeling
         public void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
+            fishingHook.SetUpHookTravelToFishSpot(_targetLocation, _isGrappling);
         }
 
         /// <summary>
@@ -224,6 +215,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void RemoveBait()
         {
+            GameManager.Instance.GameEvents.ItemUsedUp(_currentlyEquipedBait as ItemData);
             _currentlyEquipedBait = new NullBait();
         }
 
@@ -244,6 +236,15 @@ namespace FishingGame.Reeling
         public void SetChargerVisibility(bool isVisible)
         {
             chargeSlider.gameObject.SetActive(isVisible);
+        }
+
+        /// <summary>
+        /// Returns cast result for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public int GetChargeLevel()
+        {
+            return (int)_throwLineResult;
         }
 
         #region Charging_and_throwing_line
@@ -318,6 +319,16 @@ namespace FishingGame.Reeling
             if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _layerMask))
             {
                 rodBobber.transform.position = hit.point;
+            }
+        }
+
+        private void SetGrapplePoint(bool isGrappling, Vector3 grapplingDestination)
+        {
+            _isGrappling = isGrappling;
+            _targetLocation = grapplingDestination;
+            if (!_isGrappling)
+            {
+                fishingHook.PullBackHook(false);
             }
         }
 
@@ -454,6 +465,6 @@ namespace FishingGame.Reeling
         }
 
         #endregion
-
+        
     }
 }

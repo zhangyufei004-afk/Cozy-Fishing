@@ -96,7 +96,17 @@ namespace FishingGame.Reeling
         [Tooltip("Rate of spawn during a wave")]
         private float waveSpawnTime;
 
-        private IFishAble _currentlyReelingObject;
+        private Fishable _currentlyReelingObject;
+        [SerializeField]
+        private AudioSource rightSound;
+        [SerializeField]
+        private AudioClip[] rightSounds;
+
+        [SerializeField]
+        private AudioSource wrongSound;
+        [SerializeField]
+        private AudioClip[] wrongSounds;
+
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
         private int _currentArrowCount;
@@ -128,6 +138,9 @@ namespace FishingGame.Reeling
         private InputAction _downAction;
         private InputAction _leftAction;
         private InputAction _rightAction;
+
+        private int _rightSoundIndex = 0;
+        private int _wrongSoundIndex = 0;
 
         // Custom Arrow Behaviour Variables
 
@@ -169,7 +182,7 @@ namespace FishingGame.Reeling
         /// Setsup all the required logic for the minigame
         /// </summary>
         /// <param name="fishScriptable">The data of the fish being caught</param>
-        public void InitializeMiniGame(IFishAble fishScriptable)
+        public void InitializeMiniGame(Fishable fishScriptable)
         {
             _arrowMiniGameBehaviour = null;
             _currentlyReelingObject = fishScriptable;
@@ -274,6 +287,12 @@ namespace FishingGame.Reeling
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
             if (_gameActive == false) { return; }
+
+            if (_wrongSoundIndex == wrongSounds.Length)
+                _wrongSoundIndex = 0;
+            wrongSound.clip = wrongSounds[_wrongSoundIndex];
+            wrongSound.Play();
+            _wrongSoundIndex++;
 
             AddOrRemoveActiveArrow(arrowFailed, false);
             ModifyProgress(-defaultProgressModify * _failedArrowModifier);
@@ -383,6 +402,12 @@ namespace FishingGame.Reeling
         /// <param name="arrowCompleted">The arrow being modified</param>
         private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
+            if (_rightSoundIndex == rightSounds.Length)
+                _rightSoundIndex = 0;
+            rightSound.clip = rightSounds[_rightSoundIndex];
+            rightSound.Play();
+            _rightSoundIndex++;
+
             float distanceModifier = arrowCompleted.GetPointModfiierFromGoal();
 
             AddOrRemoveActiveArrow(arrowCompleted, false);

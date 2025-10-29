@@ -61,7 +61,7 @@ namespace FishingGame.Reeling
         private List<GameObject> _currentPoolOfMiniGames;
 
         private GameObject _currentMinigame;
-        private IFishAble _currentlyReelingObject;
+        private Fishable _currentlyReelingObject;
         private FishingPool _currentFishPool;
         private GameObject _current3DObject;
 
@@ -105,6 +105,8 @@ namespace FishingGame.Reeling
         private Animator characterAnimator;
 
         private InputAction _cancelFishingAction;
+        [SerializeField]
+        private AudioSource winSound;
 
         #endregion
 
@@ -427,10 +429,12 @@ namespace FishingGame.Reeling
         /// </summary>
         /// <param name="fishData">The data of the fish being reeled</param>
         /// <param name="didCatch">Was the fish caught</param>
-        private void DisplayFishingResult(IFishAble fishData, bool didCatch)
+        private void DisplayFishingResult(Fishable fishData, bool didCatch)
         {
             if (didCatch)
             {
+                winSound.Play();
+
                 string textToDisplay = $"You have caught a {fishData.GetWeight()}kg {fishData.GetName()}!";
 
                 GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 3f, Color.green);

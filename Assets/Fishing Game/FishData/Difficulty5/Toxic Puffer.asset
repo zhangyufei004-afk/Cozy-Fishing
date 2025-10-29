@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: 3fa7325084d7e7f46b88c7e8780d12e8, type: 3}
-  Id: 14
-  MinMaxWeight: {x: 5, y: 10}
-  SpeciesName: Toxic Puffer
-  FishCatchDifficulty: 5
-  FishBio: Toxic at heart but gorgeous scales. Predates on colorful fish who are
-    deemed more beautiful.
+  Name: Toxic Puffer
+  WeightRange:
+    MinWeight: 5
+    MaxWeight: 10
+  Difficulty: 5
+  Biography: 'Toxic at heart but gorgeous scales. Predates on colorful fish who are
+    deemed more beautiful. '
   LocationsFound: 0100000002000000
   TimesFound: 
-  IsInvasive: 0
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: e83263bb4d6682541816fd15d08b9b54, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: df5dc9e3da0e94c44b6717dcad3f75be, type: 2}
+  IsInvasive: 0
+  BasePrice: 20

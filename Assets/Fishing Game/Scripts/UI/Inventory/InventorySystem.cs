@@ -3,6 +3,8 @@ using UnityEngine;
 using FishingGame.FishSystem;
 using FishingGame.FishLog;
 using FishingGame.GameManagement;
+using FishingGame.Items;
+using FishingGame.Items.Bait;
 
 namespace FishingGame.Inventory
 {
@@ -31,7 +33,7 @@ namespace FishingGame.Inventory
             if (fishLogSystem is not null && newItem.GetItemType() == EItemType.Fish)
             {
                 Fish newFish = newItem as Fish;
-                fishLogSystem.RegisterFishCaught(newFish?.GetFishBase());
+                fishLogSystem.RegisterFishCaught(newFish?.GetBase() as FishScriptableObject);
             }
         }
 

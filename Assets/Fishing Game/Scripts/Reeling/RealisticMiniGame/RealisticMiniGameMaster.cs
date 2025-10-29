@@ -106,6 +106,7 @@ namespace FishingGame.Reeling
         private float _progressMaxValue;
         private float _timeSinceLastDirectionChange;
         private float _directionRollTimerMax = 8f;
+        private bool _progressing;
 
         private InputAction _cancelFishingAction;
 
@@ -168,7 +169,7 @@ namespace FishingGame.Reeling
         /// Initializes the minigame, setting the catchdifficulty and runs the initiation functions
         /// </summary>
         /// <param name="fishScriptable">Data of fish being caught</param>
-        public void InitializeMiniGame(IFishAble fishScriptable)
+        public void InitializeMiniGame(Fishable fishScriptable)
         {
             _fishDifficulty = fishScriptable.GetCatchDifficulty();
             realisticCanvas.SetActive(true);
@@ -212,6 +213,15 @@ namespace FishingGame.Reeling
         }
 
         /// <summary>
+        /// return progressing for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public bool IsProgressing()
+        {
+            return _progressing;
+        }
+
+        /// <summary>
         /// Returns the closest circle point to the mouses position
         /// </summary>
         /// <param name="mousePosition">The mouse position</param>
@@ -249,6 +259,8 @@ namespace FishingGame.Reeling
         /// <param name="progressToAdd">The amount of progress to add</param>
         private void AddToProgressSlider(float progressToAdd)
         {
+            _progressing = true;
+
             // TEMP VALUE TO MAKE NOT TAKE TOO LONG will be balanced in future
             progressToAdd *= 3;
             if (_currentDirection == ERealisticDirection.Clockwise)
@@ -271,6 +283,7 @@ namespace FishingGame.Reeling
         /// <param name="progressToRemove">Value of progress to remove</param>
         private void RemoveFromProgressSlider(float progressToRemove)
         {
+            _progressing = false;
             progressSlider.value -= progressToRemove;
             _progressValue -= progressToRemove;
         }
