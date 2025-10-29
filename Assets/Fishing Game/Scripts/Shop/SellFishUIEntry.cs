@@ -6,6 +6,7 @@ using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.Economy;
 using FishingGame.GameManagement;
+using UnityEngine.EventSystems;
 
 namespace FishingGame.UI.Shop
 {
@@ -90,6 +91,9 @@ namespace FishingGame.UI.Shop
 
                 // Destroy the UI entry
                 Destroy(gameObject);
+                
+                // Child 1 of three up the tree is the scrollbar - this avoids an unnecessary reference - though it is ugly (this layout is gauranteed by unity scrollboxes)
+                EventSystem.current.SetSelectedGameObject(transform.parent.parent.parent.GetChild(1).gameObject); 
             });
         }
     }
