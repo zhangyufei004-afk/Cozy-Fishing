@@ -266,18 +266,28 @@ MonoBehaviour:
   playerBody: {fileID: 7138077586599879889}
   playerMesh: {fileID: 3202228334828553634}
   characterController: {fileID: 9023993033158258449}
-  movementSpeed: 6
-  rotationSpeed: 20
   animator: {fileID: 5427234292576898722}
   brain: {fileID: 0}
-  fpsCamera: {fileID: 8129565663929180470}
-  rayLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  movementSpeed: 6
+  rotationSpeed: 20
   grappleRange: 100
   grappleSpeed: 20
+  grappleAscendSpeed: 3
+  grappleDescendSpeed: 3
   hasGrapple: 0
+  grappleStartDelay: 0.05
+  grappleLine: {fileID: 0}
+  grappleTip: {fileID: 0}
+  grapplePromptText: {fileID: 0}
+  ropeSegmentCount: 8
+  ropeElasticity: 0.15
   currentFishingRod: {fileID: 0}
+  waterLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  terrainLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!143 &9023993033158258449
 CharacterController:
   m_ObjectHideFlags: 0
@@ -316,9 +326,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogCamera: {fileID: 101844180539961190}
-  grappleCamera: {fileID: 4424354406170906607}
+  topDownCamera: {fileID: 0}
   player: {fileID: 1148033641354189641}
-  grappleTargetUI: {fileID: 0}
+  characterBody: {fileID: 0}
 --- !u!114 &5881249595088751422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,7 +401,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 28e2cd810bd863e40bd28efcf01aa373, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -423,7 +433,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.102041245
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -902,8 +912,6 @@ MonoBehaviour:
   reelingMasterScript: {fileID: 0}
   fishingHook: {fileID: 0}
   fishingRod: {fileID: 0}
-  maxFishWaitTime: 4
-  minFishWaitTime: 10
   reelSwimmerPrefab: {fileID: 0}
   maxDistance: 0
   fishCamera: {fileID: 0}

@@ -70,7 +70,7 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnBecomeOccupied;
 
-        public event Action<bool> OnToggleGrappleCamera;
+        public event Action<bool, Vector3> OnToggleGrapple;
 
         public event Action<bool, string> OnWithinItemPickupRange;
 
@@ -95,6 +95,12 @@ namespace FishingGame.GameManagement
         public event Action<string, float, Color> OnShowDefaultNotificationText;
 
         public event Action<string> OnElementAddedToScrollbox;
+
+        #endregion
+
+        #region Camera Events
+
+        public event Action<string> OnCameraChangeParent;
 
         #endregion
 
@@ -258,12 +264,13 @@ namespace FishingGame.GameManagement
         }
 
         /// <summary>
-        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// Invokes the OnToggleGrapple event to tell that grappling is occuring <c>isCameraEnabled</c>
         /// </summary>
-        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
-        public void ToggleGrappleCamera(bool isCameraEnabled)
+        /// <param name="isGrappling">Bool for if the Camera is enabled or disabled.</param>
+        /// <param name="grappleDestination">The destination we are grappling to</param>
+        public void ToggleGrappleMode(bool isGrappling, Vector3 grappleDestination)
         {
-            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
+            OnToggleGrapple?.Invoke(isGrappling, grappleDestination);
         }
 
         /// <summary>
@@ -349,6 +356,15 @@ namespace FishingGame.GameManagement
         public void ElementAddedToScrollbox(string scrollBoxName)
         {
             OnElementAddedToScrollbox?.Invoke(scrollBoxName);
+        }
+
+        /// <summary>
+        /// Invokes the OnCameraChangeParent event to change the parent of <c>cameraName</c> camera to be null.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera to change the parent of.</param>
+        public void RemoveCameraParent(string cameraName)
+        {
+            OnCameraChangeParent?.Invoke(cameraName);
         }
     }
 }
