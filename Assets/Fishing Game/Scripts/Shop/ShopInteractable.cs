@@ -36,6 +36,9 @@ namespace FishingGame.Shop
             var inputActions = InputSystem.actions;
             inputActions.FindActionMap("Player").Enable();
             _interactAction = inputActions.FindAction("Player/Interact");
+            InputSystem.actions.FindAction("UI/Back").performed += 
+                context => CloseShop();
+            InputSystem.actions.FindAction("UI/CloseUI").performed += context => CloseShop();
         }
 
         private void Start()
@@ -49,10 +52,10 @@ namespace FishingGame.Shop
             // Only check input if player is in range
             if (_isPlayerNearby && _interactAction != null && _interactAction.WasPressedThisFrame())
             {
-                if (_isShopOpen)
-                    CloseShop();
-                else
+                if (!_isShopOpen)
+                {
                     OpenShop();
+                }
             }
         }
 

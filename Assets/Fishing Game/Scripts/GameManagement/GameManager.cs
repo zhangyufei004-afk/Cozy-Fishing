@@ -64,8 +64,6 @@ namespace FishingGame.GameManagement
                 _fishTimesCaught.Add(fishData, 0);
                 _fishBiggestCatch.Add(fishData, 0);
             }
-            
-            
         }
 
         private void Update()

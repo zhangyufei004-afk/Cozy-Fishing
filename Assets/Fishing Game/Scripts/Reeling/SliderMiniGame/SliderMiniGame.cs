@@ -239,6 +239,7 @@ namespace FishingGame.Reeling
         public void BeginMiniGame()
         {
             _isMinigameActive = true;
+            InputSystem.actions.FindActionMap("SliderMiniGame").Enable();
         }
 
         /// <summary>
@@ -251,6 +252,7 @@ namespace FishingGame.Reeling
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(true);
+            InputSystem.actions.FindActionMap("SliderMiniGame").Disable();
         }
 
         /// <summary>
@@ -263,6 +265,7 @@ namespace FishingGame.Reeling
             _isMinigameActive = false;
             sliderCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(false);
+            InputSystem.actions.FindActionMap("SliderMiniGame").Disable();
         }
 
         /// <summary>

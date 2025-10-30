@@ -184,6 +184,7 @@ namespace FishingGame.Reeling
         public void BeginMiniGame()
         {
             _miniGameActive = true;
+            InputSystem.actions.FindActionMap("RealisticMiniGame").Enable();
         }
 
         /// <summary>
@@ -295,6 +296,7 @@ namespace FishingGame.Reeling
         /// <param name="didWin">True if minigame was won otherwise false</param>
         private void EndMiniGame(bool didWin)
         {
+            InputSystem.actions.FindActionMap("RealisticMiniGame").Disable();
             _miniGameActive = false;
             realisticCanvas.SetActive(false);
             reelingMaster.EndCurrentMiniGame(didWin);
