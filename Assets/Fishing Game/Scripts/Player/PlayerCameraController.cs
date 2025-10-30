@@ -103,6 +103,14 @@ namespace FishingGame.Player
             }
             GameManager.Instance.GameEvents.SetPlayerOccupied(enableCamera);
             dialogCamera.gameObject.SetActive(enableCamera);
+            if (enableCamera)
+            {
+                InputSystem.actions.FindActionMap("UI").Enable();
+            }
+            else
+            {
+                InputSystem.actions.FindActionMap("UI").Disable();
+            }
         }
 
         /// <summary>

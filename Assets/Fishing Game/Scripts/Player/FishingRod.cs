@@ -131,7 +131,6 @@ namespace FishingGame.Reeling
 
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
 

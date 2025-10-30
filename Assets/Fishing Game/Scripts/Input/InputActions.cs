@@ -149,27 +149,9 @@ namespace FishingGame.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""62ba194a-473b-4244-81f0-886780d114b2"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Cast"",
                     ""type"": ""Button"",
                     ""id"": ""6eb796ec-77ad-48ed-b427-cef75b8183ca"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleQuestLog"",
-                    ""type"": ""Button"",
-                    ""id"": ""4d845462-c1bf-485a-9dd9-fc21264f2a0c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -356,28 +338,6 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a69a97c6-19f4-4b6c-9f37-da953de06b82"",
-                    ""path"": ""<Keyboard>/backquote"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ToggleQuestLog"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1d324b47-25c1-4898-b146-57224f8284e4"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ToggleQuestLog"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""143bb1cd-cc10-4eca-a2f0-a3664166fe91"",
                     ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
@@ -478,7 +438,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""b3f66d0b-7751-423f-908b-a11c5bd95930"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -522,33 +482,11 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""693b1684-095f-453c-b4af-7cce57bc0dc1"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Inventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""283a9c3c-ea9b-40d2-88a5-27fa883a55d9"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""22f08234-4af3-4ca6-9b9e-8393078b5b37"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -609,17 +547,6 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8c38df11-5ac4-4090-a356-c0e877963e6b"",
-                    ""path"": ""<XInputController>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""MousePress"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""686d37fc-fa34-45eb-83c4-2f62d6b390d4"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
@@ -642,6 +569,17 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
+                    ""id"": ""037660e8-a857-4064-9196-3f688ea793b8"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""GrappleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""f90ec433-6b46-4f57-a4aa-809ea7dd18ec"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
@@ -655,6 +593,17 @@ namespace FishingGame.Input
                     ""name"": """",
                     ""id"": ""8a291bcc-3317-431b-b58e-3c90bfd88f98"",
                     ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""GrappleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25318ac3-ccc4-4c5c-b756-78d8d761ec00"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -826,9 +775,9 @@ namespace FishingGame.Input
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""CancelFishing"",
+                    ""name"": ""CloseUI"",
                     ""type"": ""Button"",
-                    ""id"": ""c34e82e1-7bb6-4633-a504-0e686e3ca635"",
+                    ""id"": ""23ae827f-e020-467e-b5c6-7dacecb83a4f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1311,6 +1260,17 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
+                    ""id"": ""033210ee-2d8a-42e9-8363-e8620a12232f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b5af86fc-22bb-4dd2-bfcb-ccbe57dc7f79"",
                     ""path"": ""<Keyboard>/0"",
                     ""interactions"": """",
@@ -1487,23 +1447,23 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""302fb5d9-9c6e-4593-a89d-876479397703"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""d5a09c6e-2cab-4734-be80-828451fde6da"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""CancelFishing"",
+                    ""action"": ""CloseUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6378b48c-8fe0-4be2-89f6-722982ce6c5b"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""7dead151-5d03-4eb9-9c25-74739abaf71c"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""CancelFishing"",
+                    ""action"": ""CloseUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1598,7 +1558,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""8850131d-406c-4633-ab6a-75cc85193521"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1642,7 +1602,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""8609aebc-896d-4b7c-922a-f8b1a2535559"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1686,7 +1646,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""5525d37f-fd99-4393-aa52-78455737c3fd"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1719,7 +1679,7 @@ namespace FishingGame.Input
                 {
                     ""name"": """",
                     ""id"": ""f99efb3f-fac1-43e7-92f1-67bf02be5c9b"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -1857,6 +1817,56 @@ namespace FishingGame.Input
                     ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd399ab6-344e-4166-a73f-e052dbc7fd0c"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""GeneralFishingActions"",
+            ""id"": ""e34727ab-1f71-4dc7-b453-354fc1b23523"",
+            ""actions"": [
+                {
+                    ""name"": ""CancelFishing"",
+                    ""type"": ""Button"",
+                    ""id"": ""3bfbe7a5-4008-495d-bcb4-7e2d2e6d4b60"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4a80b4e8-772a-4db1-abcd-e4d92d5420e5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CancelFishing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""234b9b81-c324-4aa8-8ebb-e621d6cf2c91"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CancelFishing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1932,9 +1942,7 @@ namespace FishingGame.Input
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
-            m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
-            m_Player_ToggleQuestLog = m_Player.FindAction("ToggleQuestLog", throwIfNotFound: true);
             m_Player_MouseDelta = m_Player.FindAction("MouseDelta", throwIfNotFound: true);
             m_Player_MousePress = m_Player.FindAction("MousePress", throwIfNotFound: true);
             m_Player_GrappleUp = m_Player.FindAction("GrappleUp", throwIfNotFound: true);
@@ -1957,7 +1965,7 @@ namespace FishingGame.Input
             m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
             m_UI_NumberKeys = m_UI.FindAction("NumberKeys", throwIfNotFound: true);
             m_UI_InventoryNavigation = m_UI.FindAction("InventoryNavigation", throwIfNotFound: true);
-            m_UI_CancelFishing = m_UI.FindAction("CancelFishing", throwIfNotFound: true);
+            m_UI_CloseUI = m_UI.FindAction("CloseUI", throwIfNotFound: true);
             // ArrowMiniGame
             m_ArrowMiniGame = asset.FindActionMap("ArrowMiniGame", throwIfNotFound: true);
             m_ArrowMiniGame_Up = m_ArrowMiniGame.FindAction("Up", throwIfNotFound: true);
@@ -1971,6 +1979,9 @@ namespace FishingGame.Input
             // SliderMiniGame
             m_SliderMiniGame = asset.FindActionMap("SliderMiniGame", throwIfNotFound: true);
             m_SliderMiniGame_LeftClick = m_SliderMiniGame.FindAction("LeftClick", throwIfNotFound: true);
+            // GeneralFishingActions
+            m_GeneralFishingActions = asset.FindActionMap("GeneralFishingActions", throwIfNotFound: true);
+            m_GeneralFishingActions_CancelFishing = m_GeneralFishingActions.FindAction("CancelFishing", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -1980,6 +1991,7 @@ namespace FishingGame.Input
             UnityEngine.Debug.Assert(!m_ArrowMiniGame.enabled, "This will cause a leak and performance issues, InputActions.ArrowMiniGame.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_RealisticMiniGame.enabled, "This will cause a leak and performance issues, InputActions.RealisticMiniGame.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_SliderMiniGame.enabled, "This will cause a leak and performance issues, InputActions.SliderMiniGame.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_GeneralFishingActions.enabled, "This will cause a leak and performance issues, InputActions.GeneralFishingActions.Disable() has not been called.");
         }
 
         /// <summary>
@@ -2061,9 +2073,7 @@ namespace FishingGame.Input
         private readonly InputAction m_Player_Crouch;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Inventory;
-        private readonly InputAction m_Player_Pause;
         private readonly InputAction m_Player_Cast;
-        private readonly InputAction m_Player_ToggleQuestLog;
         private readonly InputAction m_Player_MouseDelta;
         private readonly InputAction m_Player_MousePress;
         private readonly InputAction m_Player_GrappleUp;
@@ -2105,17 +2115,9 @@ namespace FishingGame.Input
             /// </summary>
             public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
             /// <summary>
-            /// Provides access to the underlying input action "Player/Pause".
-            /// </summary>
-            public InputAction @Pause => m_Wrapper.m_Player_Pause;
-            /// <summary>
             /// Provides access to the underlying input action "Player/Cast".
             /// </summary>
             public InputAction @Cast => m_Wrapper.m_Player_Cast;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/ToggleQuestLog".
-            /// </summary>
-            public InputAction @ToggleQuestLog => m_Wrapper.m_Player_ToggleQuestLog;
             /// <summary>
             /// Provides access to the underlying input action "Player/MouseDelta".
             /// </summary>
@@ -2180,15 +2182,9 @@ namespace FishingGame.Input
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
-                @Pause.started += instance.OnPause;
-                @Pause.performed += instance.OnPause;
-                @Pause.canceled += instance.OnPause;
                 @Cast.started += instance.OnCast;
                 @Cast.performed += instance.OnCast;
                 @Cast.canceled += instance.OnCast;
-                @ToggleQuestLog.started += instance.OnToggleQuestLog;
-                @ToggleQuestLog.performed += instance.OnToggleQuestLog;
-                @ToggleQuestLog.canceled += instance.OnToggleQuestLog;
                 @MouseDelta.started += instance.OnMouseDelta;
                 @MouseDelta.performed += instance.OnMouseDelta;
                 @MouseDelta.canceled += instance.OnMouseDelta;
@@ -2233,15 +2229,9 @@ namespace FishingGame.Input
                 @Inventory.started -= instance.OnInventory;
                 @Inventory.performed -= instance.OnInventory;
                 @Inventory.canceled -= instance.OnInventory;
-                @Pause.started -= instance.OnPause;
-                @Pause.performed -= instance.OnPause;
-                @Pause.canceled -= instance.OnPause;
                 @Cast.started -= instance.OnCast;
                 @Cast.performed -= instance.OnCast;
                 @Cast.canceled -= instance.OnCast;
-                @ToggleQuestLog.started -= instance.OnToggleQuestLog;
-                @ToggleQuestLog.performed -= instance.OnToggleQuestLog;
-                @ToggleQuestLog.canceled -= instance.OnToggleQuestLog;
                 @MouseDelta.started -= instance.OnMouseDelta;
                 @MouseDelta.performed -= instance.OnMouseDelta;
                 @MouseDelta.canceled -= instance.OnMouseDelta;
@@ -2309,7 +2299,7 @@ namespace FishingGame.Input
         private readonly InputAction m_UI_Back;
         private readonly InputAction m_UI_NumberKeys;
         private readonly InputAction m_UI_InventoryNavigation;
-        private readonly InputAction m_UI_CancelFishing;
+        private readonly InputAction m_UI_CloseUI;
         /// <summary>
         /// Provides access to input actions defined in input action map "UI".
         /// </summary>
@@ -2382,9 +2372,9 @@ namespace FishingGame.Input
             /// </summary>
             public InputAction @InventoryNavigation => m_Wrapper.m_UI_InventoryNavigation;
             /// <summary>
-            /// Provides access to the underlying input action "UI/CancelFishing".
+            /// Provides access to the underlying input action "UI/CloseUI".
             /// </summary>
-            public InputAction @CancelFishing => m_Wrapper.m_UI_CancelFishing;
+            public InputAction @CloseUI => m_Wrapper.m_UI_CloseUI;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -2456,9 +2446,9 @@ namespace FishingGame.Input
                 @InventoryNavigation.started += instance.OnInventoryNavigation;
                 @InventoryNavigation.performed += instance.OnInventoryNavigation;
                 @InventoryNavigation.canceled += instance.OnInventoryNavigation;
-                @CancelFishing.started += instance.OnCancelFishing;
-                @CancelFishing.performed += instance.OnCancelFishing;
-                @CancelFishing.canceled += instance.OnCancelFishing;
+                @CloseUI.started += instance.OnCloseUI;
+                @CloseUI.performed += instance.OnCloseUI;
+                @CloseUI.canceled += instance.OnCloseUI;
             }
 
             /// <summary>
@@ -2515,9 +2505,9 @@ namespace FishingGame.Input
                 @InventoryNavigation.started -= instance.OnInventoryNavigation;
                 @InventoryNavigation.performed -= instance.OnInventoryNavigation;
                 @InventoryNavigation.canceled -= instance.OnInventoryNavigation;
-                @CancelFishing.started -= instance.OnCancelFishing;
-                @CancelFishing.performed -= instance.OnCancelFishing;
-                @CancelFishing.canceled -= instance.OnCancelFishing;
+                @CloseUI.started -= instance.OnCloseUI;
+                @CloseUI.performed -= instance.OnCloseUI;
+                @CloseUI.canceled -= instance.OnCloseUI;
             }
 
             /// <summary>
@@ -2883,6 +2873,102 @@ namespace FishingGame.Input
         /// Provides a new <see cref="SliderMiniGameActions" /> instance referencing this action map.
         /// </summary>
         public SliderMiniGameActions @SliderMiniGame => new SliderMiniGameActions(this);
+
+        // GeneralFishingActions
+        private readonly InputActionMap m_GeneralFishingActions;
+        private List<IGeneralFishingActionsActions> m_GeneralFishingActionsActionsCallbackInterfaces = new List<IGeneralFishingActionsActions>();
+        private readonly InputAction m_GeneralFishingActions_CancelFishing;
+        /// <summary>
+        /// Provides access to input actions defined in input action map "GeneralFishingActions".
+        /// </summary>
+        public struct GeneralFishingActionsActions
+        {
+            private @InputActions m_Wrapper;
+
+            /// <summary>
+            /// Construct a new instance of the input action map wrapper class.
+            /// </summary>
+            public GeneralFishingActionsActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            /// <summary>
+            /// Provides access to the underlying input action "GeneralFishingActions/CancelFishing".
+            /// </summary>
+            public InputAction @CancelFishing => m_Wrapper.m_GeneralFishingActions_CancelFishing;
+            /// <summary>
+            /// Provides access to the underlying input action map instance.
+            /// </summary>
+            public InputActionMap Get() { return m_Wrapper.m_GeneralFishingActions; }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+            public void Enable() { Get().Enable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+            public void Disable() { Get().Disable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+            public bool enabled => Get().enabled;
+            /// <summary>
+            /// Implicitly converts an <see ref="GeneralFishingActionsActions" /> to an <see ref="InputActionMap" /> instance.
+            /// </summary>
+            public static implicit operator InputActionMap(GeneralFishingActionsActions set) { return set.Get(); }
+            /// <summary>
+            /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <param name="instance">Callback instance.</param>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+            /// </remarks>
+            /// <seealso cref="GeneralFishingActionsActions" />
+            public void AddCallbacks(IGeneralFishingActionsActions instance)
+            {
+                if (instance == null || m_Wrapper.m_GeneralFishingActionsActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_GeneralFishingActionsActionsCallbackInterfaces.Add(instance);
+                @CancelFishing.started += instance.OnCancelFishing;
+                @CancelFishing.performed += instance.OnCancelFishing;
+                @CancelFishing.canceled += instance.OnCancelFishing;
+            }
+
+            /// <summary>
+            /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <remarks>
+            /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+            /// </remarks>
+            /// <seealso cref="GeneralFishingActionsActions" />
+            private void UnregisterCallbacks(IGeneralFishingActionsActions instance)
+            {
+                @CancelFishing.started -= instance.OnCancelFishing;
+                @CancelFishing.performed -= instance.OnCancelFishing;
+                @CancelFishing.canceled -= instance.OnCancelFishing;
+            }
+
+            /// <summary>
+            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GeneralFishingActionsActions.UnregisterCallbacks(IGeneralFishingActionsActions)" />.
+            /// </summary>
+            /// <seealso cref="GeneralFishingActionsActions.UnregisterCallbacks(IGeneralFishingActionsActions)" />
+            public void RemoveCallbacks(IGeneralFishingActionsActions instance)
+            {
+                if (m_Wrapper.m_GeneralFishingActionsActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            /// <summary>
+            /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+            /// </summary>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+            /// </remarks>
+            /// <seealso cref="GeneralFishingActionsActions.AddCallbacks(IGeneralFishingActionsActions)" />
+            /// <seealso cref="GeneralFishingActionsActions.RemoveCallbacks(IGeneralFishingActionsActions)" />
+            /// <seealso cref="GeneralFishingActionsActions.UnregisterCallbacks(IGeneralFishingActionsActions)" />
+            public void SetCallbacks(IGeneralFishingActionsActions instance)
+            {
+                foreach (var item in m_Wrapper.m_GeneralFishingActionsActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_GeneralFishingActionsActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        /// <summary>
+        /// Provides a new <see cref="GeneralFishingActionsActions" /> instance referencing this action map.
+        /// </summary>
+        public GeneralFishingActionsActions @GeneralFishingActions => new GeneralFishingActionsActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         /// <summary>
         /// Provides access to the input control scheme.
@@ -2998,26 +3084,12 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnInventory(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnPause(InputAction.CallbackContext context);
-            /// <summary>
             /// Method invoked when associated input action "Cast" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnCast(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "ToggleQuestLog" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnToggleQuestLog(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "MouseDelta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
@@ -3167,12 +3239,12 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnInventoryNavigation(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "CancelFishing" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "CloseUI" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnCancelFishing(InputAction.CallbackContext context);
+            void OnCloseUI(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "ArrowMiniGame" which allows adding and removing callbacks.
@@ -3246,6 +3318,21 @@ namespace FishingGame.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnLeftClick(InputAction.CallbackContext context);
+        }
+        /// <summary>
+        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "GeneralFishingActions" which allows adding and removing callbacks.
+        /// </summary>
+        /// <seealso cref="GeneralFishingActionsActions.AddCallbacks(IGeneralFishingActionsActions)" />
+        /// <seealso cref="GeneralFishingActionsActions.RemoveCallbacks(IGeneralFishingActionsActions)" />
+        public interface IGeneralFishingActionsActions
+        {
+            /// <summary>
+            /// Method invoked when associated input action "CancelFishing" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCancelFishing(InputAction.CallbackContext context);
         }
     }
 }

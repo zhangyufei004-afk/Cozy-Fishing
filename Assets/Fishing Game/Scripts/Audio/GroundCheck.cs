@@ -8,7 +8,7 @@ namespace FishingGame
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag == "Wood Surface")
+            if (other.CompareTag("Wood Surface"))
             {
                 OnWood = true;
             }
@@ -16,7 +16,7 @@ namespace FishingGame
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.tag == "Wood Surface")
+            if (other.CompareTag("Wood Surface"))
             {
                 OnWood = false;
             }

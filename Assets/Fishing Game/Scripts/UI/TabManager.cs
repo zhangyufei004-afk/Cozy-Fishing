@@ -39,11 +39,18 @@ namespace FishingGame.UI
             DisableEnableTabs();
             _navigateTabsAction = InputSystem.actions.FindActionMap("UI").FindAction("InventoryNavigation");
             _navigateTabsAction.performed += SwitchTabController;
+            InputSystem.actions.FindActionMap("Player").Disable();
+            InputSystem.actions.FindActionMap("UI").Enable();
+
         }
 
         private void OnDisable()
         {
             _navigateTabsAction.performed -= SwitchTabController;
+            InputSystem.actions.FindActionMap("Player").Enable();
+            InputSystem.actions.FindActionMap("UI").Disable();
+
+
         }
 
         /// <summary>

@@ -205,6 +205,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginMiniGame()
         {
+            InputSystem.actions.FindActionMap("ArrowMiniGame").Enable();
             StartCoroutine(BeginGameDelay(_initialWaitTime));
             SetupArrowgameBehaviour();
         }
@@ -451,6 +452,7 @@ namespace FishingGame.Reeling
             StopAllCoroutines();
 
             StartCoroutine(UIDissapear(didWin));
+            InputSystem.actions.FindActionMap("ArrowMiniGame").Disable();
         }
 
         #endregion

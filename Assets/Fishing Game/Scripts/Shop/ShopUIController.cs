@@ -7,6 +7,7 @@ using FishingGame.Economy;
 using FishingGame.Items;
 using FishingGame.Shop;
 using TMPro;
+using UnityEngine.InputSystem;
 
 namespace FishingGame.UI.Shop
 {
@@ -35,12 +36,18 @@ namespace FishingGame.UI.Shop
 
             if (EconomySystem.Instance != null)
                 EconomySystem.Instance.MoneyChanged += OnMoneyChanged;
+            
+            InputSystem.actions.FindActionMap("Player").Disable();
+            InputSystem.actions.FindActionMap("UI").Enable();
         }
 
         private void OnDisable()
         {
             if (EconomySystem.Instance != null)
                 EconomySystem.Instance.MoneyChanged -= OnMoneyChanged;
+            
+            InputSystem.actions.FindActionMap("Player").Enable();
+            InputSystem.actions.FindActionMap("UI").Disable();
         }
 
         #region Buy Items

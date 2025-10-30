@@ -35,6 +35,7 @@ namespace FishingGame.Player
         [SerializeField] private float grappleAscendSpeed = 3f;
         [SerializeField] private float grappleDescendSpeed = 3f;
         [SerializeField] private bool hasGrapple = true;
+        [SerializeField] private float rotateToGrappleSpeed = 8f;
 
         [Header("Grapple Delay")]
         [SerializeField, Tooltip("Delay before rope spawns after throw animation")]
@@ -248,11 +249,13 @@ namespace FishingGame.Player
         {
             if (_isGrappling)
             {
-                Vector3 lookTarget = new Vector3(_grappleAnchor.x, playerBody.transform.position.y, _grappleAnchor.z);
-                Vector3 dir = (lookTarget - playerBody.transform.position).normalized;
-                if (dir != Vector3.zero)
+                Vector3 direction = (_grappleAnchor - playerBody.transform.position).normalized;
+                direction.y = 0;
+                if (direction != Vector3.zero)
                 {
-                    playerBody.transform.rotation = Quaternion.Slerp(playerBody.transform.rotation, Quaternion.LookRotation(dir), rotationSpeed * Time.deltaTime);
+                    playerBody.transform.rotation = 
+                        Quaternion.Lerp(playerBody.transform.rotation, Quaternion.LookRotation(direction, Vector3.up), 
+                            rotateToGrappleSpeed * Time.deltaTime);
                 }
             }
         }
@@ -267,12 +270,15 @@ namespace FishingGame.Player
 
         private void CancelGrapple()
         {
-            _isGrappling = false;
-            _isThrowing = false;
-            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-            Debug.Log("[PlayerController] Grapple canceled.");
-            animator.SetBool(IsGrappling, false);
-            GameManager.Instance.GameEvents.ToggleGrappleMode(false, Vector3.zero);
+            if (_isGrappling)
+            {
+                _isGrappling = false;
+                _isThrowing = false;
+                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                Debug.Log("[PlayerController] Grapple canceled.");
+                animator.SetBool(IsGrappling, false);
+                GameManager.Instance.GameEvents.ToggleGrappleMode(false, Vector3.zero);
+            }
         }
 
         private void AttemptToPickupItem(InputAction.CallbackContext context)

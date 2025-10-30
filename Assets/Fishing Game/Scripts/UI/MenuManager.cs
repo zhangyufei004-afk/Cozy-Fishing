@@ -20,23 +20,54 @@ namespace FishingGame.UI
         private bool _isBusy = false;
         private InputAction _triggerMenuAction;
 
+        private void OnEnable()
+        {
+            _triggerMenuAction = InputSystem.actions.FindAction("Player/Inventory");
+            _triggerMenuAction.Enable();
+            _triggerMenuAction.performed += ToggleMenu;
+
+            InputSystem.actions.FindAction("UI/Back").performed += ToggleMenu;
+            InputSystem.actions.FindAction("UI/CloseUI").performed += ToggleMenu;
+
+
+            _isMenuActive = false;
+            SetMenu(_isMenuActive);
+
+            GameManager.Instance.GameEvents.OnBecomeOccupied +=
+               isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+        }
+
+        private void OnDisable()
+        {
+            _triggerMenuAction.Disable();
+        }
+        
         public void ToggleMenu()
         {
             // if menu is active
             if (_isMenuActive)
             {
-                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
-                _isMenuActive = false;
-                SetMenu(_isMenuActive);
+                DisableMenu();
             }
             // if not busy
             else if (!_isBusy)
             {
-                GameManager.Instance.GameEvents.SetPlayerOccupied(true);
-                _isMenuActive = true;
-                SetMenu(_isMenuActive);
+                EnableMenu();
             }
-            
+            SetMenu(_isMenuActive);
+
+        }
+
+        private void DisableMenu()
+        {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+            _isMenuActive = false;
+        }
+
+        private void EnableMenu()
+        {
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            _isMenuActive = true;
         }
 
         public void SetMenu(bool isActive)
@@ -52,24 +83,6 @@ namespace FishingGame.UI
 #else
             Application.Quit();
 #endif
-        }
-
-        private void OnEnable()
-        {
-            _triggerMenuAction = InputSystem.actions.FindAction("Player/Inventory");
-            _triggerMenuAction.Enable();
-            _triggerMenuAction.performed += ToggleMenu;
-
-            _isMenuActive = false;
-            SetMenu(_isMenuActive);
-
-            GameManager.Instance.GameEvents.OnBecomeOccupied +=
-               isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
-        }
-
-        private void OnDisable()
-        {
-            _triggerMenuAction.Disable();
         }
 
         private void ToggleMenu(InputAction.CallbackContext context)

@@ -24,6 +24,7 @@ namespace FishingGame.Reeling
     {
         private static readonly int Fishing = Animator.StringToHash("IsFishing");
         private static readonly int IsReeling = Animator.StringToHash("isReeling");
+        private static readonly int FishBite = Animator.StringToHash("FishBite");
 
         #region Private Variables
 
@@ -113,7 +114,7 @@ namespace FishingGame.Reeling
         private void OnEnable()
         {
             InputActionAsset inputAsset = InputSystem.actions;
-            InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
+            InputActionMap uiActionMap = inputAsset.FindActionMap("GeneralFishingActions");
 
             _cancelFishingAction = uiActionMap.FindAction("CancelFishing");
         }
@@ -133,24 +134,9 @@ namespace FishingGame.Reeling
         /// <param name="fishCaught">The Fish Scriptable Object which was caught</param>
         /// <param name="visual3DObject">The 3D object of the fish</param>
         /// <param name="fishPool">The fish pool being fished from</param>
-        public void BeginCatch(Fish fishCaught, GameObject visual3DObject, FishingPool fishPool)
+        public void BeginCatch(Fishable fishCaught, GameObject visual3DObject, FishingPool fishPool)
         {
             _currentlyReelingObject = fishCaught;
-
-            ConsistentBeginCatchLogic(visual3DObject, fishPool);
-        }
-
-        /// <summary>
-        /// This is run once a player succsesfully completes the initial stage of reeling
-        /// There are too versions of this function, one that takes a fish and one that takes a trash object instead
-        /// This is the trash version
-        /// </summary>
-        /// <param name="trashCaught">The data of the trash caught</param>
-        /// <param name="visual3DObject">Visual 3D object of what is being reeled</param>
-        /// <param name="fishPool">The pool this was caught from</param>
-        public void BeginCatch(Trash trashCaught, GameObject visual3DObject, FishingPool fishPool)
-        {
-            _currentlyReelingObject = trashCaught;
 
             ConsistentBeginCatchLogic(visual3DObject, fishPool);
         }
@@ -220,13 +206,17 @@ namespace FishingGame.Reeling
             fishingRodScript.SetChargerVisibility(false);
             _cancelFishingAction.performed -= CancelFishing;
             StartCoroutine(AnimatorResetTimer(2));
-            if (IsFishing == true)
+            if (IsFishing)
             {
                 _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
+                InputSystem.actions.FindActionMap("Player").Enable();
+                characterAnimator.SetBool(FishBite, false);
+                characterAnimator.SetBool(Fishing, false);
+                characterAnimator.SetBool(IsReeling, false);
             }
             else
             {
-                if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp() == true) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
+                if (GetCurrentFishingRod().GetCurrentBait().IsBaitUsedUp()) { GetCurrentFishingRod().GetCurrentBait().UsedUpBait(); }
                 initiationScript.CancelStageOne();
             }
         }
@@ -328,7 +318,9 @@ namespace FishingGame.Reeling
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
             characterAnimator.SetBool(IsReeling, false);
             characterAnimator.SetBool(Fishing, false);
+            characterAnimator.SetBool(FishBite, false);
             Destroy(_current3DObject);
+            InputSystem.actions.FindActionMap("Player").Enable();
 
             GameManager.Instance.GameEvents.SetPlayerOccupied(false);
             if (didWin == false)
@@ -361,6 +353,8 @@ namespace FishingGame.Reeling
         private void ConsistentBeginCatchLogic(GameObject visual3DObject, FishingPool fishPool)
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            InputSystem.actions.FindActionMap("Player").Disable();
+
 
             _cancelFishingAction.performed += CancelFishing;
             _currentFishPool = fishPool;
