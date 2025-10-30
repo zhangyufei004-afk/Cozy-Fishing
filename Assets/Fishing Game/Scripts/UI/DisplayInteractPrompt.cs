@@ -9,6 +9,7 @@ namespace FishingGame.Fishing_Game.Scripts.UI
     /// <summary>
     /// Class to display an interact prompt for the player when they enter a trigger. This lets the player know there is an interactable nearby.
     /// </summary>
+    [RequireComponent(typeof(Collider))]
     public class DisplayInteractPrompt : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI interactPromptText;
