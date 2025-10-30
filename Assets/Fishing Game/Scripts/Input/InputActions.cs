@@ -569,6 +569,17 @@ namespace FishingGame.Input
                 },
                 {
                     ""name"": """",
+                    ""id"": ""037660e8-a857-4064-9196-3f688ea793b8"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""GrappleUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""f90ec433-6b46-4f57-a4aa-809ea7dd18ec"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
@@ -582,6 +593,17 @@ namespace FishingGame.Input
                     ""name"": """",
                     ""id"": ""8a291bcc-3317-431b-b58e-3c90bfd88f98"",
                     ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""GrappleDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25318ac3-ccc4-4c5c-b756-78d8d761ec00"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",

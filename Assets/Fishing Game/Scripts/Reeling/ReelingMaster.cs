@@ -24,6 +24,7 @@ namespace FishingGame.Reeling
     {
         private static readonly int Fishing = Animator.StringToHash("IsFishing");
         private static readonly int IsReeling = Animator.StringToHash("isReeling");
+        private static readonly int FishBite = Animator.StringToHash("FishBite");
 
         #region Private Variables
 
@@ -209,7 +210,9 @@ namespace FishingGame.Reeling
             {
                 _currentMinigame.GetComponent<IReelingMinigame>().LoseMiniGame();
                 InputSystem.actions.FindActionMap("Player").Enable();
-
+                characterAnimator.SetBool(FishBite, false);
+                characterAnimator.SetBool(Fishing, false);
+                characterAnimator.SetBool(IsReeling, false);
             }
             else
             {
@@ -315,6 +318,7 @@ namespace FishingGame.Reeling
             _current3DObject.GetComponent<Animator>().SetBool("Active", false);
             characterAnimator.SetBool(IsReeling, false);
             characterAnimator.SetBool(Fishing, false);
+            characterAnimator.SetBool(FishBite, false);
             Destroy(_current3DObject);
             InputSystem.actions.FindActionMap("Player").Enable();
 
