@@ -18,6 +18,8 @@ namespace FishingGame.Camera
 
         private bool _hasChangedParent;
         private Vector3 _originalLocalPosition;
+        private Quaternion _originalLocalRotation;
+        
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
         {
@@ -25,12 +27,14 @@ namespace FishingGame.Camera
             _brain = UnityEngine.Camera.main?.GetComponent<CinemachineBrain>();
             _camera = GetComponent<CinemachineCamera>();
             _originalLocalPosition = transform.localPosition;
+            _originalLocalRotation = transform.localRotation;
         }
 
         private void OnEnable()
         {
             transform.SetParent(_originalParent, false);
             transform.localPosition = _originalLocalPosition;
+            transform.localRotation = _originalLocalRotation;
             GameManager.Instance.GameEvents.OnCameraChangeParent += ChangeCameraParent;
         }
 
