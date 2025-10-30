@@ -1,10 +1,8 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.GameTime;
-using FishingGame.Items;
 using System.Collections.Generic;
 using FishingGame.Items.Bait;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace FishingGame.Reeling

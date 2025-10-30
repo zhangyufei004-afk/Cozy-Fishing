@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using FishingGame.Player;
-using FishingGame.Shop;
 using FishingGame.GameManagement;
 
 namespace FishingGame.Shop

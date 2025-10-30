@@ -1,7 +1,4 @@
 using FishingGame.Reeling;
-using FishingGame.SaveGame;
-using System;
-using UnityEngine;
 
 namespace FishingGame.FishSystem
 {

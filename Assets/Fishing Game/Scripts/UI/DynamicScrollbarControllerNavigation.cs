@@ -1,6 +1,4 @@
-using System;
 using FishingGame.GameManagement;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 

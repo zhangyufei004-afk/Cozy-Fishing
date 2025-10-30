@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FishingGame.GameManagement;
-using Unity.Cinemachine;
-using FishingGame.Reeling;
 using TMPro;
 using System.Collections;
 
@@ -264,8 +262,14 @@ namespace FishingGame.Player
         {
             if (grapplePromptText is null) return;
             grapplePromptText.enabled = _isInGrappleZone && hasGrapple && !_isGrappling && !_isThrowing;
-            if (grapplePromptText.enabled)
-                grapplePromptText.text = "Press Ctrl to Grapple";
+            if (grapplePromptText.enabled && GameManager.Instance.GetCurrentControlScheme() is Gamepad)
+            {
+                grapplePromptText.text = "Press the north face button to Grapple";
+            }
+            else if (grapplePromptText.enabled && GameManager.Instance.GetCurrentControlScheme() is Keyboard)
+            {
+                grapplePromptText.text = "Press 'Control' to Grapple";
+            }
         }
 
         private void CancelGrapple()

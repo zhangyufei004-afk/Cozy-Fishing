@@ -1,5 +1,3 @@
-using System;
-using FishingGame.AI.NPC;
 using FishingGame.GameManagement;
 using FishingGame.Player;
 using UnityEngine;

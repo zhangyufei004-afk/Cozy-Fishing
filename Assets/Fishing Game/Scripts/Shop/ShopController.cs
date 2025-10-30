@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using FishingGame.Economy;
 using FishingGame.Inventory;
 using FishingGame.Items;
-using FishingGame.FishSystem;
 using FishingGame.Items.Bait;
-using UnityEngine.InputSystem;
 
 namespace FishingGame.Shop
 {
@@ -26,10 +23,6 @@ namespace FishingGame.Shop
 
         private bool _isOpen = false;
 
-        private void OnEnable()
-        {
-            
-        }
 
         /// <summary>
         /// Opens the Shop UI

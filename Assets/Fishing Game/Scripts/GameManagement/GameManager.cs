@@ -1,11 +1,8 @@
 using FishingGame.FishSystem;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace FishingGame.GameManagement
 {

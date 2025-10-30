@@ -1,16 +1,14 @@
-using FishingGame.FishSystem;
-using FishingGame.Inventory;
-using FishingGame.Player;
-using FishingGame.UI.Inventory;
 using System.Collections;
 using System.Collections.Generic;
+using FishingGame.FishSystem;
 using FishingGame.GameManagement;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using FishingGame.Items;
+using FishingGame.Inventory;
 using FishingGame.Items.Bait;
+using FishingGame.Player;
+using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
@@ -354,6 +352,7 @@ namespace FishingGame.Reeling
         {
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             InputSystem.actions.FindActionMap("Player").Disable();
+            InputSystem.actions.FindActionMap("UI").Disable();
 
 
             _cancelFishingAction.performed += CancelFishing;

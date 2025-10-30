@@ -1,4 +1,3 @@
-using System;
 using FishingGame.GameManagement;
 using Unity.Cinemachine;
 using UnityEngine;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FishingGame.GameManagement;
 using FishingGame.NPC.UI;
 using FishingGame.QuestSystem;
 using UnityEngine;

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace FishingGame.FishSystem
 {
     public enum EFishingModifier

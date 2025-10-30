@@ -1,8 +1,3 @@
-using FishingGame.GameTime;
-using FishingGame.Items;
-using FishingGame.Reeling;
-using FishingGame.SaveGame;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace FishingGame.FishSystem

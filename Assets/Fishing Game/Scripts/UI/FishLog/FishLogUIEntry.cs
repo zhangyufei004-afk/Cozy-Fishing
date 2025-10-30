@@ -1,5 +1,4 @@
 using FishingGame.FishSystem;
-using FishingGame.GameManagement;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

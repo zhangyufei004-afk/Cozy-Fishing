@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
 using FishingGame.SaveGame;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace FishingGame.QuestSystem
 {

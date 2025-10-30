@@ -1,8 +1,5 @@
 using FishingGame.FishSystem;
-using FishingGame.Inventory;
-using FishingGame.Items;
 using FishingGame.Reeling;
-using UnityEngine;
 
 namespace FishingGame.Items.Bait
 {

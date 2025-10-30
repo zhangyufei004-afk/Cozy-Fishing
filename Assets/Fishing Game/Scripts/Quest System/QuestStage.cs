@@ -1,7 +1,6 @@
 using FishingGame.GameManagement;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 namespace FishingGame.QuestSystem

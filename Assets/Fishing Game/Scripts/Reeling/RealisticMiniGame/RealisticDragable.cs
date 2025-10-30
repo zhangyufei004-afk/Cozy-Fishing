@@ -1,17 +1,7 @@
-using FishingGame.Fishing_Game.Scripts.GameManagement;
 using FishingGame.GameManagement;
-using FishingGame.Reeling;
 using System;
-using System.Collections.Generic;
-using TMPro;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.DualShock;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace FishingGame.Reeling
 {

@@ -1,12 +1,7 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
-using FishingGame.GameTime;
 using FishingGame.Inventory;
 using FishingGame.Reeling;
-using FishingGame.SaveGame;
-using System;
-using Unity.VisualScripting;
-using UnityEngine;
 
 namespace FishingGame.Items.Bait
 {

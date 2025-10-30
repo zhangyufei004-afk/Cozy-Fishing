@@ -1,6 +1,4 @@
-using FishingGame.Reeling;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FishingGame.Reeling
 {

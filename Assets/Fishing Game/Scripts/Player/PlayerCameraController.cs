@@ -1,6 +1,5 @@
 using System.Collections;
 using FishingGame.GameManagement;
-using FishingGame.NPC;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;

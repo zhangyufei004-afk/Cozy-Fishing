@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.GameTime;
-using NUnit.Framework;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 

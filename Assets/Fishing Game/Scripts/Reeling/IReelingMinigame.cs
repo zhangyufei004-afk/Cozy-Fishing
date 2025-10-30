@@ -1,5 +1,4 @@
 using FishingGame.FishSystem;
-using UnityEngine;
 
 namespace FishingGame.Reeling
 {

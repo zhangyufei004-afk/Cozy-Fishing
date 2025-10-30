@@ -1,7 +1,5 @@
-using FishingGame.FishSystem;
 using FishingGame.GameTime;
 using FishingGame.Inventory;
-using FishingGame.Items;
 using FishingGame.Reeling;
 using FishingGame.SaveGame;
 using System;

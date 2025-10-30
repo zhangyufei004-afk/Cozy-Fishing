@@ -1,8 +1,5 @@
 using FishingGame.FishSystem;
 using System;
-using System.Runtime.CompilerServices;
-using TMPro;
-using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;

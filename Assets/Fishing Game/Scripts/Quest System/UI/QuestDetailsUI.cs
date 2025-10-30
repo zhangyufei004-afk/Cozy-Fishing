@@ -1,7 +1,6 @@
 using FishingGame.GameManagement;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace FishingGame.QuestSystem.UI

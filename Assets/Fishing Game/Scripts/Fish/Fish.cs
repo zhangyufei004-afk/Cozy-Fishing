@@ -1,11 +1,8 @@
 using System;
-using UnityEngine;
 using FishingGame.GameTime;
 using FishingGame.Inventory;
-using FishingGame.Items;
 using FishingGame.SaveGame;
 using Random = UnityEngine.Random;
-using FishingGame.Reeling;
 
 namespace FishingGame.FishSystem
 {

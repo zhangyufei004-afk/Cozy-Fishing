@@ -1,5 +1,4 @@
 using FishingGame.FishSystem;
-using FishingGame.SaveGame;
 using UnityEngine;
 
 namespace FishingGame.Items.Bait
