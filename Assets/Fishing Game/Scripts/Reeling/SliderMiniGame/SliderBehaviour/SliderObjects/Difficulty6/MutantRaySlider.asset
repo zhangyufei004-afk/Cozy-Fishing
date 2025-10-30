@@ -10,26 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb91b21041fcfd9408ee8f0c86ff247a, type: 3}
-  m_Name: PinkGlubSlider
+  m_Name: MutantRaySlider
   m_EditorClassIdentifier: 
   persistentID: 0
   SliderBehaviourList:
-  - timeToSpendOnGoal: 2.5
-    locationToMoveTo: 261
-    speedToUse: 80
-  - timeToSpendOnGoal: 1.5
-    locationToMoveTo: -297
-    speedToUse: 200
-  - timeToSpendOnGoal: 0.5
-    locationToMoveTo: -201
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 189
     speedToUse: 0
   - timeToSpendOnGoal: 1
-    locationToMoveTo: -80
-    speedToUse: 0
+    locationToMoveTo: 294
+    speedToUse: 40
+  - timeToSpendOnGoal: 0.4
+    locationToMoveTo: 214
+    speedToUse: 120
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 19
+    speedToUse: 40
   - timeToSpendOnGoal: 0.5
-    locationToMoveTo: -265
-    speedToUse: 0
-  StartingLocation: -297
+    locationToMoveTo: 275
+    speedToUse: 140
+  - timeToSpendOnGoal: 2
+    locationToMoveTo: -60
+    speedToUse: 50
+  StartingLocation: -235
   SuddenDeathTimer: 30
   PointsNeededToPass: 100
   PointsPerSecond: 10

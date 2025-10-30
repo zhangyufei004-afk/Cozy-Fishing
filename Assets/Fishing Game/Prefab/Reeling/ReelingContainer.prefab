@@ -54,17 +54,17 @@ MonoBehaviour:
   catchboxYStartLocation: -19.5
   catchIncreaseAmount: 25
   catchDecreaseAmount: -10
-  boxSpeedScalar: 5
-  fightBackSpeed: -4
+  boxSpeedScalar: 8
+  fightBackSpeed: -5
   middleBarPoint: 23.3
   defaultSpeed: 100
   fishMaxYCord: 297.6
   fishMinYCord: -297.3
-  catchBoxMaxXCord: 278.9
-  catchBoxMinXCord: -278.7
+  catchBoxMaxXCord: 261
+  catchBoxMinXCord: -262
   suddenDeathTimer: 30
-  catchBoxMaxReverseSpeed: -3
-  catchBoxForwardMaxSpeed: 10
+  catchBoxMaxReverseSpeed: -450
+  catchBoxForwardMaxSpeed: 500
   initialTimeToWait: 1
 --- !u!1 &2680999012508629255
 GameObject:
@@ -277,12 +277,12 @@ MonoBehaviour:
   characterController: {fileID: 0}
   fishingRodScript: {fileID: 0}
   miniGameTypes:
-  - {fileID: 313023259972732001}
   - {fileID: 2680999012508629255}
-  - {fileID: 4518172318511371622}
+  - {fileID: 313023259972732001}
   caughtFishImage: {fileID: 0}
   fishingFinishedText: {fileID: 0}
   timerObject: {fileID: 0}
   cancelButton: {fileID: 0}
   sliderAnimator: {fileID: 0}
+  minigameProgressSlider: {fileID: 0}
   characterAnimator: {fileID: 0}

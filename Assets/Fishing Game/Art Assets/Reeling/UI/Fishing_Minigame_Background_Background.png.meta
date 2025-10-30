@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Fishing Game/Art Assets/Fish/Mutated_Fengalworm.png.meta
-guid: e7a009e03c32a82479cd0b99141c6811
-========
-guid: 8cf84a1fb552fd941aed3c7e2e332ee3
->>>>>>>> develop:Assets/Fishing Game/Art Assets/Fish/Fengal Worm.png.meta
+guid: 76ef8f9aaed5aba44b009e0aeec7467c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace FishingGame.Reeling
@@ -21,8 +22,6 @@ namespace FishingGame.Reeling
     /// The player has to spin the reel either clockwise or anti clockwise by clicking and dragging a dragable UI image
     /// That dragable is tied to this class through the dragableScript
     /// This class controls the progress and backend data logic
-    /// NOTE: THIS IS A WIP, it functions but there is a lot of work to still go into this minigame
-    /// Several inefficient functions currently present to get this working in a low amount of time
     /// </summary>
     public class RealisticMiniGameMaster : MonoBehaviour, IReelingMinigame
     {
@@ -97,7 +96,6 @@ namespace FishingGame.Reeling
         private Vector2[] _boundsPoints;
         private int _previousBoundsPoint = 0;
         private int _currentBoundsPoint = 0;
-        private bool _dragableMoving = false;
 
         private int _fishDifficulty;
 
@@ -110,6 +108,8 @@ namespace FishingGame.Reeling
         private float _directionRollTimerMax = 8f;
         private bool _progressing;
 
+        private InputAction _cancelFishingAction;
+
 
         private ERealisticDirection _currentDirection;
         private bool _miniGameActive = false;
@@ -118,6 +118,11 @@ namespace FishingGame.Reeling
         {
             _boundsPoints = new Vector2[amountOfPointsInBounds];
             SetBounds();
+
+            InputActionAsset inputAsset = InputSystem.actions;
+            InputActionMap uiActionMap = inputAsset.FindActionMap("UI");
+
+            _cancelFishingAction = uiActionMap.FindAction("CancelFishing");
         }
 
 

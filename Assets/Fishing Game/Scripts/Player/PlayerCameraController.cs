@@ -50,12 +50,6 @@ namespace FishingGame.Player
         /// </summary>
         public void SwitchToTopDownCamera()
         {
-            if (topDownCamera != null)
-                topDownCamera.Priority = 15;
-
-            if (dialogCamera != null)
-                dialogCamera.Priority = 5;
-
             GameManager.Instance.GameEvents.TogglePlayerMovement(true);
             _isInDialogueRange = false;
         }
@@ -103,6 +97,10 @@ namespace FishingGame.Player
         /// </summary>
         private void ToggleDialogueCamera(bool enableCamera)
         {
+            if (!enableCamera)
+            {
+                GameManager.Instance.GameEvents.RemoveCameraParent(dialogCamera.Name);
+            }
             GameManager.Instance.GameEvents.SetPlayerOccupied(enableCamera);
             dialogCamera.gameObject.SetActive(enableCamera);
         }

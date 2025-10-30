@@ -55,7 +55,7 @@ namespace FishingGame.FishSystem
 
         public override FishableScriptable GetBase()
         {
-            throw new NotImplementedException();
+            return _trashBase;
         }
     }
 }

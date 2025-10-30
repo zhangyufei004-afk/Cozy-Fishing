@@ -22,7 +22,7 @@ MonoBehaviour:
   Biography: Chemical Romance Jelly's are wild and strong willed, they love there
     alone time and can be found in raging storms. They hate clown fish. they glow
     in the dark at night.
-  LocationsFound: 00000000
+  LocationsFound: 000000000100000003000000
   TimesFound: 
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 859d5335cfe4d094084d392b8792db44, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: 4964ab1956b95a3499c47eb55e5ba4aa, type: 2}

@@ -1,10 +1,10 @@
 using FishingGame.GameManagement;
 using FishingGame.Items;
 using FishingGame.Items.Bait;
+using FishingGame.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 
 namespace FishingGame.Reeling
 {
@@ -38,6 +38,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("A reference to the initiation script attatched to player.")]
         private ReelingInitiation initiationScript;
+
+        [SerializeField]
+        [Tooltip("Reference to the player controller script")]
+        private PlayerController playerController;
 
         [SerializeField]
         [Tooltip("A reference to the fishing hook script which is attatched to a fishing rod.")]
@@ -78,7 +82,6 @@ namespace FishingGame.Reeling
         private float _chargePowerMinimum = 1f;
         private float _chargePowerAverageMaxValue = 3f;
         private float _chargePowerGoodMaxValue = 6f;
-        private int _blockFishingRayCastDistance = 10;
 
         private float _amazingFishMinWaitTime = 1;
         private float _amazingFishMaxWaitTime = 2;
@@ -246,7 +249,7 @@ namespace FishingGame.Reeling
         }
 
         #region Charging_and_throwing_line
-
+        
         /// <summary>
         /// Setsup the variable for a cast being started
         /// </summary>
@@ -260,6 +263,8 @@ namespace FishingGame.Reeling
             _chargePower = 0;
             _isCharging = true;
             _reverseDirection = false;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            playerController.ToggleMovement(false);
         }
 
         /// <summary>
@@ -400,25 +405,14 @@ namespace FishingGame.Reeling
 
             if (Physics.Raycast(locationPoint, Vector3.down, out hit, maxDistance, _layerMask))
             {
-                // Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
-
-                // if (overlapingBlockObjects.Count() != 0)
-                // {
-                //     ResetCharge();
-                //     SetChargerVisibility(false);
-                //     return false;
-                // }
-
                 if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
                 {
                     ResetCharge(true);
                     SetChargerVisibility(false);
                     return false;
                 }
-
                 return true;
             }
-
             return false;
         }
 
@@ -455,11 +449,20 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true && CanThrowToLocation()) 
+            if (!_allowControls) { return; }
+
+            if (_isCharging == true && CanThrowToLocation())
             {
                 SetCastAnimation();
+                _isCharging = false;
             }
-            _isCharging = false;
+            else
+            {
+                _isCharging = false;
+                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                playerController.ToggleMovement(true);
+            }
+            
         }
 
         #endregion

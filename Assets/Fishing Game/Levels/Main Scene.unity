@@ -917,6 +917,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 10457640}
     - target: {fileID: 8567355452548746950, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1272523030}
+    - target: {fileID: 8567355452548746950, guid: 5249cb4349906b74da78a0e0956d18a7, type: 3}
       propertyPath: minigameMaster
       value: 
       objectReference: {fileID: 1731090800}
@@ -2196,7 +2200,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 103511254}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -2659,6 +2663,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 308133119}
   m_CullTransparentMesh: 1
+--- !u!1 &325812074 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4518172318511371622, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+  m_PrefabInstance: {fileID: 2125236617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &333941837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23673,6 +23682,30 @@ PrefabInstance:
       propertyPath: timeScript
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: fishingLocation
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfFishHeld
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: populationLowerable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: lowestFishDifficulty
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: highestFishDifficulty
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882385554486064041, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: maxAmountOfPopulation
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3883211798882933222, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_Layer
       value: 11
@@ -24465,6 +24498,18 @@ PrefabInstance:
       propertyPath: timeScript
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 4136142979881599312, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfFishHeld
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136142979881599312, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: populationLowerable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136142979881599312, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: maxAmountOfPopulation
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4136435501327050974, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.85737944
@@ -33769,6 +33814,26 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 6453054572771465426, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfTrash
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453054572771465426, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfFishHeld
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453054572771465426, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: lowestFishDifficulty
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453054572771465426, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: highestFishDifficulty
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6453054572771465426, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: maxAmountOfPopulation
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 6454570578110645658, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6900624
@@ -36030,8 +36095,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1847882215}
     - target: {fileID: 6981680363297280944, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
-      propertyPath: maxAmountOfPopulation
+      propertyPath: amountOfTrash
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981680363297280944, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfFishHeld
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981680363297280944, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: lowestFishDifficulty
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981680363297280944, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: highestFishDifficulty
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981680363297280944, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: maxAmountOfPopulation
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6984027979829131978, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_Layer
@@ -40177,6 +40258,26 @@ PrefabInstance:
       propertyPath: timeScript
       value: 
       objectReference: {fileID: 1847882215}
+    - target: {fileID: 8056293248672528080, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: amountOfFishHeld
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056293248672528080, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: populationLowerable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056293248672528080, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: lowestFishDifficulty
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056293248672528080, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: highestFishDifficulty
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056293248672528080, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
+      propertyPath: maxAmountOfPopulation
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8057096693817570620, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: m_Layer
       value: 11
@@ -40299,7 +40400,7 @@ PrefabInstance:
       objectReference: {fileID: 1847882215}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: highestFishDifficulty
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8081838981872715871, guid: 8742a4cc7b6cca14db274cf5ccc4a72b, type: 3}
       propertyPath: overrideFishList.Array.size
@@ -46713,7 +46814,6 @@ GameObject:
   - component: {fileID: 1063748658}
   - component: {fileID: 1063748657}
   - component: {fileID: 1063748656}
-  - component: {fileID: 1063748655}
   m_Layer: 0
   m_Name: Ground Check
   m_TagString: Untagged
@@ -46736,33 +46836,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2991282359923290823}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &1063748655
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063748653}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &1063748656
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46779,7 +46852,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
@@ -50925,7 +50998,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3942797423354837605, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
   m_PrefabInstance: {fileID: 2125236617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 325812074}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18f3a7df1bc68ed438761a9f48ce7da7, type: 3}
@@ -53713,6 +53786,14 @@ PrefabInstance:
       propertyPath: minigameProgressSlider
       value: 
       objectReference: {fileID: 1910628927}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: miniGameTypes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051403347699497060, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
+      propertyPath: 'miniGameTypes.Array.data[2]'
+      value: 
+      objectReference: {fileID: 325812074}
     - target: {fileID: 6665325489416168760, guid: 088ec7afe4cff7747bc2a12366cdf492, type: 3}
       propertyPath: rightSound
       value: 
@@ -56790,6 +56871,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6385009535850264148, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1895245827}
+    - targetCorrespondingSourceObject: {fileID: 3551103361115009069, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2991282359923290825}
   m_SourcePrefab: {fileID: 100100000, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
 --- !u!4 &2991282359923290822 stripped
 Transform:
@@ -56801,6 +56885,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2355182950940953632, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
   m_PrefabInstance: {fileID: 2991282359923290821}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2991282359923290824 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3551103361115009069, guid: 2b2bcb37b6ffd474da7ecd6ca0921785, type: 3}
+  m_PrefabInstance: {fileID: 2991282359923290821}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2991282359923290825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2991282359923290824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1624c99921140441b77e90ca2406204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2991282359923290827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56850,6 +56951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reelingMasterScript: {fileID: 1189930303}
   initiationScript: {fileID: 193100724}
+  playerController: {fileID: 1175047035}
   fishingHook: {fileID: 1895245824}
   characterParent: {fileID: 1036833401}
   characterModel: {fileID: 1518870355}

@@ -16,30 +16,30 @@ MonoBehaviour:
   SliderBehaviourList:
   - timeToSpendOnGoal: 1
     locationToMoveTo: 237
-    speedToUse: 150
+    speedToUse: 80
   - timeToSpendOnGoal: 1
     locationToMoveTo: -232
-    speedToUse: 150
+    speedToUse: 0
   - timeToSpendOnGoal: 1
     locationToMoveTo: 237
-    speedToUse: 150
+    speedToUse: 80
   - timeToSpendOnGoal: 1
     locationToMoveTo: -187
-    speedToUse: 150
+    speedToUse: 80
   - timeToSpendOnGoal: 1
     locationToMoveTo: 225
-    speedToUse: 150
+    speedToUse: 80
   - timeToSpendOnGoal: 1
     locationToMoveTo: -163
-    speedToUse: 150
+    speedToUse: 80
   - timeToSpendOnGoal: 1
     locationToMoveTo: 232
-    speedToUse: 150
+    speedToUse: 80
   - timeToSpendOnGoal: 3
     locationToMoveTo: 38
-    speedToUse: 80
+    speedToUse: 50
   StartingLocation: -234
   SuddenDeathTimer: 30
-  PointsNeededToPass: 100
-  PointsPerSecond: 10
-  PointsToStartWith: 20
+  PointsNeededToPass: 90
+  PointsPerSecond: 15
+  PointsToStartWith: 30

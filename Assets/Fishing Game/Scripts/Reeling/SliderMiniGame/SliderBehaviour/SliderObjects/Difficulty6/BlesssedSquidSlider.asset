@@ -10,26 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb91b21041fcfd9408ee8f0c86ff247a, type: 3}
-  m_Name: PinkGlubSlider
+  m_Name: BlesssedSquidSlider
   m_EditorClassIdentifier: 
   persistentID: 0
   SliderBehaviourList:
-  - timeToSpendOnGoal: 2.5
-    locationToMoveTo: 261
-    speedToUse: 80
-  - timeToSpendOnGoal: 1.5
-    locationToMoveTo: -297
-    speedToUse: 200
-  - timeToSpendOnGoal: 0.5
-    locationToMoveTo: -201
-    speedToUse: 0
   - timeToSpendOnGoal: 1
-    locationToMoveTo: -80
-    speedToUse: 0
-  - timeToSpendOnGoal: 0.5
-    locationToMoveTo: -265
-    speedToUse: 0
-  StartingLocation: -297
+    locationToMoveTo: -208
+    speedToUse: 65
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: 202
+    speedToUse: 65
+  StartingLocation: 34
   SuddenDeathTimer: 30
   PointsNeededToPass: 100
   PointsPerSecond: 10

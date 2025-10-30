@@ -355,13 +355,13 @@ namespace FishingGame.Reeling
             {
                 Fish fishCaught = (Fish)randomPoolFish;
 
-                reelingMaster.BeginCatchFish(fishCaught, fishModel, fishingPool);
+                reelingMaster.BeginCatch(fishCaught, fishModel, fishingPool);
             }
             else if (randomPoolFish.GetCatchType() == ECatchableType.Trash)
             {
                 Trash trashCaught = randomPoolFish as Trash;
 
-                reelingMaster.BeginCatchTrash(trashCaught, fishModel, fishingPool);
+                reelingMaster.BeginCatch(trashCaught, fishModel, fishingPool);
             }
 
 

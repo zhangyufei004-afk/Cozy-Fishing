@@ -14,21 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   ArrowEntrys:
-  - timeToSpawnInSeconds: 0.5
+  - timeUntilNextArrow: 0.5
     arrowTypeToSpawn: 0
-    isDouble: 1
-  - timeToSpawnInSeconds: 0.5
-    arrowTypeToSpawn: 2
-    isDouble: 1
-  - timeToSpawnInSeconds: 1
-    arrowTypeToSpawn: 2
-    isDouble: 1
-  - timeToSpawnInSeconds: 1
-    arrowTypeToSpawn: 1
-    isDouble: 1
-  - timeToSpawnInSeconds: 1.5
+  - timeUntilNextArrow: 0.5
+    arrowTypeToSpawn: 0
+  - timeUntilNextArrow: 0.25
     arrowTypeToSpawn: 3
-    isDouble: 0
+  - timeUntilNextArrow: 0.5
+    arrowTypeToSpawn: 0
+  - timeUntilNextArrow: 0.5
+    arrowTypeToSpawn: 0
+  - timeUntilNextArrow: 0.25
+    arrowTypeToSpawn: 2
+  - timeUntilNextArrow: 0.5
+    arrowTypeToSpawn: 0
+  - timeUntilNextArrow: 0.5
+    arrowTypeToSpawn: 0
+  - timeUntilNextArrow: 0
+    arrowTypeToSpawn: 1
   SuddenDeathTimer: 30
   PointsNeededToPass: 200
   PointsPerArrow: 10

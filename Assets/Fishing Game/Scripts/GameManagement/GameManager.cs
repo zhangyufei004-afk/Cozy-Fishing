@@ -70,7 +70,7 @@ namespace FishingGame.GameManagement
 
         private void Update()
         {
-            Debug.Log(GetCurrentControlScheme().ToString());
+            Debug.Log(GetCurrentControlScheme());
         }
 
         private void OnDestroy()

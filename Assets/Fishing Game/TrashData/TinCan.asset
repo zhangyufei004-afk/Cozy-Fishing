@@ -18,7 +18,7 @@ MonoBehaviour:
   WeightRange:
     MinWeight: 0.16
     MaxWeight: 0.4
-  Difficulty: 3
+  Difficulty: 2
   Biography: Someone had a nice meal from this!
   LocationsFound: 000000000100000003000000
   TimesFound: 00000000010000000200000003000000

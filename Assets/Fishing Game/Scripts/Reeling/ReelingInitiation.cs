@@ -56,11 +56,11 @@ namespace FishingGame.Reeling
         private int _fishDissapearTimeVisual = 1;
         
         private GameObject _fishSwim;
+        private FishingPool _currentFishingSpot;
 
         private float _maxFishWaitTime;
         private float _minFishWaitTime;
 
-        private bool _gameActive = false;
         private bool _isStageOne = false;
         private bool _fishAtHook = false;
 
@@ -107,7 +107,9 @@ namespace FishingGame.Reeling
         {
             SetupVariables();
             
-            StartCoroutine(SpawnFishTimer(_catchSecondsToWait));
+            if (_currentFishingSpot.IsEmpty()) { StartCoroutine(NoFishTextShow(3f)); }
+            else { StartCoroutine(SpawnFishTimer(_catchSecondsToWait)); }
+            
         }
 
         /// <summary>
@@ -213,7 +215,6 @@ namespace FishingGame.Reeling
             SetIsReelingAnimation(false);
             characterAnimator.SetBool(IsFishing, false);
             Destroy(_fishSwim);
-            reelingMasterScript.SetCancelButtonVisibilty(false);
             _fishAtHook = false;
             SetIsReelingAnimation(false);
             fishingRod.ResetCharge(true);
@@ -330,7 +331,20 @@ namespace FishingGame.Reeling
         {
             yield return new WaitForSeconds(waitTime);
             if (_isStageOne == true) { FishGotAway(); }
-            
+        }
+
+        /// <summary>
+        /// This timer will display to the player that the fishing pool is empty of fish or trash after inputed wait time
+        /// </summary>
+        /// <param name="waitTime">How long until the text should display</param>
+        /// <returns>Shows text telling the player that the pool is empty</returns>
+        private IEnumerator NoFishTextShow(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            CancelStageOne();
+            string textToDisplay = "This pool is empty!";
+
+            GameManager.Instance.GameEvents.ShowNotificationText(textToDisplay, 2f, Color.red);
         }
 
         /// <summary>
@@ -354,11 +368,8 @@ namespace FishingGame.Reeling
             GameManager.Instance.GameEvents.SetPlayerOccupied(true);
             _isStageOne = true;
             _fishAtHook = false;
-            FishingPool currentPool = fishingHook.GetPoolCurrentlyTouching();
-            _stageOneDifficulty = currentPool.GetADifficultyInRange();
-
-            reelingMasterScript.SetCancelButtonVisibilty(true);
-
+            _currentFishingSpot = fishingHook.GetPoolCurrentlyTouching();
+            _stageOneDifficulty = _currentFishingSpot.GetADifficultyInRange();
 
             _catchSecondsToWait = UnityEngine.Random.Range(_minFishWaitTime, _maxFishWaitTime);
         }

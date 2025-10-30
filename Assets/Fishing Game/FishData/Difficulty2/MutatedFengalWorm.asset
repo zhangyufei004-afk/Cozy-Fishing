@@ -23,7 +23,7 @@ MonoBehaviour:
     their leftover waste in the lake you get some odd side effects. While they don''t
     look edible they are a surprising delicacy to some. Typically found in smaller
     warm island lakes. '
-  LocationsFound: 02000000
+  LocationsFound: 0200000001000000
   TimesFound: 0000000002000000
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: a8ffa21d46b121f43a6644a972d0842e, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: c801366b79f093642a7934b99864765f, type: 2}

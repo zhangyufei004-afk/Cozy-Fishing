@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace FishingGame.Reeling
 {
@@ -116,18 +117,16 @@ namespace FishingGame.Reeling
         private float initialTimeToWait;
 
         private bool _inputHeld = false;
-        private bool _goingLeft = true;
         private bool _suddenDeath = false;
 
         private bool _behaviourLoaded = false;
         private SliderData _sliderData;
         private List<SliderBehaviour> _sliderBehaviourList;
         private int _currentBehaviourIndex = 0;
-        private int _initialPointScalar = 5;
 
         private float _catchProgress = 50f;
         private float _timeSinceLastGoal = 0f;
-        private float _maxTimeBetweenGoals = 0f;
+        private float _maxTimeBetweenGoals = 1f;
         private float _catchBoxVelocity = 0f;
         private float _timePassed;
         private float _catchIncreaseValueToUse;
@@ -179,7 +178,7 @@ namespace FishingGame.Reeling
             {
                 UnPauseCatchboxMovement();
                 rightArrow.color = Color.green;
-                SetPlayerVelocity(boxSpeedScalar, false);
+                SetPlayerVelocity(boxSpeedScalar);
             }
 
             _timePassed += Time.deltaTime;
@@ -198,8 +197,11 @@ namespace FishingGame.Reeling
             SetFishDirection();
             
             if (uiCatchBoxScript.CheckUIOverlap(fishImage.rectTransform, catchBox))
-            { ModifyCatchProgress(_catchIncreaseValueToUse); }
-            else { ModifyCatchProgress(_catchDecreaseValueToUse); }
+            { 
+                ModifyCatchProgress(_catchIncreaseValueToUse);
+                IsCatchBoxGreen(true);
+            }
+            else { ModifyCatchProgress(_catchDecreaseValueToUse); IsCatchBoxGreen(false); }
 
             if (_isMiniGamePaused) { return; }
 
@@ -292,34 +294,34 @@ namespace FishingGame.Reeling
         /// </summary>
         private void MovementFightBack()
         {
-            _catchBoxVelocity += fightBackSpeed * Time.deltaTime;
-            // Doubles the Fight back if catchbox is going forward
+            float _modifiedFightBackSpeed = fightBackSpeed;
+            // Increase the fight back speed by a quarter if currently traveling forward
             if (_catchBoxVelocity > 0)
             {
-                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
+                _modifiedFightBackSpeed *= 2f;
             }
 
             // Resets velocity if catchbox is against the left edge
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
             {
-                _catchBoxVelocity = 0;
+                _modifiedFightBackSpeed = 0;
             }
 
             // Increase fight back if right at right edge
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMaxXCord))
             {
-                _catchBoxVelocity += fightBackSpeed * 2 * Time.deltaTime;
+                _modifiedFightBackSpeed *= 2;
             }
 
-            _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
+            _catchBoxVelocity += _modifiedFightBackSpeed * Time.deltaTime;
         }
 
         /// <summary>
         /// Move the catchbox ui element based on player input
         /// Limits the y position based on the catchbox min and max values
         /// </summary>
-        /// <param name="moveValue">The value for how far to move</param>
-        private void SetPlayerVelocity(float accelerationValue, bool isGoingLeft)
+        /// <param name="accelerationValue">The value for how far to move</param>
+        private void SetPlayerVelocity(float accelerationValue)
         {
             // Resets velocity if catchbox is against the left edge
             if (Mathf.Approximately(catchBox.transform.localPosition.y, catchBoxMinXCord))
@@ -336,6 +338,7 @@ namespace FishingGame.Reeling
         private void MoveCatchBox()
         {
             Vector3 currentPosition = catchBox.transform.localPosition;
+            _catchBoxVelocity = Mathf.Clamp(_catchBoxVelocity, catchBoxMaxReverseSpeed, catchBoxForwardMaxSpeed);
             float yPosition = currentPosition.y += _catchBoxVelocity;
             yPosition = Mathf.Clamp(yPosition, catchBoxMinXCord, catchBoxMaxXCord);
             Vector3 newPosition = new Vector3(currentPosition.x, yPosition, currentPosition.z);
@@ -414,7 +417,6 @@ namespace FishingGame.Reeling
             FishSetGoal(newGoal);
             FishSetSpeed(_speedToUse);
             if (_speedToUse == 0) { _speedToUse = defaultSpeed; }
-            Debug.Log("GOal: " + newGoal);
             StartCoroutine(CustomBehaviourTime(_sliderBehaviourList[_currentBehaviourIndex].GetTimeToSpendOnGoal()));
 
             _currentBehaviourIndex++;
@@ -441,8 +443,8 @@ namespace FishingGame.Reeling
         /// </summary>
         private void SetupDefaultBehaviour()
         {
+            _behaviourLoaded = false;
             suddenDeathTimer = _defaultSuddenDeathTime;
-            _maxTimeBetweenGoals = 1;
             Vector3 startLocation = CreateGoalLocation();
             fishImage.transform.localPosition = startLocation;
             Vector3 newFishGoal = CreateGoalLocation();
@@ -469,6 +471,7 @@ namespace FishingGame.Reeling
             {
                 Vector3 newFishGoal = CreateGoalLocation();
                 FishSetGoal(newFishGoal);
+                FishSetSpeed(defaultSpeed);
             }
         }
 
@@ -551,6 +554,8 @@ namespace FishingGame.Reeling
             float wanderValue = Random.Range(-_wanderRange, _wanderRange);
             float wanderSpeed = _speedToUse / 2;
 
+            wanderValue = Mathf.Clamp(wanderValue, fishMinYCord, fishMaxYCord);
+
             Vector3 currentPosition = fishImage.transform.localPosition;
             Vector3 newGoal = new Vector3(currentPosition.x, currentPosition.y + wanderValue, currentPosition.z);
             FishSetGoal(newGoal);
@@ -568,6 +573,16 @@ namespace FishingGame.Reeling
         private void UnPauseCatchboxMovement()
         {
             _isMiniGamePaused = false;
+        }
+
+        /// <summary>
+        /// Sets the color of catchbox to green if inputted bool is true, otherwise red
+        /// </summary>
+        /// <param name="isGreen">True makes the catchbox color green, false makes it red</param>
+        private void IsCatchBoxGreen(bool isGreen)
+        {
+            if (isGreen) { catchBox.GetComponent<Image>().color = Color.green; }
+            else { catchBox.GetComponent <Image>().color = Color.red; }
         }
 
         /// <summary>
@@ -658,8 +673,8 @@ namespace FishingGame.Reeling
             _behaviourLoaded = false;
 
             int decideDirection = Random.Range(0, 2);
-            if (decideDirection == 0) { _goingLeft = true; }
-            else {  _goingLeft = false; }
+            if (decideDirection == 0) { _isGoingLeft = true; }
+            else {  _isGoingLeft = false; }
         }
 
         #endregion
