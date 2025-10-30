@@ -81,7 +81,16 @@ namespace FishingGame.Shop
             _isPlayerNearby = true;
 
             if (interactPromptText != null && !_isShopOpen)
+            {
                 interactPromptText.gameObject.SetActive(true);
+                string buttonToPress = "E";
+                if (GameManager.Instance.GetCurrentControlScheme() is Gamepad)
+                {
+                    buttonToPress = "the interact button";
+                }
+
+                interactPromptText.text = $"Press {buttonToPress} to access the shop.";
+            }
         }
 
         private void OnTriggerExit(Collider other)
