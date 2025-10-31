@@ -1,7 +1,5 @@
-using System;
 using FishingGame.GameManagement;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace FishingGame.QuestSystem.UI
 {

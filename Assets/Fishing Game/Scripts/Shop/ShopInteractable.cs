@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using FishingGame.Player;
-using FishingGame.Shop;
 using FishingGame.GameManagement;
 
 namespace FishingGame.Shop
@@ -36,6 +35,9 @@ namespace FishingGame.Shop
             var inputActions = InputSystem.actions;
             inputActions.FindActionMap("Player").Enable();
             _interactAction = inputActions.FindAction("Player/Interact");
+            InputSystem.actions.FindAction("UI/Back").performed += 
+                context => CloseShop();
+            InputSystem.actions.FindAction("UI/CloseUI").performed += context => CloseShop();
         }
 
         private void Start()
@@ -49,10 +51,10 @@ namespace FishingGame.Shop
             // Only check input if player is in range
             if (_isPlayerNearby && _interactAction != null && _interactAction.WasPressedThisFrame())
             {
-                if (_isShopOpen)
-                    CloseShop();
-                else
+                if (!_isShopOpen)
+                {
                     OpenShop();
+                }
             }
         }
 
@@ -78,7 +80,16 @@ namespace FishingGame.Shop
             _isPlayerNearby = true;
 
             if (interactPromptText != null && !_isShopOpen)
+            {
                 interactPromptText.gameObject.SetActive(true);
+                string buttonToPress = "E";
+                if (GameManager.Instance.GetCurrentControlScheme() is Gamepad)
+                {
+                    buttonToPress = "the interact button";
+                }
+
+                interactPromptText.text = $"Press {buttonToPress} to access the shop.";
+            }
         }
 
         private void OnTriggerExit(Collider other)

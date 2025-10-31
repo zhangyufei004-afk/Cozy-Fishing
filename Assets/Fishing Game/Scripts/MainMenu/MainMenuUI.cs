@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 namespace FishingGame.MainMenu
 {
@@ -11,6 +10,7 @@ namespace FishingGame.MainMenu
     {
         [SerializeField] private GameObject settingsPanel; // Assign SettingsCanvas in Inspector
         [SerializeField] private GameObject mainMenuButtons; // Assign MainMenuCanvas in Inspector
+        [SerializeField] private GameObject creditsPanel;
 
         public void OnOpenSettings()
         {
@@ -36,6 +36,23 @@ namespace FishingGame.MainMenu
 #else
             Application.Quit();
 #endif
+        }
+
+        public void ShowCredits()
+        {
+            if (creditsPanel is not null)
+            {
+                creditsPanel.SetActive(true);
+            }
+        }
+
+        public void CloseCredits()
+        {
+            if (creditsPanel is not null)
+            {
+                creditsPanel.SetActive(false);
+                EventSystem.current.SetSelectedGameObject(mainMenuButtons.transform.GetChild(0).gameObject);
+            }
         }
     }
 }

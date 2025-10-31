@@ -1,9 +1,6 @@
 using FishingGame.FishSystem;
-using FishingGame.Input;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -96,7 +93,17 @@ namespace FishingGame.Reeling
         [Tooltip("Rate of spawn during a wave")]
         private float waveSpawnTime;
 
-        private IFishAble _currentlyReelingObject;
+        private Fishable _currentlyReelingObject;
+        [SerializeField]
+        private AudioSource rightSound;
+        [SerializeField]
+        private AudioClip[] rightSounds;
+
+        [SerializeField]
+        private AudioSource wrongSound;
+        [SerializeField]
+        private AudioClip[] wrongSounds;
+
         private int _fishDifficulty;
         private int _maxAmountOfActiveArrows;
         private int _currentArrowCount;
@@ -114,18 +121,23 @@ namespace FishingGame.Reeling
         private bool _suddenDeath = false;
         private float _minigameLoopDuration;
         private int _failedArrowModifier = 4;
+        private float _initialWaitTime = 1f;
 
         private List<MovingArrow> _arrowsAvailableToBePressed;
         private List<MovingArrow> _activeArrows;
         private List<MovingArrow> _arrowsToRemove;
         private InputAction _directionAction;
         private EMovementDirection _arrowType;
+        private EMovementDirection _lastArrowType;
         private InputActionMap _uiActionMap;
 
         private InputAction _upAction;
         private InputAction _downAction;
         private InputAction _leftAction;
         private InputAction _rightAction;
+
+        private int _rightSoundIndex = 0;
+        private int _wrongSoundIndex = 0;
 
         // Custom Arrow Behaviour Variables
 
@@ -151,11 +163,6 @@ namespace FishingGame.Reeling
             _initialSuddenDeathTimer = suddenDeathTimerDuration;
         }
 
-        private void OnDisable()
-        {
-            DisableArrowKeys();
-        }
-
         private void Update()
         {
             if (_gameActive != true) { return; }
@@ -172,7 +179,7 @@ namespace FishingGame.Reeling
         /// Setsup all the required logic for the minigame
         /// </summary>
         /// <param name="fishScriptable">The data of the fish being caught</param>
-        public void InitializeMiniGame(IFishAble fishScriptable)
+        public void InitializeMiniGame(Fishable fishScriptable)
         {
             _arrowMiniGameBehaviour = null;
             _currentlyReelingObject = fishScriptable;
@@ -180,7 +187,7 @@ namespace FishingGame.Reeling
             fishingCanvas.SetActive(true);
             SetUpArrowKeys();
             ResetRuntimeVariables();
-            SetupArrowgameBehaviour();
+            
 
             int i = 0;
             foreach (ArrowSpawner spawner in spawnPoints)
@@ -195,15 +202,9 @@ namespace FishingGame.Reeling
         /// </summary>
         public void BeginMiniGame()
         {
-            _gameActive = true;
-
-            foreach (ArrowSpawner spawner in spawnPoints)
-            {
-                spawner.ActivateOrDeactivateSpawner(true);
-            }
-
-            if (!_arrowMiniGameBehaviourActive) { SpawnArrowNormal(); }
-            else { CustomArrowBehaviourBegin(); }
+            InputSystem.actions.FindActionMap("ArrowMiniGame").Enable();
+            StartCoroutine(BeginGameDelay(_initialWaitTime));
+            SetupArrowgameBehaviour();
         }
 
         /// <summary>
@@ -284,6 +285,12 @@ namespace FishingGame.Reeling
         public void ArrowFailedToBePressed(MovingArrow arrowFailed)
         {
             if (_gameActive == false) { return; }
+
+            if (_wrongSoundIndex == wrongSounds.Length)
+                _wrongSoundIndex = 0;
+            wrongSound.clip = wrongSounds[_wrongSoundIndex];
+            wrongSound.Play();
+            _wrongSoundIndex++;
 
             AddOrRemoveActiveArrow(arrowFailed, false);
             ModifyProgress(-defaultProgressModify * _failedArrowModifier);
@@ -393,6 +400,12 @@ namespace FishingGame.Reeling
         /// <param name="arrowCompleted">The arrow being modified</param>
         private void ArrowSuccsessfullyPressed(MovingArrow arrowCompleted)
         {
+            if (_rightSoundIndex == rightSounds.Length)
+                _rightSoundIndex = 0;
+            rightSound.clip = rightSounds[_rightSoundIndex];
+            rightSound.Play();
+            _rightSoundIndex++;
+
             float distanceModifier = arrowCompleted.GetPointModfiierFromGoal();
 
             AddOrRemoveActiveArrow(arrowCompleted, false);
@@ -436,6 +449,7 @@ namespace FishingGame.Reeling
             StopAllCoroutines();
 
             StartCoroutine(UIDissapear(didWin));
+            InputSystem.actions.FindActionMap("ArrowMiniGame").Disable();
         }
 
         #endregion
@@ -450,7 +464,7 @@ namespace FishingGame.Reeling
             _currentWaveIndex = 0;
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[0];
             CheckTimePassed();
-            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
+            float timeToWait = _nextEntryToSpawn.GetTimeToWaitForNextArrow();
             StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
             
         }
@@ -485,12 +499,12 @@ namespace FishingGame.Reeling
         private void SetupNextCustomArrow()
         {
             _currentWaveIndex++;
+            
             if (_currentWaveIndex >= _activeArrowWaveBehaviourList.Count) { CustomArrowBehaviourBegin(); return; }
 
             CheckTimePassed();
             _nextEntryToSpawn = _activeArrowWaveBehaviourList[_currentWaveIndex];
-            float timeToWait = _nextEntryToSpawn.GetTimeToSpawn() - _currentTimePassed;
-            if (_currentWaveIndex == _activeArrowWaveBehaviourList.Count - 1 && _nextEntryToSpawn.GetIsDouble()) { timeToWait = 0; }
+            float timeToWait = _nextEntryToSpawn.GetTimeToWaitForNextArrow();
             StartCoroutine(CustomArrowTime(timeToWait, _roundSpeed));
         }
 
@@ -532,9 +546,20 @@ namespace FishingGame.Reeling
         {
             if (HasReachedMaxArrowSpawned()) { return; }
 
-            int chosenSpawner = Random.Range(0, spawnPoints.Count);
+            List<ArrowSpawner> availableSpawners = new List<ArrowSpawner>(spawnPoints);
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {   
+                if (spawner.GetSpawnerTypeAsInt() == (int)_lastArrowType)
+                {
+                    availableSpawners.Remove(spawner);
+                }
+            }
 
-            spawnPoints[chosenSpawner].SpawnArrow(normalSpeed);
+            int chosenSpawner = Random.Range(0, availableSpawners.Count);
+
+            availableSpawners[chosenSpawner].SpawnArrow(normalSpeed);
+
+            _lastArrowType = (EMovementDirection)spawnPoints[chosenSpawner].GetSpawnerTypeAsInt();
 
             if (_waveActive)
             {
@@ -633,10 +658,6 @@ namespace FishingGame.Reeling
             {
                 _suddenDeath = true;
             }
-            if (_currentTimePassed >= _minigameLoopDuration)
-            {
-                _currentTimePassed = 0;
-            }
         }
 
         /// <summary>
@@ -730,9 +751,7 @@ namespace FishingGame.Reeling
                 _arrowMiniGameBehaviour = new ArrowWaveData(_currentlyReelingObject.GetArrowMinigameBehaviour());
                 _arrowMiniGameBehaviourActive = true;
                 _activeArrowWaveBehaviourList = _arrowMiniGameBehaviour.GetArrowEntrys();
-                _minigameLoopDuration = _arrowMiniGameBehaviour.GetMaxTimeForCycle();
                 _initialSuddenDeathTimer = _arrowMiniGameBehaviour.GetSuddenDeathTimer();
-                _activeArrowWaveBehaviourList.Sort();
 
                 _roundSpeed = _arrowMiniGameBehaviour.GetSpeedOfGame();
                 if (_roundSpeed == 0) { _roundSpeed = normalSpeed; }
@@ -743,6 +762,25 @@ namespace FishingGame.Reeling
                 _currentProgress = defaultProgressModify * 4;
                 progressSlider.value = _currentProgress;
             }
+        }
+
+        /// <summary>
+        /// This timer begins the minigame after inputed time to wait
+        /// </summary>
+        /// <param name="delayTime">Amount of time to wait</param>
+        /// <returns>The minigame begins</returns>
+        private IEnumerator BeginGameDelay(float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+            _gameActive = true;
+
+            foreach (ArrowSpawner spawner in spawnPoints)
+            {
+                spawner.ActivateOrDeactivateSpawner(true);
+            }
+
+            if (!_arrowMiniGameBehaviourActive) { SpawnArrowNormal(); }
+            else { CustomArrowBehaviourBegin(); }
         }
 
         /// <summary>

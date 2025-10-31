@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FishingGame.NPC.UI;
+﻿using FishingGame.NPC.UI;
 using FishingGame.QuestSystem;
 
 namespace FishingGame.AI.NPC.Nodes

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using FishingGame.Inventory;
 using FishingGame.UI.Inventory;
 using FishingGame.FishSystem;
 using FishingGame.GameTime;

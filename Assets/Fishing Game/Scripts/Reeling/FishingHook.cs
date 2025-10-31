@@ -1,19 +1,10 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
-using FishingGame.Items;
-using FishingGame.SaveGame;
-using NUnit.Framework;
-using PrototypeFishingMechanics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Timers;
 using FishingGame.Items.Bait;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.ProBuilder.MeshOperations;
 
 namespace FishingGame.Reeling
 {
@@ -93,6 +84,7 @@ namespace FishingGame.Reeling
         private FishingPool _collidingPool;
 
         private float _velocity;
+        private bool _isGrappling;
 
         #endregion
 
@@ -125,10 +117,13 @@ namespace FishingGame.Reeling
                     _headingToFishSpot = false;
                     if (CheckIfColliding())
                     {
-                        waterSplash.Play();
-                        waterSound.Play();
-                        reelingMaster.GetCurrentFishingRod().GetCurrentBait().UseBaitCharge();
-                        initiationScript.BeginStageOne();
+                        if (!_isGrappling)
+                        {
+                            waterSplash.Play();
+                            waterSound.Play();
+                            reelingMaster.GetCurrentFishingRod().GetCurrentBait().UseBaitCharge();
+                            initiationScript.BeginStageOne();
+                        }
                     }
                     else
                     {
@@ -191,11 +186,12 @@ namespace FishingGame.Reeling
         /// <returns>Returns true if the hook is out and can be returned, else returns false</returns>
         public bool ShouldTravelBack()
         {
-            if (HookIsOut == true && _headingToFishSpot == false && reelingMaster.IsFishing == false)
+            if (HookIsOut && !_headingToFishSpot && !reelingMaster.IsFishing && !_isGrappling)
             {
                 return true;
             }
-            else { return false; }
+
+            return false;
         }
 
         /// <summary>
@@ -230,19 +226,27 @@ namespace FishingGame.Reeling
             initiationScript.SetIsFishing(false);
             fishingRodScript.ResetCharge(true);
             fishingRodScript.SetChargerVisibility(false);
+            _isGrappling = false;
         }
 
         /// <summary>
         /// Sets variables to allow hook to head to target location
         /// </summary>
         /// <param name="targetLocation">Location to move to</param>
-        public void SetUpHookTravelToFishSpot(Vector3 targetLocation)
+        /// <param name="isGrappling">Bool to indicate whether to ignore terrain collision.
+        /// This is useful when grappling as the hook will travel to the grapple point which is on terrain.</param>
+        public void SetUpHookTravelToFishSpot(Vector3 targetLocation, bool isGrappling)
         {
             transform.parent = null;
             Vector3 newPosition = new Vector3(targetLocation.x, targetLocation.y - 1f, targetLocation.z);
 
             _fishingLocation = newPosition;
             _headingToFishSpot = true;
+            _isGrappling = isGrappling;
+            if (isGrappling)
+            {
+                _fishingLocation.y += 1f;
+            }
         }
 
         /// <summary>
@@ -342,13 +346,13 @@ namespace FishingGame.Reeling
             {
                 Fish fishCaught = (Fish)randomPoolFish;
 
-                reelingMaster.BeginCatchFish(fishCaught, fishModel, fishingPool);
+                reelingMaster.BeginCatch(fishCaught, fishModel, fishingPool);
             }
             else if (randomPoolFish.GetCatchType() == ECatchableType.Trash)
             {
                 Trash trashCaught = randomPoolFish as Trash;
 
-                reelingMaster.BeginCatchTrash(trashCaught, fishModel, fishingPool);
+                reelingMaster.BeginCatch(trashCaught, fishModel, fishingPool);
             }
 
 
@@ -372,7 +376,7 @@ namespace FishingGame.Reeling
         /// <returns>True if colliding else false</returns>
         private bool CheckIfColliding()
         {
-            if (_collidingFish.Count > 0 || _collidingPool != null)
+            if (_collidingFish.Count > 0 || _collidingPool is not null || _isGrappling)
             {
                 return true;
             }

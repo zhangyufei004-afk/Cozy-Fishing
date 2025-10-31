@@ -31,7 +31,7 @@ namespace FishingGame.Inventory
             if (fishLogSystem is not null && newItem.GetItemType() == EItemType.Fish)
             {
                 Fish newFish = newItem as Fish;
-                fishLogSystem.RegisterFishCaught(newFish?.GetFishBase());
+                fishLogSystem.RegisterFishCaught(newFish?.GetBase() as FishScriptableObject);
             }
         }
 

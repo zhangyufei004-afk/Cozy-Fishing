@@ -1,20 +1,10 @@
-using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.Items;
-using System.Collections;
-using System.Runtime.CompilerServices;
 using FishingGame.Items.Bait;
+using FishingGame.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-using System.ComponentModel.Design;
-using FishingGame.Inventory;
-using UnityEditor.UIElements;
-using NUnit.Framework;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
-using System.Linq;
 
 namespace FishingGame.Reeling
 {
@@ -48,6 +38,10 @@ namespace FishingGame.Reeling
         [SerializeField]
         [Tooltip("A reference to the initiation script attatched to player.")]
         private ReelingInitiation initiationScript;
+
+        [SerializeField]
+        [Tooltip("Reference to the player controller script")]
+        private PlayerController playerController;
 
         [SerializeField]
         [Tooltip("A reference to the fishing hook script which is attatched to a fishing rod.")]
@@ -88,7 +82,6 @@ namespace FishingGame.Reeling
         private float _chargePowerMinimum = 1f;
         private float _chargePowerAverageMaxValue = 3f;
         private float _chargePowerGoodMaxValue = 6f;
-        private int _blockFishingRayCastDistance = 10;
 
         private float _amazingFishMinWaitTime = 1;
         private float _amazingFishMaxWaitTime = 2;
@@ -130,6 +123,7 @@ namespace FishingGame.Reeling
         private bool _isBusy = false;
         private float _defaultMaxSliderValue;
         private LayerMask _layerMask;
+        private bool _isGrappling = false;
 
         private void OnEnable()
         {
@@ -137,7 +131,6 @@ namespace FishingGame.Reeling
 
             InputActionAsset inputActions = InputSystem.actions;
             InputActionMap playerActionMap = inputActions.FindActionMap("Player");
-            InputActionMap uiActionMap = inputActions.FindActionMap("UI");
             playerActionMap.Enable();
             _castAction = playerActionMap.FindAction("Reel");
 
@@ -148,10 +141,12 @@ namespace FishingGame.Reeling
             _castAction.started += CastInputUsed;
             _castAction.canceled += CastInputReleased;
 
-            GameManager.Instance.GameEvents.OnBaitEquiped += EquipBait;
+            GameManager.Instance.GameEvents.OnBaitEquipped += EquipBait;
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
+
+            GameManager.Instance.GameEvents.OnToggleGrapple += SetGrapplePoint;
 
             _layerMask = waterLayer | blockFishingLayers;
         }
@@ -212,7 +207,7 @@ namespace FishingGame.Reeling
         public void ThrowLine()
         {
             fishingHook.HookIsOut = true;
-            fishingHook.SetUpHookTravelToFishSpot(_targetLocation);
+            fishingHook.SetUpHookTravelToFishSpot(_targetLocation, _isGrappling);
         }
 
         /// <summary>
@@ -220,6 +215,7 @@ namespace FishingGame.Reeling
         /// </summary>
         public void RemoveBait()
         {
+            GameManager.Instance.GameEvents.ItemUsedUp(_currentlyEquipedBait as ItemData);
             _currentlyEquipedBait = new NullBait();
         }
 
@@ -242,8 +238,17 @@ namespace FishingGame.Reeling
             chargeSlider.gameObject.SetActive(isVisible);
         }
 
-        #region Charging_and_throwing_line
+        /// <summary>
+        /// Returns cast result for audio cues
+        /// </summary>
+        /// <returns></returns>
+        public int GetChargeLevel()
+        {
+            return (int)_throwLineResult;
+        }
 
+        #region Charging_and_throwing_line
+        
         /// <summary>
         /// Setsup the variable for a cast being started
         /// </summary>
@@ -257,6 +262,8 @@ namespace FishingGame.Reeling
             _chargePower = 0;
             _isCharging = true;
             _reverseDirection = false;
+            GameManager.Instance.GameEvents.SetPlayerOccupied(true);
+            playerController.ToggleMovement(false);
         }
 
         /// <summary>
@@ -312,6 +319,16 @@ namespace FishingGame.Reeling
             if (Physics.Raycast(locationWithYOffset, Vector3.down, out hit, maxDistance, _layerMask))
             {
                 rodBobber.transform.position = hit.point;
+            }
+        }
+
+        private void SetGrapplePoint(bool isGrappling, Vector3 grapplingDestination)
+        {
+            _isGrappling = isGrappling;
+            _targetLocation = grapplingDestination;
+            if (!_isGrappling)
+            {
+                fishingHook.PullBackHook(false);
             }
         }
 
@@ -387,25 +404,14 @@ namespace FishingGame.Reeling
 
             if (Physics.Raycast(locationPoint, Vector3.down, out hit, maxDistance, _layerMask))
             {
-                // Collider[] overlapingBlockObjects = Physics.OverlapSphere(hit.transform.position, 2f, blockFishingLayers);
-
-                // if (overlapingBlockObjects.Count() != 0)
-                // {
-                //     ResetCharge();
-                //     SetChargerVisibility(false);
-                //     return false;
-                // }
-
                 if (((1 << hit.transform.gameObject.layer) & blockFishingLayers.value) >= 1)
                 {
                     ResetCharge(true);
                     SetChargerVisibility(false);
                     return false;
                 }
-
                 return true;
             }
-
             return false;
         }
 
@@ -442,14 +448,23 @@ namespace FishingGame.Reeling
         /// </summary>
         private void CastInputReleased(InputAction.CallbackContext inputAction)
         {
-            if (_isCharging == true && CanThrowToLocation()) 
+            if (!_allowControls) { return; }
+
+            if (_isCharging == true && CanThrowToLocation())
             {
                 SetCastAnimation();
+                _isCharging = false;
             }
-            _isCharging = false;
+            else
+            {
+                _isCharging = false;
+                GameManager.Instance.GameEvents.SetPlayerOccupied(false);
+                playerController.ToggleMovement(true);
+            }
+            
         }
 
         #endregion
-
+        
     }
 }

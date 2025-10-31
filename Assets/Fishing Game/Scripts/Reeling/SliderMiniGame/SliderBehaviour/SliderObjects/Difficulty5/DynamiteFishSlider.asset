@@ -16,41 +16,41 @@ MonoBehaviour:
   SliderBehaviourList:
   - timeToSpendOnGoal: 1
     locationToMoveTo: -172
-    speedToUse: 80
+    speedToUse: 60
   - timeToSpendOnGoal: 1
     locationToMoveTo: 4
-    speedToUse: 80
+    speedToUse: 60
   - timeToSpendOnGoal: 1
     locationToMoveTo: -174
-    speedToUse: 80
+    speedToUse: 60
   - timeToSpendOnGoal: 1
     locationToMoveTo: 158
-    speedToUse: 150
+    speedToUse: 120
   - timeToSpendOnGoal: 1
     locationToMoveTo: 155
-    speedToUse: 80
+    speedToUse: 60
   - timeToSpendOnGoal: 1
     locationToMoveTo: 261
-    speedToUse: 80
+    speedToUse: 60
   - timeToSpendOnGoal: 1
     locationToMoveTo: 137
-    speedToUse: 80
+    speedToUse: 60
   - timeToSpendOnGoal: 1
     locationToMoveTo: 254
-    speedToUse: 80
-  - timeToSpendOnGoal: 1
+    speedToUse: 60
+  - timeToSpendOnGoal: 1.5
     locationToMoveTo: -213
-    speedToUse: 150
-  - timeToSpendOnGoal: 1
+    speedToUse: 120
+  - timeToSpendOnGoal: 1.5
     locationToMoveTo: 193
-    speedToUse: 150
-  - timeToSpendOnGoal: 1
+    speedToUse: 120
+  - timeToSpendOnGoal: 1.5
     locationToMoveTo: -267
     speedToUse: 150
-  - timeToSpendOnGoal: 1
+  - timeToSpendOnGoal: 1.5
     locationToMoveTo: 204
     speedToUse: 150
-  - timeToSpendOnGoal: 1
+  - timeToSpendOnGoal: 2
     locationToMoveTo: 10
     speedToUse: 150
   - timeToSpendOnGoal: 0.75
@@ -59,7 +59,7 @@ MonoBehaviour:
   - timeToSpendOnGoal: 0.75
     locationToMoveTo: 10
     speedToUse: 80
-  - timeToSpendOnGoal: 0.75
+  - timeToSpendOnGoal: 1.6
     locationToMoveTo: 104
     speedToUse: 80
   StartingLocation: 30

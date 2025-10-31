@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace FishingGame.AI.NPC.Nodes
+﻿namespace FishingGame.AI.NPC.Nodes
 {
     public class TaskIdle : TreeNode
     {

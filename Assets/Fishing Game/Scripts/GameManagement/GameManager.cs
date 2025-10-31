@@ -2,8 +2,7 @@ using FishingGame.FishSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 namespace FishingGame.GameManagement
 {
@@ -18,6 +17,9 @@ namespace FishingGame.GameManagement
         
         private static GameManager _instance;
         private GameEvents _gameEvents;
+        
+        [Header("Input Properties")]
+        [SerializeField] private PlayerInput playerInput;
 
         [Header("Fishing Properties")]
         
@@ -35,15 +37,17 @@ namespace FishingGame.GameManagement
 
         private Dictionary<FishScriptableObject, int> _fishTimesCaught;
         private Dictionary<FishScriptableObject, float> _fishBiggestCatch;
+        
 
         private void OnEnable()
         {
-            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
             if (_instance != null && _instance != this)
             {
                 Destroy(this.gameObject);
             }
+
             _instance = this;
+            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
             _gameEvents = new GameEvents();
 
             _instance.GameEvents.OnFishCaught += AddToTimesCaught;
@@ -57,6 +61,11 @@ namespace FishingGame.GameManagement
                 _fishTimesCaught.Add(fishData, 0);
                 _fishBiggestCatch.Add(fishData, 0);
             }
+        }
+
+        private void Update()
+        {
+            Debug.Log(GetCurrentControlScheme());
         }
 
         private void OnDestroy()
@@ -113,6 +122,15 @@ namespace FishingGame.GameManagement
         {
             return toolTips[UnityEngine.Random.Range(0, toolTips.Count)];
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public InputDevice GetCurrentControlScheme()
+        {
+            return playerInput.devices[0];
+        }
 
         /// <summary>
         /// Updates a fishtype to show it has been caught an additional time
@@ -121,7 +139,10 @@ namespace FishingGame.GameManagement
         /// <param name="fishToAddTo">Fish being caught</param>
         private void AddToTimesCaught(Fish fishToAddTo)
         {
-            _fishTimesCaught[fishToAddTo.GetFishBase()] += 1;
+            if (fishToAddTo.GetBase() is FishScriptableObject fishData)
+            {
+                _fishTimesCaught[fishData] += 1;
+            }
         }
 
         /// <summary>
@@ -131,10 +152,10 @@ namespace FishingGame.GameManagement
         /// <param name="newFish">The fish being caught</param>
         private void CheckBiggestCatch(Fish newFish)
         {
-           if (newFish.GetWeight() > _fishBiggestCatch[newFish.GetFishBase()])
-            {
-                _fishBiggestCatch[newFish.GetFishBase()] = newFish.GetWeight();
-            }
+           if (newFish.GetBase() is FishScriptableObject fishData && newFish.GetWeight() > _fishBiggestCatch[fishData])
+           {
+                _fishBiggestCatch[fishData] = newFish.GetWeight();
+           }
         }
 
     }

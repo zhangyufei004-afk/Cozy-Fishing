@@ -1,11 +1,8 @@
 using System;
-using UnityEngine;
 using FishingGame.GameTime;
 using FishingGame.Inventory;
-using FishingGame.Items;
 using FishingGame.SaveGame;
 using Random = UnityEngine.Random;
-using FishingGame.Reeling;
 
 namespace FishingGame.FishSystem
 {
@@ -27,56 +24,37 @@ namespace FishingGame.FishSystem
         {
             _fishBase = newFishBase;
 
-            _fishableName = _fishBase.SpeciesName;
-            _fishableWeight = Random.Range(_fishBase.MinMaxWeight.x, _fishBase.MinMaxWeight.y);
-            _fishableWeight = Mathf.Round(_fishableWeight * 100) / 100;
-            _fishableDifficultyLevel = _fishBase.FishCatchDifficulty;
-            _caughtTime = time;
-            _caughtLocation = location;
-            _fishableType = ECatchableType.Fish;
-            _fishableSprite = _fishBase.Texture;
-            _arrowMinigameBehaviour = _fishBase.ArrowMiniGameBehaviour;
-            _sliderMinigameBehaviour = _fishBase.SliderMiniGameBehaviour;
-            _fishableItemType = EItemType.Fish;
+            FishableName = _fishBase.Name;
+            FishableWeight = Random.Range(_fishBase.WeightRange.MinWeight, _fishBase.WeightRange.MaxWeight);
+            FishableWeight = (float)Math.Round(FishableWeight, 2);
+            FishableDifficultyLevel = (int)_fishBase.Difficulty;
+            CaughtTime = time;
+            CaughtLocation = location;
+            FishableType = ECatchableType.Fish;
+            FishableSprite = _fishBase.Texture;
+            ArrowMinigameBehaviour = _fishBase.ArrowMiniGameBehaviour;
+            SliderMinigameBehaviour = _fishBase.SliderMiniGameBehaviour;
+            FishableItemType = EItemType.Fish;
         }
 
         public override void UseItem()
         {
         }
 
-        /// <summary>
-        /// Outputs the type as FishScriptableObject and returns this fishes base
-        /// </summary>
-        /// <param name="dataClassType">The type of scriptableobject this is</param>
-        /// <returns>The scriptable object</returns>
-        public override SerializableObject GetDataObject(out Type dataClassType)
+        public override float GetLength()
         {
-            dataClassType = typeof(FishScriptableObject);
-            return _fishBase;
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Gets the base ScriptableObject of the fish.
-        /// </summary>
-        public FishScriptableObject GetFishBase()
+        public override FishableScriptable GetBase()
         {
             return _fishBase;
         }
 
-        /// <summary>
-        /// Gets the time of day the fish was caught.
-        /// </summary>
-        public ETimeOfDay GetCaughtTime()
+        public override Type GetDataObject(out SerializableObject dataClass)
         {
-            return _caughtTime;
-        }
-
-        /// <summary>
-        /// Gets the location where the fish was caught.
-        /// </summary>
-        public string GetCaughtLocation()
-        {
-            return _caughtLocation;
+            dataClass = _fishBase;
+            return typeof(FishScriptableObject);
         }
 
         /// <summary>

@@ -20,6 +20,15 @@ MonoBehaviour:
   - timeToSpendOnGoal: 1.5
     locationToMoveTo: -297
     speedToUse: 200
+  - timeToSpendOnGoal: 0.5
+    locationToMoveTo: -201
+    speedToUse: 0
+  - timeToSpendOnGoal: 1
+    locationToMoveTo: -80
+    speedToUse: 0
+  - timeToSpendOnGoal: 0.5
+    locationToMoveTo: -265
+    speedToUse: 0
   StartingLocation: -297
   SuddenDeathTimer: 30
   PointsNeededToPass: 100

@@ -1,5 +1,4 @@
 using System;
-using FishingGame.Items;
 using FishingGame.SaveGame;
 using UnityEngine;
 
@@ -58,8 +57,8 @@ namespace FishingGame.Inventory
         /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
         /// non-runtime data. 
         /// </summary>
-        /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
-        /// <returns>The SerializableObject that the Data is stored in.</returns>
-        public abstract SerializableObject GetDataObject(out Type dataClassType);
+        /// <param name="dataClass">The SerializableObject that the Data is stored in.</param>
+        /// <returns>The type of the DataObject, for casting correctness.</returns>
+        public Type GetDataObject(out SerializableObject dataClass);
     }
 }

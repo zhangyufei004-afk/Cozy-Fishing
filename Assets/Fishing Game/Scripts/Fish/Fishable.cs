@@ -1,7 +1,5 @@
-using FishingGame.FishSystem;
 using FishingGame.GameTime;
 using FishingGame.Inventory;
-using FishingGame.Items;
 using FishingGame.Reeling;
 using FishingGame.SaveGame;
 using System;
@@ -14,28 +12,23 @@ namespace FishingGame.FishSystem
     /// </summary>
     public abstract class Fishable : IFishAble, IStorable
     {
-        protected string _fishableName;
+        protected string FishableName;
 
-        protected float _fishableWeight;
-        protected int _fishableDifficultyLevel;
-        protected string _caughtLocation;
+        protected float FishableWeight;
+        protected int FishableDifficultyLevel;
+        protected string CaughtLocation;
 
-        protected ETimeOfDay _caughtTime;
-        protected ECatchableType _fishableType;
-        protected EItemType _fishableItemType;
+        protected ETimeOfDay CaughtTime;
+        protected ECatchableType FishableType;
+        protected EItemType FishableItemType;
 
-        protected Sprite _fishableSprite;
+        protected Sprite FishableSprite;
 
-        protected ArrowWaveSO _arrowMinigameBehaviour;
-        protected SliderSO _sliderMinigameBehaviour;
+        protected ArrowWaveSO ArrowMinigameBehaviour;
+        protected SliderSO SliderMinigameBehaviour;
 
-        /// <summary>
-        /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
-        /// non-runtime data. 
-        /// </summary>
-        /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
-        /// <returns>The SerializableObject that the Data is stored in.</returns>
-        public abstract SerializableObject GetDataObject(out Type dataClassType);
+        
+        public abstract Type GetDataObject(out SerializableObject dataClass);
 
         /// <summary>
         /// Returns this fishables ArrowMiniGameBehaviour
@@ -43,7 +36,7 @@ namespace FishingGame.FishSystem
         /// <returns>The arrowminigamebehaviour of this fishable</returns>
         public ArrowWaveSO GetArrowMinigameBehaviour()
         {
-            return _arrowMinigameBehaviour;
+            return ArrowMinigameBehaviour;
         }
 
         /// <summary>
@@ -52,7 +45,7 @@ namespace FishingGame.FishSystem
         /// <returns>The difficulty of this fishable</returns>
         public int GetCatchDifficulty()
         {
-            return _fishableDifficultyLevel;
+            return FishableDifficultyLevel;
         }
 
         /// <summary>
@@ -61,9 +54,8 @@ namespace FishingGame.FishSystem
         /// <returns>This fishables type as an ECatachableType</returns>
         public ECatchableType GetCatchType()
         {
-            return _fishableType;
+            return FishableType;
         }
-
         
         /// <summary>
         /// Returns this fishables name
@@ -71,7 +63,7 @@ namespace FishingGame.FishSystem
         /// <returns>Name of this fishable</returns>
         public string GetName()
         {
-            return _fishableName;
+            return FishableName;
         }
 
         /// <summary>
@@ -80,7 +72,7 @@ namespace FishingGame.FishSystem
         /// <returns>Returns this fishables item type as a EItemType</returns>
         public EItemType GetItemType()
         {
-            return _fishableItemType;
+            return FishableItemType;
         }
 
         /// <summary>
@@ -89,7 +81,7 @@ namespace FishingGame.FishSystem
         /// <returns>This fishables slider minigame behaviour</returns>
         public SliderSO GetSliderMinigameBehaviour()
         {
-            return _sliderMinigameBehaviour;
+            return SliderMinigameBehaviour;
         }
 
         /// <summary>
@@ -98,7 +90,7 @@ namespace FishingGame.FishSystem
         /// <returns>This fishables sprite</returns>
         public Sprite GetTexture()
         {
-            return _fishableSprite;
+            return FishableSprite;
         }
 
         /// <summary>
@@ -107,13 +99,35 @@ namespace FishingGame.FishSystem
         /// <returns>This fishables weight</returns>
         public float GetWeight()
         {
-            return _fishableWeight;
+            return FishableWeight;
         }
 
         /// <summary>
         /// Functionaility behind using this item
         /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
-        public abstract void UseItem();
+        public virtual void UseItem()
+        {
+        }
+
+        /// <summary>
+        /// Gets the location where the fishable was caught.
+        /// </summary>
+        public string GetCaughtLocation()
+        {
+            return CaughtLocation;
+        }
+
+        /// <summary>
+        /// Gets the time of day the fish was caught.
+        /// </summary>
+        public ETimeOfDay GetCaughtTime()
+        {
+            return CaughtTime;
+        }
+
+        public abstract float GetLength();
+
+        public abstract FishableScriptable GetBase();
+
     }
 }

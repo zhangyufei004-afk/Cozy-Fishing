@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Android;
 
 namespace FishingGame.GameTime
 {

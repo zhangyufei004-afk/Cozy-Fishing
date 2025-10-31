@@ -1,6 +1,4 @@
-using FishingGame.Reeling;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FishingGame.Reeling
 {
@@ -48,7 +46,7 @@ namespace FishingGame.Reeling
         public float GetMaxTimeForCycle()
         {
             int index = _arrowEntrys.Count - 1;
-            return _arrowEntrys[index].GetTimeToSpawn();
+            return _arrowEntrys[index].GetTimeToWaitForNextArrow();
         }
 
         /// <summary>

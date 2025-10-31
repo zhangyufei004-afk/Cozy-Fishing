@@ -1,8 +1,6 @@
-using System;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace FishingGame.QuestSystem.Stages
 {

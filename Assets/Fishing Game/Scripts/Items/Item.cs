@@ -56,7 +56,12 @@ namespace FishingGame.Items
             if (other.gameObject == playerControllerScript.gameObject)
             {
                 _playerInInteractionRange = true;
-                GameManager.Instance.GameEvents.PickupItemRange(true, "Press E to pickup " + _itemData.GetName());
+                string pickupControl = "E";
+                if (GameManager.Instance.GetCurrentControlScheme() is Gamepad)
+                {
+                    pickupControl = "the interact button";
+                }
+                GameManager.Instance.GameEvents.PickupItemRange(true, $"Press {pickupControl} to pickup {_itemData.GetName()}");
             }
         }
 
@@ -65,7 +70,7 @@ namespace FishingGame.Items
             if (other.gameObject == playerControllerScript.gameObject)
             {
                 _playerInInteractionRange = false;
-                GameManager.Instance.GameEvents.PickupItemRange(false, "Press E to pickup " + _itemData.GetName());
+                GameManager.Instance.GameEvents.PickupItemRange(false, "");
             }
         }
 
@@ -118,7 +123,7 @@ namespace FishingGame.Items
             if (_playerInInteractionRange)
             {
                 GameManager.Instance.GameEvents.ItemReceived(_itemData);
-                GameManager.Instance.GameEvents.PickupItemRange(false, "Press E to picskup " + _itemData.GetName());
+                GameManager.Instance.GameEvents.PickupItemRange(false, "");
                 Destroy(this.gameObject);
             }
         }

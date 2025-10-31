@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using FishingGame.FishSystem;
 using FishingGame.Inventory;
 using FishingGame.Items.Bait;
 using FishingGame.QuestSystem;
-using UnityEditor;
 using UnityEngine;
 
 namespace FishingGame.GameManagement
@@ -35,8 +33,8 @@ namespace FishingGame.GameManagement
         public event Action<IStorable> OnItemReceived;
         public event Action<List<IStorable>> OnInventoryUpdated;
         public event Action<IStorable> OnItemUsedUp;
-        public event Action<IBait> OnBaitEquiped;
-
+        public event Action<IBait> OnBaitEquipped;
+        
         #endregion
 
         #region Quest Events
@@ -70,7 +68,7 @@ namespace FishingGame.GameManagement
 
         public event Action<bool> OnBecomeOccupied;
 
-        public event Action<bool> OnToggleGrappleCamera;
+        public event Action<bool, Vector3> OnToggleGrapple;
 
         public event Action<bool, string> OnWithinItemPickupRange;
 
@@ -93,6 +91,14 @@ namespace FishingGame.GameManagement
         public event Action<string, float, Color> OnShowStatusText;
 
         public event Action<string, float, Color> OnShowDefaultNotificationText;
+
+        public event Action<string> OnElementAddedToScrollbox;
+
+        #endregion
+
+        #region Camera Events
+
+        public event Action<string> OnCameraChangeParent;
 
         #endregion
 
@@ -256,12 +262,13 @@ namespace FishingGame.GameManagement
         }
 
         /// <summary>
-        /// Invokes the OnToggleGrappleCamera event to tell the grapple camera to become <c>isCameraEnabled</c>
+        /// Invokes the OnToggleGrapple event to tell that grappling is occuring <c>isCameraEnabled</c>
         /// </summary>
-        /// <param name="isCameraEnabled">Bool for if the Camera is enabled or disabled.</param>
-        public void ToggleGrappleCamera(bool isCameraEnabled)
+        /// <param name="isGrappling">Bool for if the Camera is enabled or disabled.</param>
+        /// <param name="grappleDestination">The destination we are grappling to</param>
+        public void ToggleGrappleMode(bool isGrappling, Vector3 grappleDestination)
         {
-            OnToggleGrappleCamera?.Invoke(isCameraEnabled);
+            OnToggleGrapple?.Invoke(isGrappling, grappleDestination);
         }
 
         /// <summary>
@@ -320,7 +327,7 @@ namespace FishingGame.GameManagement
         /// <param name="baitToEquip">The item to equip</param>
         public void EquipBait(IBait baitToEquip)
         {
-            OnBaitEquiped?.Invoke(baitToEquip);
+            OnBaitEquipped?.Invoke(baitToEquip);
         }
 
         /// <summary>
@@ -338,6 +345,24 @@ namespace FishingGame.GameManagement
         public void PlayerDeathScreenActive(bool isActive)
         {
             OnPlayerDeathScreenActive?.Invoke(isActive);
+        }
+
+        /// <summary>
+        /// Invokes the OnElementAddedToScrollbox event to tell subscribing classes that an element has been added to the scroll box <c>scrollBoxName</c>
+        /// </summary>
+        /// <param name="scrollBoxName">The name of the scrollbox gameobject</param>
+        public void ElementAddedToScrollbox(string scrollBoxName)
+        {
+            OnElementAddedToScrollbox?.Invoke(scrollBoxName);
+        }
+
+        /// <summary>
+        /// Invokes the OnCameraChangeParent event to change the parent of <c>cameraName</c> camera to be null.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera to change the parent of.</param>
+        public void RemoveCameraParent(string cameraName)
+        {
+            OnCameraChangeParent?.Invoke(cameraName);
         }
     }
 }

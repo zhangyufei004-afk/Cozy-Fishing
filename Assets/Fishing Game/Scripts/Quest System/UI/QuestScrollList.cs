@@ -1,3 +1,4 @@
+using FishingGame.GameManagement;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,7 @@ namespace FishingGame.QuestSystem.UI
             QuestLogButton questLogButton = Instantiate(logButtonPrefab, contentContainer.transform)
                 .GetComponent<QuestLogButton>();
             questLogButton.InitializeButton(quest.GetName(), onQuestClick);
+            GameManager.Instance.GameEvents.ElementAddedToScrollbox(this.gameObject.name);
         }
     }
 }

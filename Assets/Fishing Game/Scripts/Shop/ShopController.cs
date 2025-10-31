@@ -3,7 +3,6 @@ using UnityEngine;
 using FishingGame.Economy;
 using FishingGame.Inventory;
 using FishingGame.Items;
-using FishingGame.FishSystem;
 using FishingGame.Items.Bait;
 
 namespace FishingGame.Shop
@@ -18,8 +17,12 @@ namespace FishingGame.Shop
 
         [Header("Inventory Reference")]
         [SerializeField] private ShopInventory shopInventory;
+        
+        [Header("Camera References")]
+        [SerializeField] private GameObject shopCamera;
 
         private bool _isOpen = false;
+
 
         /// <summary>
         /// Opens the Shop UI
@@ -28,6 +31,7 @@ namespace FishingGame.Shop
         {
             shopUI?.SetActive(true);
             _isOpen = true;
+            shopCamera.SetActive(true);
         }
 
         /// <summary>
@@ -37,6 +41,7 @@ namespace FishingGame.Shop
         {
             shopUI?.SetActive(false);
             _isOpen = false;
+            shopCamera.SetActive(false);
         }
 
         public bool IsShopOpen() => _isOpen;

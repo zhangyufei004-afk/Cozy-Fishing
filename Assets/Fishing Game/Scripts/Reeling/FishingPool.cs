@@ -1,10 +1,8 @@
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.GameTime;
-using FishingGame.Items;
 using System.Collections.Generic;
 using FishingGame.Items.Bait;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace FishingGame.Reeling
@@ -251,19 +249,8 @@ namespace FishingGame.Reeling
         private void CreateFishList()
         {
             List<FishScriptableObject> potentialFish = _gameManager.GetPossibleFishList();
-            List<FishScriptableObject> fishAvailable = new List<FishScriptableObject>();
-
-            foreach (FishScriptableObject fish in potentialFish)
-            {
-                if (fish.LocationsFound.Contains(fishingLocation))
-                {
-                    if (fish.FishCatchDifficulty <= highestFishDifficulty && fish.FishCatchDifficulty >= lowestFishDifficulty)
-                    {
-                        fishAvailable.Add(fish);
-                    }
-                }
-            }
-
+            List<FishScriptableObject> fishAvailable = CreateList(potentialFish);
+            
             _baseFishList = fishAvailable;
         }
 
@@ -274,20 +261,29 @@ namespace FishingGame.Reeling
         private void CreateTrashList()
         {
             List<TrashScriptable> potentialTrash = _gameManager.GetPossibleTrashList();
-            List<TrashScriptable> trashAvailable = new List<TrashScriptable>();
+            List<TrashScriptable> trashAvailable = CreateList(potentialTrash);
 
-            foreach (TrashScriptable trash in potentialTrash)
+            _baseTrashList = trashAvailable;
+        }
+        
+        
+        private List<T> CreateList<T>(List<T> fishableList) where T: FishableScriptable
+        {
+            List<T> fishableAvailable = new List<T>();
+
+            foreach (FishableScriptable fishable in fishableList)
             {
-                if (trash.LocationsFound.Contains(fishingLocation))
+                if (fishable.LocationsFound.Contains(fishingLocation))
                 {
-                    if (trash.TrashDifficulty <= highestFishDifficulty && trash.TrashDifficulty >= lowestFishDifficulty)
+                    int difficulty = (int)fishable.Difficulty;
+                    if (difficulty <= highestFishDifficulty && difficulty >= lowestFishDifficulty)
                     {
-                        trashAvailable.Add(trash);
+                        fishableAvailable.Add((T)fishable);
                     }
                 }
             }
 
-            _baseTrashList = trashAvailable;
+            return fishableAvailable;
         }
 
         /// <summary>

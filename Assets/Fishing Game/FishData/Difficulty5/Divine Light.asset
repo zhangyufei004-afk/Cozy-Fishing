@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persistentID: 0
   Texture: {fileID: 21300000, guid: e8f6b6a483ff19f4aa5eca1297ccf8b3, type: 3}
-  Id: 15
-  MinMaxWeight: {x: 8, y: 12}
-  SpeciesName: Divine Light
-  FishCatchDifficulty: 5
-  FishBio: Aggressive species that lurks in the shadows. Lures fish in by jingling
-    it's glowing bell on its hat. Invasive predator.
+  Name: Divine Light
+  WeightRange:
+    MinWeight: 8
+    MaxWeight: 12
+  Difficulty: 5
+  Biography: 'Aggressive species that lurks in the shadows. Lures fish in by jingling
+    it''s glowing bell on its hat. Invasive predator. '
   LocationsFound: 0000000002000000
   TimesFound: 
-  IsInvasive: 1
   ArrowMiniGameBehaviour: {fileID: 11400000, guid: 9f53f16e753a4644eae6c9c54a1385bb, type: 2}
   SliderMiniGameBehaviour: {fileID: 11400000, guid: 4d2440734630d9a40929e12ac68bfdbd, type: 2}
+  IsInvasive: 1
+  BasePrice: 0

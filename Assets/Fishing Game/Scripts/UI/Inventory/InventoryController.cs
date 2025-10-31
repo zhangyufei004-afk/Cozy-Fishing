@@ -22,13 +22,13 @@ namespace FishingGame.UI.Inventory
         {
             _inputActions = InputSystem.actions;
             _inputActions.FindActionMap("Player").Enable();
-            _inputActions.FindActionMap("UI").Enable();
             _isInventoryOpen = false;
             _triggerInventoryAction = _inputActions.FindAction("Player/Inventory");
 
             GameManager.Instance.GameEvents.OnBecomeOccupied +=
                isCurrentlyEngaged => _isBusy = isCurrentlyEngaged;
         }
+
 
         private void Update()
         {

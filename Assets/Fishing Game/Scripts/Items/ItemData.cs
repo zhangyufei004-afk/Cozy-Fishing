@@ -2,7 +2,6 @@ using FishingGame.Inventory;
 using FishingGame.SaveGame;
 using System;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 
 namespace FishingGame.Items
 {
@@ -36,17 +35,6 @@ namespace FishingGame.Items
             _itemWeight = _itemBase.ItemWeight;
             _itemName = _itemBase.ItemName;
             _itemToolTip = _itemBase.ItemToolTip;
-        }
-
-        /// <summary>
-        /// Get the data object for the item. The Data Object is a ScriptableObject, which can be Serailzied. It stores static
-        /// non-runtime data. 
-        /// </summary>
-        /// <param name="dataClassType">Output parameter to give the type of the DataObject, for casting correctness. </param>
-        /// <returns>The SerializableObject that the Data is stored in.</returns>
-        public SerializableObject GetDataObject(out Type dataClassType)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -112,6 +100,12 @@ namespace FishingGame.Items
         {
             if (_currentlyEquiped) { _currentlyEquiped = false; }
             else {  _currentlyEquiped = true; }
+        }
+
+        public Type GetDataObject(out SerializableObject dataClass)
+        {
+            dataClass = _itemBase;
+            return typeof(ItemScriptable);
         }
 
         /// <summary>

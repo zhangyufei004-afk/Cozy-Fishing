@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using FishingGame.FishSystem;
 using FishingGame.GameManagement;
 using FishingGame.GameTime;
-using NUnit.Framework;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -93,8 +90,8 @@ namespace FishingGame.FishLog
 
             fishImage.color = hasBeenCaught ? Color.white : Color.black;
 
-            speciesNameText.text = hasBeenCaught ? fishData.SpeciesName : "???";
-            speciesBioText.text = hasBeenCaught ? fishData.FishBio : "???";
+            speciesNameText.text = hasBeenCaught ? fishData.Name : "???";
+            speciesBioText.text = hasBeenCaught ? fishData.Biography : "???";
             isInvasiveText.text = hasBeenCaught ? (fishData.IsInvasive ? "Invasive: Yes" : "Invasive: No") : "Invasive: ???";
 
             location.text = hasBeenCaught ? SetupLocationTexts(fishData) : "???";
